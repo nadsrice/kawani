@@ -41,6 +41,15 @@ class Company_model extends MY_Model {
         return $this->get_by($param);
     }
 
+    public function get_many_company_by($param)
+    {
+        $query = $this->db;
+        $query->select('companies.*, branches.name as branch_name');
+        $query->join('branches', 'companies.id = branches.company_id', 'left');
+
+        return $this->get_many_by($param);
+    }
+
     public function get_company_all()
     {
         $query = $this->db;

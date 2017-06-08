@@ -1,10 +1,10 @@
 <header class="main-header">
     <a href="javascript:void(0);" class="logo">
         <span class="logo-mini">
-            <img src="<?php echo site_url('assets/custom/img/app/logo_compacted.png'); ?>" />
+            KWN
         </span>
         <span class="logo-lg">
-            <img src="<?php echo site_url('assets/custom/img/app/logo_expanded.png'); ?>" />
+            KAWANI
         </span>
     </a>
     <nav class="navbar navbar-static-top" role="navigation">
@@ -15,12 +15,12 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?php echo site_url('assets/custom/img/app/mariner_avatar.png'); ?>" class="user-image" alt="User Image">
+                        <img src="<?php echo site_url('assets/custom/img/app/avatar.png'); ?>" class="user-image" alt="User Image">
                         <span class="hidden-xs"><?php echo $user_details->first_name . ' ' . $user_details->last_name; ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="user-header">
-                            <img src="<?php echo site_url('assets/custom/img/app/mariner_avatar.png'); ?>" class="img-circle" alt="User Image">
+                            <img src="<?php echo site_url('assets/custom/img/app/avatar.png'); ?>" class="img-circle" alt="User Image">
                             <p>
                                 <?php echo $user_details->first_name . ' ' . $user_details->last_name; ?>
                                 <small>Member since <?php echo date('M d Y', $user_details->created_on); ?></small>

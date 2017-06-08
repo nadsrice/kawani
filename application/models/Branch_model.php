@@ -20,6 +20,9 @@ class Branch_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
+    protected $after_get = [
+        'set_default_data'
+    ];
 
     protected function generate_date_created_status($branch)
     {
@@ -29,19 +32,35 @@ class Branch_model extends MY_Model {
         return $branch;
     }
 
+    protected function set_default_data($branch)
+    {   
+        $branch['active_status']  = ($branch['active_status'] == 1) ? 'Active' : 'Inactive';
+        return $branch;
+    }
+
     public function get_branch_by($param)
     {
         $query = $this->db;
-        $query->select('branches.*, companies.registered_name as company_name');
+        $query->select('branches.*, companies.name as company_name');
         $query->join('companies', 'branches.company_id = companies.id', 'left');
 
         return $this->get_by($param);
     }
 
+    public function get_many_branch_by($param)
+    {
+        $query = $this->db;
+        $query->select('branches.*, companies.name as company_name');
+        $query->join('companies', 'branches.company_id = companies.id', 'left');
+        $query->order_by('companies.id', 'asc');
+
+        return $this->get_many_by($param);
+    }
+
     public function get_branch_all()
     {
         $query = $this->db;
-        $query->select('branches.*, companies.registered_name as company_name');
+        $query->select('branches.*, companies.name as company_name');
         $query->join('companies', 'branches.company_id = companies.id', 'left');
         $query->order_by('companies.id', 'asc');
 

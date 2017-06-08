@@ -21,9 +21,9 @@ class ACL {
     protected $user_role_id;
 
     /**
-     * Store class model_system
+     * Store class acl_model
      */
-    protected $model_system;
+    protected $acl_model;
 
     /**
      * Class construtor
@@ -32,20 +32,20 @@ class ACL {
         $this->ci = & get_instance();
 
         $this->ci->load->library('ion_auth');
-        $this->ci->load->model('model_system');
+        $this->ci->load->model('acl_model');
 
         $user = $this->ci->ion_auth->user()->row();
         // $user_roles = $this->ci->ion_auth->get_users_groups($this->user_id)->result();
         // $this->user_id = $user->id;
         // $this->user_role_id = $user_roles[0]->id; // Index 0 for default user_role_id
-        $this->model_system = $this->ci->model_system;
+        $this->acl_model = $this->ci->acl_model;
     }
 
     /**
      * Get role navigation menu
      */
     public function get_role_navigation_menu($role_id) {
-        $modules = $this->model_system->get_role_permission_modules([
+        $modules = $this->acl_model->get_role_permission_modules([
             'role_permission.role_id' => $role_id,
             'role_permission.active_status' => 1
         ]);
@@ -57,7 +57,7 @@ class ACL {
 
             $key = strtolower($module->s_module_name);
 
-            $modules_functions = $this->model_system->get_role_permission_functions([
+            $modules_functions = $this->acl_model->get_role_permission_functions([
                 'role_permission.role_id' => $role_id,
                 'role_permission.active_status' => 1,
                 's_function.system_module_id' => $module->s_module_id

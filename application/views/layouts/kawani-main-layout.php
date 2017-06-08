@@ -16,12 +16,12 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/ionicons/2.0.1/css/ionicons.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/select2/select2.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/datatables/dataTables.bootstrap.css'); ?>">
-		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/daterangepicker/daterangepicker-bs3.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/daterangepicker/daterangepicker.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/timepicker/bootstrap-timepicker.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/toastr/toastr.css'); ?>">
 
-		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/dist/css/AdminLTE.css'); ?>">
-		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/dist/css/skins/_all-skins.min.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
 		<!-- <link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>"> -->
 
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
