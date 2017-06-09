@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Name:  Hotel Management System
+ * Name:
  *
  * Version: 2.0.1
  *
@@ -69,5 +69,4 @@ $config['main_components']['main_footer'] = 'main-footer';
 $config['main_components']['main_sidebar'] = 'main-sidebar';
 $config['main_components']['main_control_sidebar'] = 'main-control-sidebar';
 
-// Grace period for estimated checkout of guest
-$config['grace_period'] = 3;
+

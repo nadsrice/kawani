@@ -18,10 +18,10 @@ class Branches extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model([
-			'branch_model',
-			'company_model'
-		]);
+		// $this->load->model([
+		// 	'branch_model',
+		// 	'company_model'
+		// ]);
 	}
 
 	function index()
@@ -71,8 +71,8 @@ class Branches extends MY_Controller {
 
 	function details($id)
 	{
-		$branch = $this->branch_model->get_branch_by(['companies.id' => $id]);
-
+		$branch = $this->branch_model->get_branch_by(['branches.id' => $id]);
+		// dump($this->db->last_query());
 		// dump($branch);exit;
 		
 		$this->data = array(
