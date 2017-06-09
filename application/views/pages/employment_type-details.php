@@ -2,19 +2,13 @@
     <div class="col-md-3">
         <div class="box box-primary">
             <div class="box-body">
-                <h3 class="text-center"><?php echo $department['name']; ?></h3>
+                <h3 class="text-center"><?php echo $employment_type['type_name']; ?></h3>
                 <p class="text-muted text-center">
-                    <a href="<?php echo site_url('companies/details/' . $department['company_id']); ?>">
-                        <?php echo $department['company_name']; ?>
+                    <a href="<?php echo site_url('employment_types/details/' . $employment_type['id']); ?>">
+                        <?php echo $employment_type['type_name']; ?>
                     </a>
                 </p>
-                <ul class="list-group list-group-unbordered">
-                    <li class="list-group-item">
-                        <b>Address</b><br>
-                        <?php echo $department['street']; ?>
-                    </li>
-                </ul>
-                <a href="<?php echo site_url('department/edit/' . $department['id']); ?>" class="<?php echo $btn_edit; ?> btn-block">Edit Details</a>
+               <a href="<?php echo site_url('employment_types/edit/' . $employment_type['id']); ?>" class="<?php echo $btn_edit; ?> btn-block">Edit Details</a>
             </div>
         </div>
     </div>

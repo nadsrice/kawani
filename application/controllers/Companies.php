@@ -33,26 +33,91 @@ class Companies extends MY_Controller {
 		// todo: get all companies records from database order by name ascending
 			// todo: load company model
 			// todo: load view & past the retrieved data from model
+		$companies = $this->company_model->get_company_all();
+
 
 		$this->data = array(
-			'page_header' => 'Branch Management',
+			'page_header' => 'Company Management',
+			'companies'    => $companies,
 			'active_menu' => $this->active_menu,
 		);
 		
-		$this->load_view('pages/branch-list');
+		$this->load_view('pages/company-lists');
 	}
 
 	public function add()
-	{}
+	{
+	      
+        $this->data = array(
+            'page_header' => 'Company Management',
+            'active_menu' => $this->active_menu,
+        );
+
+        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('company_add'));
+        
+        $this->form_validation->set_data($data);
+
+        if ($this->form_validation->run('company_add') == TRUE)
+        {
+            $company_id = $this->company_model->insert($data);
+
+            if ( ! $company_id) {
+                $this->session->set_flashdata('failed', 'Failed to add new company.');
+                redirect('companies');
+            } else {
+                $this->session->set_flashdata('success', 'Successfully added new company.');
+                redirect('companies');
+            }
+        }
+        $this->load_view('forms/company-add');	
+	}
 
 	public function edit($id)
-	{}
+	{
+        // get specific company based on the id
+        $company = $this->company_model->get_company_by(['companies.id' => $id]);
+        // dump($company);exit;
+        // get all company records where status is equal to active
+        //$companies = $this->company_model->get_many_by(['active_status' => 1]);
+        // dump($this->db->last_query());exit;
+        $this->data = array(
+            'page_header' => 'Company Management',
+            'company'      => $company,
+            'active_menu' => $this->active_menu,
+        );
+
+        // $companies = $this->company_model->get_company_all();
+        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('company_add'));
+        
+        $this->form_validation->set_data($data);
+        // dump($data);exit();
+
+        if ($this->form_validation->run('company_add') == TRUE)
+        {
+            $company_id = $this->company_model->update($id, $data);
+
+            if ( ! $company_id) {
+                $this->session->set_flashdata('failed', 'Failed to update company.');
+                redirect('companies');
+            } else {
+                $this->session->set_flashdata('success', 'Successfully updated company.');
+                redirect('companies');
+            }
+        }
+        $this->load_view('forms/company-edit');  		
+	}
 
 	public function details($id)
-	{}
+	{
+        $company = $this->company_model->get_company_by(['companies.id' => $id]);
+        $branches = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
 
-	public function update($id)
-	{}
-
-
+        $this->data = array(
+            'page_header' => 'Company Details',
+            'company'      => $company,
+            'branches'    => $branches,
+            'active_menu' => $this->active_menu,
+        );
+        $this->load_view('pages/company-details');   		
+	}
 }

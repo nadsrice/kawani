@@ -64,14 +64,13 @@ class Branches extends MY_Controller {
 				redirect('branches');
 			}
 		}
-
-		
 		$this->load_view('forms/branch-add');
 	}
 
 	function details($id)
 	{
 		$branch = $this->branch_model->get_branch_by(['branches.id' => $id]);
+		// $department = $this->department_model->get_department_by(['departments.id' => $id]);
 		// dump($this->db->last_query());
 		// dump($branch);exit;
 		

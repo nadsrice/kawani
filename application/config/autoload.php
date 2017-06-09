@@ -101,7 +101,8 @@ $autoload['helper'] = array(
 	'form',
 	'html',
 	'general',
-	'language'
+	'language',
+	'text'
 );
 
 /*

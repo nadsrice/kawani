@@ -41,21 +41,17 @@ class Departments extends MY_Controller {
 
     function add()
     {
-        // get all company records where status is equal to active
-        $departments = $this->department_model->get_many_department_by(['active_status' => 1]);
-
+        
         $this->data = array(
             'page_header' => 'Departments Management',
-            'departments'   => $departments,
             'active_menu' => $this->active_menu,
         );
 
-        $departments = $this->department_model->get_department_all();
-        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('department'));
+        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('department_add'));
         
         $this->form_validation->set_data($data);
 
-        if ($this->form_validation->run('department') == TRUE)
+        if ($this->form_validation->run('department_add') == TRUE)
         {
             $department_id = $this->department_model->insert($data);
 
@@ -74,14 +70,42 @@ class Departments extends MY_Controller {
 
     function edit($id)
     {
+        // get specific department based on the id
+        $department = $this->department_model->get_department_by(['departments.id' => $id]);
+        // dump($department);exit;
+        // get all company records where status is equal to active
+        //$companies = $this->company_model->get_many_by(['active_status' => 1]);
+        // dump($this->db->last_query());exit;
+        $this->data = array(
+            'page_header' => 'Department Management',
+            'department'      => $department,
+            'active_menu' => $this->active_menu,
+        );
 
+        // $departments = $this->department_model->get_department_all();
+        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('department_add'));
+        
+        $this->form_validation->set_data($data);
+        // dump($data);exit();
+
+        if ($this->form_validation->run('department_add') == TRUE)
+        {
+            $department_id = $this->department_model->update($id, $data);
+
+            if ( ! $department_id) {
+                $this->session->set_flashdata('failed', 'Failed to update department.');
+                redirect('departments');
+            } else {
+                $this->session->set_flashdata('success', 'Successfully updated department.');
+                redirect('departments');
+            }
+        }
+        $this->load_view('forms/department-edit');       
     }
 
     function details($id)
     {
-        $department = $this->department_model->get_department_by(['department.id' => $id]);
-        dump($this->db->last_query());
-        dump($department);exit;
+        $department = $this->department_model->get_department_by(['departments.id' => $id]);
 
         $this->data = array(
             'page_header' => 'Department Details',
