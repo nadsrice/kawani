@@ -20,6 +20,9 @@ class Department_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
+    protected $after_get = [
+        'set_default_data'
+    ];
 
     protected function generate_date_created_status($department)
     {
@@ -27,5 +30,40 @@ class Department_model extends MY_Model {
         $department['active_status'] = 1;
         $department['created_by'] = '0';
         return $department;
+    }
+
+    protected function set_default_data($department)
+    {   
+        $department['active_status']  = ($department['active_status'] == 1) ? 'Active' : 'Inactive';
+        return $department;
+    }
+    
+    public function get_department_by($param)
+    {
+        $query = $this->db;
+        $query->select('departments.*, companies.name as company_name');
+        $query->join('companies', 'departments.company_id = companies.id', 'left');
+
+        return $this->get_by($param);
+    }
+
+    public function get_many_department_by($param)
+    {
+        $query = $this->db;
+        $query->select('departments.*, companies.name as company_name');
+        $query->join('companies', 'departments.company_id = companies.id', 'left');
+        $query->order_by('companies.id', 'asc');
+
+        return $this->get_many_by($param);
+    }
+
+    public function get_department_all()
+    {
+        $query = $this->db;
+        $query->select('departments.*, companies.name as company_name');
+        $query->join('companies', 'departments.company_id = companies.id', 'left');
+        $query->order_by('companies.id', 'asc');
+
+        return $this->get_all();
     }
 }

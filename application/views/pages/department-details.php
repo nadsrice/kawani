@@ -2,9 +2,9 @@
     <div class="col-md-3">
         <div class="box box-primary">
             <div class="box-body">
-                <h3 class="text-center"><?php echo $deparment['name']; ?></h3>
+                <h3 class="text-center"><?php echo $department['name']; ?></h3>
                 <p class="text-muted text-center">
-                    <a href="<?php echo site_url('companies/details/' . $deparment['company_id']); ?>">
+                    <a href="<?php echo site_url('departments/details/' . $department['id']); ?>">
                         <?php echo $department['company_name']; ?>
                     </a>
                 </p>
