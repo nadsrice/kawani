@@ -25,7 +25,6 @@
                             <th class="text-center">Name</th>
                             <th class="text-center">Company Name</th>
                             <th class="text-left">Description</th>
-                            <th class="text-left">Site</th>
                             <th class="text-center">Status</th>
                         </tr>
                     </thead>

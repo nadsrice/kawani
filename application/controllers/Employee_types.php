@@ -94,10 +94,10 @@ class Employment_types extends MY_Controller {
             $employment_type_id = $this->employment_type_model->update($id, $data);
 
             if ( ! $employment_type_id) {
-                $this->session->set_flashdata('failed', 'Failed to update employment_type.');
+                $this->session->set_flashdata('failed', 'Failed to update employment type.');
                 redirect('employment_types');
             } else {
-                $this->session->set_flashdata('success', 'Successfully updated employment_type.');
+                $this->session->set_flashdata('success', 'Employment type successfully updated!');
                 redirect('employment_types');
             }
         }

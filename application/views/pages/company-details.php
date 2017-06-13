@@ -20,7 +20,7 @@
                     <a href="#tab1" data-toggle="tab">Branches</a>
                 </li>
                 <li class="">
-                    <a href="#tab2" data-toggle="tab">TAB 2</a>
+                    <a href="#tab2" data-toggle="tab">Employees</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -31,7 +31,7 @@
                                 <th class="text-left">Branch ID</th>
                                 <th class="text-left">Name</th>
                                 <th class="text-left">Description</th>
-                                
+                                <th class="text-left">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,12 +45,12 @@
                                             </a>
                                         </td>
                                         <td class="text-left"><?php echo $branch['description']; ?></td>
-                                        <td class="text-center"><?php echo ($branch['active_status'] == 1) ? 'Active' : 'Inactive'; ?></td>
+                                        <td class="text-center"><?php echo ($branch['active_status'] == true) ? 'Active' : 'Inactive'; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td class="text-center" colspan="3">No Records Found!</td>
+                                    <td class="text-center" colspan="4">No Records Found!</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -60,27 +60,38 @@
                     <table class="table table-bordered table-striped table-hover" id="">
                         <thead>
                             <tr>
-                                <th class="text-left">Header</th>
-                                <th class="text-left">Header</th>
-                                <th class="text-left">Header</th>
-                                <th class="text-left">Header</th>
-                                <th class="text-left">Header</th>
-                                <th class="text-left">Header</th>
-                                <th class="text-left">Header</th>
-                                <th class="text-left">Header</th>
+                                <th class="text-left">Employee Code</th>
+                                <th class="text-left">Last Name</th>
+                                <th class="text-left">First Name</th>
+                                <th class="text-left">Middle Name</th>
+                                <th class="text-left">Position</th>
+                                <th class="text-left">Department</th>
+                                <th class="text-left">Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-left">TAB 2 DATA</td>
-                                <td class="text-left">TAB 2 DATA</td>
-                                <td class="text-left">TAB 2 DATA</td>
-                                <td class="text-left">TAB 2 DATA</td>
-                                <td class="text-left">TAB 2 DATA</td>
-                                <td class="text-left">TAB 2 DATA</td>
-                                <td class="text-left">TAB 2 DATA</td>
-                                <td class="text-left">TAB 2 DATA</td>
-                            </tr>
+                            <?php if (!empty($employees)): ?>
+                                <?php foreach ($employees as $employee): ?>
+                                    <tr>
+                                        <!-- <td class="text-right"><?php echo $employee['employee_code']; ?></td> -->
+                                        <td class="text-right">
+                                            <a href="<?php echo site_url('employees/details/' . $employee['employee_code']); ?>">
+                                                <?php echo $employee['employee_code']; ?>
+                                            </a>
+                                        </td>
+                                        <td class="text-left"><?php echo $employee['last_name']; ?></td>
+                                        <td class="text-left"><?php echo $employee['first_name']; ?></td>
+                                        <td class="text-left"><?php echo $employee['middle_name']; ?></td>
+                                        <td class="text-left"><?php echo $employee['middle_name']; ?></td>
+                                        <td class="text-left"><?php echo $employee['middle_name']; ?></td>
+                                        <td class="text-center"><?php echo ($employee['active_status'] == true) ? 'Active' : 'Inactive'; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td class="text-center" colspan="7">No Records Found!</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

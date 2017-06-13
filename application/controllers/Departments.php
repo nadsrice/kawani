@@ -96,7 +96,7 @@ class Departments extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Failed to update department.');
                 redirect('departments');
             } else {
-                $this->session->set_flashdata('success', 'Successfully updated department.');
+                $this->session->set_flashdata('success', 'Department successfully updated!');
                 redirect('departments');
             }
         }

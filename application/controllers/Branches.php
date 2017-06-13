@@ -110,7 +110,7 @@ class Branches extends MY_Controller {
 				$this->session->set_flashdata('failed', 'Failed to update branch.');
 				redirect('branches');
 			} else {
-				$this->session->set_flashdata('success', 'Successfully updated branch.');
+				$this->session->set_flashdata('success', 'Branch successfully updated!');
 				redirect('branches');
 			}
 		}

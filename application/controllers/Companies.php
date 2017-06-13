@@ -100,7 +100,7 @@ class Companies extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Failed to update company.');
                 redirect('companies');
             } else {
-                $this->session->set_flashdata('success', 'Successfully updated company.');
+                $this->session->set_flashdata('success', 'Company successfully updated!');
                 redirect('companies');
             }
         }
@@ -111,13 +111,17 @@ class Companies extends MY_Controller {
 	{
         $company = $this->company_model->get_company_by(['companies.id' => $id]);
         $branches = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
+        $employees = $this->employee_model->get_many_employee_by(['company_id' => $id]);
+
 
         $this->data = array(
             'page_header' => 'Company Details',
             'company'      => $company,
             'branches'    => $branches,
+            'employees' => $employees,
             'active_menu' => $this->active_menu,
         );
+
         $this->load_view('pages/company-details');   		
 	}
 }
