@@ -39,6 +39,8 @@ class Employment_type_model extends MY_Model {
         $query = $this->db;
         $query->select('employment_types.*');
         $query->order_by('type_name', 'asc');
+        //$query->join('companies', 'employment_types.company_id = companies.id', 'left');
+
         return $this->get_by($param);
     }
 
@@ -47,6 +49,9 @@ class Employment_type_model extends MY_Model {
         $query = $this->db;
         $query->select('employment_types.*');
         $query->order_by('type_name', 'asc');
+        // $query->join('companies', 'employment_types.company_id = companies.id', 'left');
+        // $query->order_by('companies.id', 'asc');
+
         return $this->get_many_by($param);
     }
 
@@ -55,6 +60,7 @@ class Employment_type_model extends MY_Model {
         $query = $this->db;
         $query->select('employment_types.*');
         $query->order_by('employment_types.type_name', 'asc');
+
         return $this->get_all();
     }
 }

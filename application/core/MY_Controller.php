@@ -21,6 +21,7 @@ class MY_Controller extends CI_Controller {
 		'employment_type_model',
 		'employee_position_model',
 		'educational_attainment_model',
+		'site_model',
 	];
 
 	protected $data = array();

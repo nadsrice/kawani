@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">Edit Branch Detail</h3>
+                <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">Edit Branch Details</h3>
             </div>
             <div class="box-body">
                 <form class="form-horizontal" action="<?php echo site_url('branches/edit/'.$branch['id']); ?>" method="post">
@@ -17,7 +17,7 @@
                         <label class="col-md-3 control-label">Company</label>
                         <div class="col-md-6">
                             <select class="form-control select2" name="company_id" id="company">
-                                <option value="<?php echo $branch['company_id']; ?>">-- <?php echo $branch['company_name']; ?> --</option>
+                                <option value="<?php echo $branch['company_id']; ?>">-- S E L E C T --</option>
                                 <?php foreach ($companies as $company): ?>
                                     <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
                                 <?php endforeach; ?>

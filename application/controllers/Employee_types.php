@@ -33,8 +33,8 @@ class Employment_types extends MY_Controller {
 		// todo: get all employment_types records from database order by name ascending
 			// todo: load employment_type model
 			// todo: load view & past the retrieved data from model
-		$employment_types = $this->employment_type_model->get_employment_types_all();
-        //dump($this->db->last_query());
+		$employment_types = $this->employment_type_model->get_employment_type_all();
+        dump($this->db->last_query());
 
 		$this->data = array(
 			'page_header' => 'Employment Type Management',
@@ -75,7 +75,7 @@ class Employment_types extends MY_Controller {
 	public function edit($id)
 	{
         // get specific employment_type based on the id
-        $employment_type = $this->employment_type_model->get_employment_types_by(['employment_types.id' => $id]);
+        $employment_type = $this->employment_type_model->get_employment_type_by(['employment_types.id' => $id]);
 
         $this->data = array(
             'page_header' => 'Employment Type Management',
@@ -94,10 +94,10 @@ class Employment_types extends MY_Controller {
             $employment_type_id = $this->employment_type_model->update($id, $data);
 
             if ( ! $employment_type_id) {
-                $this->session->set_flashdata('failed', 'Failed to update employment_type.');
+                $this->session->set_flashdata('failed', 'Failed to update employment type.');
                 redirect('employment_types');
             } else {
-                $this->session->set_flashdata('success', 'Successfully updated employment_type.');
+                $this->session->set_flashdata('success', 'Employment type successfully updated!');
                 redirect('employment_types');
             }
         }
@@ -106,7 +106,7 @@ class Employment_types extends MY_Controller {
 
 	public function details($id)
 	{
-        $employment_type = $this->employment_type_model->get_employment_types_by(['employment_types.id' => $id]);
+        $employment_type = $this->employment_type_model->get_employment_type_by(['employment_types.id' => $id]);
 
         $this->data = array(
             'page_header' => 'Employment Type Details',
