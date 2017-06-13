@@ -24,4 +24,19 @@ class Employees extends MY_Controller {
     {
         parent::__construct();
     }
+
+    function add()
+    {
+
+    }
+
+    function edit($id)
+    {
+        
+    }
+
+    function details($id)
+    {
+        
+    }
 }

@@ -43,6 +43,7 @@ class Branch_model extends MY_Model {
         $query = $this->db;
         $query->select('branches.*, companies.name as company_name');
         $query->join('companies', 'branches.company_id = companies.id', 'left');
+        $query->order_by('branches.name', 'asc');
 
         return $this->get_by($param);
     }
@@ -52,7 +53,7 @@ class Branch_model extends MY_Model {
         $query = $this->db;
         $query->select('branches.*, companies.name as company_name');
         $query->join('companies', 'branches.company_id = companies.id', 'left');
-        $query->order_by('companies.id', 'asc');
+        $query->order_by('branches.name', 'asc');
 
         return $this->get_many_by($param);
     }
@@ -62,7 +63,7 @@ class Branch_model extends MY_Model {
         $query = $this->db;
         $query->select('branches.*, companies.name as company_name');
         $query->join('companies', 'branches.company_id = companies.id', 'left');
-        $query->order_by('companies.id', 'asc');
+        $query->order_by('branches.name', 'asc');
 
         return $this->get_all();
     }

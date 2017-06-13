@@ -41,8 +41,9 @@ class Department_model extends MY_Model {
     public function get_department_by($param)
     {
         $query = $this->db;
-        $query->select('departments.*, companies.name as company_name');
-        $query->join('companies', 'departments.company_id = companies.id', 'left');
+        $query->select('departments.*');
+        $query->order_by('name', 'asc');
+        //$query->join('companies', 'departments.company_id = companies.id', 'left');
 
         return $this->get_by($param);
     }
@@ -50,9 +51,10 @@ class Department_model extends MY_Model {
     public function get_many_department_by($param)
     {
         $query = $this->db;
-        $query->select('departments.*, companies.name as company_name');
-        $query->join('companies', 'departments.company_id = companies.id', 'left');
-        $query->order_by('companies.id', 'asc');
+        $query->select('departments.*');
+        $query->order_by('name', 'asc');
+        // $query->join('companies', 'departments.company_id = companies.id', 'left');
+        // $query->order_by('companies.id', 'asc');
 
         return $this->get_many_by($param);
     }
@@ -62,7 +64,7 @@ class Department_model extends MY_Model {
         $query = $this->db;
         $query->select('departments.*, companies.name as company_name');
         $query->join('companies', 'departments.company_id = companies.id', 'left');
-        $query->order_by('companies.id', 'asc');
+        $query->order_by('departments.name', 'asc');
 
         return $this->get_all();
     }

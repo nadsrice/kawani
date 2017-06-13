@@ -26,54 +26,108 @@ class ACL {
     protected $acl_model;
 
     /**
-     * Class construtor
+     * Store class acl_model
      */
-    function __construct() {
-        $this->ci = & get_instance();
-
-        $this->ci->load->library('ion_auth');
-        $this->ci->load->model('acl_model');
-
-        $user = $this->ci->ion_auth->user()->row();
-        // $user_roles = $this->ci->ion_auth->get_users_groups($this->user_id)->result();
-        // $this->user_id = $user->id;
-        // $this->user_role_id = $user_roles[0]->id; // Index 0 for default user_role_id
-        $this->acl_model = $this->ci->acl_model;
-    }
+    protected $role_permission_model;
 
     /**
-     * Get role navigation menu
+     * Class construtor
      */
-    public function get_role_navigation_menu($role_id) {
-        $modules = $this->acl_model->get_role_permission_modules([
-            'role_permission.role_id' => $role_id,
-            'role_permission.active_status' => 1
-        ]);
+	function __construct()
+	{
+		$this->ci = & get_instance();
 
+		$this->ci->load->library('ion_auth');
 
-        $navigation_menu = array();
+		$this->ci->load->model([
+			'acl_model',
+			'role_permission_model'
+		]);
 
-        foreach ($modules as $module) {
+		$user = $this->ci->ion_auth->user()->row();
+		$user_roles = $this->ci->ion_auth->get_users_groups($this->user_id)->result();
+		$this->user_id = $user->id;
+		$this->user_role_id = $user_roles[0]->id; // Index 0 for default user_role_id
+		$this->acl_model = $this->ci->acl_model;
+		$this->role_permission_model = $this->ci->role_permission_model;
+	}
 
-            $key = strtolower($module->s_module_name);
+	/**
+	 * Get role navigation menu
+	 */
+	public function get_role_navigation_menu($role_id)
+	{
+		$modules = $this->acl_model->get_role_permission_modules([
+			'role_permission.role_id'		 => $role_id,
+			'role_permission.active_status'  => 1
+		]);
 
-            $modules_functions = $this->acl_model->get_role_permission_functions([
-                'role_permission.role_id' => $role_id,
-                'role_permission.active_status' => 1,
-                's_function.system_module_id' => $module->s_module_id
-            ]);
+		$navigation_menu = array();
 
-            $navigation_menu[$key] = [
-                'module_id' => $module->s_module_id,
-                'module_name' => $module->s_module_name,
-                'module_icon' => $module->s_module_icon,
-                'module_status' => $module->s_module_status,
-                'module_functions' => $modules_functions,
-            ];
-        }
+		foreach ($modules as $module)
+		{
+			$key = strtolower($module->s_module_name);
 
-        return $navigation_menu;
-    }
+			$modules_functions = $this->acl_model->get_role_permission_functions([
+				'role_permission.role_id' 		=> $role_id,
+				'role_permission.active_status' => 1,
+				's_function.system_module_id' 	=> $module->s_module_id
+			]);
+
+			$navigation_menu[$key] = [
+				'module_id' 		=> $module->s_module_id,
+				'module_name' 		=> $module->s_module_name,
+				'module_icon' 		=> $module->s_module_icon,
+				'module_status' 	=> $module->s_module_status,
+				'module_functions'  => $modules_functions,
+			];
+		}
+
+		return $navigation_menu;
+	}
+
+	public function get_system_role_permission()
+	{
+		$modules = $this->acl_model->get_role_permission_modules([
+			'role_permission.active_status' => 1
+		]);
+
+		$navigation_menu = array();
+
+		foreach ($modules as $module)
+		{
+			$key = strtolower($module->s_module_name);
+
+			$modules_functions = $this->acl_model->get_system_functions([
+				'role_permission.active_status' => 1,
+				's_function.system_module_id' 	=> $module->s_module_id
+			]);
+
+			$navigation_menu[$key] = [
+				'module_id' 	   => $module->s_module_id,
+				'module_name' 	   => $module->s_module_name,
+				'module_functions' => $modules_functions,
+			];
+
+			foreach ($modules_functions as $fid => $component)
+			{
+				dump($component);
+				$role_permissions = $this->role_permission_model->get_many_role_permission_by([
+					'system_role_permissions.system_function_id' => $component->system_function_id
+				]);
+
+				$permission_test = [];
+
+				foreach ($role_permissions as $role_permission)
+				{
+					$permission_test['roles'] = $role_permission;
+				}
+			}
+		}
+		dump($navigation_menu, 'navigation_menu: ');
+
+		return $navigation_menu;
+	}
 
 }
 
