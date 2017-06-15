@@ -45,7 +45,6 @@
                                     <td class="text-center"><?php echo $company['short_name']; ?></td>
                                     <td class="text-left"><?php echo $company['description']; ?></td>
                                 </tr>
-
                                 <div class="modal fade" id="update-company-status-<?php echo md5($company['id']); ?>" role="dialog">
                                     <div class="modal-dialog">
                                         <!-- Modal content-->

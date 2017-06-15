@@ -38,12 +38,24 @@
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('departments/edit/' . $department['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
+                                       <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('departments/update_status/' . $department['id']); ?>" data-toggle="modal" data-target="#update-department-status-<?php echo md5($department['id']); ?>">
+                                            <i class="fa fa-cog"></i> <?php echo $department['status_label']; ?>
+                                        </a>                                          
                                     </td>
                                     <td class="text-center"><?php echo $department['id']; ?></td>
                                     <td class="text-center"><?php echo $department['name']; ?></td>
                                     <td class="text-left"><?php echo $department['description']; ?></td>
                                     <td class="text-center"><?php echo $department['active_status']; ?></td>
                                 </tr>
+                                <div class="modal fade" id="update-department-status-<?php echo md5($department['id']); ?>" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <!-- http://localhost/kawani_ci/roles/update_status/1 -->
+                                            
+                                        </div>
+                                    </div>
+                                </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>
