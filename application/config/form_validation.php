@@ -287,6 +287,94 @@ $config = array(
 
     ),
 
+    'ob_add' => array(
+        array(
+            'field' => 'account_id',
+            'label' => 'Account',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'employee_id',
+            'label' => 'Employee',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'contact_person_id',
+            'label' => 'Client',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'agenda',
+            'label' => 'Agenda',
+            'rules' => 'trim'
+       ),
+        array(
+            'field' => 'location',
+            'label' => 'Location',
+            'rules' => 'trim'
+       ),
+        array(
+            'field' => 'date',
+            'label' => 'OB Date',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim|required'
+       )
+
+    ),
+
+    'ob_edit' => array(
+        array(
+            'field' => 'account_id',
+            'label' => 'Account',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'employee_id',
+            'label' => 'Employee',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'contact_person_id',
+            'label' => 'Client',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'agenda',
+            'label' => 'Agenda',
+            'rules' => 'trim'
+       ),
+        array(
+            'field' => 'location',
+            'label' => 'Location',
+            'rules' => 'trim'
+       ),
+        array(
+            'field' => 'date',
+            'label' => 'OB Date',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim|required'
+       ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim|required'
+       )
+
+    ),
+
 	'add_module' => array(
 		array(
 			'field' => 'name',
@@ -322,4 +410,5 @@ $config = array(
 			'rules' => 'trim'
 		)
 	)
+
 );

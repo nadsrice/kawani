@@ -62,4 +62,15 @@ class Employee_model extends MY_Model {
 
         return $this->get_all();
     }
+
+    public function get_employee_data($from = 'employees', $where = '')
+    {
+        if ( ! empty($where)) {
+            $this->db->where($where);
+        }
+        $query = $this->db->select('*')->from($from)->get();
+
+        return $query->result_array();
+
+    }
 }
