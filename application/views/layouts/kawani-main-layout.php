@@ -12,8 +12,9 @@
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/bootstrap/3.3.7/css/bootstrap.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.css'); ?>">
-		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/font-awesome/4.7.0/css/font-awesome.min.css'); ?>">
-		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/ionicons/2.0.1/css/ionicons.min.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/icon-fonts/font-awesome/4.3.0/css/font-awesome.min.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/icon-fonts/ionicons/2.0.1/css/ionicons.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/select2/select2.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/datatables/dataTables.bootstrap.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/daterangepicker/daterangepicker.css'); ?>">
@@ -23,13 +24,8 @@
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
-		<!-- <link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>"> -->
 
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/toastr/toastr.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/moment/moment.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/daterangepicker/daterangepicker.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/timepicker/bootstrap-timepicker.min.js'); ?>"></script>
 
 		<script>
 			var BASE_URL = '<?php echo base_url(); ?>';
@@ -62,6 +58,12 @@
 		
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap/3.3.7/js/bootstrap.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/js/app.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/iconset/iconset-font-awesome-4.0.3.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/toastr/toastr.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/moment/moment.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/daterangepicker/daterangepicker.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/timepicker/bootstrap-timepicker.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/datatables/jquery.dataTables.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/datatables/dataTables.bootstrap.min.js'); ?>"></script>

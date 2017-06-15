@@ -60,6 +60,7 @@ $autoload['packages'] = array();
 */
 $autoload['libraries'] = array(
 	'acl',
+	'email',
 	'database',
 	'session',
 	'ion_auth',

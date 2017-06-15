@@ -72,6 +72,7 @@ class Ion_auth
 		if ($this->config->item('use_ci_email', 'ion_auth') && isset($email_config) && is_array($email_config))
 		{
 			$this->email->initialize($email_config);
+			$this->email->set_newline("\r\n");
 		}
 
 		$this->ion_auth_model->trigger_events('library_constructor');
@@ -341,6 +342,7 @@ class Ion_auth
 
 			$data = array(
 				'identity'   => $user->{$identity},
+				'password'   => $password, // added by cristhiansagun@gmail.com July 15, 2017
 				'id'         => $user->id,
 				'email'      => $email,
 				'activation' => $activation_code,
