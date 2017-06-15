@@ -67,6 +67,11 @@ class Roles extends MY_Controller {
 			];
 			$new_group_id = $this->ion_auth->create_group($data['group_name'], $data['description'], $additional_data);
 			
+			ajax(function() {
+
+			});
+
+
 			if($new_group_id)
 			{
 				$new_system_role_permissions = [];

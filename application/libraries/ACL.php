@@ -44,10 +44,10 @@ class ACL {
 			'role_permission_model'
 		]);
 
-		$user = $this->ci->ion_auth->user()->row();
-		$user_roles = $this->ci->ion_auth->get_users_groups($this->user_id)->result();
-		$this->user_id = $user->id;
-		$this->user_role_id = $user_roles[0]->id; // Index 0 for default user_role_id
+		// $user = $this->ci->ion_auth->user()->row();
+		// $user_roles = $this->ci->ion_auth->get_users_groups($this->user_id)->result();
+		// $this->user_id = $user->id;
+		// $this->user_role_id = $user_roles[0]->id; // Index 0 for default user_role_id
 		$this->acl_model = $this->ci->acl_model;
 		$this->role_permission_model = $this->ci->role_permission_model;
 	}
