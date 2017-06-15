@@ -2,10 +2,10 @@
     <div class="col-md-3">
         <div class="box box-primary">
             <div class="box-body">
-                <h3 class="text-center"><?php echo $department['name']; ?></h3>
+                <h3 class="text-center"><?php echo $site['name']; ?></h3>
                 <p class="text-muted text-center">
-                    <a href="<?php echo site_url('companies/details/' . $department['company_id']); ?>">
-                        <?php echo $department['company_name']; ?>
+                    <a href="<?php echo site_url('companies/details/' . $site['company_id']); ?>">
+                        <?php echo $site['company_name']; ?>
                     </a>
                 </p>
                 <ul class="list-group list-group-unbordered">
