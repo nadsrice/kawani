@@ -23,12 +23,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://192.168.1.29/kawani/kawani_ci/';
+$config['base_url'] = '';
 
-// if (isset($_SERVER['REQUEST_URI'])) {
-// 	$config['base_url'] = "http" . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '') . "://" . $_SERVER['HTTP_HOST'];
-// 	$config['base_url'] .= preg_replace('@/+$@', '', dirname($_SERVER['SCRIPT_NAME'])) . '/';
-// }
+if (isset($_SERVER['REQUEST_URI'])) {
+	$config['base_url'] = "http" . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '') . "://" . $_SERVER['HTTP_HOST'];
+	$config['base_url'] .= preg_replace('@/+$@', '', dirname($_SERVER['SCRIPT_NAME'])) . '/';
+}
 
 /*
 |--------------------------------------------------------------------------

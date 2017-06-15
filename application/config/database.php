@@ -79,13 +79,6 @@ $db['default'] = array(
 	'username' => 'lohica',
 	'password' => 'Syn+@x1$+',
 	'database' => 'kawani_dev',
-<<<<<<< HEAD
-=======
-	// 'hostname' => 'localhost',
-	// 'username' => 'root',
-	// 'password' => '',	
-	// 'database' => 'kawani_dev',
->>>>>>> 2f47d69ec15fa5a4301b7adcc381e89a32038c01
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
