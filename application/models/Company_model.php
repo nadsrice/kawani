@@ -31,6 +31,7 @@ class Company_model extends MY_Model {
     protected function set_default_data($company)
     {   
         $company['active_status']  = ($company['active_status'] == 1) ? 'Active' : 'Inactive';
+        $company['status_label']  = ($company['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $company;
     }
 
