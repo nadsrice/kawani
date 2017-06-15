@@ -374,4 +374,41 @@ $config = array(
        )
 
     ),
+
+	'add_module' => array(
+		array(
+			'field' => 'name',
+			'label' => 'Module Name',
+			'rules' => 'trim|required|alpha'
+		),
+		array(
+			'field' => 'description',
+			'label' => 'Description',
+			'rules' => 'trim'
+		),
+		array(
+			'field' => 'link',
+			'label' => 'Link',
+			'rules' => 'trim'
+		)
+	),
+
+	'edit_module' => array(
+		array(
+			'field' => 'name',
+			'label' => 'Module Name',
+			'rules' => 'trim|required|alpha'
+		),
+		array(
+			'field' => 'description',
+			'label' => 'Description',
+			'rules' => 'trim'
+		),
+		array(
+			'field' => 'link',
+			'label' => 'Link',
+			'rules' => 'trim'
+		)
+	)
+
 );
