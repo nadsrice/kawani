@@ -13,6 +13,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Employees extends MY_Controller {
 
+    private $active_menu = 'Employee';
+
     /**
      * Some description here
      *
@@ -23,6 +25,23 @@ class Employees extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+    }
+
+    public function index()
+    {
+        // todo: get all companies records from database order by name ascending
+            // todo: load company model
+            // todo: load view & past the retrieved data from model
+        $employees = $this->employee_model->get_employee_all();
+
+
+        $this->data = array(
+            'page_header' => 'Employee Management',
+            'employees'    => $employees,
+            'active_menu' => $this->active_menu,
+        );
+        
+        $this->load_view('pages/employee-lists');
     }
 
     function add()
