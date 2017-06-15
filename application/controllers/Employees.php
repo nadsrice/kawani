@@ -32,9 +32,15 @@ class Employees extends MY_Controller {
         // todo: get all companies records from database order by name ascending
             // todo: load company model
             // todo: load view & past the retrieved data from model
+<<<<<<< HEAD
+        
+        $employees = $this->employee_model->get_employee_all();
+
+=======
         $employees = $this->employee_model->get_employee_all();
 
 
+>>>>>>> 2f47d69ec15fa5a4301b7adcc381e89a32038c01
         $this->data = array(
             'page_header' => 'Employee Management',
             'employees'    => $employees,

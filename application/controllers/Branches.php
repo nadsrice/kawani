@@ -70,13 +70,14 @@ class Branches extends MY_Controller {
 	function details($id)
 	{
 		$branch = $this->branch_model->get_branch_by(['branches.id' => $id]);
-		// $department = $this->department_model->get_department_by(['departments.id' => $id]);
-		// dump($this->db->last_query());
+		$sites = $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
+		dump($branch);exit;
 		// dump($branch);exit;
 		
 		$this->data = array(
 			'page_header' => 'Branch Details',
 			'branch'      => $branch,
+			'sites' => $sites,
 			'active_menu' => $this->active_menu,
 		);
 		$this->load_view('pages/branch-detail');
