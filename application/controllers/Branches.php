@@ -119,4 +119,46 @@ class Branches extends MY_Controller {
 		
 		$this->load_view('forms/branch-edit');
 	}
+
+    public function update_status($id)
+    {
+        $branch_data = $this->branch_model->get_by(['id' => $id]);
+        $data['branch_data'] = $branch_data;
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']))
+        {   
+            $result = FALSE;
+
+            if ($post['mode'] == 'De-activate')
+            {
+                dump('De-activating...');
+                $result = $this->branch_model->update($id, ['active_status' => 0]);
+                dump($this->db->last_query());
+            }
+            if ($post['mode'] == 'Activate')
+            {
+                dump('Activating...');
+                $result = $this->branch_model->update($id, ['active_status' => 1]);
+                dump($this->db->last_query());
+            }
+
+            if ($result)
+            {               
+                 $this->session->set_flashdata('message', $branch_data['name'].' successfully '.$post['mode'].'d!');
+                 redirect('branches');
+            }
+            else
+            {
+                $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$branch_data['name'].'!');
+                redirect('branches');
+            }
+            
+        }
+        else
+        {
+            $this->load->view('modals/modal-update-branch-status', $data);
+        }
+    }
 }

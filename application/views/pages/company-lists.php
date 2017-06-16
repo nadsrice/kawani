@@ -37,11 +37,23 @@
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('companies/edit/' . $company['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
+                                        <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('companies/update_status/' . $company['id']); ?>" data-toggle="modal" data-target="#update-company-status-<?php echo md5($company['id']); ?>">
+                                            <i class="fa fa-cog"></i> <?php echo $company['status_label']; ?>
+                                        </a>                                        
                                     </td>
                                     <td class="text-center"><?php echo $company['name']; ?></td>
                                     <td class="text-center"><?php echo $company['short_name']; ?></td>
                                     <td class="text-left"><?php echo $company['description']; ?></td>
                                 </tr>
+                                <div class="modal fade" id="update-company-status-<?php echo md5($company['id']); ?>" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <!-- http://localhost/kawani_ci/roles/update_status/1 -->
+                                            
+                                        </div>
+                                    </div>
+                                </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>

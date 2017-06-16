@@ -41,6 +41,9 @@
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('sites/edit/' . $site['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
+                                       <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('sites/update_status/' . $site['id']); ?>" data-toggle="modal" data-target="#update-site-status-<?php echo md5($site['id']); ?>">
+                                            <i class="fa fa-cog"></i> <?php echo $site['status_label']; ?>
+                                        </a>  
                                     </td>
                                     <td class="text-center"><?php echo $site['id']; ?></td>
                                     <td class="text-center"><?php echo $site['name']; ?></td>
@@ -50,6 +53,15 @@
                                     <td class="text-center"><?php echo $site['site_address']; ?></td>
                                     <td class="text-center"><?php echo $site['active_status']; ?></td>
                                 </tr>
+                                <div class="modal fade" id="update-site-status-<?php echo md5($site['id']); ?>" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <!-- http://localhost/kawani_ci/roles/update_status/1 -->
+                                            
+                                        </div>
+                                    </div>
+                                </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>

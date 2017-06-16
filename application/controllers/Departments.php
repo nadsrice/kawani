@@ -114,4 +114,46 @@ class Departments extends MY_Controller {
         );
         $this->load_view('pages/department-details');           
     }
+
+    public function update_status($id)
+    {
+        $department_data = $this->department_model->get_by(['id' => $id]);
+        $data['department_data'] = $department_data;
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']))
+        {   
+            $result = FALSE;
+
+            if ($post['mode'] == 'De-activate')
+            {
+                dump('De-activating...');
+                $result = $this->department_model->update($id, ['active_status' => 0]);
+                dump($this->db->last_query());
+            }
+            if ($post['mode'] == 'Activate')
+            {
+                dump('Activating...');
+                $result = $this->department_model->update($id, ['active_status' => 1]);
+                dump($this->db->last_query());
+            }
+
+            if ($result)
+            {               
+                 $this->session->set_flashdata('message', $department_data['name'].' successfully '.$post['mode'].'d!');
+                 redirect('departments');
+            }
+            else
+            {
+                $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$department_data['name'].'!');
+                redirect('departments');
+            }
+            
+        }
+        else
+        {
+            $this->load->view('modals/modal-update-department-status', $data);
+        }
+    }
 }

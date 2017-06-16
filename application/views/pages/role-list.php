@@ -50,7 +50,10 @@
                                 <div class="modal fade" id="update-role-status-<?php echo md5($role['id']); ?>" role="dialog">
                                     <div class="modal-dialog">
                                         <!-- Modal content-->
-                                        <div class="modal-content"></div>
+                                        <div class="modal-content">
+                                            <!-- http://localhost/kawani_ci/roles/update_status/1 -->
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

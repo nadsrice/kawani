@@ -35,6 +35,7 @@ class Branch_model extends MY_Model {
     protected function set_default_data($branch)
     {   
         $branch['active_status']  = ($branch['active_status'] == 1) ? 'Active' : 'Inactive';
+        $branch['status_label'] = ($branch['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $branch;
     }
 

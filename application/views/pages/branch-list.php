@@ -39,6 +39,9 @@
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('branches/edit/' . $branch['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
+                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('branches/update_status/' . $branch['id']); ?>" data-toggle="modal" data-target="#update-branch-status-<?php echo md5($branch['id']); ?>">
+                                            <i class="fa fa-cog"></i> <?php echo $branch['status_label']; ?>
+                                        </a>                                         
                                     </td>
                                     <td class="text-center"><?php echo $branch['id']; ?></td>
                                     <td class="text-center"><?php echo $branch['name']; ?></td>
@@ -46,6 +49,15 @@
                                     <td class="text-left"><?php echo $branch['description']; ?></td>
                                     <td class="text-center"><?php echo $branch['active_status']; ?></td>
                                 </tr>
+                                <div class="modal fade" id="update-branch-status-<?php echo md5($branch['id']); ?>" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <!-- http://localhost/kawani_ci/roles/update_status/1 -->
+                                            
+                                        </div>
+                                    </div>
+                                </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>
