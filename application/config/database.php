@@ -75,28 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-<<<<<<< HEAD
-	// 'hostname' => '192.168.1.120',
-	// 'username' => 'lohica',
-	// 'password' => 'Syn+@x1$+',
-	// 'database' => 'kawani_dev',
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',	
 	'database' => 'kawani_dev_db',
-=======
-	'hostname' => '192.168.1.120',
-	'username' => 'lohica',
-	'password' => 'Syn+@x1$+',
-	'database' => 'kawani_dev',
-<<<<<<< HEAD
-=======
-	// 'hostname' => 'localhost',
-	// 'username' => 'root',
-	// 'password' => '',	
-	// 'database' => 'kawani_dev',
->>>>>>> 2f47d69ec15fa5a4301b7adcc381e89a32038c01
->>>>>>> 237229cb0217aacb4f71a7220c6e6d802533473b
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

@@ -114,6 +114,11 @@ class Auth extends CI_Controller {
 	// change password
 	public function change_password()
 	{
+		$user = $this->ion_auth->user()->row();
+
+		if (isset($user)) {
+			$this->data['page_header'] = 'Hello '.ucwords($user->first_name.' '.$user->last_name);
+		}
 		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
 		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
 		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
@@ -136,17 +141,20 @@ class Auth extends CI_Controller {
 				'name' => 'old',
 				'id'   => 'old',
 				'type' => 'password',
+				'class' => 'form-control',
 			);
 			$this->data['new_password'] = array(
 				'name'    => 'new',
 				'id'      => 'new',
 				'type'    => 'password',
+				'class' => 'form-control',
 				'pattern' => '^.{'.$this->data['min_password_length'].'}.*$',
 			);
 			$this->data['new_password_confirm'] = array(
 				'name'    => 'new_confirm',
 				'id'      => 'new_confirm',
 				'type'    => 'password',
+				'class' => 'form-control',
 				'pattern' => '^.{'.$this->data['min_password_length'].'}.*$',
 			);
 			$this->data['user_id'] = array(
@@ -157,7 +165,7 @@ class Auth extends CI_Controller {
 			);
 
 			// render
-			$this->_render_page('auth/change_password', $this->data);
+			$this->_load_view('auth/change_password', $this->data);
 		}
 		else
 		{
@@ -199,6 +207,7 @@ class Auth extends CI_Controller {
 			// setup the input
 			$this->data['identity'] = array('name' => 'identity',
 				'id' => 'identity',
+				'class' => 'form-control'
 			);
 
 			if ( $this->config->item('identity', 'ion_auth') != 'email' ){
@@ -279,12 +288,14 @@ class Auth extends CI_Controller {
 					'name' => 'new',
 					'id'   => 'new',
 					'type' => 'password',
+					'class' => 'form-control',
 					'pattern' => '^.{'.$this->data['min_password_length'].'}.*$',
 				);
 				$this->data['new_password_confirm'] = array(
 					'name'    => 'new_confirm',
 					'id'      => 'new_confirm',
 					'type'    => 'password',
+					'class' => 'form-control',
 					'pattern' => '^.{'.$this->data['min_password_length'].'}.*$',
 				);
 				$this->data['user_id'] = array(
@@ -447,7 +458,10 @@ class Auth extends CI_Controller {
         if ($this->form_validation->run() == true)
         {
             $email    = strtolower($this->input->post('email'));
-            $identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
+            $first_name = $this->input->post('first_name');
+            $last_name = $this->input->post('last_name');
+            $generated_username = $first_name.'.'.$last_name;
+            $identity = ($identity_column === 'email') ? $email : $generated_username;
             $password = $this->_generate_password();
 
             $additional_data = array(
@@ -461,8 +475,8 @@ class Auth extends CI_Controller {
         {
             // check to see if we are creating the user
             // redirect them back to the admin page
-            $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect("auth", 'refresh');
+            $this->session->set_flashdata('success', $this->ion_auth->messages());
+            redirect("auth/login", 'refresh');
         }
         else
         {
@@ -511,7 +525,7 @@ class Auth extends CI_Controller {
                 'value' => $this->form_validation->set_value('phone'),
             );
 
-            $this->_render_page('auth/create_user', $this->data);
+            $this->_render_page('auth/sign_up', $this->data);
         }
     }
 
@@ -927,6 +941,43 @@ class Auth extends CI_Controller {
 		}
 		
 		return implode($pass);
+	}
+
+	protected function _load_view($sub_view = null)
+	{
+		$this->data['sub_view'] = (isset($sub_view)) ? $sub_view : 'errors/error_404';
+		$this->data['app_version'] = $this->config->item('app_version');
+
+		foreach ($this->config->item('main_components') as $key => $component)
+		{
+			$this->data[$key] = strtolower(sprintf('%s/%s', 'components', $component));
+		}
+
+		foreach ($this->config->item('layout_settings') as $layout_key => $layout_value)
+		{
+			$this->data[$layout_key] = $layout_value;
+		}
+
+		foreach ($this->config->item('btn_settings') as $btn_key => $btn_value)
+		{
+			$this->data[$btn_key] = $btn_value;
+		}
+
+		$this->_prep_data();
+
+		$this->load->view('layouts/kawani-main-layout', $this->data);
+		$this->output->enable_profiler(false);
+	}
+
+	protected function _prep_data()
+	{
+		$user = $this->ion_auth->user()->row();
+		$user_roles = $this->ion_auth->get_users_groups($user->id)->result();
+		$user_roles[0]->id; // Index 0 for default user_role_id
+
+		$this->data['navigation_menu'] = $this->acl->get_role_navigation_menu($user_roles[0]->id);
+		$this->data['user_details'] = $user;
+		$this->data['user_role'] = $user_roles[0]->name;
 	}
 
 }
