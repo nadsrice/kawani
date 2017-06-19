@@ -58,7 +58,7 @@
 		
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap/3.3.7/js/bootstrap.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/js/app.min.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/iconset/iconset-font-awesome-4.0.3.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.3.0.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/toastr/toastr.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/moment/moment.js'); ?>"></script>
@@ -71,6 +71,7 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/slimScroll/jquery.slimscroll.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/fastclick/fastclick.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/iCheck/icheck.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>
 
 		<!-- Custom Javascript -->
 		<script type="text/javascript" src="<?php echo site_url('assets/js/icheck-custom.js'); ?>"></script>

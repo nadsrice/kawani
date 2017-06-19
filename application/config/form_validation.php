@@ -409,6 +409,29 @@ $config = array(
 			'label' => 'Link',
 			'rules' => 'trim'
 		)
-	)
+	),
+
+    'add_employee' => array(
+        array(
+            'field' => 'first_name',
+            'label' => 'First Name',
+            'ruels' => 'trim|required|alpha',
+        ),
+        array(
+            'field' => 'middle_name',
+            'label' => 'Middle Name',
+            'ruels' => 'trim',
+        ),
+        array(
+            'field' => 'last_name',
+            'label' => 'Last Name',
+            'ruels' => 'trim|required|alpha',
+        ),
+        array(
+            'field' => 'email',
+            'label' => 'Email Address',
+            'ruels' => 'trim|required|valid_email|is_unique[users.email]',
+        ),
+    )
 
 );

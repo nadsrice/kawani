@@ -1,0 +1,3 @@
+$(function() {
+	$("#datatables-branches").DataTable();
+});
