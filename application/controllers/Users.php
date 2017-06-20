@@ -14,7 +14,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Users extends MY_Controller {
 
 	private $active_menu = 'System';
-	private $_smtp_pass = '!Aezakmibaguvixhesoyam8893';
 
 	function __construct()
 	{
@@ -27,7 +26,7 @@ class Users extends MY_Controller {
 	function index()
 	{
 		$users = $this->user_model->get_all();
-		
+
 		$this->data = array(
 			'page_header' => 'User Management',
 			'active_menu' => $this->active_menu,
@@ -49,7 +48,7 @@ class Users extends MY_Controller {
 
 		$users = $this->user_model->get_User_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('User_add'));
-		
+
 		$this->form_validation->set_data($data);
 
 		if ($this->form_validation->run('User_add') == TRUE)
@@ -90,7 +89,7 @@ class Users extends MY_Controller {
 
 		$users = $this->user_model->get_User_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('User_add'));
-		
+
 		$this->form_validation->set_data($data);
 
 		if ($this->form_validation->run('User_add') == TRUE)
@@ -106,7 +105,7 @@ class Users extends MY_Controller {
 			}
 		}
 
-		
+
 		$this->load_view('forms/User-edit');
 	}
 }
