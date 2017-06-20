@@ -70,8 +70,10 @@ class Companies extends MY_Controller {
         $this->load_view('forms/company-add');	
 	}
 
-	public function edit($id)
-	{
+
+
+    public function edit($id)
+    {
         // get specific company based on the id
         $company = $this->company_model->get_company_by(['companies.id' => $id]);
         // dump($company);exit;
@@ -102,11 +104,11 @@ class Companies extends MY_Controller {
                 redirect('companies');
             }
         }
-        $this->load_view('forms/company-edit');  		
-	}
+        $this->load_view('forms/company-edit');         
+    }
 
-	public function details($id)
-	{
+    public function details($id)
+    {
         $company = $this->company_model->get_company_by(['companies.id' => $id]);
         $branches = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
         $employees = $this->employee_model->get_many_employee_by(['company_id' => $id]);
@@ -120,8 +122,16 @@ class Companies extends MY_Controller {
             'active_menu' => $this->active_menu,
         );
 
-        $this->load_view('pages/company-details');   		
-	}
+        $this->load_view('pages/company-details');          
+    }
+
+    public function edit_confirmation($id)
+    {
+        $company_data = $this->company_model->get_by(['id' => $id]);
+        $data['company_data'] = $company_data;
+
+        $this->load->view('modals/modal-update-company', $data);
+    }
 
     public function update_status($id)
     {

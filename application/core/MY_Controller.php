@@ -18,6 +18,7 @@ class MY_Controller extends CI_Controller {
 		'company_model',
 		'employee_model',
 		'department_model',
+		'employee_info_model',
 		'employment_type_model',
 		'employee_position_model',
 		'educational_attainment_model',

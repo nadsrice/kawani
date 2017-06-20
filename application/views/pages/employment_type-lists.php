@@ -17,11 +17,12 @@
                 <i class="fa fa-list"></i> <h3 class="box-title">List of Employment Types</h3>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-striped table-hover" id="datatables-branches">
+                <table class="table table-bordered table-striped table-hover" id="datatables-employment_types">
                     <thead>
                         <tr>
-                            <th style="width: 350px;">&nbsp;</th>
-                            <th class="text-center">Name</th>
+                            <th style="width: 250px;">&nbsp;</th>
+                            <th class="text-left">No.</th>
+                            <th class="text-left">Name</th>
                             <th class="text-left">Description</th>
                         </tr>
                     </thead>
@@ -37,7 +38,8 @@
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
                                     </td>
-                                    <td class="text-center"><?php echo $employment_type['type_name']; ?></td>
+                                    <td class="text-right"><?php echo $employment_type['id']; ?></td>
+                                    <td class="text-left"><?php echo $employment_type['type_name']; ?></td>
                                     <td class="text-left"><?php echo $employment_type['description']; ?></td>
                                 </tr>
                             <?php endforeach; ?>

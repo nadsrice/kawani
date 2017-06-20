@@ -4,7 +4,7 @@
 		<div class="pull-right">
 			<a href="<?php echo site_url('users/add'); ?>" class="btn btn-primary">
 				<i class="fa fa-plus"></i>
-				<span>Add New User</span>
+				<span>Add User</span>
 			</a>
 		</div>
 	</div>
@@ -20,13 +20,13 @@
 				<table class="table table-bordered table-striped table-hover" id="datatables-users">
 					<thead>
 						<tr>
-							<th style="width: 350px;">&nbsp;</th>
-							<th class="text-center">#</th>
-							<th class="text-center">Full Name</th>
-							<th class="text-center">Company Name</th>
+							<th style="width: 250px;">&nbsp;</th>
+							<th class="text-left">No.</th>
+							<th class="text-left">Full Name</th>
+							<th class="text-left">Company Name</th>
 							<th class="text-left">Phone</th>
 							<th class="text-left">Email</th>
-							<th class="text-center">Status</th>
+							<th class="text-left">Status</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -41,8 +41,8 @@
 									<i class="fa fa-pencil-square-o"></i> Edit
 								</a>
 							</td>
-							<td class="text-center"><?php echo $user['id']; ?></td>
-							<td class="text-center"><?php echo $user['full_name']; ?></td>
+							<td class="text-right"><?php echo $user['id']; ?></td>
+							<td class="text-left"><?php echo $user['full_name']; ?></td>
 							<td class="text-left"><?php echo $user['company']; ?></td>
 							<td class="text-left"><?php echo $user['phone']; ?></td>
 							<td class="text-left"><?php echo $user['email']; ?></td>
