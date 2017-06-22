@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">Add New Company</h3>
+                <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">Add Company</h3>
             </div>
             <div class="box-body">
                 <form class="form-horizontal" action="<?php echo site_url('companies/add'); ?>" method="post">

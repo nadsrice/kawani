@@ -19,9 +19,7 @@ class Users extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model([
-			'user_model'
-		]);
+		$this->load->model(['user_model']);
 	}
 
 	function index()
@@ -104,9 +102,7 @@ class Users extends MY_Controller {
 				$this->session->set_flashdata('success', 'User successfully updated!');
 				redirect('users');
 			}
-		}
-
-		
+		}	
 		$this->load_view('forms/User-edit');
 	}
 }
