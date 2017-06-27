@@ -7,9 +7,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @package     KAWANI
  * @subpackage  subpackage
  * @category    category
- * @author      cristhian.kevin@systemantech.com
+ * @author      joseph.gono@systemantech.com
  * @link        http://systemantech.com
  */
+
 class Official_business_model extends MY_Model {
 
     protected $_table = 'official_businesses';
@@ -39,8 +40,10 @@ class Official_business_model extends MY_Model {
     public function get_ob_by($param)
     {
         $query = $this->db;
-        $query->select('official_businesses.*');
-        $query->order_by('name', 'asc');
+        $query->select('official_businesses.*, 
+                        CONCAT_WS(' . '" "' . ', employees.first_name," " ,employees.last_name) as full_name');
+        $query->join('employees', 'employees.id = official_businesses.employee_id', 'left');
+        $query->order_by('full_name', 'asc');
         //$query->join('companies', 'official_businesses.company_id = companies.id', 'left');
 
         return $this->get_by($param);
@@ -49,8 +52,10 @@ class Official_business_model extends MY_Model {
     public function get_many_ob_by($param)
     {
         $query = $this->db;
-        $query->select('official_businesses.*');
-        $query->order_by('name', 'asc');
+        $query->select('official_businesses.*, 
+                        CONCAT_WS(' . '" "' . ', employees.first_name," " ,employees.last_name) as full_name');
+        $query->join('employees', 'employees.id = official_businesses.employee_id', 'left');
+        $query->order_by('full_name', 'asc');
         // $query->join('companies', 'official_businesses.company_id = companies.id', 'left');
         // $query->order_by('companies.id', 'asc');
 

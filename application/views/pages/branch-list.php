@@ -17,7 +17,8 @@
                 <i class="fa fa-list"></i> <h3 class="box-title">List of Branches</h3>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-striped table-hover" id="datatables-branches">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover" id="datatables-branches">
                     <thead>
                         <tr>
                             <th style="width: 250px;">&nbsp;</th>
@@ -71,6 +72,7 @@
                         <?php endif; ?>
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     </div>

@@ -26,4 +26,41 @@ class Welcome extends CI_Controller {
 		}
 		$this->load->view('welcome_message');
 	}
+
+	public function sendOB()
+	{
+		$this->load->library('email');
+
+		$employee_id = 1;
+
+		$this->load->model('employee_model');
+		$employee_data = $this->employee_model->get_by(['id' => $employee_id]);
+
+		$data = [
+			'employee_data' => $employee_data,
+			'ob_id' 		=> 1
+		];
+
+		$message = $this->load->view('layouts/ob.tpl.php', $data, true);
+
+		$this->email->from('saguncristhiankevin@yahoo.com', 'Official Business Request - Kevin Sagun');
+		$this->email->to('gono.josh@gmail.com');
+
+		$this->email->subject('Official Business Request');
+		$this->email->message($message);
+
+		$this->email->send();
+	}
+
+	public function approve($ob_id)
+	{
+		var_dump('approve request');
+		var_dump($ob_id);
+	}
+
+	public function disapprove($ob_id)
+	{
+		var_dump('disapprove request');
+		var_dump($ob_id);
+	}
 }
