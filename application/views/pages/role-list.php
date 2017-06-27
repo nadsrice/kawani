@@ -20,7 +20,7 @@
                 <table class="table table-bordered table-striped table-hover" id="datatables-roles">
                     <thead>
                         <tr>
-                            <th style="width: 350px;">&nbsp;</th>
+                            <th style="width: 250px;">&nbsp;</th>
                             <th class="text-center">#</th>
                             <th class="text-left">Name</th>
                             <th class="text-left">Description</th>

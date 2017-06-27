@@ -71,6 +71,8 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/slimScroll/jquery.slimscroll.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/fastclick/fastclick.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/iCheck/icheck.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>
+
 
 		<!-- Custom Javascript -->
 		<script type="text/javascript" src="<?php echo site_url('assets/js/icheck-custom.js'); ?>"></script>

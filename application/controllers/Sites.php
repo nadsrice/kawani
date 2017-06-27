@@ -25,6 +25,7 @@ class Sites extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->model(['employee_info_model']);
     }
 
     function index()

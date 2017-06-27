@@ -25,6 +25,7 @@ class Departments extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        // $this->load->model(['employee_info_model']);
     }
 
     function index()
@@ -106,13 +107,23 @@ class Departments extends MY_Controller {
     function details($id)
     {
         $department = $this->department_model->get_department_by(['departments.id' => $id]);
-
+        $employee_infos = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
+        
         $this->data = array(
             'page_header' => 'Department Details',
             'department'      => $department,
+            'employee_infos' => $employee_infos,
             'active_menu' => $this->active_menu,
         );
         $this->load_view('pages/department-details');           
+    }
+
+    public function edit_confirmation($id)
+    {
+        $edit_department = $this->department_model->get_by(['id' => $id]);
+        $data['edit_department'] = $edit_department;
+
+        $this->load->view('modals/modal-update-department', $data);
     }
 
     public function update_status($id)

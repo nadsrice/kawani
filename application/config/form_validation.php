@@ -409,6 +409,32 @@ $config = array(
 			'label' => 'Link',
 			'rules' => 'trim'
 		)
-	)
+	), 
+
+    'leave_type_add' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Leave Type',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        )
+    ), 
+
+    'leave_type_edit' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Leave Type',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        )
+    )
 
 );

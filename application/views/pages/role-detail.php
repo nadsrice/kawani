@@ -58,7 +58,7 @@
 							<tr>
 								<th class="text-center">#</th>
 								<th class="text-center">Have Access?</th>
-								<th class="text-left">Name</th>
+								<th class="text-center">Name</th>
 							</tr>
 						</thead>
 						<tbody>

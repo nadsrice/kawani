@@ -31,8 +31,6 @@ class Employees extends MY_Controller {
     {
         // todo: get all companies records from database order by name ascending
             // todo: load company model
-            // todo: load view & past the retrieved data from model
-
         $employees = $this->employee_model->get_employee_all();
 
         $this->data = array(
