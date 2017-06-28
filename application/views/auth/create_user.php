@@ -6,7 +6,7 @@
 		<title>AdminLTE 2 | Registration Page</title>
 		<!-- Tell the browser to be responsive to screen width -->
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-		
+
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/bootstrap/3.3.7/css/bootstrap.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css'); ?>">
@@ -73,13 +73,13 @@
 				</div>
 			<?php echo form_close();?>
 			<br>
-			<a href="<?php echo site_url('auth/login'); ?>" class="text-center">I already have a membership</a>
+			<!-- <a href="<?php // echo site_url('auth/login'); ?>" class="text-center">I already have a membership</a> -->
 		</div>
 	</div>
 
 	<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap/3.3.7/js/bootstrap.min.js'); ?>"></script>
 	<script type="text/javascript" src="<?php echo site_url('assets/libs/iCheck/icheck.min.js'); ?>"></script>
-	
+
 	<script>
 		$(function () {
 			$('input').iCheck({
@@ -91,4 +91,3 @@
 	</script>
 	</body>
 </html>
-

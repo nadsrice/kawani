@@ -2,6 +2,8 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed!');
 
+require APPPATH.'/third_party/kint.php';
+
 if ( ! function_exists('remove_unknown_field'))
 {
     function remove_unknown_field($raw_data, $expected_fields)
@@ -51,5 +53,12 @@ if ( ! function_exists('dump')) {
         } else {
             return $output;
         }
+    }
+}
+
+if ( ! function_exists('dd')) {
+    function dd($var)
+    {
+        d($var);
     }
 }

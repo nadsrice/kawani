@@ -43,6 +43,7 @@ class MY_Controller extends CI_Controller {
 		$user = $this->ion_auth->user()->row();
 		$user_roles = $this->ion_auth->get_users_groups($user->id)->result();
 		$user_roles[0]->id; // Index 0 for default user_role_id
+		
 		$this->data['navigation_menu'] = $this->acl->get_role_navigation_menu($user_roles[0]->id);
 		$this->data['user_details'] = $user;
 		$this->data['user_role'] = $user_roles[0]->name;

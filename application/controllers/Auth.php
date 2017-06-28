@@ -6,12 +6,8 @@ class Auth extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->load->library(array('ion_auth','form_validation'));
-		$this->load->helper(array('url','language'));
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
-
-		$this->lang->load('auth');
 	}
 
 	// redirect if needed, otherwise display the user list
@@ -351,7 +347,6 @@ class Auth extends CI_Controller {
 		}
 	}
 
-
 	// activate the user
 	public function activate($id, $code=false)
 	{
@@ -457,12 +452,12 @@ class Auth extends CI_Controller {
 
         if ($this->form_validation->run() == true)
         {
-            $email    = strtolower($this->input->post('email'));
-            $first_name = $this->input->post('first_name');
-            $last_name = $this->input->post('last_name');
-            $generated_username = $first_name.'.'.$last_name;
-            $identity = ($identity_column === 'email') ? $email : $generated_username;
-            $password = $this->_generate_password();
+            $email   			 = strtolower($this->input->post('email'));
+            $first_name 		 = $this->input->post('first_name');
+            $last_name 			 = $this->input->post('last_name');
+            $generated_username  = $first_name.'.'.$last_name;
+            $identity 			 = ($identity_column === 'email') ? $email : $generated_username;
+            $password 			 = $this->_generate_password();
 
             $additional_data = array(
                 'first_name' => $this->input->post('first_name'),
@@ -797,7 +792,12 @@ class Auth extends CI_Controller {
 
 		if ($this->form_validation->run() == TRUE)
 		{
-			$new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'));
+			$additional_data = array(
+				'created' 		=> date('Y-m-d H:i:s'),
+				'created_by' 	=> 1,
+				'active_status' => 1
+			);
+			$new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'), $additional_data);
 			if($new_group_id)
 			{
 				// check to see if we are creating the group
@@ -939,7 +939,7 @@ class Auth extends CI_Controller {
 			$n = rand(0, $alphaLength);
 			$pass[] = $alphabet[$n];
 		}
-		
+
 		return implode($pass);
 	}
 

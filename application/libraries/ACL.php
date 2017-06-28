@@ -133,7 +133,7 @@ class ACL {
 
 	public function get_user_permissions()
 	{
-		
+
 	}
 
 }

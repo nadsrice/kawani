@@ -45,6 +45,12 @@ class Roles extends MY_Controller {
 	// add new role
 	public function add()
 	{
+		if ( ! $this->ion_auth_acl->has_permission('add_role'))
+		{
+			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
+			redirect('/', 'refresh');
+		}
+
 		$this->data = array(
 			'page_header' => 'Role Management',
 			'active_menu' => $this->active_menu,
@@ -66,34 +72,43 @@ class Roles extends MY_Controller {
 				'created'		=> date('Y-m-d H:i:s')
 			];
 			$new_group_id = $this->ion_auth->create_group($data['group_name'], $data['description'], $additional_data);
-			
-			ajax(function() {
-
-			});
-
 
 			if($new_group_id)
 			{
 				$new_system_role_permissions = [];
 
-				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				$counter = 0;
+				$total_role_perm = count($role_permissions);
 
 				foreach ($role_permissions as $pkey => $permission)
 				{
-					$active_status = ( ! array_search($permission->id, $data['role_permission'])) ? 0 : 1;
+					$active_status = 0;
+
+					if (isset($data['role_permission'])) {
+						$active_status = ( ! array_search($permission->id, $data['role_permission'])) ? 0 : 1;
+					}
 
 					$new_system_role_permissions[$pkey] = [
 						'role_id' 				=> $new_group_id,
 						'system_module_id' 		=> $permission->system_module_id,
 						'system_function_id' 	=> $permission->system_function_id,
 						'system_permission_id'  => $permission->id,
-						'active_status' 		=> $active_status
+						'active_status' 		=> $active_status,
+						'created'				=> date('Y-m-d H:i:s'),
+						'created_by'			=> $this->ion_auth->user()->row()->id
 					];
+
+					$counter++;
 				}
 
-				// NOTE: this will system_role_permission IDs as array
-				$results = $this->role_permission_model->insert_many($new_system_role_permissions);
-				redirect('roles');
+				$checker = ($counter == $total_role_perm) ? TRUE : FALSE;
+
+				if ($checker) {
+					// this will generate system_role_permission IDs stored in array
+					$this->session->set_flashdata('message', $this->ion_auth->messages());
+					$results = $this->role_permission_model->insert_many($new_system_role_permissions);
+					redirect('roles');
+				}
 			}
 		}
 
@@ -133,7 +148,7 @@ class Roles extends MY_Controller {
 		$post = $this->input->post();
 
 		if (isset($post['mode']))
-		{	
+		{
 			$result = FALSE;
 
 			if ($post['mode'] == 'De-activate')
@@ -160,7 +175,7 @@ class Roles extends MY_Controller {
 				$this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' role permission status.');
 				redirect('roles');
 			}
-			
+
 		}
 		else
 		{
@@ -182,7 +197,7 @@ class Roles extends MY_Controller {
 		foreach ($this->data['system_modules'] as $mkey => $module) {
 
 			$this->data['system_functions'] = $this->acl_model->get_system_functions2(['system_module_id' => $module->id]);
-			
+
 			$new_function_data = [];
 			foreach ($this->data['system_functions'] as $fkey => $function) {
 

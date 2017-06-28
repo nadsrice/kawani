@@ -25,6 +25,8 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
 
+		<!-- <link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>"> -->
+
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
 
 		<script>
@@ -55,7 +57,7 @@
 			<?php (isset($main_footer)) ? $this->load->view($main_footer) : ''; ?>
 			<?php (isset($main_control_sidebar)) ? $this->load->view($main_control_sidebar) : ''; ?>
 		</div>
-		
+
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap/3.3.7/js/bootstrap.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/js/app.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.3.0.min.js'); ?>"></script>
