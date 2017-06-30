@@ -6,6 +6,8 @@ $(function() {
     $("#datatables-sites").DataTable();    
     $("#datatables-roles").DataTable();    
     $("#datatables-employment_types").DataTable();    
-    $("#datatables-official_businesses").DataTable();
+    $("#datatables-official_businesses").DataTable();   
+    $("#datatables-myob").DataTable();   
+    $("#datatables-obr").DataTable();
     
 })

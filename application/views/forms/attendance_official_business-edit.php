@@ -5,7 +5,7 @@
                 <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">Edit OB</h3>
             </div>
             <div class="box-body">
-                <form class="form-horizontal" action="<?php echo site_url('official_businesses/edit'); ?>" method="post">
+                <form class="form-horizontal" action="<?php echo site_url('attendance_official_businesses/edit'); ?>" method="post">
                     <div class="form-group">
                         <label class="col-md-3 control-label">Account</label>
                         <div class="col-md-6">

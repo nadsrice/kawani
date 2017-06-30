@@ -12,13 +12,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Role_model extends MY_Model {
 
-	protected $_table = 'groups';
+	protected $_table = 'system_groups';
 	protected $primary_key = 'id';
 	protected $return_type = 'array';
 
 	/**
 	 * Callbacks or Observers
 	 */
+	
 	protected $before_create = ['generate_date_created_status'];
 	protected $after_get = ['set_active_status'];
 

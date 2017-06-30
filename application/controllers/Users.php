@@ -74,7 +74,7 @@ class Users extends MY_Controller {
 	function edit($id)
 	{
 		// get specific User based on the id
-		$User = $this->user_model->get_User_by(['users.id' => $id]);
+		$User = $this->user_model->get_User_by(['system_users.id' => $id]);
 		// dump($User);exit;
 		// get all company records where status is equal to active
 		$companies = $this->company_model->get_many_by(['active_status' => 1]);

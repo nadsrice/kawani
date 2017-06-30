@@ -40,7 +40,7 @@ class Account_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('accounts.*, accounts.name as account_name');
-        $query->join('official_businesses', 'official_businesses.account_id = accounts.id ', 'left');
+        $query->join('attendance_official_businesses', 'attendance_official_businesses.account_id = accounts.id ', 'left');
         $query->order_by('account_name', 'asc');
 
         return $this->get_by($param);
