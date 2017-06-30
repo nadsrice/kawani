@@ -1,6 +1,4 @@
 
-
-<br>
 <div class="row">
 	<div class="col-md-12">
 		<div class="box box-primary">
@@ -9,6 +7,7 @@
 			</div>
 			<div class="box-body">
 				<table class="table table-bordered table-striped table-hover" id="datatables-users">
+
 					<tr>
 						<th><?php echo lang('index_action_th');?></th>
 						<th><?php echo lang('index_fname_th');?></th>
@@ -55,6 +54,39 @@
 									<div class="modal-content"></div>
 								</div>
 							</div>
+
+					<thead>
+						<tr>
+							<th style="width: 250px;">&nbsp;</th>
+							<th class="text-left">No.</th>
+							<th class="text-left">Full Name</th>
+							<th class="text-left">Company Name</th>
+							<th class="text-left">Phone</th>
+							<th class="text-left">Email</th>
+							<th class="text-left">Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if ( ! empty($users)): ?>
+						<?php foreach ($users as $user): ?>
+						<tr>
+							<td>
+								<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('users/details/' . $user['id']); ?>">
+									<i class="fa fa-search"></i> View
+								</a>
+								<a class="<?php echo $btn_update; ?>" href="<?php echo site_url('users/edit/' . $user['id']); ?>">
+									<i class="fa fa-pencil-square-o"></i> Edit
+								</a>
+							</td>
+							<td class="text-right"><?php echo $user['id']; ?></td>
+							<td class="text-left"><?php echo $user['full_name']; ?></td>
+							<td class="text-left"><?php echo $user['company']; ?></td>
+							<td class="text-left"><?php echo $user['phone']; ?></td>
+							<td class="text-left"><?php echo $user['email']; ?></td>
+							<td class="text-center"><?php echo $user['active']; ?></td>
+						</tr>
+						<?php endforeach; ?>
+
 						<?php endif; ?>
 					<?php endforeach;?>
 				</table>

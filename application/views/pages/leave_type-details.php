@@ -2,13 +2,19 @@
     <div class="col-md-3">
         <div class="box box-primary">
             <div class="box-body">
-                <h3 class="text-center"><?php echo $department['name']; ?></h3>
+                <h3 class="text-center"><?php echo $leave_type['name']; ?></h3>
                 <p class="text-muted text-center">
-                    <a href="<?php echo site_url('departments/details/' . $department['id']); ?>">
-                        <?php echo $department['name']; ?>
+                    <a href="<?php echo site_url('leave_types/details/' . $leave_type['account_id']); ?>">
+                        <?php echo $leave_type['name']; ?>
                     </a>
                 </p>
-               <a href="<?php echo site_url('department/edit/' . $department['id']); ?>" class="<?php echo $btn_edit; ?> btn-block">Edit Details</a>
+              <!--   <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>Company</b><br>
+                        <?php echo $leave_type['company_name']; ?>
+                    </li>
+                </ul> -->
+                <a href="<?php echo site_url('leave_typees/edit/' . $leave_type['id']); ?>" class="<?php echo $btn_edit; ?> btn-block">Edit Details</a>
             </div>
         </div>
     </div>
@@ -17,8 +23,9 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active">
-                    <a href="#tab1" data-toggle="tab">Employees</a>
-                </li>                <li class="">
+                    <a href="#tab1" data-toggle="tab">TAB 1</a>
+                </li>
+                <li class="">
                     <a href="#tab2" data-toggle="tab">TAB 2</a>
                 </li>
             </ul>
@@ -27,32 +34,27 @@
                     <table class="table table-bordered table-striped table-hover" id="">
                         <thead>
                             <tr>
-                                <th class="text-left">Employee Code</th>
-                                <th class="text-left">Full Name</th>
-                                <th class="text-left">Position</th>
-                                <th class="text-left">Team</th>
+                                <th class="text-left">Header</th>
+                                <th class="text-left">Header</th>
+                                <th class="text-left">Header</th>
+                                <th class="text-left">Header</th>
+                                <th class="text-left">Header</th>
+                                <th class="text-left">Header</th>
+                                <th class="text-left">Header</th>
+                                <th class="text-left">Header</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($employee_infos)): ?>
-                                <?php foreach ($employee_infos as $employee_info): ?>
-                                    <tr>
-                                        <td class="text-right"><?php echo $employee_info['employee_code']; ?></td>
-                                        <td class="text-left"><?php echo $employee_info['full_name']; ?></td>
-                                        <td class="text-left"><?php echo $employee_info['position']; ?></td>
-                                        <td class="text-left"><?php echo $employee_info['team']; ?></td>
-                                        <!-- <td class="text-left">
-                                            <a href="<?php echo site_url('employees/details/' . $employee['id']); ?>">
-                                                <?php echo $employee['name']; ?>
-                                            </a>
-                                        </td> -->
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td class="text-center" colspan="4">No Records Found!</td>
-                                </tr>
-                            <?php endif; ?>
+                            <tr>
+                                <td class="text-left">TAB 1 DATA</td>
+                                <td class="text-left">TAB 1 DATA</td>
+                                <td class="text-left">TAB 1 DATA</td>
+                                <td class="text-left">TAB 1 DATA</td>
+                                <td class="text-left">TAB 1 DATA</td>
+                                <td class="text-left">TAB 1 DATA</td>
+                                <td class="text-left">TAB 1 DATA</td>
+                                <td class="text-left">TAB 1 DATA</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

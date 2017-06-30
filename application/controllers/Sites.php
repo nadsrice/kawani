@@ -25,6 +25,7 @@ class Sites extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->model(['employee_info_model']);
     }
 
     function index()
@@ -117,5 +118,47 @@ class Sites extends MY_Controller {
             'active_menu' => $this->active_menu,
         );
         $this->load_view('pages/site-details');           
+    }
+
+    public function update_status($id)
+    {
+        $site_data = $this->site_model->get_by(['id' => $id]);
+        $data['site_data'] = $site_data;
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']))
+        {   
+            $result = FALSE;
+
+            if ($post['mode'] == 'De-activate')
+            {
+                dump('De-activating...');
+                $result = $this->site_model->update($id, ['active_status' => 0]);
+                dump($this->db->last_query());
+            }
+            if ($post['mode'] == 'Activate')
+            {
+                dump('Activating...');
+                $result = $this->site_model->update($id, ['active_status' => 1]);
+                dump($this->db->last_query());
+            }
+
+            if ($result)
+            {               
+                 $this->session->set_flashdata('message', $site_data['name'].' successfully '.$post['mode'].'d!');
+                 redirect('sites');
+            }
+            else
+            {
+                $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$site_data['name'].'!');
+                redirect('sites');
+            }
+            
+        }
+        else
+        {
+            $this->load->view('modals/modal-update-site-status', $data);
+        }
     }
 }

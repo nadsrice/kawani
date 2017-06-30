@@ -41,7 +41,7 @@ class Employee_model extends MY_Model {
     public function get_employee_by($param)
     {
         $query = $this->db;
-        $query->select('employee_code, first_name, middle_name, last_name, active_status');
+        $query->select('*');
         $query->order_by('last_name', 'asc');
 
         return $this->get_by($param);
@@ -50,7 +50,7 @@ class Employee_model extends MY_Model {
     public function get_many_employee_by($param)
     {
         $query = $this->db;
-        $query->select('employee_code, first_name, middle_name, last_name, active_status');
+        $query->select('*');
         $query->order_by('last_name', 'asc');
 
         return $this->get_many_by($param);
@@ -59,6 +59,7 @@ class Employee_model extends MY_Model {
     public function get_employee_all()
     {
         $query = $this->db;
+
         $query->select('
             employees.id as employee_id,
             employees.employee_code,
@@ -69,6 +70,9 @@ class Employee_model extends MY_Model {
             companies.name as company_name
         ');
         $query->join('companies', 'employees.company_id = companies.id', 'left');
+
+        $query->select('*');
+
         $query->order_by('last_name', 'asc');
 
         return $this->get_all();
@@ -84,4 +88,11 @@ class Employee_model extends MY_Model {
         return $query->result_array();
 
     }
+
+    // public function get_employee_details()
+    // {
+    //     $query = $this->db;
+    //     $query->select('employees.*, positions.name as position, teams.name as team');
+    //     $query->join('positions', 'positions.id = employees.position_id')
+    // }
 }

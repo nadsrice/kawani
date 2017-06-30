@@ -18,10 +18,7 @@ class Branches extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		// $this->load->model([
-		// 	'branch_model',
-		// 	'company_model'
-		// ]);
+		// $this->load->model(['employee_info_model');
 	}
 
 	function index()
@@ -70,14 +67,16 @@ class Branches extends MY_Controller {
 	function details($id)
 	{
 		$branch = $this->branch_model->get_branch_by(['branches.id' => $id]);
+		$site = $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
 		$sites = $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
-		dump($branch);exit;
-		// dump($branch);exit;
+		$employee_infos = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
 		
 		$this->data = array(
 			'page_header' => 'Branch Details',
 			'branch'      => $branch,
+			'sites' => $site,
 			'sites' => $sites,
+			'employee_infos' => $employee_infos,
 			'active_menu' => $this->active_menu,
 		);
 		$this->load_view('pages/branch-detail');
@@ -115,8 +114,56 @@ class Branches extends MY_Controller {
 				redirect('branches');
 			}
 		}
-
-		
 		$this->load_view('forms/branch-edit');
 	}
+
+    public function edit_confirmation($id)
+    {
+        $edit_branch = $this->branch_model->get_by(['id' => $id]);
+        $data['edit_branch'] = $edit_branch;
+
+        $this->load->view('modals/modal-update-branch', $data);
+    }
+
+    public function update_status($id)
+    {
+        $branch_data = $this->branch_model->get_by(['id' => $id]);
+        $data['branch_data'] = $branch_data;
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']))
+        {   
+            $result = FALSE;
+
+            if ($post['mode'] == 'De-activate')
+            {
+                dump('De-activating...');
+                $result = $this->branch_model->update($id, ['active_status' => 0]);
+                dump($this->db->last_query());
+            }
+            if ($post['mode'] == 'Activate')
+            {
+                dump('Activating...');
+                $result = $this->branch_model->update($id, ['active_status' => 1]);
+                dump($this->db->last_query());
+            }
+
+            if ($result)
+            {               
+                 $this->session->set_flashdata('message', $branch_data['name'].' successfully '.$post['mode'].'d!');
+                 redirect('branches');
+            }
+            else
+            {
+                $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$branch_data['name'].'!');
+                redirect('branches');
+            }
+            
+        }
+        else
+        {
+            $this->load->view('modals/modal-update-branch-status', $data);
+        }
+    }
 }

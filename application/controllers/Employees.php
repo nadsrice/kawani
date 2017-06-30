@@ -30,11 +30,13 @@ class Employees extends MY_Controller {
     public function index()
     { 
         $employees = $this->employee_model->get_employee_all();
+
         $this->data = array(
             'page_header' => 'Employee Management',
             'employees'   => $employees,
             'active_menu' => $this->active_menu,
         );
+
         $this->load_view('pages/employee-lists');
     }
 
@@ -95,12 +97,12 @@ class Employees extends MY_Controller {
 
     function edit($id)
     {
-        
+
     }
 
     function details($id)
     {
-        
+
     }
 
     public function save_user_data()

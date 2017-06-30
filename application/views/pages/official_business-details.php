@@ -2,10 +2,10 @@
     <div class="col-md-3">
         <div class="box box-primary">
             <div class="box-body">
-                <h3 class="text-center"><?php echo $official_business['name']; ?></h3>
+                <h3 class="text-center"><?php echo $official_business['full_name']; ?></h3>
                 <p class="text-muted text-center">
                     <a href="<?php echo site_url('official_businesses/details/' . $official_business['account_id']); ?>">
-                        <?php echo $official_business['name']; ?>
+                        <?php echo $official_business['full_name']; ?>
                     </a>
                 </p>
                 <ul class="list-group list-group-unbordered">

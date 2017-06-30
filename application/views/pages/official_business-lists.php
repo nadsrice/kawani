@@ -20,15 +20,15 @@
                 <table class="table table-bordered table-striped table-hover" id="datatables-official_businesses">
                     <thead>
                         <tr>
-                            <th style="width: 350px;">&nbsp;</th>
-                            <th class="text-center">OB No.</th>
-                            <th class="text-center">Employee Name</th>
-                            <th class="text-center">Account</th>
-                            <th class="text-center">Contact Person</th>
+                            <th style="width: 250px;">&nbsp;</th>
+                            <th class="text-left">No.</th>
+                            <th class="text-left">Employee Name</th>
+                            <th class="text-left">Account</th>
+                            <th class="text-left">Contact Person</th>
                             <th class="text-left">Agenda</th>
                             <th class="text-left">Location</th>
-                            <th class="text-center">OB Date</th>
-                            <th class="text-center">OB Time</th>
+                            <th class="text-left">OB Date</th>
+                            <th class="text-left">OB Time</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,14 +43,14 @@
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
                                     </td>
-                                    <td class="text-center"><?php echo $official_business['id']; ?></td>
-                                    <td class="text-center"><?php echo $official_business['full_name']; ?></td>
+                                    <td class="text-right"><?php echo $official_business['id']; ?></td>
+                                    <td class="text-left"><?php echo $official_business['full_name']; ?></td>
                                     <td class="text-left"><?php echo $official_business['account_name']; ?></td>
                                     <td class="text-left"><?php echo $official_business['contact_person']; ?></td>
                                     <td class="text-left"><?php echo $official_business['agenda']; ?></td>
-                                    <td class="text-center"><?php echo $official_business['location']; ?></td>
-                                    <td class="text-center"><?php echo $official_business['date']; ?></td>
-                                    <td class="text-center"><?php echo $official_business['ob_time']; ?></td>
+                                    <td class="text-left"><?php echo $official_business['location']; ?></td>
+                                    <td class="text-right"><?php echo $official_business['date']; ?></td>
+                                    <td class="text-right"><?php echo $official_business['ob_time']; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>

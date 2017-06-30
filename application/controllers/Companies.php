@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 /**
  * Some class description here...
  *
@@ -34,7 +33,6 @@ class Companies extends MY_Controller {
 			// todo: load company model
 			// todo: load view & past the retrieved data from model
 		$companies = $this->company_model->get_company_all();
-
 
 		$this->data = array(
 			'page_header' => 'Company Management',
@@ -72,8 +70,10 @@ class Companies extends MY_Controller {
         $this->load_view('forms/company-add');	
 	}
 
-	public function edit($id)
-	{
+
+
+    public function edit($id)
+    {
         // get specific company based on the id
         $company = $this->company_model->get_company_by(['companies.id' => $id]);
         // dump($company);exit;
@@ -104,11 +104,11 @@ class Companies extends MY_Controller {
                 redirect('companies');
             }
         }
-        $this->load_view('forms/company-edit');  		
-	}
+        $this->load_view('forms/company-edit');         
+    }
 
-	public function details($id)
-	{
+    public function details($id)
+    {
         $company = $this->company_model->get_company_by(['companies.id' => $id]);
         $branches = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
         $employees = $this->employee_model->get_many_employee_by(['company_id' => $id]);
@@ -122,6 +122,56 @@ class Companies extends MY_Controller {
             'active_menu' => $this->active_menu,
         );
 
-        $this->load_view('pages/company-details');   		
-	}
+        $this->load_view('pages/company-details');          
+    }
+
+    public function edit_confirmation($id)
+    {
+        $company_data = $this->company_model->get_by(['id' => $id]);
+        $data['company_data'] = $company_data;
+
+        $this->load->view('modals/modal-update-company', $data);
+    }
+
+    public function update_status($id)
+    {
+        $company_data = $this->company_model->get_by(['id' => $id]);
+        $data['company_data'] = $company_data;
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']))
+        {   
+            $result = FALSE;
+
+            if ($post['mode'] == 'De-activate')
+            {
+                dump('De-activating...');
+                $result = $this->company_model->update($id, ['active_status' => 0]);
+                dump($this->db->last_query());
+            }
+            if ($post['mode'] == 'Activate')
+            {
+                dump('Activating...');
+                $result = $this->company_model->update($id, ['active_status' => 1]);
+                dump($this->db->last_query());
+            }
+
+            if ($result)
+            {               
+                 $this->session->set_flashdata('message', $company_data['name'].' successfully '.$post['mode'].'d!');
+                 redirect('companies');
+            }
+            else
+            {
+                $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$company_data['name'].'!');
+                redirect('companies');
+            }
+            
+        }
+        else
+        {
+            $this->load->view('modals/modal-update-company-status', $data);
+        }
+    }
 }

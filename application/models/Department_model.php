@@ -35,6 +35,7 @@ class Department_model extends MY_Model {
     protected function set_default_data($department)
     {   
         $department['active_status']  = ($department['active_status'] == 1) ? 'Active' : 'Inactive';
+        $department['status_label']  = ($department['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $department;
     }
     

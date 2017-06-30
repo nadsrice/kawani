@@ -18,9 +18,7 @@ class Users extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model([
-			'user_model'
-		]);
+		$this->load->model(['user_model']);
 	}
 
 	function index()
@@ -56,6 +54,12 @@ class Users extends MY_Controller {
 	{
 		$user_data = $this->ion_auth->user($id)->row();
 		$data['user_data'] = $user_data;
+
+		$users = $this->user_model->get_User_all();
+		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('User_add'));
+
+		$this->form_validation->set_data($data);
+
 
 		$post = $this->input->post();
 
@@ -116,8 +120,6 @@ class Users extends MY_Controller {
 				redirect('users');
 			}
 		}
-
-
 		$this->load_view('forms/User-edit');
 	}
 

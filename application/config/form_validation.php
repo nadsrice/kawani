@@ -409,6 +409,7 @@ $config = array(
 			'label' => 'Link',
 			'rules' => 'trim'
 		)
+
 	),
 
     'add_employee' => array(
@@ -432,6 +433,34 @@ $config = array(
             'label' => 'Email Address',
             'ruels' => 'trim|required|valid_email|is_unique[users.email]',
         ),
+
+	), 
+
+    'leave_type_add' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Leave Type',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        )
+    ), 
+
+    'leave_type_edit' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Leave Type',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        )
+
     )
 
 );

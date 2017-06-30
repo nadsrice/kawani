@@ -36,6 +36,7 @@ class Site_model extends MY_Model {
         $site['site_address'] = $site['block_number'].' '.$site['lot_number'].' '.
                                 $site['floor_number'].' '.$site['building_number'].' '.
                                 $site['building_name'].', '.$site['street'];
+        $site['status_label']  = ($site['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $site;
     }
     
