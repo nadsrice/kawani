@@ -31,6 +31,11 @@ class ACL {
     protected $role_permission_model;
 
     /**
+     * Store user permissions
+     */
+    protected $user_permissions = array();
+
+    /**
      * Class construtor
      */
 	function __construct()
@@ -52,9 +57,6 @@ class ACL {
 		$this->role_permission_model = $this->ci->role_permission_model;
 	}
 
-	/**
-	 * Get role navigation menu
-	 */
 	public function get_role_navigation_menu($role_id)
 	{
 		$modules = $this->acl_model->get_role_permission_modules([
@@ -127,6 +129,11 @@ class ACL {
 		dump($navigation_menu, 'navigation_menu: ');
 
 		return $navigation_menu;
+	}
+
+	public function get_user_permissions()
+	{
+
 	}
 
 }

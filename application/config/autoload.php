@@ -64,6 +64,7 @@ $autoload['libraries'] = array(
 	'database',
 	'session',
 	'ion_auth',
+	'ion_auth_acl',
 	'form_validation'
 );
 
@@ -135,7 +136,8 @@ $autoload['config'] = array(
 |
 */
 $autoload['language'] = array(
-	'kawani'
+	'kawani',
+	'auth'
 );
 
 /*

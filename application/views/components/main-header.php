@@ -29,7 +29,7 @@
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="<?php echo site_url('users/change_password'); ?>" class="btn btn-default btn-flat">Change Password</a>
+                                <a href="<?php echo site_url('auth/change_password'); ?>" class="btn btn-default btn-flat">Change Password</a>
                             </div>
                             <div class="pull-right">
                                 <a href="<?php echo site_url('auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>

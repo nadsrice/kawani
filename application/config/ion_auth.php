@@ -27,10 +27,10 @@
 | -------------------------------------------------------------------------
 | Database table names.
 */
-$config['tables']['users']           = 'users';
-$config['tables']['groups']          = 'groups';
-$config['tables']['users_groups']    = 'users_groups';
-$config['tables']['login_attempts']  = 'login_attempts';
+$config['tables']['users']           = 'system_users';
+$config['tables']['groups']          = 'system_groups';
+$config['tables']['users_groups']    = 'system_users_groups';
+$config['tables']['login_attempts']  = 'system_login_attempts';
 
 /*
  | Users table column and Group table column you want to join WITH.
@@ -38,8 +38,8 @@ $config['tables']['login_attempts']  = 'login_attempts';
  | Joins from users.id
  | Joins from groups.id
  */
-$config['join']['users']  = 'user_id';
-$config['join']['groups'] = 'group_id';
+$config['join']['users']  = 'system_user_id';
+$config['join']['groups'] = 'system_group_id';
 
 /*
  | -------------------------------------------------------------------------
@@ -102,7 +102,7 @@ $config['forgot_password_expiration'] = 0;                   // The number of mi
 $config['recheck_timer']              = 0;                   /* The number of seconds after which the session is checked again against database to see if the user still exists and is active.
 							           Leave 0 if you don't want session recheck. if you really think you need to recheck the session against database, we would
 								   recommend a higher value, as this would affect performance */
-								
+
 
 /*
  | -------------------------------------------------------------------------
