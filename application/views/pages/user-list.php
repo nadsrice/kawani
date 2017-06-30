@@ -1,15 +1,5 @@
 
-<div class="row">
-	<div class="col-md-6">&nbsp;</div>
-	<div class="col-md-6">
-		<div class="pull-right">
-			<a href="<?php echo site_url('auth/create_user'); ?>" class="btn btn-primary">
-				<i class="fa fa-plus"></i>
-				<span>Add New User</span>
-			</a>
-		</div>
-	</div>
-</div>
+
 <br>
 <div class="row">
 	<div class="col-md-12">

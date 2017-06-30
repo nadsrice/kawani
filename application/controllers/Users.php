@@ -43,37 +43,6 @@ class Users extends MY_Controller {
 		$this->load_view('pages/user-list');
 	}
 
-	function add()
-	{
-		// get all company records where status is equal to active
-		$companies = $this->company_model->get_many_by(['active_status' => 1]);
-
-		$this->data = array(
-			'page_header' => 'User Management',
-			'companies'	  => $companies,
-			'active_menu' => $this->active_menu,
-		);
-
-		$users = $this->user_model->get_User_all();
-		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('User_add'));
-
-		$this->form_validation->set_data($data);
-
-		if ($this->form_validation->run('User_add') == TRUE)
-		{
-			$User_id = $this->user_model->insert($data);
-
-			if ( ! $User_id) {
-				$this->session->set_flashdata('failed', 'Failed to add new User.');
-				redirect('users');
-			} else {
-				$this->session->set_flashdata('success', 'Successfully added new User.');
-				redirect('users');
-			}
-		}
-		$this->load_view('forms/User-add');
-	}
-
 	public function confirmation()
 	{
 		$user_id = $this->uri->segment(3);
@@ -160,21 +129,21 @@ class Users extends MY_Controller {
 		$user = $this->ion_auth->user($post['user_id'])->row();
 		// get the current default user role
 		$current_role = $this->user_roles_model->get_by([
-			'user_id' 		 => $post['user_id'],
+			'system_user_id' => $post['user_id'],
 			'default_status' => 1
 		]);
-
+		
 		if ($current_role['id'] != $post['user_role_id']) {
 			$updated = $this->db->set('default_status', 1)
-								->where('user_id', $post['user_id'])
-								->where('group_id', $post['user_role_id'])
-								->update('users_groups');
+								->where('system_user_id', $post['user_id'])
+								->where('system_group_id', $post['user_role_id'])
+								->update('system_users_groups');
 
 			if ($updated) {
 				$test = $this->db->set('default_status', 0)
-					->where('user_id', $post['user_id'])
-					->where('group_id', $current_role['group_id'])
-					->update('users_groups');
+					->where('system_user_id', $post['user_id'])
+					->where('system_group_id', $current_role['system_group_id'])
+					->update('system_users_groups');
 
 				if ($test) {
 					$this->session->set_flashdata('success', 'Successfully updated default role of user named '.$user->first_name.' '.$user->last_name);

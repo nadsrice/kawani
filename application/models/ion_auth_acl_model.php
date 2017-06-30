@@ -199,7 +199,12 @@ class Ion_auth_acl_model extends Ion_auth_model
         $users_groups   =   array();
 
         foreach( $this->get_users_groups($user_id)->result() as $group )
-            $users_groups[] = $group->id;
+        {
+            if ($group->default_status == 1)
+            {
+                $users_groups[] = $group->id;
+            }
+        }
 
         return $users_groups;
     }
@@ -583,6 +588,7 @@ class Ion_auth_acl_model extends Ion_auth_model
      */
     public function build_acl($user_id = FALSE)
     {
+
         $user_permissions   =   $this->get_user_permissions($user_id);
         $user_groups        =   $this->get_user_groups($user_id);
         $group_permissions  =   $this->get_group_permissions($user_groups);
@@ -593,7 +599,8 @@ class Ion_auth_acl_model extends Ion_auth_model
             $permissions    =   array_merge($permissions, $group_permissions);
 
         $permissions    =   array_merge($permissions, $user_permissions);
-
+        // dump($permissions);
+        // exit;
         return $permissions;
     }
 
