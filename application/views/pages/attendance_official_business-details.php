@@ -4,7 +4,7 @@
             <div class="box-body">
                 <h3 class="text-center"><?php echo $official_business['full_name']; ?></h3>
                 <p class="text-muted text-center">
-                    <a href="<?php echo site_url('official_businesses/details/' . $official_business['account_id']); ?>">
+                    <a href="<?php echo site_url('attendance_official_businesses/details/' . $official_business['account_id']); ?>">
                         <?php echo $official_business['full_name']; ?>
                     </a>
                 </p>
@@ -14,7 +14,7 @@
                         <?php echo $official_business['location']; ?>
                     </li>
                 </ul>
-                <a href="<?php echo site_url('official_businesses/edit/' . $official_business['id']); ?>" class="<?php echo $btn_edit; ?> btn-block">Edit Details</a>
+                <a href="<?php echo site_url('attendance_official_businesses/edit/' . $official_business['id']); ?>" class="<?php echo $btn_edit; ?> btn-block">Edit Details</a>
             </div>
         </div>
     </div>

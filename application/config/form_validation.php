@@ -416,8 +416,7 @@ $config = array(
         array(
             'field' => 'first_name',
             'label' => 'First Name',
-            'ruels' => 'trim|required|alpha',
-        ),
+            'ruels' => 'trim|required|alpha',        ),
         array(
             'field' => 'middle_name',
             'label' => 'Middle Name',
@@ -461,6 +460,164 @@ $config = array(
             'rules' => 'trim'
         )
 
+    ), 
+
+    'leave_add' => array(
+        array(
+            'field' => 'leave_type_id',
+            'label' => 'Leave Type',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'date_start',
+            'label' => 'Date Start',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'date_end',
+            'label' => 'Date End',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'reason',
+            'label' => 'Reason',
+            'rules' => 'trim'
+        )
+    ), 
+
+    'leave_edit' => array(
+        array(
+            'field' => 'leave_type_id',
+            'label' => 'Leave Type',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'date_start',
+            'label' => 'Date Start',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'date_end',
+            'label' => 'Date End',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'reason',
+            'label' => 'Reason',
+            'rules' => 'trim'
+        )
+    ), 
+
+    'overtime_add' => array(
+        array(
+            'field' => 'employee_id',
+            'label' => 'Leave Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'date',
+            'label' => 'Overtime Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'reason',
+            'label' => 'Reason',
+            'rules' => 'trim'
+        )
+    ), 
+
+    'overtime_edit' => array(
+        array(
+            'field' => 'employee_id',
+            'label' => 'Leave Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'date',
+            'label' => 'Overtime Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'reason',
+            'label' => 'Reason',
+            'rules' => 'trim'
+        )
+    ), 
+
+    'undertime_add' => array(
+        array(
+            'field' => 'employee_id',
+            'label' => 'Leave Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'date',
+            'label' => 'Undertime Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'reason',
+            'label' => 'Reason',
+            'rules' => 'trim'
+        )
+    ), 
+
+    'undertime_edit' => array(
+        array(
+            'field' => 'employee_id',
+            'label' => 'Leave Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'date',
+            'label' => 'Undertime Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'reason',
+            'label' => 'Reason',
+            'rules' => 'trim'
+        )
     )
 
 );

@@ -37,24 +37,24 @@ class Employment_types extends MY_Controller {
         //dump($this->db->last_query());
 
 		$this->data = array(
-			'page_header' => 'Employment Type Management',
-			'employment_types'    => $employment_types,
-			'active_menu' => $this->active_menu,
+			'page_header' 		=> 'Employment Type Management',
+			'employment_types'  => $employment_types,
+			'active_menu' 		=> $this->active_menu,
 		);
-		
+
 		$this->load_view('pages/employment_type-lists');
 	}
 
 	public function add()
 	{
-	      
+
         $this->data = array(
             'page_header' => 'Employment Type Management',
             'active_menu' => $this->active_menu,
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('employment_type_add'));
-        
+
         $this->form_validation->set_data($data);
 
         if ($this->form_validation->run('employment_type_add') == TRUE)
@@ -69,7 +69,7 @@ class Employment_types extends MY_Controller {
                 redirect('employment_types');
             }
         }
-        $this->load_view('forms/employment_type-add');	
+        $this->load_view('forms/employment_type-add');
 	}
 
 	public function edit($id)
@@ -85,7 +85,7 @@ class Employment_types extends MY_Controller {
 
         // $employment_types = $this->employment_type_model->get_employment_type_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('employment_type_add'));
-        
+
         $this->form_validation->set_data($data);
         // dump($data);exit();
 
@@ -101,7 +101,7 @@ class Employment_types extends MY_Controller {
                 redirect('employment_types');
             }
         }
-        $this->load_view('forms/employment_type-edit');  		
+        $this->load_view('forms/employment_type-edit');
 	}
 
 	public function details($id)
@@ -113,6 +113,6 @@ class Employment_types extends MY_Controller {
             'employment_type'      => $employment_type,
             'active_menu' => $this->active_menu,
         );
-        $this->load_view('pages/employment_type-details');   		
+        $this->load_view('pages/employment_type-details');
 	}
 }

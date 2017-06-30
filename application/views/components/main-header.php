@@ -1,10 +1,10 @@
 <header class="main-header">
     <a href="javascript:void(0);" class="logo">
         <span class="logo-mini">
-            KWN
+             <img src="http://localhost/kawani_ci/assets/img/app/kawani_mini.png" alt="Image" width="30" height="30"">
         </span>
         <span class="logo-lg">
-            KAWANI
+            <img src="http://localhost/kawani_ci/assets/img/app/kawani.png" alt="Image" width="150" height="30"">
         </span>
     </a>
     <nav class="navbar navbar-static-top" role="navigation">
