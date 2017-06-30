@@ -36,6 +36,7 @@ $lang['index_fname_th']          = 'First Name';
 $lang['index_lname_th']          = 'Last Name';
 $lang['index_email_th']          = 'Email';
 $lang['index_groups_th']         = 'Groups';
+$lang['index_default_role_th']   = 'Default Role';
 $lang['index_status_th']         = 'Status';
 $lang['index_action_th']         = 'Action';
 $lang['index_active_link']       = 'Active';

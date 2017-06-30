@@ -63,7 +63,7 @@ class ACL_model extends CI_Model {
 			s_function.icon as s_function_icon,
 			s_function.link as s_function_link,
 		')
-		
+
 		->from('system_role_permissions as role_permission')
 		->join('system_functions as s_function', 'role_permission.system_function_id = s_function.id', 'left')
 		->group_by('s_function.id')
@@ -82,11 +82,12 @@ class ACL_model extends CI_Model {
 
 		$query = $this->db->select('
 			s_function.id as s_function_id,
+			s_function.system_module_id as smid,
 			s_function.name as s_function_name,
 			s_function.icon as s_function_icon,
 			s_function.link as s_function_link,
 		')
-		
+
 		->from('system_functions as s_function')
 		->group_by('s_function.id')
 		->order_by('s_function.id', 'asc')

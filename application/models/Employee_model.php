@@ -32,6 +32,8 @@ class Employee_model extends MY_Model {
 
     protected function set_default_data($employee)
     {   
+        $full_name = $employee['last_name'].', '.$employee['first_name'].' '.$employee['middle_name'];
+        $employee['full_name'] = strtoupper($full_name);
         $employee['active_status']  = ($employee['active_status'] == 1) ? 'Active' : 'Inactive';
         return $employee;
     }
@@ -57,7 +59,20 @@ class Employee_model extends MY_Model {
     public function get_employee_all()
     {
         $query = $this->db;
+
+        $query->select('
+            employees.id as employee_id,
+            employees.employee_code,
+            employees.first_name,
+            employees.middle_name,
+            employees.last_name,
+            employees.active_status,
+            companies.name as company_name
+        ');
+        $query->join('companies', 'employees.company_id = companies.id', 'left');
+
         $query->select('*');
+
         $query->order_by('last_name', 'asc');
 
         return $this->get_all();

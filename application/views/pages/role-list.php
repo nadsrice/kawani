@@ -43,7 +43,7 @@
                                         </a>
                                     </td>
                                     <td class="text-center"><?php echo $role['id']; ?></td>
-                                    <td class="text-left"><?php echo $role['name']; ?></td>
+                                    <td class="text-left>"<?php echo $role['name']; ?></td>
                                     <td class="text-left"><?php echo $role['description']; ?></td>
                                     <td class="text-left"><?php echo $role['created']; ?></td>
                                 </tr>

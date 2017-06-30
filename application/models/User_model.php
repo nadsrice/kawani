@@ -45,4 +45,18 @@ class User_model extends MY_Model {
 
 		return $user;
 	}
+
+	public function get_user_default_role($user_id)
+	{
+		$this->db->select('user_role.*, role.name as role_name');
+		$this->db->from('system_users_groups as user_role');
+		$this->db->join('system_groups as role', 'user_role.system_group_id = role.id', 'left');
+		$this->db->where([
+			'user_role.system_user_id' => $user_id,
+			'user_role.default_status' => 1
+		]);
+		$query = $this->db->get();
+
+		return $query->result_array();
+	}
 }

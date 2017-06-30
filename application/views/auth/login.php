@@ -34,7 +34,11 @@
 			<div class="login-box-body">
 				<p class="login-box-msg"><?php echo lang('login_subheading'); ?></p>
 				<div id="infoMessage" class="text-red"><?php echo $message;?></div>
-
+				<?php if ($this->session->flashdata('success')): ?>
+					<div id="infoMessage" class="text-green">
+						<?php echo $this->session->flashdata('success'); ?>
+					</div>
+				<?php endif ?>
 				<?php echo form_open("auth/login");?>
 					<div class="form-group has-feedback">
 						<?php echo form_input($identity);?>

@@ -1,4 +1,4 @@
-$(function () {
+$(document).ready(function () {
 	//Enable iCheck plugin for checkboxes
 	//iCheck for checkbox and radio inputs
 	$('.mailbox-messages input[type="checkbox"]').iCheck({
@@ -20,4 +20,4 @@ $(function () {
 		}
 		$(this).data("clicks", !clicks);
 	});
-})();
+});
