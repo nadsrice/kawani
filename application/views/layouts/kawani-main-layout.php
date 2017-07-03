@@ -21,6 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/timepicker/bootstrap-timepicker.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/toastr/toastr.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/iCheck/flat/blue.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/jquery-ui/1.12.1/jquery-ui.min.css'); ?>">
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
@@ -31,6 +32,7 @@
 
 
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-ui/1.12.1/jquery-ui.min.js'); ?>"></script>
 
 		<script>
 			var BASE_URL = '<?php echo base_url(); ?>';

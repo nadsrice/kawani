@@ -42,7 +42,7 @@
 											<?php endforeach?>
 										</select>
 										<span class="input-group-btn">
-											<a href="javascript:void(0);" onclick="loadModal()" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Set New Role">
+											<a href="<?php echo site_url('users/assign_roles/'.$user->id); ?>" class="btn btn-default" data-toggle="modal" data-target="#test-<?php echo $user->id; ?>">
 												<i class="fa fa-plus"></i>
 											</a>
 										</span>
@@ -53,20 +53,13 @@
 						</tr>
 					</tbody>
 					<div class="modal fade" id="update-user-status-<?php echo md5($user->id); ?>">
-						<div class="modal-dialog">
+						<div class="modal-dialog modal-md">
 							<div class="modal-content"></div>
 						</div>
 					</div>
-					<div class="modal fade" id="test">
+					<div class="modal fade" id="test-<?php echo $user->id; ?>">
 						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4>Add New Role</h4>
-								</div>
-								<div class="modal-body">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-								</div>
-							</div>
+							<div class="modal-content"></div>
 						</div>
 					</div>
 				<?php endif; ?>
@@ -77,13 +70,3 @@
 	</div>
 </div>
 
-<script type="text/javascript">
-	function loadModal()
-	{
-		$('#test').modal();
-	}
-
-	$(function () {
-		$('[data-toggle="tooltip"]').tooltip()
-	})
-</script>

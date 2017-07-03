@@ -40,6 +40,41 @@ class Users extends MY_Controller {
 
 		$this->load_view('pages/user-list');
 	}
+	
+	public function assign_roles($user_id)
+	{
+		$data['modal_header'] = 'Assign Roles';
+		$data['modal_message'] = 'The quick brown fox jumps over the lazy dog.';
+		$data['user_id'] = $user_id;
+		$data['groups'] = $this->ion_auth->groups()->result_array();
+		$data['current_groups'] = $this->ion_auth->get_users_groups($user_id)->result();
+
+		//Update the groups user belongs to
+		$groupData = $this->input->post('groups');
+		if (isset($groupData) && !empty($groupData))
+		{
+			$this->ion_auth->remove_from_group('', $user_id);
+			$arr = [];
+			foreach ($groupData as $grp)
+			{
+				$arr = $this->ion_auth->add_to_group($grp, $user_id);
+				if ( ! $arr)
+				{
+					$this->session->set_flashdata('failed', 'Unable to assign role.');
+					redirect('users');
+				}
+			}
+			$this->session->set_flashdata('success', 'Success!.');
+			redirect('users');
+		}
+		$this->load->view('modals/modal-assign-roles', $data);
+	}
+
+	public function test_ajax()
+	{
+		$data = $this->input->post();
+		echo json_encode(['data' => $data]);
+	}
 
 	public function confirmation()
 	{
