@@ -26,9 +26,10 @@ class Home extends MY_Controller {
 			$a[] = ['asd', 'zxc', 'qwe', 'rty', 'fgh', 'lkj', 'uhb'];
 		}
 
-		echo memory_get_usage(true);
-		dump($a);
-		exit;
+		// echo memory_get_usage(true);
+		// dump($a);
+		// exit;
+		
 		$this->data = [
 			'page_header' => 'Home',
 			'active_menu' => 'home'

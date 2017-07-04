@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Employee_info_model extends MY_Model {
 
-    protected $_table = 'employee_info';
+    protected $_table = 'employee_information';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
