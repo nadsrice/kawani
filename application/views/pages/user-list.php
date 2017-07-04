@@ -42,7 +42,7 @@
 											<?php endforeach?>
 										</select>
 										<span class="input-group-btn">
-											<a href="<?php echo site_url('users/assign_roles/'.$user->id); ?>" class="btn btn-default" data-toggle="modal" data-target="#test-<?php echo $user->id; ?>">
+											<a href="<?php echo site_url('users/assign_roles/'.$user->id); ?>" class="btn btn-default" data-toggle="modal" data-target="#modal-assign-roles-<?php echo md5($user->id); ?>">
 												<i class="fa fa-plus"></i>
 											</a>
 										</span>
@@ -57,7 +57,7 @@
 							<div class="modal-content"></div>
 						</div>
 					</div>
-					<div class="modal fade" id="test-<?php echo $user->id; ?>">
+					<div class="modal fade <?php echo ( ! empty($this->session->flashdata('modal_status'))) ? $this->session->flashdata('modal_status') : ''; ?>" id="modal-assign-roles-<?php echo md5($user->id); ?>">
 						<div class="modal-dialog">
 							<div class="modal-content"></div>
 						</div>
