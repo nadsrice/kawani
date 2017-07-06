@@ -25,7 +25,7 @@ class Attendance_undertimes extends MY_Controller {
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['attendance_undertime_model', 'user_model']);
+        $this->load->model(['attendance_undertime_model', 'user_model', 'employee_model']);
     }
 
     function index()
@@ -54,6 +54,9 @@ class Attendance_undertimes extends MY_Controller {
             'employee_id' => $user_data['employee_id']
         ]);
 
+        $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+
         $this->data = array(
             'page_header'       => 'Undertime Management',
             'undertimes'        => $undertimes,
@@ -64,7 +67,10 @@ class Attendance_undertimes extends MY_Controller {
             'total_cancelled'   => $total_cancelled,
             'status'            => $status,
             'selected'          => $status,
-            'active_menu'       => $this->active_menu,
+            'selected'          => $status,
+            'employee_data'     => $employee_data,
+            'active_menu'       => $this->active_menu
+
         );
         $this->load_view('pages/attendance_undertime-lists');
     }
@@ -113,12 +119,12 @@ class Attendance_undertimes extends MY_Controller {
                     'ut_id'          => $ut_id,
                 ];
 
-                $message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+                $message = $this->load->view('templates/email/attendance_undertime-notification.php', $data, true);
 
-                $this->email->from('gono.josh@gmail.com', 'OBR - Josh Gono');
+                $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
                 $this->email->to('joseph.gono@systemantech.com');
 
-                $this->email->subject('Official Business Request');
+                $this->email->subject('Undertime Request');
                 $this->email->message($message);
 
                 $this->email->send();
@@ -185,51 +191,112 @@ class Attendance_undertimes extends MY_Controller {
         $this->load->view('modals/modal-update-undertime', $data);
     }
 
-    public function update_status($id)
+
+   public function approve($ut_id)
     {
-        $undertime_data = $this->attendance_undertime_model->get_by(['id' => $id]);
-        $data['undertime_data'] = $undertime_data;
+        $this->load->model('attendance_undertime_model');
+        $update = $this->attendance_undertime_model->update($ut_id, ['approval_status' => 1]);
 
-        $post = $this->input->post();
+        if ($update) {
+            
+            $this->load->library('email');
 
-        if (isset($post['mode']))
-        {
-            $result = FALSE;
+            //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
 
-            if ($post['mode'] == 'De-activate')
-            {
-                dump('De-activating...');
-                $result = $this->attendance_undertime_model->update($id, ['active_status' => 0]);
-                dump($this->db->last_query());
-            }
-            if ($post['mode'] == 'Activate')
-            {
-                dump('Activating...');
-                $result = $this->attendance_undertime_model->update($id, ['active_status' => 1]);
-                dump($this->db->last_query());
-            }
+            $this->email->from('joseph.gono@systemantech.com', 'Undertime - Josh Gono');
+            $this->email->to('gono.josh@gmail.com');
 
-            if ($result)
-            {
-                 $this->session->set_flashdata('message', $undertime_data['name'].' successfully '.$post['mode'].'d!');
-                 redirect('attendance_undertimes');
-            }
-            else
-            {
-                $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$undertime_data['name'].'!');
-                redirect('attendance_undertimes');
-            }
+            $this->email->subject('Undertime Request - Approved');
+            $this->email->message('Your undertime request was successfully approved');
 
-        }
-        else
-        {
-            $this->load->view('modals/modal-update-undertime-status', $data);
+            $this->email->send();
+
+            //an email notificaton will be sent to user that filed an OB
+         
+            $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+            $this->email->to('joseph.gono@systemantech.com');
+
+            $this->email->subject('Undertime Request');
+            $this->email->message('Approval notification has been successfully sent to Josh Gono');
+
+            $this->email->send();
+            redirect('attendance_undertimes'); 
+
+        } else {
+
         }
     }
 
-    public function view_undertime()
+    public function reject($ut_id)
     {
+        $this->load->model('attendance_undertime_model');
+        $update = $this->attendance_undertime_model->update($ut_id, ['approval_status' => 0]);
 
+        if ($update) {
+            
+            $this->load->library('email');
+
+            //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
+
+            $this->email->from('joseph.gono@systemantech.com', 'Undertime - Josh Gono');
+            $this->email->to('gono.josh@gmail.com');
+
+            $this->email->subject('Undertime Request - Disapproved');
+            $this->email->message('Your undertime request was rejected');
+
+            $this->email->send();
+
+            //sent to sender
+            //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
+
+            $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+            $this->email->to('joseph.gono@systemantech.com');
+
+            $this->email->subject('Undertime Request');
+            $this->email->message('Disapproval notification has been successfully sent to Josh Gono');
+
+            $this->email->send();
+            redirect('attendance_undertimes'); 
+
+        } else {
+
+        }
+    }
+
+    public function cancel($ut_id)
+    {
+        $this->load->model('attendance_undertime_model');
+        $update = $this->attendance_undertime_model->update($ut_id, ['status' => 0]);
+
+        if ($update) {
+            
+            $this->load->library('email');
+
+            //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
+
+            $this->email->from('joseph.gono@systemantech.com', 'Undertime - Josh Gono');
+            $this->email->to('gono.josh@gmail.com');
+
+            $this->email->subject('Undertime Request - Cancelled');
+            $this->email->message('Your undertime request was cancelled');
+
+            $this->email->send();
+
+            //sent to sender
+            //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
+
+            $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+            $this->email->to('joseph.gono@systemantech.com');
+
+            $this->email->subject('Undertime Request');
+            $this->email->message('Cancellation notification has been successfully sent to Josh Gono');
+
+            $this->email->send();
+            redirect('attendance_undertimes'); 
+
+        } else {
+
+        }
     }
 
     public function approve_undertime($id)
@@ -237,27 +304,69 @@ class Attendance_undertimes extends MY_Controller {
         $undertime_data         = $this->attendance_undertime_model->get_by(['id' => $id]);
         $data['undertime_data'] = $undertime_data;
 
+        $employee_id = $undertime_data['employee_id'];
+        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+
+        $data['modal_title']   = 'Approve Undertime';
+        $data['modal_message'] = sprintf(lang('approve_undertime_message'), $requester['full_name']);
+        $data['url']  = 'attendance_undertimes/approve_undertime/' . $undertime_data['id'];
+        $data['mode'] = 'approve';
+
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'approve') {
             $result = $this->attendance_undertime_model->update($id, ['approval_status' => 1]);
 
             if ($result){
-                 $this->session->set_flashdata('message', 'Undertime successfully approved');
-                 redirect('attendance_undertimes');
+                $this->session->set_flashdata('message', 'Undertime successfully approved');
+
+                $this->load->library('email');
+
+                $ut_id = $undertime_data;
+                
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+                
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Undertime Request');
+                $this->email->message('Your undertime request has been successfully approved');
+
+                $this->email->send();
+                redirect('attendance_undertimes');
+
+                //Don't Repeat Your Code                
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to approve undertime');
                 redirect('attendance_undertimes');
             }
         }
-        $this->load->view('modals/modal-undertime-approve', $data);
+        $this->load->view('modals/modal-undertime-confirmation', $data);
     }
 
     public function reject_undertime($id)
     {
         $undertime_data         = $this->attendance_undertime_model->get_by(['id' => $id]);
         $data['undertime_data'] = $undertime_data;
+
+        $employee_id = $undertime_data['employee_id'];
+        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+
+        $data['modal_title']   = 'Reject Undertime';
+        $data['modal_message'] = sprintf(lang('reject_undertime_message'), $requester['full_name']);
+        $data['url']  = 'attendance_undertimes/reject_undertime/' . $undertime_data['id'];
+        $data['mode'] = 'reject';
 
         // TODO: make variable that will pass on the view
             // TODO: $mode = ex: approve, cancel, reject
@@ -271,15 +380,39 @@ class Attendance_undertimes extends MY_Controller {
             $result = $this->attendance_undertime_model->update($id, ['approval_status' => 0]);
 
             if ($result){
-                 $this->session->set_flashdata('message', 'Undertime successfully rejected');
-                 redirect('attendance_undertimes');
+                $this->session->set_flashdata('message', 'Undertime successfully rejected');
+
+                $this->load->library('email');
+
+                $ut_id = $undertime_data;
+
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Undertime Request');
+                $this->email->message('Your undertime request was rejected');
+
+                $this->email->send();
+                redirect('attendance_undertimes');  
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to reject undertime');
                 redirect('attendance_undertimes');
             }
         }
-        $this->load->view('modals/modal-undertime-reject', $data);
+        $this->load->view('modals/modal-undertime-confirmation', $data);
     }
 
 
@@ -288,21 +421,71 @@ class Attendance_undertimes extends MY_Controller {
         $undertime_data         = $this->attendance_undertime_model->get_by(['id' => $id]);
         $data['undertime_data'] = $undertime_data;
 
+        $employee_id = $undertime_data['employee_id'];
+        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+
+        $data['modal_title']   = 'Cancel Undertime';
+        $data['modal_message'] = sprintf(lang('cancel_undertime_message'), $requester['full_name']);
+        $data['url']  = 'attendance_undertimes/cancel_undertime/' . $undertime_data['id'];
+        $data['mode'] = 'cancel';
+
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'cancel') {
             $result = $this->attendance_undertime_model->update($id, ['status' => 0]);
 
             if ($result){
-                 $this->session->set_flashdata('message', 'Undertime successfully cancelled');
-                 redirect('attendance_undertimes');
+                $this->session->set_flashdata('message', 'Undertime successfully cancelled');
+
+                $this->load->library('email');
+
+                $ut_id = $undertime_data;
+
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Undertime Request');
+                $this->email->message('Your undertime request was cancelled');
+
+                $this->email->send();
+                redirect('attendance_undertimes');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to cancel undertime');
                 redirect('attendance_undertimes');
             }
         }
-        $this->load->view('modals/modal-undertime-cancel', $data);
+        $this->load->view('modals/modal-undertime-confirmation', $data);
+    }
+
+    public function view_undertime($id)
+    {
+        $view_ut        = $this->attendance_undertime_model->get_by(['id' => $id]);
+        $employee_data  = $this->employee_model->get_by(['id' => $id]);
+
+
+        $data = array(
+
+            'view_ut'           => $view_ut,
+            'employee_data'     => $employee_data,
+
+        );
+
+        dump($id);
+        dump($employee_data);exit;
+        $this->load->view('modals/modal-undertime-view', $data);
     }
 
     /**

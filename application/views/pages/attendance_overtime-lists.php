@@ -58,6 +58,7 @@
                     <table class="table table-bordered table-striped table-hover" id="">
                         <thead>
                             <tr>
+                                <th>&nbsp;</th>
                                 <th class="text-left">Date</th>
                                 <th class="text-left">Time Start</th>
                                 <th class="text-left">Time End</th>
@@ -65,12 +66,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-left">TAB 1 DATA</td>
-                                <td class="text-left">TAB 1 DATA</td>
-                                <td class="text-left">TAB 1 DATA</td>
-                                <td class="text-left">TAB 1 DATA</td>
-                            </tr>
+                            <?php if ( ! empty($my_overtimes)): ?>
+                                <?php foreach ($my_overtimes as $my_overtime): ?>
+
+                                <tr>
+                                    <td>
+                                        <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attendance_overtimes/view_ob/' . $my_overtime['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($my_overtime['id']); ?>">
+                                        <i class="fa fa-search"></i> View
+                                        </a>
+
+      <!--                                   <?php foreach ($action_menus['action_menus'] as $action_menu): ?>
+                                            <a class="<?php echo $action_menu['button_style']; ?>" href="<?php echo $action_menu['url']; ?>" <?php echo ($action_menu['modal_status']) ? $action_menu['modal_attributes'] : ''; ?>>
+                                                <i class="<?php echo $action_menu['icon']; ?>"></i> <?php echo $action_menu['label']; ?>
+                                            </a>
+                                        <?php endforeach ?> -->
+                                    </td>
+
+                                    <td class="text-right"><?php echo $my_overtime['date']; ?></td>
+                                    <td class="text-right"><?php echo $my_overtime['time_start']; ?></td>
+                                    <td class="text-right"><?php echo $my_overtime['time_end']; ?></td>
+                                    <td class="text-left"><?php echo $my_overtime['reason']; ?></td>
+                                </tr>
+                                    
+                                <?php endforeach ?>
+                            <?php endif ?>
                         </tbody>
                     </table>
                 </div>
@@ -87,14 +106,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="text-right">0072</td>
-                                <td class="text-left">Josh Gono</td>
-                                <td class="text-right">2020-06-28</td>
-                                <td class="text-right">12:00 PM</td>
-                                <td class="text-right">12:00 AM</td>
-                                <td class="text-left">HAHA</td>
-                            </tr>
+                            <?php if ( ! empty($approval_overtimes)): ?>
+                                <?php foreach ($approval_overtimes as $approval_overtime): ?>
+
+                                <tr>
+                                    <td>
+                                        <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attendance_overtimes/view_ob/' . $approval_overtime['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($approval_overtime['id']); ?>">
+                                        <i class="fa fa-search"></i> View
+                                        </a>
+
+                                        <?php foreach ($approval_overtime['action_menus'] as $action_menu): ?>
+                                            <a class="<?php echo $action_menu['button_style']; ?>" href="<?php echo $action_menu['url']; ?>" <?php echo ($action_menu['modal_status']) ? $action_menu['modal_attributes'] : ''; ?>>
+                                                <i class="<?php echo $action_menu['icon']; ?>"></i> <?php echo $action_menu['label']; ?>
+                                            </a>
+                                        <?php endforeach ?>
+                                    </td>
+
+                                    <td class="text-right"><?php echo $approval_overtime['employee_code']; ?></td>
+                                    <td class="text-left"><?php echo $approval_overtime['full_name']; ?></td>
+                                    <td class="text-left"><?php echo $approval_overtime['time_start']; ?></td>
+                                    <td class="text-right"><?php echo $approval_overtime['time_end']; ?></td>
+                                    <td class="text-right"><?php echo $approval_overtime['reason']; ?></td>
+                                </tr>
+                                    
+                                    <?php foreach ($approval_overtime['action_menus'] as $action_menu): ?>
+                                        <div class="modal fade" id="<?php echo $action_menu['modal_id']; ?>" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content"></div>
+                                            </div>  
+                                        </div>
+                                    <?php endforeach ?>
+                                <?php endforeach ?>
+                            <?php endif ?>
+
                         </tbody>
                     </table>
                 </div>

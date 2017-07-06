@@ -13,3 +13,7 @@
 .cancelled_color{
 	background-color: #ffb446;
 }
+
+.validation_error {
+	color: #c85050;
+}

@@ -14,6 +14,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Controller extends CI_Controller {
 
 	private $_models = [
+		'site_model',
+		'user_model',
 		'branch_model',
 		'company_model',
 		'employee_model',
@@ -22,8 +24,7 @@ class MY_Controller extends CI_Controller {
 		'employment_type_model',
 		'employee_position_model',
 		'educational_attainment_model',
-		'site_model',
-		'user_model'
+		'employee_leave_credit_model',
 	];
 
 	protected $data = array();
@@ -44,6 +45,7 @@ class MY_Controller extends CI_Controller {
 	{
 		$user = $this->ion_auth->user()->row();
 		$user_role = $this->user_model->get_user_default_role($user->id);
+
 
 		$this->data['navigation_menu'] = $this->acl->get_role_navigation_menu($user_role[0]['system_group_id']);
 		

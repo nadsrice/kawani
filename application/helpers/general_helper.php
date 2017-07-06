@@ -62,3 +62,41 @@ if ( ! function_exists('dd')) {
         d($var);
     }
 }
+
+
+if ( ! function_exists('generateRandomString')) {
+    function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+}
+
+if ( ! function_exists('daterange'))
+{
+    function daterange($date_start, $date_end, $differenceFormat = '%a')
+    {
+        $new_date_start = date_create($date_start);
+        $new_date_end   = date_create($date_end);
+        $interval       = date_diff($new_date_start, $new_date_end);
+        $pre_total      = $interval->format($differenceFormat);
+        $total          = $pre_total + 1;
+        return $total;
+    }
+}
+
+if ( ! function_exists('calculate_leave_balance'))
+{
+    function calculate_leave_balance($leave_balance, $total_days_filed)
+    {
+        $new_leave_balance      = $leave_balance;
+        $new_dtotal_days_filed  = $total_days_filed;
+        $total                  = $new_leave_balance - $new_dtotal_days_filed;
+        return (float)$total;
+    }
+}

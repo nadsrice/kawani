@@ -95,7 +95,7 @@
 						<thead>
 							<tr>
 								<th class="text-center">#</th>
-								<th class="text-center">Have Access?</th>
+								<th class="text-center">Has Access?</th>
 								<th class="text-center">Name</th>
 							</tr>
 						</thead>

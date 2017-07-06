@@ -19,7 +19,7 @@
                 <li class="active">
                     <a href="#tab1" data-toggle="tab">Employees</a>
                 </li>                <li class="">
-                    <a href="#tab2" data-toggle="tab">TAB 2</a>
+                    <a href="#tab2" data-toggle="tab">Branches</a>
                 </li>
             </ul>
             <div class="tab-content">
