@@ -21,15 +21,12 @@ class Home extends MY_Controller {
 	public function index()
 	{
 		$a = [];
+		
 		for ($i = 0; $i <= 100000; $i++)
 		{
 			$a[] = ['asd', 'zxc', 'qwe', 'rty', 'fgh', 'lkj', 'uhb'];
 		}
 
-		// echo memory_get_usage(true);
-		// dump($a);
-		// exit;
-		
 		$this->data = [
 			'page_header' => 'Home',
 			'active_menu' => 'home'
