@@ -8,33 +8,6 @@
 					<span>Home</span>
 				</a>
 			</li>
-			<!-- <li class="treeview">
-				<a href="javascript:void(0)">
-					<i class="fa fa-microchip"></i>
-					<span>System Settings</span>
-					<i class="fa fa-angle-left pull-right"></i>
-				</a>
-				<ul class="treeview-menu">
-					<li class="">
-						<a href="<?php echo site_url('system_settings/list_modules'); ?>">
-							<i class="fa fa-angle-double-right"></i>
-							<span>System Modules</span>
-						</a>
-					</li>
-					<li class="">
-						<a href="<?php echo site_url('system_settings/list_functions');   ?>">
-							<i class="fa fa-angle-double-right"></i>
-							<span>System Functions</span>
-						</a>
-					</li>
-					<li class="">
-						<a href="<?php echo site_url('system_settings/list_permissions');   ?>">
-							<i class="fa fa-angle-double-right"></i>
-							<span>System Permissions</span>
-						</a>
-					</li>
-				</ul>
-			</li> -->
 			<?php foreach ($navigation_menu as $nav_menu): ?>
 			<?php $is_active = isset($active_menu) ? $active_menu : ''; ?>
 				<li class="<?php echo ($is_active == $nav_menu['module_name']) ? 'active' : ''; ?> treeview">

@@ -8,15 +8,53 @@
 			<div class="box-footer no-padding">
 				<ul class="nav nav-stacked">
 					<li>
-						<a href="javascript:void(0);">Employees <span class="pull-right badge bg-green">15</span></a>
-						<a href="javascript:void(0);">Modules <span class="pull-right badge bg-blue">6</span></a>
-						<a href="javascript:void(0);">Functions <span class="pull-right badge bg-purple">44</span></a>
-						<a href="javascript:void(0);">Permissions <span class="pull-right badge bg-red">164</span></a>
+						<a href="javascript:void(0);">Employees <span class="pull-right badge bg-green">0</span></a>
+						<a href="javascript:void(0);">Modules <span class="pull-right badge bg-blue">0</span></a>
+						<a href="javascript:void(0);">Functions <span class="pull-right badge bg-purple">0</span></a>
+						<a href="javascript:void(0);">Permissions <span class="pull-right badge bg-red">0</span></a>
 					</li>
 				</ul>
 			</div>
 		</div>
+
+		<div class="box box-primary">
+			<div class="box box-solid">
+				<div class="box-header with-border">
+					<h3 class="box-title">Summary</h3>
+					<div class="box-tools">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<div class="box-body no-padding">
+					<ul class="nav nav-pills nav-stacked">
+						<li class="">
+							<a href="<?php echo site_url('attendance_leaves/index/pending'); ?>">
+								<i class="fa fa-clock-o"></i> Pending <span class="label pull-right pending_color" id="totalPending">1</span>
+							</a>
+						</li>
+						<li class="">
+							<a href="<?php echo site_url('attendance_leaves/index/approved'); ?>">
+								<i class="fa fa-thumbs-up"></i> Approved <span class="label pull-right approved_color" id="totalApproved">2</span>
+							</a>
+						</li>
+						<li class="">
+							<a href="<?php echo site_url('attendance_leaves/index/denied'); ?>">
+								<i class="fa fa-thumbs-down" ></i> Denied <span class="label pull-right rejected_color" id="totalDenied">3</span>
+							</a>
+						</li>
+						<li class="">
+							<a href="<?php echo site_url('attendance_leaves/index/cancelled'); ?>">
+								<i class="fa fa-times-circle"></i> Cancelled <span class="label pull-right cancelled_color" id="totalCancelled">4</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
     </div>
+
     <div class="col-md-8">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">

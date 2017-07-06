@@ -486,7 +486,6 @@ class Ion_auth_model extends CI_Model
 			    'active'          => 1
 			);
 
-
 			$this->trigger_events('extra_where');
 			$this->db->update($this->tables['users'], $data, array('id' => $id));
 		}

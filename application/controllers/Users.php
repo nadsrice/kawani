@@ -23,11 +23,17 @@ class Users extends MY_Controller {
 
 	function index()
 	{
+		// dump($this->ion_auth_acl->has_permission('view_users'));exit;
 		if ( ! $this->ion_auth_acl->has_permission('view_users'))
 		{
 			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
 			redirect('/', '');
 		}
+
+		$this->data['has_permission'] = [
+			'assign_role' => $this->ion_auth_acl->has_permission('assign_roles'),
+			'update_role' => ( ! $this->ion_auth_acl->has_permission('assign_roles')) ? 'disabled' : ''
+		];
 
 		$this->data['page_header'] = 'User Management';
 		$this->data['active_menu'] = $this->active_menu;
@@ -37,20 +43,15 @@ class Users extends MY_Controller {
 		foreach ($this->data['users'] as $k => $user)
 		{
 			$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
-		}
 
+			if ($user->id == 1) unset($this->data['users'][$k]);
+		}
+		
 		$this->load_view('pages/user-list');
 	}
 	
 	public function assign_roles($user_id)
 	{
-		if ( ! $this->ion_auth_acl->has_permission('assign_roles'))
-		{
-			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
-			$this->session->set_flashdata('modal_status', 'hide');
-			redirect('users/index', 'refresh');
-		}
-
 		$data['modal_header']  	= 'Assign Roles';
 		$data['modal_message'] 	= 'The quick brown fox jumps over the lazy dog.';
 		$data['user_id'] 		= $user_id;
@@ -102,7 +103,7 @@ class Users extends MY_Controller {
 		$user_data = $this->ion_auth->user($id)->row();
 		$data['user_data'] = $user_data;
 
-		$users = $this->user_model->get_User_all();
+		// $users = $this->user_model->get_user_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('User_add'));
 
 		$this->form_validation->set_data($data);
@@ -171,7 +172,6 @@ class Users extends MY_Controller {
 
 	public function update_default_role()
 	{
-
 		if ( ! $this->ion_auth_acl->has_permission('assign_roles'))
 		{
 			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
