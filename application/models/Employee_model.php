@@ -31,13 +31,13 @@ class Employee_model extends MY_Model {
     }
 
     protected function set_default_data($employee)
-    {   
+    {
         $full_name = $employee['last_name'].', '.$employee['first_name'].' '.$employee['middle_name'];
         $employee['full_name'] = strtoupper($full_name);
-        $employee['active_status']  = ($employee['active_status'] == 1) ? 'Active' : 'Inactive';
+        $employee['label_status'] = ($employee['active_status'] == 1) ? 'Active' : 'Inactive';
+
         return $employee;
     }
-
 
     public function get_employee_by($param)
     {
@@ -90,10 +90,54 @@ class Employee_model extends MY_Model {
 
     }
 
-    // public function get_employee_details()
-    // {
-    //     $query = $this->db;
-    //     $query->select('employees.*, positions.name as position, teams.name as team');
-    //     $query->join('positions', 'positions.id = employees.position_id')
-    // }
+    /**
+     * NOTE: This functions below is usjt temporary
+     */
+
+    public function get_employee_information($where)
+    {
+        if ( ! empty($where)) $this->db->where($where);
+
+        $query = $this->db->select('*')->from('employee_information')->get();
+
+        return $query->result_array();
+    }
+
+    public function get_employee_leave_credit($where = '')
+    {
+        if ( ! empty($where)) $this->db->where($where);
+
+        $query = $this->db
+                ->select('
+                        employee_leave_credits.id AS elc_id,
+                        employee_leave_credits.position_leave_credit_id AS elc_plc_id,
+                        position_leave_credits.attendance_leave_type_id AS plc_alt_id,
+                        position_leave_credits.credits AS elc_credit,
+                        employee_leave_credits.balance AS elc_balance,
+                        attendance_leave_types.name AS leave_type,
+                        attendance_leave_types.*
+                    ')
+                ->from('employee_leave_credits')
+                ->join('position_leave_credits', 'employee_leave_credits.position_leave_credit_id = position_leave_credits.id', 'left')
+                ->join('attendance_leave_types', 'position_leave_credits.attendance_leave_type_id = attendance_leave_types.id', 'left');
+
+        return $query->get()->result_array();
+    }
+
+    public function check_leave_balance($employee_id, $leave_type_id, $leave_request_days)
+    {
+        $leave_credit = $this->get_employee_leave_credit([
+            'employee_leave_credits.employee_id'              => $employee_id,
+            'position_leave_credits.attendance_leave_type_id' => $leave_type_id,
+        ]);
+
+        if ( ! isset($leave_credit)) return FALSE;
+
+        $leave_credit = (isset($leave_credit[0]['elc_balance'])) ? $leave_credit[0]['elc_balance'] : 0;
+
+        $balance_checker = $leave_request_days <= $leave_credit;
+
+        return $balance_checker;
+    }
+
 }

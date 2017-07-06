@@ -14,6 +14,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Controller extends CI_Controller {
 
 	private $_models = [
+		'site_model',
+		'user_model',
 		'branch_model',
 		'company_model',
 		'employee_model',
@@ -22,8 +24,7 @@ class MY_Controller extends CI_Controller {
 		'employment_type_model',
 		'employee_position_model',
 		'educational_attainment_model',
-		'site_model',
-		'user_model'
+		'employee_leave_credit_model',
 	];
 
 	protected $data = array();

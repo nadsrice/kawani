@@ -7,6 +7,6 @@
 
         </p>
         <p></p>
-        <p><a href="<?php echo site_url('official_businesses/approve/'.$ob_id); ?>">APPROVE</a> | <a href="<?php echo site_url('official_businesses/disapprove/'.$ob_id); ?>">REJECT</a> | <a href="<?php echo site_url('official_businesses/disapprove/'.$ob_id); ?>">CANCEL</a></p> 
+        <p><a href="<?php echo site_url('attendance_official_businesses/approve/'.$ob_id); ?>">APPROVE</a> | <a href="<?php echo site_url('attendance_official_businesses/disapprove/'.$ob_id); ?>">REJECT</a> | <a href="<?php echo site_url('attendance_official_businesses/disapprove/'.$ob_id); ?>">CANCEL</a></p> 
     </body>
 </html>

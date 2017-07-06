@@ -17,7 +17,8 @@
                         <label class="col-md-3 control-label">Company</label>
                         <div class="col-md-6">
                             <select class="form-control select2" name="company_id" id="company">
-                                <option value="<?php echo $site['company_id']; ?>">-- SELECT COMPANY --</option>
+                                <option value="<?php echo $site['company_id']; ?>"><?php echo $site['company_name']; ?></option>
+                                <option value="">-- Select Company --</option>
                                 <?php foreach ($companies as $company): ?>
                                     <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
                                 <?php endforeach; ?>
@@ -29,7 +30,8 @@
                         <label class="col-md-3 control-label">Branch</label>
                         <div class="col-md-6">
                             <select class="form-control select2" name="branch_id" id="branch">
-                                <option value="<?php echo $site['branch_id']; ?>">-- SELECT BRANCH --</option>
+                                <option value="<?php echo $site['branch_id']; ?>"><?php echo $site['branch_name']; ?></option>
+                                <option value="">-- Select Branch --</option>
                                 <?php foreach ($branches as $branch): ?>
                                     <option value="<?php echo $branch['id']; ?>"><?php echo $branch['name']; ?></option>
                                 <?php endforeach; ?>

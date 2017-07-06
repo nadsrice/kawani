@@ -55,11 +55,11 @@ class Employee_info_model extends MY_Model {
     public function get_employee_info_all()
     {
         $query = $this->db;
-        $query->select('employee_info.*, positions.name as position, teams.name as team, employees.employee_code as employee_code,
+        $query->select('employee_information.*, positions.name as position, teams.name as team, employees.employee_code as employee_code,
                         CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name');
-        $query->join('employees', 'employees.id = employee_info.employee_id');
-        $query->join('positions', 'positions.id = employee_info.position_id');
-        $query->join('teams', 'teams.id = employee_info.team_id');
+        $query->join('employees', 'employees.id = employee_information.employee_id');
+        $query->join('positions', 'positions.id = employee_information.position_id');
+        $query->join('teams', 'teams.id = employee_information.team_id');
         $query->order_by('employees.last_name', 'asc');
 
         return $this->get_all();
@@ -72,7 +72,7 @@ class Employee_info_model extends MY_Model {
         }
 
         $query = $this->db->select('
-                    employee_info.*,
+                    employee_information.*,
                     positions.name as position,
                     teams.name as team,
                     departments.name as department,
@@ -80,10 +80,10 @@ class Employee_info_model extends MY_Model {
                     CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name
                     ')
                 ->from($this->_table)
-                ->join('employees', 'employees.id = employee_info.employee_id', 'left')
-                ->join('positions', 'positions.id = employee_info.position_id', 'left')
-                ->join('teams', 'teams.id = employee_info.team_id', 'left')
-                ->join('departments', 'departments.id = employee_info.department_id', 'left')
+                ->join('employees', 'employees.id = employee_information.employee_id', 'left')
+                ->join('positions', 'positions.id = employee_information.position_id', 'left')
+                ->join('teams', 'teams.id = employee_information.team_id', 'left')
+                ->join('departments', 'departments.id = employee_information.department_id', 'left')
                 ->order_by('employees.last_name', 'asc')
                 ->get();
 
