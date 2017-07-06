@@ -28,6 +28,7 @@ class Users extends MY_Controller {
 			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
 			redirect('/', '');
 		}
+
 		$this->data['page_header'] = 'User Management';
 		$this->data['active_menu'] = $this->active_menu;
 
@@ -39,6 +40,52 @@ class Users extends MY_Controller {
 		}
 
 		$this->load_view('pages/user-list');
+	}
+	
+	public function assign_roles($user_id)
+	{
+		if ( ! $this->ion_auth_acl->has_permission('assign_roles'))
+		{
+			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
+			$this->session->set_flashdata('modal_status', 'hide');
+			redirect('users/index', 'refresh');
+		}
+
+		$data['modal_header']  	= 'Assign Roles';
+		$data['modal_message'] 	= 'The quick brown fox jumps over the lazy dog.';
+		$data['user_id'] 		= $user_id;
+		$data['groups']  		= $this->ion_auth->groups()->result_array();
+		$data['current_groups'] = $this->ion_auth->get_users_groups($user_id)->result();
+
+		//Update the groups user belongs to
+		$group_data = $this->input->post('groups');
+		if (isset($group_data) && !empty($group_data))
+		{
+			$this->ion_auth->remove_from_group('', $user_id);
+
+			$arr = [];
+
+			foreach ($group_data as $group)
+			{
+				$arr = $this->ion_auth->add_to_group($group, $user_id);
+				if ( ! $arr)
+				{
+					$this->session->set_flashdata('failed', 'Unable to assign role.');
+					redirect('users');
+				}
+			}
+
+			$this->session->set_flashdata('success', 'Success!.');
+			redirect('users');
+		}
+
+		$this->load->view('modals/modal-assign-roles', $data);
+	}
+
+	public function test_ajax()
+	{
+		$data = $this->input->post();
+		echo json_encode(['data' => $data]);
 	}
 
 	public function confirmation()
@@ -59,7 +106,6 @@ class Users extends MY_Controller {
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('User_add'));
 
 		$this->form_validation->set_data($data);
-
 
 		$post = $this->input->post();
 
@@ -92,10 +138,10 @@ class Users extends MY_Controller {
 	{
 		// get specific User based on the id
 		$User = $this->user_model->get_User_by(['system_users.id' => $id]);
-		// dump($User);exit;
+		
 		// get all company records where status is equal to active
 		$companies = $this->company_model->get_many_by(['active_status' => 1]);
-		// dump($this->db->last_query());exit;
+		
 		$this->data = array(
 			'page_header' => 'User Management',
 			'User' 	  => $User,
@@ -125,6 +171,13 @@ class Users extends MY_Controller {
 
 	public function update_default_role()
 	{
+
+		if ( ! $this->ion_auth_acl->has_permission('assign_roles'))
+		{
+			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
+			redirect('users', 'refresh');
+		}
+
 		$this->load->model('user_roles_model');
 		$post = $this->input->post();
 
