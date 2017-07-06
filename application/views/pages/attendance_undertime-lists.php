@@ -115,15 +115,11 @@
                                                 <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attendance_undertimes/view_undertime/' . $undertime['id']); ?>" data-toggle="modal" data-target="#view-undertime-<?php echo md5($undertime['id']); ?>">
                                                     <i class="fa fa-search"></i> View
                                                 </a>
-                                                <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('attendance_undertimes/approve_undertime/' . $undertime['id']); ?>" data-toggle="modal" data-target="#approve-undertime-<?php echo md5($undertime['id']); ?>">
-                                                    <i class="fa fa-pencil-square-o"></i> Approve
-                                                </a>
-                                                <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('attendance_undertimes/reject_undertime/' . $undertime['id']); ?>" data-toggle="modal" data-target="#reject-undertime-<?php echo md5($undertime['id']); ?>">
-                                                    <i class="fa fa-pencil-square-o"></i> Reject
-                                                </a>
-                                                <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('attendance_undertimes/cancel_undertime/' . $undertime['id']); ?>" data-toggle="modal" data-target="#cancel-undertime-<?php echo md5($undertime['id']); ?>">
-                                                    <i class="fa fa-pencil-square-o"></i> Cancel
-                                                </a>
+                                                <?php foreach ($undertime['action_menus'] as $action_menu): ?>
+                                                    <a class="<?php echo $action_menu['button_style']; ?>" href="<?php echo $action_menu['url']; ?>" <?php echo ($action_menu['modal_status']) ? $action_menu['modal_attributes'] : ''; ?>>
+                                                        <i class="<?php echo $action_menu['icon']; ?>"></i> <?php echo $action_menu['label']; ?>
+                                                    </a>
+                                                <?php endforeach ?>
                                             </td>
                                             
                                             <td class="text-left"><?php echo $undertime['employee_code']; ?></td>
@@ -135,30 +131,17 @@
                                         </tr>
                                         <div class="modal fade" id="view-undertime-<?php echo md5($undertime['id']); ?>" role="dialog">
                                             <div class="modal-dialog">
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                    <!-- http://localhost/kawani_ci/roles/update_status/1 -->
-                                                    
-                                                </div>
+                                                <div class="modal-content"></div>
                                             </div>
                                         </div>
-                                         <div class="modal fade" id="approve-undertime-<?php echo md5($undertime['id']); ?>" role="dialog">
+                                        <?php foreach ($undertime['action_menus'] as $action_menu): ?>
+                                            <div class="modal fade" id="<?php echo $action_menu['modal_id']; ?>" role="dialog">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content"></div>
                                                 </div>  
-                                        </div>
-
-                                         <div class="modal fade" id="reject-undertime-<?php echo md5($undertime['id']); ?>" role="dialog">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content"></div>
-                                                </div>  
-                                        </div>
-
-                                         <div class="modal fade" id="cancel-undertime-<?php echo md5($undertime['id']); ?>" role="dialog">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content"></div>
-                                                </div>  
-                                        </div>
+                                            </div>
+                                        <?php endforeach ?>
+                                        
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </tbody>

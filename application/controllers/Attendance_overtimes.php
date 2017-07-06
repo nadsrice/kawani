@@ -66,7 +66,6 @@ class Attendance_overtimes extends MY_Controller {
                 redirect('attendance_overtimes');
             } else {
                 $this->session->set_flashdata('success', 'Overtime successfully filed.');
-                redirect('attendance_overtimes');
 
                 $this->load->library('email');
 
@@ -84,16 +83,20 @@ class Attendance_overtimes extends MY_Controller {
                     'ot_id'          => $ot_id,
                 ];
 
-                $message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+                // dump($data);
+                // dump($employee_data);exit;
 
-                $this->email->from('gono.josh@gmail.com', 'OBR - Josh Gono');
+                $message = $this->load->view('templates/email/attendance_overtime-notification.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Overtime - Josh Gono');
                 $this->email->to('joseph.gono@systemantech.com');
 
-                $this->email->subject('Official Business Request');
+                $this->email->subject('Overtime Request');
                 $this->email->message($message);
 
                 $this->email->send();
-                redirect('attendance_overtimes');    
+                
+                redirect('attendance_overtimes'); 
             }
         }
 
@@ -196,5 +199,308 @@ class Attendance_overtimes extends MY_Controller {
         {
             $this->load->view('modals/modal-update-overtime-status', $data);
         }
+    }
+
+    public function approve($ot_id)
+    {
+        $this->load->model('attendance_overtime_model');
+        $update = $this->attendance_overtime_model->update($ot_id, ['approval_status' => 1]);
+
+        if ($update) {
+            
+            $this->load->library('email');
+
+            //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
+
+            $this->email->from('joseph.gono@systemantech.com', 'Overtime - Josh Gono');
+            $this->email->to('gono.josh@gmail.com');
+
+            $this->email->subject('Overtime Request - Approved');
+            $this->email->message('Your overtime request was successfully approved');
+
+            $this->email->send();
+
+            //an email notificaton will be sent to user that filed an OB
+         
+            $this->email->from('gono.josh@gmail.com', 'Overtime - Josh Gono');
+            $this->email->to('joseph.gono@systemantech.com');
+
+            $this->email->subject('Overtime Request');
+            $this->email->message('Approval notification has been successfully sent to Josh Gono');
+
+            $this->email->send();
+            redirect('attendance_overtimes'); 
+
+        } else {
+
+        }
+    }
+
+    public function reject($ot_id)
+    {
+        $this->load->model('attendance_overtime_model');
+        $update = $this->attendance_overtime_model->update($ot_id, ['approval_status' => 0]);
+
+        if ($update) {
+            
+            $this->load->library('email');
+
+            //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
+
+            $this->email->from('joseph.gono@systemantech.com', 'Overtime - Josh Gono');
+            $this->email->to('gono.josh@gmail.com');
+
+            $this->email->subject('Overtime Request - Disapproved');
+            $this->email->message('Your overtime request was rejected');
+
+            $this->email->send();
+
+            //sent to sender
+            //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
+
+            $this->email->from('gono.josh@gmail.com', 'Overtime - Josh Gono');
+            $this->email->to('joseph.gono@systemantech.com');
+
+            $this->email->subject('Overtime Request');
+            $this->email->message('Disapproval notification has been successfully sent to Josh Gono');
+
+            $this->email->send();
+            redirect('attendance_overtimes'); 
+
+        } else {
+
+        }
+    }
+
+    public function cancel($ot_id)
+    {
+        $this->load->model('attendance_overtime_model');
+        $update = $this->attendance_overtime_model->update($ot_id, ['status' => 0]);
+
+        if ($update) {
+            
+            $this->load->library('email');
+
+            //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
+
+            $this->email->from('joseph.gono@systemantech.com', 'Overtime - Josh Gono');
+            $this->email->to('gono.josh@gmail.com');
+
+            $this->email->subject('Overtime Request - Cancelled');
+            $this->email->message('Your overtime request was cancelled');
+
+            $this->email->send();
+
+            //sent to sender
+            //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
+
+            $this->email->from('gono.josh@gmail.com', 'Overtime - Josh Gono');
+            $this->email->to('joseph.gono@systemantech.com');
+
+            $this->email->subject('Overtime Request');
+            $this->email->message('Cancellation notification has been successfully sent to Josh Gono');
+
+            $this->email->send();
+            redirect('attendance_overtimes'); 
+
+        } else {
+
+        }
+    }
+
+    public function view_overtime()
+    {
+
+    }
+
+    public function approve_overtime($id)
+    {
+        $overtime_data         = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $data['overtime_data'] = $overtime_data;
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']) && $post['mode'] == 'approve') {
+            $result = $this->attendance_overtime_model->update($id, ['approval_status' => 1]);
+
+            if ($result){
+                $this->session->set_flashdata('message', 'Undertime successfully approved');
+
+                $this->load->library('email');
+
+                $ut_id = $overtime_data;
+                
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+                
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Undertime Request');
+                $this->email->message('Your overtime request has been successfully approved');
+
+                $this->email->send();
+                redirect('attendance_overtimes');                
+            }
+            else{
+                $this->session->set_flashdata('failed', 'Unable to approve overtime');
+                redirect('attendance_overtimes');
+            }
+        }
+        $this->load->view('modals/modal-overtime-approve', $data);
+    }
+
+    public function reject_overtime($id)
+    {
+        $overtime_data         = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $data['overtime_data'] = $overtime_data;
+
+        // TODO: make variable that will pass on the view
+            // TODO: $mode = ex: approve, cancel, reject
+            // TODO: $url = 'attendance_overtimes/wild_card_function/'.wild_card_id
+            // TODO: $modal_title
+            // TODO: $confirmation_message
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']) && $post['mode'] == 'reject') {
+            $result = $this->attendance_overtime_model->update($id, ['approval_status' => 0]);
+
+            if ($result){
+                $this->session->set_flashdata('message', 'Undertime successfully rejected');
+
+                $this->load->library('email');
+
+                $ut_id = $overtime_data;
+
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Undertime Request');
+                $this->email->message('Your overtime request was rejected');
+
+                $this->email->send();
+                redirect('attendance_overtimes');  
+            }
+            else{
+                $this->session->set_flashdata('failed', 'Unable to reject overtime');
+                redirect('attendance_overtimes');
+            }
+        }
+        $this->load->view('modals/modal-overtime-reject', $data);
+    }
+
+
+    public function cancel_overtime($id)
+    {
+        $overtime_data         = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $data['overtime_data'] = $overtime_data;
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']) && $post['mode'] == 'cancel') {
+            $result = $this->attendance_overtime_model->update($id, ['status' => 0]);
+
+            if ($result){
+                $this->session->set_flashdata('message', 'Undertime successfully cancelled');
+
+                $this->load->library('email');
+
+                $ut_id = $overtime_data;
+
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Undertime Request');
+                $this->email->message('Your overtime request was cancelled');
+
+                $this->email->send();
+                redirect('attendance_overtimes');
+            }
+            else{
+                $this->session->set_flashdata('failed', 'Unable to cancel overtime');
+                redirect('attendance_overtimes');
+            }
+        }
+        $this->load->view('modals/modal-overtime-cancel', $data);
+    }
+
+    /**
+     * Ajax calls
+     *
+     */
+
+    public function ajax_my_overtime()
+    {
+        $data = ['status' => 'success', 'message' => 'test message ajax_my_overtime!'];
+         $my_employee_id           = $this->ion_auth->user()->row()->employee_id;
+
+        $data['summary'] = [
+            'total_denied' => $this->attendance_overtime_model->count_by([
+                'approval_status' => 0,
+                'employee_id' => $my_employee_id
+            ]),
+            'total_approved' => $this->attendance_overtime_model->count_by([
+                'approval_status' => 1,
+                'employee_id' => $my_employee_id
+            ]),
+            'total_pending' => $this->attendance_overtime_model->count_by([
+                'approval_status' => 2,
+                'employee_id' => $my_employee_id
+            ]),
+            'total_cancelled' => $this->attendance_overtime_model->count_by([
+                'status' => 0,
+                'employee_id' => $my_employee_id
+            ]),
+        ];
+
+        echo json_encode($data);
+    }
+
+    public function ajax_approval()
+    {
+        $data = ['status' => 'success', 'message' => 'test message ajax_approval!'];
+
+        $data['summary'] = [
+            'total_denied'    => $this->attendance_overtime_model->count_by(['approval_status' => 0]),
+            'total_approved'  => $this->attendance_overtime_model->count_by(['approval_status' => 1]),
+            'total_pending'   => $this->attendance_overtime_model->count_by(['approval_status' => 2]),
+            'total_cancelled' => $this->attendance_overtime_model->count_by(['status' => 0]),
+        ];
+
+        echo json_encode($data);
     }
 }

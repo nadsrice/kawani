@@ -38,6 +38,7 @@ class Employee_model extends MY_Model {
         return $employee;
     }
 
+
     public function get_employee_by($param)
     {
         $query = $this->db;

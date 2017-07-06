@@ -30,7 +30,8 @@ class Attendance_official_businesses extends MY_Controller {
             'account_model',
             'contact_person_model',
             'user_model',
-            'employee_model'
+            'employee_model',
+            'employee_info_model'
         ]);
     }
 
@@ -39,14 +40,33 @@ class Attendance_official_businesses extends MY_Controller {
         // todo: get all official_businesses records from database order by name ascending
             // todo: load official_business model
             // todo: load view & past the retrieved data from model
+        $status = $this->uri->segment(3);
+
+        if ( ! isset($status)) {
+            $selected = '';
+            $status = '';
+        }
+
+        $total_rejected     = $this->attendance_official_business_model->count_by(['approval_status' => 0]); //0 = denied
+        $total_approved     = $this->attendance_official_business_model->count_by(['approval_status' => 1]); //1 = approved
+        $total_pending      = $this->attendance_official_business_model->count_by(['approval_status' => 2]); //2 = pending 
+        $total_cancelled    = $this->attendance_official_business_model->count_by(['status' => 0]);         //0 = cancelled
+
         $user_id = $this->ion_auth->user()->row()->id;
         $user_data = $this->user_model->get_by(['id' => $user_id]);
 
-        $official_businesses = $this->attendance_official_business_model->get_ob_all();
-        $ob_requests          = $this->attendance_official_business_model->get_my_ob([
+        $official_businesses  = $this->attendance_official_business_model->get_ob_all();
+
+        $ob_requests          = $this->attendance_official_business_model->get_ob_requests_by([
             'attendance_official_businesses.approver_id' => $user_data['employee_id'],
-            'attendance_official_businesses.approval_status' => 1
+            'attendance_official_businesses.approval_status' => 2
         ]);
+
+        // dump($ob_requests);exit;
+
+        // $ob_approvals = $this->attendance_official_business_model->get_ob([
+        //     'attendance_official_businesses'
+        // ]);
 
         // dump($this->db->last_query());
         // dump($ob_request);
@@ -56,7 +76,11 @@ class Attendance_official_businesses extends MY_Controller {
         $this->data = array(
             'page_header'           => 'Official Business Management',
             'official_businesses'   => $official_businesses,
-            'ob_requests'            => $ob_requests,
+            'ob_requests'           => $ob_requests,
+            'total_rejected'        => $total_rejected,
+            'total_approved'        => $total_approved,
+            'total_pending'         => $total_pending,
+            'total_cancelled'       => $total_cancelled,
             'active_menu'           => $this->active_menu
         );
 
@@ -67,11 +91,17 @@ class Attendance_official_businesses extends MY_Controller {
     {
         $accounts = $this->account_model->get_account_all();
         $contact_persons = $this->contact_person_model->get_contact_person_all();
+
+        $user_id = $this->ion_auth->user()->row()->id;
+        $user_data = $this->user_model->get_by(['id' => $user_id]);
+        $approver_id = $this->employee_info_model->get_by(['employee_id' => $user_data['employee_id']]);
           
         $this->data = array(
             'page_header'     => 'Official Business Management',
             'accounts'        => $accounts, 
             'contact_persons' => $contact_persons,
+            'user_data'       => $user_data,
+            'approver_id'     => $approver_id,
             'active_menu'     => $this->active_menu,
         );
 
@@ -202,7 +232,7 @@ class Attendance_official_businesses extends MY_Controller {
         }
     }
 
-        public function cancel($ob_id)
+    public function cancel($ob_id)
     {
         $this->load->model('attendance_official_business_model');
         $update = $this->attendance_official_business_model->update($ob_id, ['status' => 0]);
@@ -216,7 +246,7 @@ class Attendance_official_businesses extends MY_Controller {
             $this->email->from('joseph.gono@systemantech.com', 'OBR - Josh Gono');
             $this->email->to('gono.josh@gmail.com');
 
-            $this->email->subject('Official Business Request - Disapproved');
+            $this->email->subject('Official Business Request - Cancelled');
             $this->email->message($message);
 
             $this->email->send();
@@ -301,5 +331,193 @@ class Attendance_official_businesses extends MY_Controller {
         );
 
         $this->load->view('modals/modal-ob', $data);
+    }
+
+    public function approve_official_business($id)
+    {
+        $official_business_data         = $this->attendance_official_business_model->get_by(['id' => $id]);
+        $data['official_business_data'] = $official_business_data;
+
+        $employee_id = $official_business_data['employee_id'];
+
+        if ( ! isset($employee_id) ) {
+
+            $this->session->set_flashdata('failed', '');
+            redirect('attendance_official_businesses');
+
+        }
+
+        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+        $data['modal_title']   = 'Approve Official Business';
+        $data['modal_message'] = sprintf(lang('approve_official_business_message'), $requester['full_name']);
+        $data['url']  = 'attendance_official_businesses/approve_official_business/' . $official_business_data['id'];
+        $data['mode'] = 'approve';
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']) && $post['mode'] == 'approve') {
+            $result = $this->attendance_official_business_model->update($id, ['approval_status' => 1]);
+
+            if ($result){
+
+                $this->load->library('email');
+
+                $ut_id = $official_business_data;
+                
+                $user_id = $this->ion_auth->user()->Srow()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+                
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Official Business - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Official Business Request');
+                $this->email->message('Your official business request has been successfully approved');
+
+                $this->email->send();
+                redirect('attendance_official_businesses');                
+
+                $this->session->set_flashdata('message', 'Official Business successfully approved');
+            }
+            else{
+                $this->session->set_flashdata('failed', 'Unable to approve official business');
+                redirect('attendance_official_businesses');
+            }
+        }
+        $this->load->view('modals/modal-undertime-confirmation', $data);
+    }
+
+    public function reject_official_business($id)
+    {
+        $official_business_data         = $this->attendance_official_business_model->get_by(['id' => $id]);
+        $data['official_business_data'] = $official_business_data;
+
+        $employee_id = $official_business_data['employee_id'];
+
+        if ( ! isset($employee_id) ) {
+
+            $this->session->set_flashdata('failed', '');
+            redirect('attendance_official_businesses');
+
+        }
+
+        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+        $data['modal_title']   = 'Reject Official Business';
+        $data['modal_message'] = sprintf(lang('reject_official_business_message'), $requester['full_name']);
+        $data['url']  = 'attendance_official_businesses/reject_official_business/' . $official_business_data['id'];
+        $data['mode'] = 'reject';
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']) && $post['mode'] == 'reject') {
+            $result = $this->attendance_official_business_model->update($id, ['approval_status' => 0]);
+
+            if ($result){
+                $this->session->set_flashdata('message', 'Official Business successfully rejected');
+
+                $this->load->library('email');
+
+                $ut_id = $official_business_data;
+
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Official Business - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Official Business Request');
+                $this->email->message('Your official business request was rejected');
+
+                $this->email->send();
+                redirect('attendance_official_businesses');  
+            }
+            else{
+                $this->session->set_flashdata('failed', 'Unable to reject official business');
+                redirect('attendance_official_businesses');
+            }
+        }
+        $this->load->view('modals/modal-confirmation', $data);
+    }
+
+
+    public function cancel_official_business($id)
+    {
+        $official_business_data         = $this->attendance_official_business_model->get_by(['id' => $id]);
+        $data['official_business_data'] = $official_business_data;
+
+        $employee_id = $official_business_data['employee_id'];
+
+        if ( ! isset($employee_id) ) {
+
+            $this->session->set_flashdata('failed', '');
+            redirect('attendance_official_businesses');
+
+        }
+
+        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+
+        $data['modal_title']   = 'Cancel Official Business';
+        $data['modal_message'] = sprintf(lang('cancel_official_business_message'), $requester['full_name']);
+        $data['url']  = 'attendance_official_businesses/cancel_official_business/' . $official_business_data['id'];
+        $data['mode'] = 'cancel';
+
+        $post = $this->input->post();
+
+        $post = $this->input->post();
+
+        if (isset($post['mode']) && $post['mode'] == 'cancel') {
+            $result = $this->attendance_official_business_model->update($id, ['status' => 0]);
+
+            if ($result){
+                $this->session->set_flashdata('message', 'Official Business successfully cancelled');
+
+                $this->load->library('email');
+
+                $ut_id = $official_business_data;
+
+                $user_id = $this->ion_auth->user()->row()->id;
+                $user_data = $this->user_model->get_by(['id' => $user_id]);
+
+                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+
+                $data = [
+                    'employee_data'  => $employee_data,
+                    'ut_id'          => $ut_id,
+                ];
+
+                //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $this->email->from('gono.josh@gmail.com', 'Official Business - Josh Gono');
+                $this->email->to('joseph.gono@systemantech.com');
+
+                $this->email->subject('[KAWANI-Attendance]: Official Business Request');
+                $this->email->message('Your official business request was cancelled');
+
+                $this->email->send();
+                redirect('attendance_official_businesses');
+            }
+            else{
+                $this->session->set_flashdata('failed', 'Unable to cancel official business');
+                redirect('attendance_official_businesses');
+            }
+        }
+        $this->load->view('modals/modal-confirmation', $data);
     }
 }
