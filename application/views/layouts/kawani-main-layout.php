@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/daterangepicker/daterangepicker.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/timepicker/bootstrap-timepicker.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/toastr/toastr.css'); ?>">
-		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/iCheck/flat/blue.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/iCheck/all.css'); ?>">
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
@@ -85,7 +85,6 @@
 		<script type="text/javascript">
 			$(document).ready(function () {
 				$('.select2').select2();
-				$('.datepicker').datepicker();
 				$('.reservation').daterangepicker({
 					format: 'YYYY-MM-DD h:mm:ss A',
 					timePicker: true,
@@ -93,6 +92,11 @@
 				});
 				$(".timepicker").timepicker({
 					showInputs: false
+				});
+
+				$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+					checkboxClass: 'icheckbox_flat-green',
+					radioClass: 'iradio_flat-green'
 				});
 			});
 		</script>

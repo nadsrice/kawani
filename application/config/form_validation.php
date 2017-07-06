@@ -464,7 +464,7 @@ $config = array(
 
     'leave_add' => array(
         array(
-            'field' => 'leave_type_id',
+            'field' => 'attendance_leave_type_id',
             'label' => 'Leave Type',
             'rules' => 'trim|required'
         ),
@@ -482,12 +482,17 @@ $config = array(
             'field' => 'reason',
             'label' => 'Reason',
             'rules' => 'trim'
-        )
+        ),
+        array(
+            'field' => 'payment_status',
+            'label' => 'Payment Status',
+            'rules' => 'trim|required'
+        ),
     ), 
 
     'leave_edit' => array(
         array(
-            'field' => 'leave_type_id',
+            'field' => 'attendance_leave_type_id',
             'label' => 'Leave Type',
             'rules' => 'trim|required'
         ),

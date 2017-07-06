@@ -46,7 +46,7 @@ class Branches extends MY_Controller {
 
 		$branches = $this->branch_model->get_branch_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('branch_add'));
-		
+		// dump($data);exit;
 		$this->form_validation->set_data($data);
 
 		if ($this->form_validation->run('branch_add') == TRUE)
@@ -66,9 +66,9 @@ class Branches extends MY_Controller {
 
 	function details($id)
 	{
-		$branch = $this->branch_model->get_branch_by(['branches.id' => $id]);
-		$site = $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
-		$sites = $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
+		$branch 		= $this->branch_model->get_branch_by(['branches.id' => $id]);
+		$site 			= $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
+		$sites 			= $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
 		$employee_infos = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
 		
 		$this->data = array(

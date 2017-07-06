@@ -52,36 +52,27 @@ class Attendance_official_businesses extends MY_Controller {
         $total_pending      = $this->attendance_official_business_model->count_by(['approval_status' => 2]); //2 = pending 
         $total_cancelled    = $this->attendance_official_business_model->count_by(['status' => 0]);         //0 = cancelled
 
-        $user_id = $this->ion_auth->user()->row()->id;
-        $user_data = $this->user_model->get_by(['id' => $user_id]);
+        $user                       = $this->ion_auth->user()->row();
+        // $user_data                  = $this->user_model->get_by(['id' => $user_id]);
 
-        $official_businesses  = $this->attendance_official_business_model->get_ob_all();
+        $official_businesses        = $this->attendance_official_business_model->get_ob_all();
 
-        $ob_requests          = $this->attendance_official_business_model->get_ob_requests_by([
-            'attendance_official_businesses.approver_id' => $user_data['employee_id'],
-            'attendance_official_businesses.approval_status' => 2
-        ]);
+        $my_official_business       = $this->attendance_official_business_model->get_ob_requests_by([
+            'attendance_official_businesses.employee_id' => $user->employee_id]);
 
-        // dump($ob_requests);exit;
-
-        // $ob_approvals = $this->attendance_official_business_model->get_ob([
-        //     'attendance_official_businesses'
-        // ]);
-
-        // dump($this->db->last_query());
-        // dump($ob_request);
-        // exit;
-        //$employee_info = $this->employee_model->get_employee_data('employee_contacts', ['employee_id' => 3]);
+        $approval_official_business = $this->attendance_official_business_model->get_ob_requests_by([
+            'attendance_official_businesses.approver_id' => $user->employee_id]);
 
         $this->data = array(
-            'page_header'           => 'Official Business Management',
-            'official_businesses'   => $official_businesses,
-            'ob_requests'           => $ob_requests,
-            'total_rejected'        => $total_rejected,
-            'total_approved'        => $total_approved,
-            'total_pending'         => $total_pending,
-            'total_cancelled'       => $total_cancelled,
-            'active_menu'           => $this->active_menu
+            'page_header'                  => 'Official Business Management',
+            'official_businesses'          => $official_businesses,
+            'my_official_businesses'       => $my_official_business,
+            'approval_official_businesses' => $approval_official_business,
+            'total_rejected'               => $total_rejected,
+            'total_approved'               => $total_approved,
+            'total_pending'                => $total_pending,
+            'total_cancelled'              => $total_cancelled,
+            'active_menu'                  => $this->active_menu
         );
 
         $this->load_view('pages/attendance_official_business-lists');
@@ -362,19 +353,38 @@ class Attendance_official_businesses extends MY_Controller {
 
                 $this->load->library('email');
 
-                $ut_id = $official_business_data;
+                // $ut_id = $official_business_data;
                 
-                $user_id = $this->ion_auth->user()->Srow()->id;
-                $user_data = $this->user_model->get_by(['id' => $user_id]);
+                // $user_id = $this->ion_auth->user()->row()->id;
+                // $user_data = $this->user_model->get_by(['id' => $user_id]);
                 
-                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
+                // $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
 
-                $data = [
-                    'employee_data'  => $employee_data,
-                    'ut_id'          => $ut_id,
-                ];
+                // $data = [
+                //     'employee_data'  => $employee_data,
+                //     'ut_id'          => $ut_id,
+                // ];
 
                 //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+
+                $requester_data  = $this->employee_model->get_by(['id' => $leave_data['employee_id']]);
+                $requester_email = $this->ion_auth->user($requester_data['system_user_id'])->row()->email;
+
+                $approver_data   = $this->employee_model->get_by(['id' => $leave_data['approver_id']]);
+                $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
+
+                $data = [
+                    'requester_data'  => $requester_data,
+                    'requester_email' => $requester_email,
+                    'approver_data'   => $approver_data,
+                    'approver_email'  => $approver_email,
+                    'leave_data'      => $leave_data,
+                    'leave_days_request' => $leave_days_request
+                ];
+
+                $subject = 'Leave Request'; // TODO: let's make this dynamic
+                $email_template = 'templates/email/leave.tpl.php'; // TODO: let's make this dynamic also
+                $name = $subject.' - '.$requester_data['full_name'];
 
                 $this->email->from('gono.josh@gmail.com', 'Official Business - Josh Gono');
                 $this->email->to('joseph.gono@systemantech.com');

@@ -30,12 +30,18 @@ class Attendance_overtimes extends MY_Controller {
 
     function index()
     {
-        $overtime = $this->attendance_overtime_model->get_overtime_all();
+        $user               = $this->ion_auth->user()->row();
+        $my_overtimes       = $this->attendance_overtime_model->get_overtimes([
+            'attendance_overtimes.employee_id' => $user->employee_id]);
+
+        $approval_overtimes = $this->attendance_overtime_model->get_overtimes([
+            'attendance_overtimes.approver_id' => $user->employee_id]);
 
         $this->data = array(
-            'page_header' => 'Overtime Management',
-            'overtime'    => $overtime,
-            'active_menu' => $this->active_menu,
+            'page_header'         => 'Overtime Management',
+            'my_overtimes'        => $my_overtimes,
+            'approval_overtimes'  => $approval_overtimes,
+            'active_menu'         => $this->active_menu,
         );
         $this->load_view('pages/attendance_overtime-lists');
     }

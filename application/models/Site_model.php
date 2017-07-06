@@ -33,10 +33,10 @@ class Site_model extends MY_Model {
     protected function set_default_data($site)
     {   
         $site['active_status']  = ($site['active_status'] == 1) ? 'Active' : 'Inactive';
-        $site['site_address'] = $site['block_number'].' '.$site['lot_number'].' '.
-                                $site['floor_number'].' '.$site['building_number'].' '.
-                                $site['building_name'].', '.$site['street'];
-        $site['status_label']  = ($site['active_status'] == 'Active') ? 'De-activate' : 'Activate';
+        $site['site_address']   = $site['block_number'].' '.$site['lot_number'].' '.
+                                    $site['floor_number'].' '.$site['building_number'].' '.
+                                    $site['building_name'].', '.$site['street'];
+        $site['status_label']   = ($site['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $site;
     }
     
@@ -65,10 +65,27 @@ class Site_model extends MY_Model {
     public function get_site_all()
     {
         $query = $this->db;
-        $query->select('sites.*, companies.name as company_name, branches.name as branch_name');
-        $query->join('companies', 'sites.company_id = companies.id', 'left');
+        $query->select(
+            'sites.*, companies.name as company_name, branches.name as branch_name'
+            );
+
+        $query->join('companies', 'sites.company_id = companies.id', 'left');        
         $query->join('branches', 'sites.branch_id = branches.id', 'left');
         $query->order_by('sites.name', 'asc');
+
+        return $this->get_all();
+    }
+
+    public function get_site_employees()
+    {
+        $query = $this->db;
+        $query->select(
+            'sites.*, 
+             CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name," " ,employees.middle_name) as full_name,
+             employees.employee_code as employee_code, employees.id as employee_id'
+            );     
+        $query->join('employees', 'sites.company_id = employees.company_id', 'left');
+        $query->order_by('employees.last_name', 'asc');
 
         return $this->get_all();
     }

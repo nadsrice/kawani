@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Leave_type_model extends MY_Model {
 
-    protected $_table = 'leave_types';
+    protected $_table = 'attendance_leave_types';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 

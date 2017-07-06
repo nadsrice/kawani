@@ -475,6 +475,7 @@ class Attendance_undertimes extends MY_Controller {
         $view_ut        = $this->attendance_undertime_model->get_by(['id' => $id]);
         $employee_data  = $this->employee_model->get_by(['id' => $id]);
 
+
         $data = array(
 
             'view_ut'           => $view_ut,
@@ -482,6 +483,8 @@ class Attendance_undertimes extends MY_Controller {
 
         );
 
+        dump($id);
+        dump($employee_data);exit;
         $this->load->view('modals/modal-undertime-view', $data);
     }
 

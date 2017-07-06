@@ -58,8 +58,6 @@ class Position_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('*');
-        $query->join('employee_info', 'employee_info.position_id = positions.id');
-
         return $this->get_all();
     }
 

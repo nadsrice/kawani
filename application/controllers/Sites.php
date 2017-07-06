@@ -25,7 +25,10 @@ class Sites extends MY_Controller {
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['employee_info_model']);
+        $this->load->model([
+            'employee_info_model',
+            'location_model'
+        ]);
     }
 
     function index()
@@ -76,14 +79,18 @@ class Sites extends MY_Controller {
     function edit($id)
     {
         // get specific site based on the id
-        $site = $this->site_model->get_site_by(['sites.id' => $id]);
+        $site      = $this->site_model->get_site_by(['sites.id' => $id]);
+        $companies = $this->company_model->get_many_by(['active_status' => 1]);
+        $branches  = $this->branch_model->get_many_by(['active_status' => 1]);
         // dump($site);exit;
         // get all company records where status is equal to active
         //$companies = $this->company_model->get_many_by(['active_status' => 1]);
         // dump($this->db->last_query());exit;
         $this->data = array(
             'page_header' => 'Site Management',
-            'site'      => $site,
+            'site'        => $site,
+            'companies'   => $companies,
+            'branches'    => $branches,
             'active_menu' => $this->active_menu,
         );
 
@@ -108,15 +115,19 @@ class Sites extends MY_Controller {
         $this->load_view('forms/site-edit');       
     }
 
-    function details($id)
+    public function details($id)
     {
-        $site = $this->site_model->get_site_by(['sites.id' => $id]);
+        $site  = $this->site_model->get_site_by(['sites.id' => $id]);
+        $sites = $this->site_model->get_site_employees();
+        // $locations  = $this->location_model->get_locations();
 
         $this->data = array(
             'page_header' => 'Site Details',
-            'site'      => $site,
+            'site'        => $site,
+            'sites'       => $sites,
             'active_menu' => $this->active_menu,
         );
+        // dump($sites);exit;
         $this->load_view('pages/site-details');           
     }
 

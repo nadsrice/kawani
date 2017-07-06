@@ -89,24 +89,24 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php if ( ! empty($official_businesses)): ?>
-								<?php foreach ($official_businesses as $official_business): ?>
+								<?php if ( ! empty($my_official_businesses)): ?>
+								<?php foreach ($my_official_businesses as $my_official_business): ?>
 								<tr>
 									<td>
-										<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('official_businesses/view_ob/' . $official_business['id']); ?>">
+										<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('official_businesses/view_ob/' . $my_official_business['id']); ?>">
 										<i class="fa fa-search"></i> View
 										</a>
-										<!--  <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('official_businesses/edit/' . $official_business['id']); ?>">
+										<!--  <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('official_businesses/edit/' . $my_official_business['id']); ?>">
 										<i class="fa fa-pencil-square-o"></i> Edit
 										</a> -->
 									</td>
-									<td class="text-right"><?php echo $official_business['id']; ?></td>
-									<td class="text-left"><?php echo $official_business['account_name']; ?></td>
-									<td class="text-left"><?php echo $official_business['contact_person']; ?></td>
-									<td class="text-left"><?php echo $official_business['agenda']; ?></td>
-									<td class="text-left"><?php echo $official_business['location']; ?></td>
-									<td class="text-right"><?php echo $official_business['date']; ?></td>
-									<td class="text-right"><?php echo $official_business['ob_time']; ?></td>
+									<td class="text-right"><?php echo $my_official_business['id']; ?></td>
+									<td class="text-left"><?php echo $my_official_business['account_name']; ?></td>
+									<td class="text-left"><?php echo $my_official_business['contact_person']; ?></td>
+									<td class="text-left"><?php echo $my_official_business['agenda']; ?></td>
+									<td class="text-left"><?php echo $my_official_business['location']; ?></td>
+									<td class="text-right"><?php echo $my_official_business['date']; ?></td>
+									<td class="text-right"><?php echo $my_official_business['ob_time']; ?></td>
 								</tr>
 								<?php endforeach; ?>
 							<?php endif; ?>
@@ -131,36 +131,36 @@
 								</tr>
 							</thead>
 							<tbody>
-							<?php if ( ! empty($ob_requests)): ?>
-								<?php foreach ($ob_requests as $ob_request): ?>
+							<?php if ( ! empty($approval_official_businesses)): ?>
+								<?php foreach ($approval_official_businesses as $approval_official_business): ?>
 								<tr>
 									<td>
-										<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('official_businesses/view_ob/' . $ob_request['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($ob_request['id']); ?>">
+										<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('official_businesses/view_ob/' . $approval_official_business['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($approval_official_business['id']); ?>">
 										<i class="fa fa-search"></i> View
 										</a>
 
-                                        <?php foreach ($ob_request['action_menus'] as $action_menu): ?>
+                                        <?php foreach ($approval_official_business['action_menus'] as $action_menu): ?>
                                             <a class="<?php echo $action_menu['button_style']; ?>" href="<?php echo $action_menu['url']; ?>" <?php echo ($action_menu['modal_status']) ? $action_menu['modal_attributes'] : ''; ?>>
                                                 <i class="<?php echo $action_menu['icon']; ?>"></i> <?php echo $action_menu['label']; ?>
                                             </a>
                                         <?php endforeach ?>
 									</td>
 
-									<td class="text-right"><?php echo $ob_request['id']; ?></td>
-									<td class="text-left"><?php echo $ob_request['full_name']; ?></td>
-									<td class="text-left"><?php echo $ob_request['account_name']; ?></td>
-									<td class="text-left"><?php echo $ob_request['contact_person']; ?></td>
-									<td class="text-left"><?php echo $ob_request['agenda']; ?></td>
-									<td class="text-left"><?php echo $ob_request['location']; ?></td>
-									<td class="text-right"><?php echo $ob_request['date']; ?></td>
-									<td class="text-right"><?php echo $ob_request['ob_time']; ?></td>
+									<td class="text-right"><?php echo $approval_official_business['id']; ?></td>
+									<td class="text-left"><?php echo $approval_official_business['full_name']; ?></td>
+									<td class="text-left"><?php echo $approval_official_business['account_name']; ?></td>
+									<td class="text-left"><?php echo $approval_official_business['contact_person']; ?></td>
+									<td class="text-left"><?php echo $approval_official_business['agenda']; ?></td>
+									<td class="text-left"><?php echo $approval_official_business['location']; ?></td>
+									<td class="text-right"><?php echo $approval_official_business['date']; ?></td>
+									<td class="text-right"><?php echo $approval_official_business['ob_time']; ?></td>
 								</tr>
-								<div class="modal fade" id="view-ob-<?php echo md5($ob_request['id']); ?>" role="dialog">
+								<div class="modal fade" id="view-ob-<?php echo md5($approval_official_business['id']); ?>" role="dialog">
 									<div class="modal-dialog">
 										<div class="modal-content"></div>
 									</div>
 								</div>
-                                <?php foreach ($ob_request['action_menus'] as $action_menu): ?>
+                                <?php foreach ($approval_official_business['action_menus'] as $action_menu): ?>
                                     <div class="modal fade" id="<?php echo $action_menu['modal_id']; ?>" role="dialog">
                                         <div class="modal-dialog">
                                             <div class="modal-content"></div>

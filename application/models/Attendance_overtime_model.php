@@ -18,7 +18,7 @@ class Attendance_overtime_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    //protected $after_get = ['set_default_data'];
+    protected $after_get = ['set_default_menus'];
 
     protected function generate_date_created_status($overtime)
     {
@@ -103,17 +103,12 @@ class Attendance_overtime_model extends MY_Model {
         $query = $this->db;
         $query->select('
                     attendance_overtimes.*,
-                    teams.name as team,
-                    departments.name as department,
                     employees.employee_code as employee_code,
                     CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name,
                 ')
               ->join('employees', 'employees.id = attendance_overtimes.employee_id', 'left')
-              ->join('teams', 'teams.id = attendance_overtimes.team_id', 'left')
-              ->join('departments', 'departments.id = attendance_overtimes.department_id', 'left')
               ->order_by('employees.last_name', 'asc')
               ->order_by('attendance_overtimes.date', 'desc');
-
 
         return $this->get_many_by($where);
     }
