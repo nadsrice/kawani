@@ -1,8 +1,6 @@
 <form action="<?php echo site_url('users/assign_roles/'.$user_id); ?>" method="post">
 	
-</form>
-
-<div class="modal-header">
+	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">&times;</button>
 		<h4 class="modal-title"><?php echo $modal_header; ?></h4>
 	</div>
@@ -40,7 +38,7 @@
 			<?php endforeach; ?>
 			</tbody>
 		</table>
-		<ul id="sortable1" class="connectedSortable">
+		<!-- <ul id="sortable1" class="connectedSortable">
 			<li class="ui-state-default">Item 1</li>
 			<li class="ui-state-default">Item 2</li>
 			<li class="ui-state-default">Item 3</li>
@@ -54,13 +52,14 @@
 			<li class="ui-state-highlight">Item 3</li>
 			<li class="ui-state-highlight">Item 4</li>
 			<li class="ui-state-highlight">Item 5</li>
-		</ul>
+		</ul> -->
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-success" id="testdasds">TEST</button>
-		<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		<button type="submit" class="btn btn-success">Yes</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		<button type="submit" class="btn btn-success">Save</button>
 	</div>
+
+</form>
 <script>
 	
 	$(function() {

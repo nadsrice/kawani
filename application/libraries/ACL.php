@@ -61,7 +61,9 @@ class ACL {
 	{
 		$modules = $this->acl_model->get_role_permission_modules([
 			'role_permission.role_id'		 => $role_id,
-			'role_permission.active_status'  => 1
+			'role_permission.active_status'  => 1,
+			'role_permission.system_module_id !=' => 0,
+			'role_permission.system_function_id !=' => 0
 		]);
 
 		$navigation_menu = array();
@@ -71,9 +73,9 @@ class ACL {
 			$key = strtolower($module->s_module_name);
 
 			$modules_functions = $this->acl_model->get_role_permission_functions([
+				's_function.system_module_id' 	=> $module->s_module_id,
 				'role_permission.role_id' 		=> $role_id,
-				'role_permission.active_status' => 1,
-				's_function.system_module_id' 	=> $module->s_module_id
+				'role_permission.active_status' => 1
 			]);
 
 			$navigation_menu[$key] = [
@@ -126,7 +128,6 @@ class ACL {
 				}
 			}
 		}
-		dump($navigation_menu, 'navigation_menu: ');
 
 		return $navigation_menu;
 	}

@@ -65,7 +65,8 @@ $autoload['libraries'] = array(
 	'session',
 	'ion_auth',
 	'ion_auth_acl',
-	'form_validation'
+	'form_validation',
+	'audit_trail'
 );
 
 /*

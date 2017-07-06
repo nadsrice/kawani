@@ -17,13 +17,9 @@
 						</tr>
 					</thead>
 					<?php foreach ($users as $user): ?>
-					<?php if ($user->id != 1): ?>
 					<tbody>
 						<tr>
 							<td>
-								<a class="<?php echo $btn_update ?>" href="<?php echo site_url('auth/edit_user/'.$user->id); ?>">
-									<i class="fa fa-pencil-square-o"></i> Edit
-								</a>
 								<a class="<?php echo $btn_update ?>" href="<?php echo site_url('users/confirmation/'.$user->id); ?>" data-toggle="modal" data-target="#update-user-status-<?php echo md5($user->id); ?>">
 									<i class="fa fa-cog"></i> <?php echo ($user->active) ? 'De-activate' : 'Activate'; ?>
 								</a>
@@ -34,18 +30,20 @@
 							<td>
 								<form action="<?php echo site_url('users/update_default_role/'); ?>" method="post" name="userRoleForm">
 									<div class="input-group">
-										<select class="form-control" name="user_role_id" onchange="this.form.submit()">
+										<select class="form-control" name="user_role_id" onchange="this.form.submit()" <?php echo $has_permission['update_role']; ?>>
 											<?php foreach ($user->groups as $group): ?>
 											<option value="<?php echo $group->id; ?>" <?php echo ($group->default_status == 1) ? 'selected class="text-red"':''; ?>>
 												<strong><?php echo strtoupper(htmlspecialchars($group->name,ENT_QUOTES,'UTF-8')); ?></strong>
 											</option>
 											<?php endforeach?>
 										</select>
-										<span class="input-group-btn">
-											<a href="<?php echo site_url('users/assign_roles/'.$user->id); ?>" class="btn btn-default" data-toggle="modal" data-target="#modal-assign-roles-<?php echo md5($user->id); ?>">
-												<i class="fa fa-plus"></i>
-											</a>
-										</span>
+										<?php if ($has_permission['assign_role']): ?>
+											<span class="input-group-btn">
+												<a href="<?php echo site_url('users/assign_roles/'.$user->id); ?>" class="btn btn-default" data-toggle="modal" data-target="#modal-assign-roles-<?php echo md5($user->id); ?>">
+													<i class="fa fa-plus"></i>
+												</a>
+											</span>
+										<?php endif ?>
 									</div>
 									<input type="hidden" name="user_id" value="<?php echo $user->id; ?>">
 								</form>
@@ -57,13 +55,12 @@
 							<div class="modal-content"></div>
 						</div>
 					</div>
-					<div class="modal fade <?php echo ( ! empty($this->session->flashdata('modal_status'))) ? $this->session->flashdata('modal_status') : ''; ?>" id="modal-assign-roles-<?php echo md5($user->id); ?>">
+					<div class="modal fade" id="modal-assign-roles-<?php echo md5($user->id); ?>">
 						<div class="modal-dialog">
 							<div class="modal-content"></div>
 						</div>
 					</div>
-				<?php endif; ?>
-				<?php endforeach; ?>
+					<?php endforeach; ?>
 				</table>
 			</div>
 		</div>

@@ -319,3 +319,19 @@ background-color: #fff2e0;
 	font-size: 1.2em;
 	width: 120px;
 }
+
+.login-page, .register-page {
+    background: url(../img/app/login_page_background.png) no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.login-box-body, .register-box-body {
+    opacity: .75;
+    background: #282c34;
+    padding: 20px;
+    border-top: 0;
+    color: #ffffff;
+}

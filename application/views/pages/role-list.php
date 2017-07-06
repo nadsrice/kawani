@@ -17,7 +17,7 @@
                 <i class="fa fa-list"></i> <h3 class="box-title">List of Roles</h3>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-striped table-hover" id="datatables-roles">
+                <table class="table table-bordered table-striped table-hover" id="datatables-default">
                     <thead>
                         <tr>
                             <th style="width: 250px;">&nbsp;</th>
@@ -49,11 +49,7 @@
                                 </tr>
                                 <div class="modal fade" id="update-role-status-<?php echo md5($role['id']); ?>" role="dialog">
                                     <div class="modal-dialog">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <!-- http://localhost/kawani_ci/roles/update_status/1 -->
-                                            
-                                        </div>
+                                        <div class="modal-content"></div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

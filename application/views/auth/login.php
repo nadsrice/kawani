@@ -15,6 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/iCheck/flat/blue.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/iCheck/minimal/blue.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>">
 
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,7 +27,11 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
 	</head>
 	<body class="hold-transition login-page">
-		<div class="login-box">
+		
+		<div class="row">
+			<div class="col-lg-8"></div>
+			<div class="col-lg-4">
+				<div class="login-box">
 			<div class="login-logo">
 				<a href="javascript:void(0);"><b>KAWANI</b></a>
 			</div>
@@ -73,6 +78,8 @@
 
 			</div>
 			<!-- /.login-box-body -->
+		</div>
+			</div>
 		</div>
 		<!-- /.login-box -->
 
