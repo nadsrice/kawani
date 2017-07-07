@@ -61,6 +61,7 @@ class Account_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('accounts.*');
+        $query->order_by('name', 'asc');
 
         return $this->get_all();
     }

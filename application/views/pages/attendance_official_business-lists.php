@@ -75,7 +75,7 @@
 				<div class="tab-content">
 					<div class="tab-pane fade in active" id="my_ob">
 						<div class="table-responsive">
-							<table class="table table-bordered table-striped table-hover" id="datatables-myob">
+							<table class="table table-bordered table-striped table-hover" id="datatables-my_official_business">
 							<thead>
 								<tr>
 									<th style="width: 250px;">&nbsp;</th>
@@ -116,7 +116,7 @@
 					</div>
 					<div class="tab-pane fade in" id="ob_approvals">
 						<div class="table-responsive">
-							<table class="table table-bordered table-striped table-hover" id="datatables-obr">
+							<table class="table table-bordered table-striped table-hover" id="datatables-approval_official_business">
 							<thead>
 								<tr>
 									<th style="width: 350px;">&nbsp;</th>
