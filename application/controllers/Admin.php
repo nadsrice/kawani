@@ -16,7 +16,6 @@ class Admin extends CI_Controller
         if( ! $this->ion_auth->logged_in() )
             redirect('auth/login');
 
-
         if( ! $this->ion_auth_acl->has_permission('access_admin'))
             redirect('/dashboard');
     }
