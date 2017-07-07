@@ -439,7 +439,7 @@ class Ion_auth_acl_model extends Ion_auth_model
      */
     public function add_permission_to_group($group_id = FALSE, $perm_id = FALSE, $value = 0)
     {
-        dump($perm_id);
+        // dump($perm_id);
         // bail if the group id & permission id were not passed
         if( ! $group_id)
         {
