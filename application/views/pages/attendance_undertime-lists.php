@@ -55,7 +55,7 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="myUndertime">
-                    <table class="table table-bordered table-striped table-hover" id="">
+                    <table class="table table-bordered table-striped table-hover" id="datatables-my_undertimes">
                         <thead>
                             <tr>
                                 <th style="width: 250px;">&nbsp;</th>
@@ -95,7 +95,7 @@
                     </table>
                 </div>
                 <div class="tab-pane fade in" id="approvals">
-                    <table class="table table-bordered table-striped table-hover" id="">
+                    <table class="table table-bordered table-striped table-hover" id="datatables-approval_undertimes">
                         <thead>
                             <tr>
                                 <th style="width: 250px;">&nbsp;</th>

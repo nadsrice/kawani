@@ -32,6 +32,10 @@ class Employee_model extends MY_Model {
 
     protected function set_default_data($employee)
     {
+        if ( ! isset($employee)) {
+            return FALSE;
+        }
+                 
         $full_name = $employee['last_name'].', '.$employee['first_name'].' '.$employee['middle_name'];
         $employee['full_name'] = strtoupper($full_name);
         $employee['label_status'] = ($employee['active_status'] == 1) ? 'Active' : 'Inactive';
