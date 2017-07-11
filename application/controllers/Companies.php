@@ -25,6 +25,7 @@ class Companies extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('audit_trail');
 	}
 
 	public function index()
@@ -39,20 +40,19 @@ class Companies extends MY_Controller {
 			'companies'    => $companies,
 			'active_menu' => $this->active_menu,
 		);
-		
+
 		$this->load_view('pages/company-lists');
 	}
 
 	public function add()
 	{
-	      
         $this->data = array(
             'page_header' => 'Company Management',
             'active_menu' => $this->active_menu,
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('company_add'));
-        
+
         $this->form_validation->set_data($data);
 
         if ($this->form_validation->run('company_add') == TRUE)
@@ -67,34 +67,34 @@ class Companies extends MY_Controller {
                 redirect('companies');
             }
         }
-        $this->load_view('forms/company-add');	
+        $this->load_view('forms/company-add');
 	}
 
-
-
-    public function edit($id)
+    public function edit($company_id)
     {
-        // get specific company based on the id
-        $company = $this->company_model->get_company_by(['companies.id' => $id]);
-        // dump($company);exit;
-        // get all company records where status is equal to active
-        //$companies = $this->company_model->get_many_by(['active_status' => 1]);
-        // dump($this->db->last_query());exit;
+		if ( ! $this->ion_auth_acl->has_permission('edit_company'))
+		{
+			$this->session->set_flashdata('failed', 'You have no permission to access this module');
+			redirect('/', 'refresh');
+		}
+
+        $company = $this->company_model->get_company_by(['companies.id' => $company_id]);
+
         $this->data = array(
             'page_header' => 'Company Management',
-            'company'      => $company,
+            'company'     => $company,
             'active_menu' => $this->active_menu,
         );
 
-        // $companies = $this->company_model->get_company_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('company_add'));
-        
+
         $this->form_validation->set_data($data);
-        // dump($data);exit();
 
         if ($this->form_validation->run('company_add') == TRUE)
         {
-            $company_id = $this->company_model->update($id, $data);
+			$this->session->set_flashdata('old_data', $company);
+
+            $company_id = $this->company_model->update($company_id, $data);
 
             if ( ! $company_id) {
                 $this->session->set_flashdata('failed', 'Failed to update company.');
@@ -104,7 +104,7 @@ class Companies extends MY_Controller {
                 redirect('companies');
             }
         }
-        $this->load_view('forms/company-edit');         
+        $this->load_view('forms/company-edit');
     }
 
     public function details($id)
@@ -122,7 +122,7 @@ class Companies extends MY_Controller {
             'active_menu' => $this->active_menu,
         );
 
-        $this->load_view('pages/company-details');          
+        $this->load_view('pages/company-details');
     }
 
     public function edit_confirmation($id)
@@ -141,7 +141,7 @@ class Companies extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']))
-        {   
+        {
             $result = FALSE;
 
             if ($post['mode'] == 'De-activate')
@@ -158,7 +158,7 @@ class Companies extends MY_Controller {
             }
 
             if ($result)
-            {               
+            {
                  $this->session->set_flashdata('message', $company_data['name'].' successfully '.$post['mode'].'d!');
                  redirect('companies');
             }
@@ -167,7 +167,7 @@ class Companies extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$company_data['name'].'!');
                 redirect('companies');
             }
-            
+
         }
         else
         {
