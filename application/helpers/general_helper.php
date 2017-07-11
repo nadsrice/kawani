@@ -21,6 +21,27 @@ if ( ! function_exists('remove_unknown_field'))
     }
 }
 
+if ( ! function_exists('filter_data'))
+{
+    function filter_data($table, $data)
+    {
+        $ci =& get_instance();
+
+        $filtered_data = array();
+        $columns = $ci->db->list_fields($table);
+
+        if ( ! is_array($data)) return FALSE;
+
+        foreach ($columns as $column)
+        {
+            if (array_key_exists($column, $data))
+                $filtered_data[$column] = $data[$column];
+        }
+
+        return $filtered_data;
+    }
+}
+
 if ( ! function_exists('dump')) {
     function dump($var, $label = 'Dump', $echo = true)
     {

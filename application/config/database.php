@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'kawani',
+	'database' => 'kawani_dev_201706261133p',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -116,4 +116,3 @@ $db['josh'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-

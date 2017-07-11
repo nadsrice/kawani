@@ -168,7 +168,7 @@ class MY_Model extends CI_Model
     public function get_many_by()
     {
         $where = func_get_args();
-        
+
         $this->_set_where($where);
 
         return $this->get_all();
@@ -896,7 +896,7 @@ class MY_Model extends CI_Model
                     }
                 }
             }
-        } 
+        }
         else if (count($params) == 1)
         {
             $this->_database->where($params[0]);
@@ -905,7 +905,7 @@ class MY_Model extends CI_Model
 		{
             if (is_array($params[1]))
             {
-                $this->_database->where_in($params[0], $params[1]);    
+                $this->_database->where_in($params[0], $params[1]);
             }
             else
             {
@@ -920,7 +920,7 @@ class MY_Model extends CI_Model
         {
             if (is_array($params[1]))
             {
-                $this->_database->where_in($params[0], $params[1]);    
+                $this->_database->where_in($params[0], $params[1]);
             }
             else
             {
@@ -936,5 +936,33 @@ class MY_Model extends CI_Model
     {
         $method = ($multi) ? 'result' : 'row';
         return $this->_temporary_return_type == 'array' ? $method . '_array' : $method;
+    }
+
+    /**
+     * Author: kevin sagun
+     */
+    public function write_audit_trail($company)
+    {
+        $action_mode = $this->callback_parameters[0];
+        $perm_key    = trim($this->callback_parameters[1], " ");
+        $user_id     = $this->ion_auth->user()->row()->id;
+
+        $old_data = $this->session->flashdata('old_data');
+        $new_data = $this->input->post();
+
+        $additional_fields = [];
+        $additional_fields['table_name'] = $this->_table;
+
+        $additional_fields['record_id'] = isset($old_data['id']) ? $old_data['id'] : $company;
+
+        foreach ($new_data as $key => $data)
+        {
+            $additional_fields['field_name'] = $key;
+            $additional_fields['old_value']  = (isset($old_data[$key])) ? $old_data[$key] : '';
+            $additional_fields['new_value']  = $data;
+
+            $this->audit_trail->write_log($action_mode, $perm_key, $additional_fields);
+        }
+
     }
 }

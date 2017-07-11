@@ -20,6 +20,9 @@ class Company_model extends MY_Model {
     protected $before_create = ['generate_date_created_status'];
     protected $after_get = ['set_default_data'];
 
+    protected $after_create = ['write_audit_trail(0, add_company)'];
+    protected $after_update = ['write_audit_trail(1, edit_company)'];
+
     protected function generate_date_created_status($company)
     {
         $company['created'] = date('Y-m-d H:i:s');
@@ -29,8 +32,8 @@ class Company_model extends MY_Model {
     }
 
     protected function set_default_data($company)
-    {   
-        $company['active_status']  = ($company['active_status'] == 1) ? 'Active' : 'Inactive';
+    {
+        $company['active_status'] = ($company['active_status'] == 1) ? 'Active' : 'Inactive';
         $company['status_label']  = ($company['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $company;
     }
@@ -39,8 +42,9 @@ class Company_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('companies.*');
-        $query->join('branches', 'branches.company_id = companies.id');
+        $query->join('branches', 'branches.company_id = companies.id', 'left');
         $query->order_by('companies.name', 'asc');
+
         return $this->get_by($param);
     }
     public function get_many_company_by($param)
