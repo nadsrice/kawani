@@ -39,6 +39,7 @@ class Roles extends MY_Controller {
 			'active_menu' => $this->active_menu,
 		);
 		$this->data['roles'] = $this->role_model->get_all();
+
 		$this->load_view('pages/role-list');
 	}
 
@@ -122,15 +123,20 @@ class Roles extends MY_Controller {
 	}
 
 	// view role detail
-	public function details($id)
+	public function details($role_id)
 	{
 		$this->data['page_header'] 		= 'Role Management';
 		$this->data['active_menu']		= 'System';
-		$this->data['role_data'] 		= $this->role_model->get_by('id', $id);
-		$this->data['role_permissions'] = $this->role_permission_model->get_all_by(['system_role_permissions.role_id' => $id]);
+		$this->data['role_data'] 		= $this->role_model->get_by('id', $role_id);
+		$this->data['role_permissions'] = $this->role_permission_model->get_all_by(['system_role_permissions.role_id' => $role_id]);
 		$this->data['modules'] 	 		= $this->acl_model->get_system_modules();
 		$this->data['functions'] 		= $this->acl_model->get_system_functions2();
 
+		$this->data['users_groups']      = $this->ion_auth->get_users_groups()->result();
+		$this->data['users_permissions'] = $this->ion_auth_acl->build_acl();
+
+		// dump($this->data['users_permissions']);
+		// exit;
 		$this->load_view('pages/role-detail');
 	}
 

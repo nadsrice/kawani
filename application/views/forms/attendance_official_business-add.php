@@ -78,10 +78,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <input type="hidden" name="employee_id" value="<?php echo $user_data['employee_id']; ?>">
-                        <!-- <input type="hidden" name="approver_id" value="<?php echo $approver_id['reports_to']; ?>"> -->
-                    </div>
+<!--                     <div class="input-group">
+                        <input type="hidden" name="employee_id" value="<?php echo $ob_data['employee_id']; ?>">
+                        <input type="hidden" name="approver_id" value="<?php echo $ob_data['approver_id']; ?>">
+                    </div> -->
 
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-6">

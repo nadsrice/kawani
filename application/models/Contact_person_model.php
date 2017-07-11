@@ -64,6 +64,7 @@ class Contact_person_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('contact_persons.*');
+        $query->order_by('last_name', 'asc');
 
         return $this->get_all();
     }

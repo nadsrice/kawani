@@ -439,6 +439,7 @@ class Ion_auth_acl_model extends Ion_auth_model
      */
     public function add_permission_to_group($group_id = FALSE, $perm_id = FALSE, $value = 0)
     {
+        // dump($perm_id);
         // bail if the group id & permission id were not passed
         if( ! $group_id)
         {
@@ -452,20 +453,42 @@ class Ion_auth_acl_model extends Ion_auth_model
             return FALSE;
         }
 
-        $data   =   array('role_id' => $group_id, 'system_permission_id' => $perm_id);
+        // this was added by kevin sagun
+        $this->load->model('system_permission_model');
+        $system_permissions = $this->system_permission_model->get_by(['id' => $perm_id]);
+        // END
+
+        $data = array(
+            'role_id' => $group_id,
+            'system_permission_id' => $perm_id,
+            'system_module_id'     => $system_permissions['system_module_id'],
+            'system_function_id'   => $system_permissions['system_function_id']
+        );
 
         $existing_group_permission  =   $this->db->get_where($this->tables['group_permissions'], $data)->num_rows();
 
-        $data['created']        = date('Y-m-d H:i:s');
-        $data['modified']       = date('Y-m-d H:i:s');
+        // $data['created']        = date('Y-m-d H:i:s');
+        // $data['modified']       = date('Y-m-d H:i:s');
         $data['active_status']  = $value;
 
         $this->db->trans_start();
 
-        if( $existing_group_permission )
-            $this->db->replace($this->tables['group_permissions'], $data);
-        else
+        if( $existing_group_permission ) {
+            $data['modified'] = date('Y-m-d H:i:s');
+
+            $this->db->where(array(
+                'role_id'              => $group_id,
+                'system_permission_id' => $perm_id,
+                'system_module_id'     => $system_permissions['system_module_id'],
+                'system_function_id'   => $system_permissions['system_function_id']
+            ));
+
+            $this->db->update($this->tables['group_permissions'], $data);
+        }
+        else {
+            $data['created'] = date('Y-m-d H:i:s');
             $this->db->insert($this->tables['group_permissions'], $data);
+        }
 
         $this->db->trans_complete();
 
@@ -537,6 +560,7 @@ class Ion_auth_acl_model extends Ion_auth_model
      */
     public function get_group_permissions($group_id = FALSE)
     {
+        
         $this->trigger_events('get_group_permissions');
 
         //  Try to get the currently logged in users groups if none supplied
@@ -599,8 +623,7 @@ class Ion_auth_acl_model extends Ion_auth_model
             $permissions    =   array_merge($permissions, $group_permissions);
 
         $permissions    =   array_merge($permissions, $user_permissions);
-        // dump($permissions);
-        // exit;
+        
         return $permissions;
     }
 

@@ -114,7 +114,7 @@ class Attendance_official_business_model extends MY_Model {
             teams.name as team,
             departments.name as department,
             employees.employee_code as employee_code,
-            accounts.name as account_name,
+            accounts.name as account_name, accounts.id as account_id, contact_persons.id as contact_person_id,
             CONCAT_WS(' . '" "' . ', contact_persons.first_name,", " ,contact_persons.last_name) as contact_person,
             CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name,
             CONCAT_WS(' . '" "' . ', attendance_official_businesses.time_start," - " ,attendance_official_businesses.time_end) as ob_time,

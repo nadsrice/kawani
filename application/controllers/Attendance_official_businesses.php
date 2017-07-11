@@ -86,6 +86,10 @@ class Attendance_official_businesses extends MY_Controller {
         $user_id = $this->ion_auth->user()->row()->id;
         $user_data = $this->user_model->get_by(['id' => $user_id]);
         $approver_id = $this->employee_info_model->get_by(['employee_id' => $user_data['employee_id']]);
+
+        $employee_id = $this->ion_auth->user()->row()->employee_id;
+        $employee_information = $this->employee_model->get_employee_information(['employee_id' => $employee_id]);
+        $employee_data = $this->employee_model->get_by(['id' => $employee_id]);
           
         $this->data = array(
             'page_header'     => 'Official Business Management',
@@ -103,6 +107,12 @@ class Attendance_official_businesses extends MY_Controller {
             $data['date'] = date('Y-m-d', strtotime($data['date']));
         }
 
+        if (isset($data['account_id']))
+        {
+            $data['employee_id'] = $employee_id;
+            $data['approver_id'] = $employee_information[0]['reports_to'];
+        }
+
         $this->form_validation->set_data($data);
 
         if ($this->form_validation->run('ob_add') == TRUE)
@@ -114,39 +124,78 @@ class Attendance_official_businesses extends MY_Controller {
                 redirect('attendance_official_businesses');
             } else {
 
-                $this->session->set_flashdata('success', 'Successfully added new official business.');
-
                 //KAWANI will automatically send an email to approver for verification
 
                 $this->load->library('email');
 
-                $ob_data = $this->attendance_official_business_model->get_by(['id' => $official_business_id]);
-                $ob_id = $official_business_id;
+                // $ob_data = $this->attendance_official_business_model->get_by(['id' => $official_business_id]);
+                // $ob_id = $official_business_id;
                 
                 $user_id = $this->ion_auth->user()->row()->id;
                 $user_data = $this->user_model->get_by(['id' => $user_id]);
                 
-                $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
-                $account = $this->account_model->get_by(['id' => $ob_data['account_id']]);
-                $contact_person = $this->contact_person_model->get_by(['id' => $ob_data['contact_person_id']]);
+
+
+                // $data = [
+                //     'employee_data'  => $employee_data,
+                //     'ob_data'        => $ob_data,
+                //     'account'        => $account,
+                //     'contact_person' => $contact_person,
+                //     'ob_id'          => $ob_id,
+
+                /**
+                 * 
+                 */
+
+                $ob_data = $this->attendance_official_business_model->get_ob_requests_by([
+                    'attendance_official_businesses.id' => $official_business_id
+                ]);
+
+
+                $requester_data  = $this->employee_model->get_by(['id' => $ob_data[0]['employee_id']]);
+                $requester_email = $this->ion_auth->user($requester_data['system_user_id'])->row()->email;
+
+                $approver_data   = $this->employee_model->get_by(['id' => $ob_data[0]['approver_id']]);
+                $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
+
+                // dump($ob_data);
+                // dump($requester_data);
+                // dump($requester_email);
+                // dump($approver_data);
+                // dump($approver_email);exit;
 
                 $data = [
-                    'employee_data'  => $employee_data,
-                    'ob_data'        => $ob_data,
-                    'account'        => $account,
-                    'contact_person' => $contact_person,
-                    'ob_id'          => $ob_id,
+                    'requester_data'  => $requester_data,
+                    'requester_email' => $requester_email,
+                    'approver_data'   => $approver_data,
+                    'approver_email'  => $approver_email,
+                    'ob_data'         => $ob_data[0]
                 ];
 
-                $message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+                // dump($data);exit;
+                
 
-                $this->email->from('gono.josh@gmail.com', 'OBR - Josh Gono');
-                $this->email->to('joseph.gono@systemantech.com');
+                $subject = '[HRIS - Approval] Attendance: Official Business Request'.'-'.$official_business_id;   // TODO: let's make this dynamic
+                //$email_template = 'templates/email/official_business.tpl.php';                              // TODO: let's make this dynamic also
+                $name = $subject.' - '.$requester_data['full_name'];
+                $kawani_email = 'lohicasoft@gmail.com';
+                $message = $this->load->view('templates/email/official_business.tpl.php', $data, true);
 
-                $this->email->subject('Official Business Request');
+
+                $this->email->from($requester_email);
+                // $this->email->to('cristhiansagun@gmail.com');
+                $this->email->to($approver_data);
+                $this->email->subject($subject);
                 $this->email->message($message);
-
                 $this->email->send();
+
+                $this->email->from($kawani_email);
+                $this->email->to($requester_email);
+                $this->email->subject($subject);
+                $this->email->message("You've successfully filed an official business request - ".$official_business_id." to ".$approver_data['full_name']);
+                $this->email->send(); 
+
+                $this->session->set_flashdata('success', 'Successfully added new official business.');              
                 redirect('attendance_official_businesses');                
                
             }
@@ -366,31 +415,46 @@ class Attendance_official_businesses extends MY_Controller {
                 // ];
 
                 //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
+                $ob_data = $this->attendance_official_business_model->get_ob_requests_by([
+                    'attendance_official_businesses.id' => $id
+                ]);
 
-                $requester_data  = $this->employee_model->get_by(['id' => $leave_data['employee_id']]);
+                // dump($id);
+
+                $requester_data  = $this->employee_model->get_by(['id' => $ob_data[0]['employee_id']]);
                 $requester_email = $this->ion_auth->user($requester_data['system_user_id'])->row()->email;
 
-                $approver_data   = $this->employee_model->get_by(['id' => $leave_data['approver_id']]);
+                $approver_data   = $this->employee_model->get_by(['id' => $ob_data[0]['approver_id']]);
                 $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
+
+                // dump($ob_data);
+                // dump($requester_data);
+                // dump($requester_email);
+                // dump($approver_data);
+                // dump($approver_email);exit;
 
                 $data = [
                     'requester_data'  => $requester_data,
                     'requester_email' => $requester_email,
                     'approver_data'   => $approver_data,
                     'approver_email'  => $approver_email,
-                    'leave_data'      => $leave_data,
-                    'leave_days_request' => $leave_days_request
+                    'ob_data'         => $ob_data[0]
                 ];
 
-                $subject = 'Leave Request'; // TODO: let's make this dynamic
-                $email_template = 'templates/email/leave.tpl.php'; // TODO: let's make this dynamic also
+                $subject = '[HRIS - Approved] Attendance: Official Business Request'.'-'.$id;   // TODO: let's make this dynamic
+                //$email_template = 'templates/email/official_business.tpl.php';                              // TODO: let's make this dynamic also
                 $name = $subject.' - '.$requester_data['full_name'];
+                $kawani_email = 'lohicasoft@gmail.com';
 
-                $this->email->from('gono.josh@gmail.com', 'Official Business - Josh Gono');
-                $this->email->to('joseph.gono@systemantech.com');
+                $this->email->from($approver_data);
+                $this->email->to($requester_email);
+                $this->email->subject($subject);
+                $this->email->message('Your official business request - '.$id.' has been successfully approved by '.$approver_data['full_name']);
 
-                $this->email->subject('[KAWANI-Attendance]: Official Business Request');
-                $this->email->message('Your official business request has been successfully approved');
+                $this->email->from($kawani_email);
+                $this->email->to($approver_data);
+                $this->email->subject($subject);
+                $this->email->message("You've successfully approved the official business request - ".$id." of ".$requester_data['full_name']);
 
                 $this->email->send();
                 redirect('attendance_official_businesses');                

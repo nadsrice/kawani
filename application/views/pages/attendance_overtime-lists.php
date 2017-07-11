@@ -47,15 +47,15 @@
             <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active">
-                    <a href="#tab1" data-toggle="tab">My Overtime</a>
+                    <a href="#my_overtime" data-toggle="tab">My Overtime</a>
                 </li>
                 <li class="">
-                    <a href="#tab2" data-toggle="tab">Approvals</a>
+                    <a href="#approval_overtimes" data-toggle="tab">Approvals</a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane fade in active" id="tab1">
-                    <table class="table table-bordered table-striped table-hover" id="">
+                <div class="tab-pane fade in active" id="my_overtime">
+                    <table class="table table-bordered table-striped table-hover" id="datatables-my_overtimes">
                         <thead>
                             <tr>
                                 <th>&nbsp;</th>
@@ -93,8 +93,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane fade in" id="tab2">
-                    <table class="table table-bordered table-striped table-hover" id="">
+                <div class="tab-pane fade in" id="approval_overtimes">
+                    <table class="table table-bordered table-striped table-hover" id="datatables-approval_overtimes">
                         <thead>
                             <tr>
                                 <th class="text-left">Employee Code</th>

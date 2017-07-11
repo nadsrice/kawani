@@ -87,7 +87,7 @@ class Ion_auth_acl
         $permissions || $permissions = $this->user_permissions;
 
         $key    =   strtolower($key);
-
+        
         if( array_key_exists($key, $permissions) )
             return ( $permissions[$key]['active_status'] === '1' || $permissions[$key]['active_status'] === TRUE ) ? TRUE : FALSE;
         else

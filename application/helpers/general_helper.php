@@ -121,3 +121,15 @@ if ( ! function_exists('calculate_leave_balance'))
         return (float)$total;
     }
 }
+
+if ( ! function_exists('add_leave_balance'))
+{
+    function add_leave_balance($leave_balance, $total_days_filed)
+    {
+        $new_leave_balance      = $leave_balance;
+        $new_dtotal_days_filed  = $total_days_filed;
+        $total                  = $new_leave_balance + $new_dtotal_days_filed;
+        return (float)$total;
+    }
+}
+
