@@ -18,7 +18,8 @@ class Attendance_undertime_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_menus'];
+    protected $after_get     = ['set_default_menus'];
+    protected $after_create  = ['write_audit_trail(0, file_undertime)'];
 
     protected function generate_date_created_status($undertime)
     {
@@ -30,7 +31,7 @@ class Attendance_undertime_model extends MY_Model {
     }
 
     protected function set_default_menus($undertime)
-    {   
+    {
         $btn_settings = $this->config->item('btn_settings');
 
         if ( ! isset($undertime)) {

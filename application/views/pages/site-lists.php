@@ -38,12 +38,12 @@
                                         <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('sites/details/' . $site['id']); ?>">
                                             <i class="fa fa-search"></i> View
                                         </a>
-                                        <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('sites/edit/' . $site['id']); ?>">
+                                        <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('sites/edit_confirmation/' . $site['id']); ?>" data-toggle="modal" data-target="#update-site-<?php echo md5($site['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
                                        <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('sites/update_status/' . $site['id']); ?>" data-toggle="modal" data-target="#update-site-status-<?php echo md5($site['id']); ?>">
                                             <i class="fa fa-cog"></i> <?php echo $site['status_label']; ?>
-                                        </a>  
+                                        </a>
                                     </td>
                                     <td class="text-right"><?php echo $site['id']; ?></td>
                                     <td class="text-left"><?php echo $site['name']; ?></td>
@@ -58,7 +58,16 @@
                                         <!-- Modal content-->
                                         <div class="modal-content">
                                             <!-- http://localhost/kawani_ci/roles/update_status/1 -->
-                                            
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="update-site-<?php echo md5($site['id']); ?>" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <!-- http://localhost/kawani_ci/roles/update_status/1 -->
+
                                         </div>
                                     </div>
                                 </div>

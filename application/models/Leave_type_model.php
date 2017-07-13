@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Leave_type_model extends MY_Model {
 
-    protected $_table = 'attendance_leave_types';
+    protected $_table      = 'attendance_leave_types';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
@@ -20,7 +20,7 @@ class Leave_type_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_data'];
+    protected $after_get     = ['set_default_data'];
 
     protected function generate_date_created_status($leave_type)
     {
@@ -31,12 +31,12 @@ class Leave_type_model extends MY_Model {
     }
 
     protected function set_default_data($leave_type)
-    {   
+    {
         $leave_type['active_status']  = ($leave_type['active_status'] == 1) ? 'Active' : 'Inactive';
         $leave_type['status_label']  = ($leave_type['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $leave_type;
     }
-    
+
     public function get_leave_type_by($param)
     {
         $query = $this->db;

@@ -23,6 +23,7 @@ class Attendance_leaves extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->library('audit_trail');
         $this->load->model([
             'attendance_leave_model',
             'leave_type_model',
@@ -119,7 +120,6 @@ class Attendance_leaves extends MY_Controller {
             }
             else
             {
-
                 $leave_days_request = daterange($data['date_start'], $data['date_end']);
                 $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
                     'attendance_leaves.id' => $leave_id
@@ -184,6 +184,8 @@ class Attendance_leaves extends MY_Controller {
        if ($updated_balance != 0) {
 
             $employee_leave_credits_id = $leave_types[0]['elc_id'];
+
+            $this->session->set_flashdata('old_data', $attendance_leave);
 
             $update_leave_credit    = $this->employee_leave_credit_model->update($employee_leave_credits_id, ['balance' => $updated_balance]);
             $update_approval_status = $this->attendance_leave_model->update($attendance_leave_id, ['approval_status' => 1]);

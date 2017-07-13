@@ -26,6 +26,7 @@ class Employment_types extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('audit_trail');
 	}
 
 	public function index()

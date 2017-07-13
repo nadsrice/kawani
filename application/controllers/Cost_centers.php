@@ -18,6 +18,7 @@ class Cost_centers extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('audit_trail');
 		$this->load->model(['cost_center_model']);
 	}
 

@@ -20,9 +20,9 @@ class Department_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = [
-        'set_default_data'
-    ];
+    protected $after_get     = ['set_default_data'];
+    protected $after_create  = ['write_audit_trail(0, add_department)'];
+    protected $after_update  = ['write_audit_trail(1, edit_department)'];
 
     protected function generate_date_created_status($department)
     {
@@ -33,12 +33,12 @@ class Department_model extends MY_Model {
     }
 
     protected function set_default_data($department)
-    {   
-        $department['active_status']  = ($department['active_status'] == 1) ? 'Active' : 'Inactive';
+    {
+        $department['active_status'] = ($department['active_status'] == 1) ? 'Active' : 'Inactive';
         $department['status_label']  = ($department['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $department;
     }
-    
+
     public function get_department_by($param)
     {
         $query = $this->db;

@@ -18,20 +18,24 @@ class Teams extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		// $this->load->library('audti_trail');
 		$this->load->model(['team_model']);
 	}
 
 	function index()
 	{
-		$teams        = $this->team_model->get_team_all();
-		$companies 		= $this->comapny_model->get_company_all();
-		$branches 		= $this->branch_model->get_branch_all();
-		$departments 	= $this->department_model->get_department_all();
+		$teams       = $this->team_model->get_team_all();
+		$companies 	 = $this->comapny_model->get_company_all();
+		$branches 	 = $this->branch_model->get_branch_all();
+		$departments = $this->department_model->get_department_all();
 		// $teams 				= $this->team_model->get_team_all();
 
 		$this->data = array(
 			'page_header'  => 'Team Management',
 			'teams'        => $teams,
+			'companies'    => $companies,
+			'branches'     => $branches,
+			'departments'  => $departments,
 			'active_menu'  => $this->active_menu,
 		);
 		$this->load_view('pages/team-list');

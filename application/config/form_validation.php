@@ -91,6 +91,46 @@ $config = array(
             'field' => 'name',
             'label' => 'Branch Name',
             'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'block_number',
+            'label' => 'Block Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'lot_number',
+            'label' => 'Lot Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'floor_number',
+            'label' => 'Floor Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'building_number',
+            'label' => 'Building Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'building_name',
+            'label' => 'Building Name',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'street',
+            'label' => 'Street',
+            'rules' => 'trim'
         )
     ),
 
@@ -433,7 +473,7 @@ $config = array(
             'ruels' => 'trim|required|valid_email|is_unique[users.email]',
         ),
 
-	), 
+	),
 
     'leave_type_add' => array(
         array(
@@ -446,7 +486,7 @@ $config = array(
             'label' => 'Description',
             'rules' => 'trim'
         )
-    ), 
+    ),
 
     'leave_type_edit' => array(
         array(
@@ -460,7 +500,7 @@ $config = array(
             'rules' => 'trim'
         )
 
-    ), 
+    ),
 
     'leave_add' => array(
         array(
@@ -488,7 +528,7 @@ $config = array(
             'label' => 'Payment Status',
             'rules' => 'trim|required'
         ),
-    ), 
+    ),
 
     'leave_edit' => array(
         array(
@@ -511,7 +551,7 @@ $config = array(
             'label' => 'Reason',
             'rules' => 'trim'
         )
-    ), 
+    ),
 
     'overtime_add' => array(
         array(
@@ -539,7 +579,7 @@ $config = array(
             'label' => 'Reason',
             'rules' => 'trim'
         )
-    ), 
+    ),
 
     'overtime_edit' => array(
         array(
@@ -567,7 +607,7 @@ $config = array(
             'label' => 'Reason',
             'rules' => 'trim'
         )
-    ), 
+    ),
 
     'undertime_add' => array(
         array(
@@ -595,7 +635,7 @@ $config = array(
             'label' => 'Reason',
             'rules' => 'trim'
         )
-    ), 
+    ),
 
     'undertime_edit' => array(
         array(

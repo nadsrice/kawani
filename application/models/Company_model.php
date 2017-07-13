@@ -20,8 +20,8 @@ class Company_model extends MY_Model {
     protected $before_create = ['generate_date_created_status'];
     protected $after_get     = ['set_default_data'];
 
-    protected $after_create = ['write_audit_trail(0, add_company)'];
-    protected $after_update = ['write_audit_trail(1, edit_company)'];
+    protected $after_create = ['write_audit_trail'];
+    protected $after_update = ['write_audit_trail'];
 
     protected function generate_date_created_status($company)
     {
