@@ -25,10 +25,12 @@ class Employees extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+
+        $this->config->load('employee', TRUE);
     }
 
     public function index()
-    { 
+    {
         $employees = $this->employee_model->get_employee_all();
 
         $this->data = array(
@@ -45,54 +47,39 @@ class Employees extends MY_Controller {
         // TODO: insert first to users table
             // TODO: get the last user.id
         // TODO: insert to employees table with basic infos
-            // employee_13th_month
-            // employee_address
-            // employee_attachments
-            // employee_awards
-            // employee_benefits
-            // employee_certifications
-            // employee_daily_schedules
-            // employee_dependents
-            // employee_educational_background
-            // employee_emergency_contacts
-            // employee_examinations
-            // employee_government_id_numbers
-            // employee_incentives
-            // employee_info
-            // employee_languages
-            // employee_leave_credits
-            // employee_positions
-            // employee_salaries
-            // employee_skills
-            // employee_spouses
-            // employee_trainings
-            // employee_work_experiences
-
 
         $this->data['page_header'] = 'Employee Management';
+        $employee_joins = $this->config->item('joins', 'employee');
 
-        if ($this->form_validation->run() == true)
-        {
-            $email    = strtolower($this->input->post('email'));
-            $identity = ($identity_column === 'email') ? $email : $this->input->post('identity');
-            $password = $this->_generate_password();
+        // dump($employee_joins);
 
-            $additional_data = array(
-                'first_name' => $this->input->post('first_name'),
-                'last_name'  => $this->input->post('last_name'),
-                'company'    => $this->input->post('company'),
-                'phone'      => $this->input->post('phone'),
-            );
-        }
-        if ($this->form_validation->run() == true && $this->ion_auth->register($identity, $password, $email, $additional_data))
-        {
-            $this->session->set_flashdata('message', 'Successfully created new employee.');
-            redirect("employees", 'refresh');
-        }
-        else
-        {
-            $this->load_view('forms/employee-add-2', $this->data);
-        }
+        $this->load_view('forms/employee-add-2');
+        // exit;
+
+        //
+        // if ($this->form_validation->run() == TRUE)
+        // {
+        //     $email    = 'saguncristhiankevin@yahoo.com'; // strtolower($this->input->post('email'));
+        //     $identity = 'cristhiankevin.sagun'; // ($identity_column === 'email') ? $email : $this->input->post('identity');
+        //     $password = $this->_generate_password();
+        //
+        //     $additional_data = array(
+        //         'first_name' => 'cristhian kevin', //$this->input->post('first_name'),
+        //         'last_name'  => 'sagun', //$this->input->post('last_name'),
+        //         'company'    => 'systemantech inc', //$this->input->post('company'),
+        //         'phone'      => '09068133327', //$this->input->post('phone'),
+        //     );
+        //
+        //     $user_id = $this->ion_auth->register($identity, $password, $email, $additional_data);
+        //     dump($user_id);
+        //
+        //     // $this->session->set_flashdata('message', 'Successfully created new employee.');
+        //     // redirect("employees", 'refresh');
+        // }
+        // else
+        // {
+        //     $this->load_view('forms/employee-add-2');
+        // }
     }
 
     function edit($id)

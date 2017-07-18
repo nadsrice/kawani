@@ -35,7 +35,7 @@ class Employee_model extends MY_Model {
         if ( ! isset($employee)) {
             return FALSE;
         }
-                 
+
         $full_name = $employee['last_name'].', '.$employee['first_name'].' '.$employee['middle_name'];
         $employee['full_name'] = strtoupper($full_name);
         $employee['label_status'] = ($employee['active_status'] == 1) ? 'Active' : 'Inactive';
@@ -75,8 +75,6 @@ class Employee_model extends MY_Model {
             companies.name as company_name
         ');
         $query->join('companies', 'employees.company_id = companies.id', 'left');
-
-        $query->select('*');
 
         $query->order_by('last_name', 'asc');
 
