@@ -1,5 +1,4 @@
-<link rel="stylesheet" href="<?php echo site_url('assets/libs/iconate/css/iconate.css'); ?>">
-<div ng-app="employeeApp">
+<!-- <div ng-app="employeeApp">
 	<div ng-controller="employeeController">
 		<div class="row">
 			<div class="col-xs-12">
@@ -58,26 +57,243 @@
 			</div>
 		</div>
 	</div>
+</div> -->
+<div class="row">
+	<div class="col-lg-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<i class="fa fa-pencil-square-o"></i> <h3 class="box-title">Register New Employee</h3>
+			</div>
+			<div class="box-body">
+				<form class="form-inline wizard clearfix">
+					<div class="form-group">
+						<select class="form-control select2" name="candidate">
+							<option value="">-- Select Candidate --</option>
+							<option value="">Sagun, Cristhian Kevin D.</option>
+							<option value="">Aguilar, Ramon V.</option>
+							<option value="">Aquino, Dean Joe</option>
+							<option value="">Gono, Josh</option>
+							<option value="">Palay, Ronald</option>
+						</select>
+					</div>
+					<button type="submit" class="btn btn-primary">Select</button>
+				</form>
+				<br>
+				<form id="example-advanced-form" action="#" class="form-horizontal">
+				    <h5>Personal Background</h5>
+					<h5>Contact Information</h5>
+					<h5>Professional Background</h5>
+					<h5>Employment Details</h5>
+
+				    <fieldset>
+						<div class="row">
+							<div class="col-lg-12">
+								<legend>Personal Information</legend>
+
+								<div class="form-group">
+									<div class="col-md-3 col-md-offset-1">
+										<label for="piFirstname">First name</label>
+										<input id="piFirstname" name="first_name" type="text" class="form-control required" placeholder="First">
+									</div>
+									<div class="col-md-3">
+										<label for="piMiddlename">Middle name</label>
+										<input id="piMiddlename" name="middle_name" type="text" class="form-control required" placeholder="Last">
+									</div>
+									<div class="col-md-3">
+										<label for="piLastname">Last name</label>
+										<input id="piLastname" name="last_name" type="text" class="form-control required" placeholder="Last">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-1 col-md-offset-1">Birthdate</label>
+									<div class="col-md-2">
+										<select id="pi_birthyear" class="form-control" name="birthyear">
+											<option value="">-- Select Year --</option>
+										</select>
+									</div>
+									<div class="col-md-3">
+										<select id="pi_bithdate" class="form-control" name="birthmonth">
+											<option value="">-- Select Month --</option>
+										</select>
+									</div>
+									<div class="col-md-3">
+										<select id="pi_birthdate" class="form-control" name="birthdate">
+											<option value="">-- Select Date --</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1 col-md-offset-1">Gender</label>
+									<div class="col-md-3">
+										<label class="radio-inline">
+						                  <input type="radio" name="gender" class="form-control flat-red">
+										  Male
+						                </label>
+						                <label class="radio-inline">
+						                  <input type="radio" name="gender" class="form-control flat-red">
+										  Female
+						                </label>
+									</div>
+									<label class="control-label col-md-2">Civil Status</label>
+									<div class="col-md-3">
+										<select class="form-control" name="birthdate">
+											<option value="">-- Select Date --</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<legend>Spouse Information</legend>
+								<div class="form-group">
+									<div class="col-md-3 col-md-offset-1">
+										<label>First name</label>
+										<input type="text" class="form-control" placeholder="First">
+									</div>
+									<div class="col-md-3">
+										<label>Middle name</label>
+										<input type="text" class="form-control" placeholder="Last">
+									</div>
+									<div class="col-md-3">
+										<label>Last name</label>
+										<input type="text" class="form-control" placeholder="Last">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1 col-md-offset-1">Birthdate</label>
+									<div class="col-md-2">
+										<select class="form-control" name="birthyear">
+											<option value="">-- Select Year --</option>
+										</select>
+									</div>
+									<div class="col-md-3">
+										<select class="form-control" name="birthmonth">
+											<option value="">-- Select Month --</option>
+										</select>
+									</div>
+									<div class="col-md-3">
+										<select class="form-control" name="birthdate">
+											<option value="">-- Select Date --</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1 col-md-offset-1">Gender</label>
+									<div class="col-md-3">
+										<label class="radio-inline">
+										  <input type="radio" name="gender" class="form-control flat-red">
+										  Male
+										</label>
+										<label class="radio-inline">
+										  <input type="radio" name="gender" class="form-control flat-red">
+										  Female
+										</label>
+									</div>
+									<label class="control-label col-md-2">Civil Status</label>
+									<div class="col-md-3">
+										<select class="form-control" name="birthdate">
+											<option value="">-- Select Date --</option>
+										</select>
+									</div>
+								</div>
+					        </div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<legend>Spouse Information</legend>
+								<div class="form-group">
+									<div class="col-md-3 col-md-offset-1">
+										<label>First name</label>
+										<input type="text" class="form-control" placeholder="First">
+									</div>
+									<div class="col-md-3">
+										<label>Middle name</label>
+										<input type="text" class="form-control" placeholder="Last">
+									</div>
+									<div class="col-md-3">
+										<label>Last name</label>
+										<input type="text" class="form-control" placeholder="Last">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1 col-md-offset-1">Birthdate</label>
+									<div class="col-md-2">
+										<select class="form-control" name="birthyear">
+											<option value="">-- Select Year --</option>
+										</select>
+									</div>
+									<div class="col-md-3">
+										<select class="form-control" name="birthmonth">
+											<option value="">-- Select Month --</option>
+										</select>
+									</div>
+									<div class="col-md-3">
+										<select class="form-control" name="birthdate">
+											<option value="">-- Select Date --</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-1 col-md-offset-1">Gender</label>
+									<div class="col-md-3">
+										<label class="radio-inline">
+										  <input type="radio" name="gender" class="form-control flat-red">
+										  Male
+										</label>
+										<label class="radio-inline">
+										  <input type="radio" name="gender" class="form-control flat-red">
+										  Female
+										</label>
+									</div>
+									<label class="control-label col-md-2">Civil Status</label>
+									<div class="col-md-3">
+										<select class="form-control" name="birthdate">
+											<option value="">-- Select Date --</option>
+										</select>
+									</div>
+								</div>
+					        </div>
+						</div>
+				    </fieldset>
+
+
+				    <fieldset>
+				        <legend>Profile Information</legend>
+
+				        <label for="name-2">First name *</label>
+				        <input id="name-2" name="name" type="text" class="required">
+				        <label for="surname-2">Last name *</label>
+				        <input id="surname-2" name="surname" type="text" class="required">
+				        <label for="email-2">Email *</label>
+				        <input id="email-2" name="email" type="text" class="required email">
+				        <label for="address-2">Address</label>
+				        <input id="address-2" name="address" type="text">
+				        <label for="age-2">Age (The warning step will show up if age is less than 18) *</label>
+				        <input id="age-2" name="age" type="text" class="required number">
+				        <p>(*) Mandatory</p>
+				    </fieldset>
+
+
+				    <fieldset>
+				        <legend>You are to young</legend>
+
+				        <p>Please go away ;-)</p>
+				    </fieldset>
+
+
+				    <fieldset>
+				        <legend>Terms and Conditions</legend>
+				        <input id="acceptTerms-2" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+				    </fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
-<script type="text/javascript" src="<?php echo site_url('assets/js/employee-registration.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo site_url('assets/libs/iconate/dist/iconate.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo site_url('assets/libs/angularJS/1.6.4/angular.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo site_url('assets/js/ng-employees.app.js'); ?>"></script>
-<script>
-	var navListItems = $('ul.setup-panel li a'),
-	allWells = $('.setup-content');
-	allWells.hide();
 
-	navListItems.click(function(e) {
-		e.preventDefault();
-		var $target = $($(this).attr('href')),
-		$item = $(this).closest('li');
-
-		if ( ! $item.hasClass('disabled')) {
-			navListItems.closest('li').removeClass('active');
-			$item.addClass('active');
-			allWells.hide();
-			$target.show();
-		}
-	});
-</script>
+<link rel="stylesheet" href="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.css'); ?>">
+<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-validation/1.16.0/dist/jquery.validate.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo site_url('assets/js/employees.js'); ?>" charset="utf-8"></script>
