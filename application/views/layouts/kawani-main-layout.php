@@ -27,9 +27,8 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
 
-		 <link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/kawani-styles.css'); ?>">
-		 <link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>">
-
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/kawani-styles.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>">
 
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-ui/1.12.1/jquery-ui.min.js'); ?>"></script>
@@ -85,7 +84,7 @@
 		<link rel="stylesheet" href="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.css'); ?>">
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-validation/1.16.0/dist/jquery.validate.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.min.js'); ?>"></script>
-
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); ?>"></script>
 		<!-- Custom Javascript -->
 		<script type="text/javascript" src="<?php echo site_url('assets/js/icheck-custom.js'); ?>"></script>
 

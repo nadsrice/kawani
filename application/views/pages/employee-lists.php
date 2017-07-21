@@ -2,10 +2,15 @@
 	<div class="col-md-6">&nbsp;</div>
 	<div class="col-md-6">
 		<div class="pull-right">
-			<a href="<?php echo site_url('employees/add'); ?>" class="btn btn-primary">
+			<a href="<?php echo site_url('employees/add'); ?>" class="btn btn-primary" data-toggle="modal" data-target="#add-employee">
 				<i class="fa fa-plus"></i>
-				<span>Add New Employee</span>
+				<span>Add Employee</span>
 			</a>
+			<div class="modal fade" id="add-employee">
+				<div class="modal-dialog">
+					<div class="modal-content"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
