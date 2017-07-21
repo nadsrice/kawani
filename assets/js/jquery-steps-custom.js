@@ -7,15 +7,11 @@ $(function() {
 		transitionEffect: "slideLeft",
 		onStepChanging: function (event, currentIndex, newIndex)
 		{
+			console.log('onStepChanging');
 			// Allways allow previous action even if the current form is not valid!
 			if (currentIndex > newIndex)
 			{
 				return true;
-			}
-			// Forbid next action on "Warning" step if the user is to young
-			if (newIndex === 3 && Number($("#age-2").val()) < 18)
-			{
-				return false;
 			}
 			// Needed in some cases if the user went back (clean up)
 			if (currentIndex < newIndex)
@@ -29,24 +25,33 @@ $(function() {
 		},
 		onStepChanged: function (event, currentIndex, priorIndex)
 		{
-			// Used to skip the "Warning" step if the user is old enough.
-			if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
-			{
-				form.steps("next");
-			}
+			console.log('onStepChanged');
+
+			var personalInformation = {
+				first_name	: $('#piFirstname').val(),
+				middle_name	: $('#piMiddlename').val(),
+				last_name	: $('#piLastname').val(),
+			};
+
 			// Used to skip the "Warning" step if the user is old enough and wants to the previous step.
 			if (currentIndex === 2 && priorIndex === 3)
 			{
 				form.steps("previous");
 			}
+
+			var employee = new Employee(personalInformation);
+			employee.saveEmployeeInformation();
 		},
 		onFinishing: function (event, currentIndex)
 		{
+			console.log('onFinishing');
 			form.validate().settings.ignore = ":disabled";
 			return form.valid();
 		},
 		onFinished: function (event, currentIndex)
 		{
+			console.log('onFinished');
+			main();
 			alert("Submitted!");
 		}
 		}).validate({
@@ -57,5 +62,16 @@ $(function() {
 			}
 		}
 	});
+
+	function main()
+	{
+		var data = {
+			first_name: 'Cristhian Kevin',
+			middle_name: 'Demeza',
+			last_name: 'Sagun'
+		};
+
+		var employee = new Employee(data);
+	}
 
 });

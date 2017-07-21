@@ -82,9 +82,9 @@ $config['salt_prefix']    = version_compare(PHP_VERSION, '5.3.7', '<') ? '$2a$' 
  | The controller should check this function and act
  | appropriately. If this variable set to 0, there is no maximum.
  */
-$config['site_title']                 = "KAWANI - HRIS";       // Site Title, example.com
-$config['admin_email']                = "lohicasoft@gmail.com"; // Admin Email, admin@example.com
-$config['default_group']              = 'admin';             // Default group, use name
+$config['site_title']                 = "KAWANI - HRIS";         // Site Title, example.com
+$config['admin_email']                = "lohicasoft@gmail.com";  // Admin Email, admin@example.com
+$config['default_group']              = 'Employee';              // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['identity']                   = 'username';          // You can use any unique column in your table as identity column. The values in this column, alongside password, will be used for login purposes
 $config['min_password_length']        = 8;                   // Minimum Required Length of Password

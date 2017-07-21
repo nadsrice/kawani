@@ -453,7 +453,8 @@ class Auth extends CI_Controller {
         if ($this->form_validation->run() == true)
         {
             $email   			 = strtolower($this->input->post('email'));
-            $first_name 		 = $this->input->post('first_name');
+			$exploded_name 	     = explode(' ', strtolower($this->input->post('first_name')));
+            $first_name 		 = implode('', $exploded_name);
             $last_name 			 = $this->input->post('last_name');
             $generated_username  = $first_name.'.'.$last_name;
             $identity 			 = ($identity_column === 'email') ? $email : $generated_username;

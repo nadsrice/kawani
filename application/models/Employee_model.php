@@ -29,7 +29,7 @@ class Employee_model extends MY_Model {
         $employee['created_by'] = '0';
         return $employee;
     }
-
+    
     protected function set_default_data($employee)
     {
         if ( ! isset($employee)) {
@@ -140,6 +140,18 @@ class Employee_model extends MY_Model {
         $balance_checker = $leave_request_days <= $leave_credit;
 
         return $balance_checker;
+    }
+
+    public function get_civil_status()
+    {
+        $query = $this->db
+                    ->select('*')
+                    ->from('civil_status')
+                    ->where('active_status', 1)
+                    ->get()
+                    ->result_array();
+
+        return $query;
     }
 
 }
