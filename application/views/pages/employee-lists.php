@@ -2,10 +2,15 @@
 	<div class="col-md-6">&nbsp;</div>
 	<div class="col-md-6">
 		<div class="pull-right">
-			<a href="<?php echo site_url('employees/add'); ?>" class="btn btn-primary">
+			<a href="<?php echo site_url('employees/add'); ?>" class="btn btn-primary" data-toggle="modal" data-target="#add-employee">
 				<i class="fa fa-plus"></i>
-				<span>Add New Employee</span>
+				<span>Add Employee</span>
 			</a>
+			<div class="modal fade" id="add-employee">
+				<div class="modal-dialog">
+					<div class="modal-content"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -32,7 +37,7 @@
 						<?php foreach ($employees as $employee): ?>
 						<tr>
 							<td>
-								<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employees/details/' . $employee['employee_id']); ?>">
+								<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employees/informations/' . $employee['employee_id']); ?>">
 									<i class="fa fa-search"></i> View
 								</a>
 								<a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employees/edit/' . $employee['employee_id']); ?>">

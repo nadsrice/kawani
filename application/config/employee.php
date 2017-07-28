@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+$config['profile_image_path'] = '';
+
 $config['joins'] = [
     '_13th_month',
     '_addresses',

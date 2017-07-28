@@ -15,18 +15,19 @@ class Employees extends MY_Controller {
 
     private $active_menu = 'Employee';
 
-    /**
-     * Some description here
-     *
-     * @param   param
-     * @return  return
-     */
-
     function __construct()
     {
         parent::__construct();
-
+        $this->load->library('ion_auth');
         $this->config->load('employee', TRUE);
+        $this->load->helper('url');
+        $this->load->model([
+            'employee_parent_model',
+            'employee_spouse_model',
+            'employee_dependent_model',
+            'civil_status_model',
+            'relationship_model'
+        ]);
     }
 
     public function index()
@@ -42,58 +43,133 @@ class Employees extends MY_Controller {
         $this->load_view('pages/employee-lists');
     }
 
-    function add()
+    public function add()
     {
-        // TODO: insert first to users table
-            // TODO: get the last user.id
-        // TODO: insert to employees table with basic infos
-
-        $this->data['page_header'] = 'Employee Management';
-        $employee_joins = $this->config->item('joins', 'employee');
-
-        // dump($employee_joins);
-
-        $this->load_view('forms/employee-add-2');
-        // exit;
-
-        //
-        // if ($this->form_validation->run() == TRUE)
-        // {
-        //     $email    = 'saguncristhiankevin@yahoo.com'; // strtolower($this->input->post('email'));
-        //     $identity = 'cristhiankevin.sagun'; // ($identity_column === 'email') ? $email : $this->input->post('identity');
-        //     $password = $this->_generate_password();
-        //
-        //     $additional_data = array(
-        //         'first_name' => 'cristhian kevin', //$this->input->post('first_name'),
-        //         'last_name'  => 'sagun', //$this->input->post('last_name'),
-        //         'company'    => 'systemantech inc', //$this->input->post('company'),
-        //         'phone'      => '09068133327', //$this->input->post('phone'),
-        //     );
-        //
-        //     $user_id = $this->ion_auth->register($identity, $password, $email, $additional_data);
-        //     dump($user_id);
-        //
-        //     // $this->session->set_flashdata('message', 'Successfully created new employee.');
-        //     // redirect("employees", 'refresh');
-        // }
-        // else
-        // {
-        //     $this->load_view('forms/employee-add-2');
-        // }
+        $this->load->view('modals/modal-add-employee-direct');
     }
 
-    function edit($id)
+    public function save($id = '')
     {
+        if (empty($id)) $this->employee_model->create_account();
+    }
+
+    public function informations($employee_id)
+    {
+        // TODO: check permission key = 'employee_information';
+
+        $this->data['page_header'] = 'Employee Informations';
+        $this->data['employee_id'] = $employee_id;
+
+        $employee_data = $this->employee_model->get_by(['id' => $employee_id]);
+        $parents_information   = $this->employee_parent_model->get_many_by(['employee_id' => $employee_id]);
+        $spouse_information    = $this->employee_spouse_model->get_by(['employee_id' => $employee_id]);
+        $dependent_information = $this->employee_dependent_model->get_by(['employee_id' => $employee_id]);
+        $dependent_information = $this->employee_dependent_model->get_by(['employee_id' => $employee_id]);
+
+        $this->data['personal_background'] = [
+            'personal_information'  => $employee_data,
+            'parents_information'   => $parents_information,
+            'spouse_information'    => $spouse_information,
+            'dependent_information' => $dependent_information
+        ];
+
+        $this->load_view('pages/employee-informations');
+    }
+
+    public function edit($employee_id)
+    {
+        $employee_data = $this->employee_model->get_by(['id' => $employee_id]);
+        $parents_information   = $this->employee_parent_model->get_many_by(['employee_id' => $employee_id]);
+        $spouse_information    = $this->employee_spouse_model->get_by(['employee_id' => $employee_id]);
+        $dependent_information = $this->employee_dependent_model->get_by(['employee_id' => $employee_id]);
+        $dependent_information = $this->employee_dependent_model->get_by(['employee_id' => $employee_id]);
+
+        $civil_status_id = $employee_data['civil_status_id'];
+
+        $this->data['page_header']  = 'Employee Details';
+        $this->data['employee_id']  = $employee_id;
+        $this->data['civil_status'] = $this->remove_specific_data($civil_status_id, $this->civil_status_model->get_many_by(['active_status' => 1]));
+        $this->data['current_civil_status'] = $this->civil_status_model->get_by(['id' => $civil_status_id]);
+        $this->data['relationships'] = $this->relationship_model->get_all();
+        $this->data['personal_background'] = [
+            'personal_information'  => $employee_data,
+            'parents_information'   => $parents_information,
+            'spouse_information'    => $spouse_information,
+            'dependent_information' => $dependent_information
+        ];
+
+        // dump($this->data['personal_background']['parents_information']);exit;
+
+        $this->load_view('forms/employee-edit');
+    }
+
+    public function save_changes()
+    {
+        $employee_id = $this->uri->segment(3);
+
+        $post = $this->input->post();
+
+        dump($employee_id);
+        dump($post);
 
     }
 
-    function details($id)
+    public function upload_profile_image()
     {
+        dump($_FILES);
+        if ( ! empty($_FILES))
+        {
+            $tempFile = $_FILES['file']['tmp_name'];
 
+            $targetPath = site_url('assets/img/employee/2017');
+
+            $targetFile = $targetPath . $_FILES['file']['name'];
+
+            dump($tempFile);
+            dump($targetPath);
+            dump($targetFile);
+
+            move_uploaded_file($tempFile, $targetFile);
+        }
     }
 
-    public function save_user_data()
+    public function test_upload()
     {
-        dump($this->input->post());
+        //upload file
+        $config['upload_path'] = 'uploads/';
+        $config['allowed_types'] = '*';
+        $config['max_filename'] = '255';
+        $config['encrypt_name'] = TRUE;
+        $config['max_size'] = '1024'; //1 MB
+
+        if (isset($_FILES['file']['name'])) {
+            if (0 < $_FILES['file']['error']) {
+                echo 'Error during file upload' . $_FILES['file']['error'];
+            } else {
+                if (file_exists('uploads/' . $_FILES['file']['name'])) {
+                    echo 'File already exists : uploads/' . $_FILES['file']['name'];
+                } else {
+                    $this->load->library('upload', $config);
+                    if (!$this->upload->do_upload('file')) {
+                        echo $this->upload->display_errors();
+                    } else {
+                        echo 'File successfully uploaded : uploads/' . $_FILES['file']['name'];
+                    }
+                }
+            }
+        } else {
+            echo 'Please choose a file';
+        }
+    }
+
+    protected function remove_specific_data($remove_id, $raw_data)
+    {
+        foreach ($raw_data as $key => $value) {
+            if ($value['id'] == $remove_id) {
+                unset($raw_data[$key]);
+            }
+        }
+
+        return $raw_data;
     }
 }

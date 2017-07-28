@@ -24,3 +24,7 @@ $lang['cancel_leave_message']  = 'Do you want to <strong>cancel</strong> the lea
 $lang['approve_official_business_message'] = 'Do you want to <strong>approve</strong> the official business request of <strong>%s</strong>';
 $lang['reject_official_business_message']  = 'Do you want to <strong>reject</strong> the official business request of <strong>%s</strong>';
 $lang['cancel_official_business_message']  = 'Do you want to <strong>cancel</strong> the official business request of <strong>%s</strong>';
+
+// ADD EMPLOYEE
+$lang['unable_to_create_employee_account']     = 'Unable update user table. Invalid user id or employee id.';
+$lang['successfully_created_employee_account'] = 'Successfully added new employee and created account. Update the employment information now.';
