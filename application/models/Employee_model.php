@@ -89,7 +89,6 @@ class Employee_model extends MY_Model {
         $query = $this->db->select('*')->from($from)->get();
 
         return $query->result_array();
-
     }
 
     /**

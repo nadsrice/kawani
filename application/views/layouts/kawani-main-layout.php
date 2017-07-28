@@ -20,6 +20,8 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/daterangepicker/daterangepicker.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/timepicker/bootstrap-timepicker.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/toastr/toastr.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/dropzone/css/basic.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.css'); ?>">
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/iCheck/all.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/jquery-ui/1.12.1/jquery-ui.min.css'); ?>">
@@ -32,7 +34,6 @@
 
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-ui/1.12.1/jquery-ui.min.js'); ?>"></script>
-
 		<script>
 			var BASE_URL = '<?php echo base_url(); ?>';
 		</script>
@@ -78,18 +79,26 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/fastclick/fastclick.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/iCheck/icheck.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.min.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/moment/moment.js'); ?>"></script>
-
-		<link rel="stylesheet" href="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.css'); ?>">
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-validation/1.16.0/dist/jquery.validate.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/dropzone/dropzone.js'); ?>"></script>
+
 		<!-- Custom Javascript -->
+		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/js/icheck-custom.js'); ?>"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function () {
+
+				$('.datepicker').datepicker({
+					format:'yyyy-mm-dd'
+				});
+				$('.birthdate').datepicker({
+					format:'yyyy-mm-dd'
+				});
+
 				$('.select2').select2();
 				$('.reservation').daterangepicker({
 					format: 'YYYY-MM-DD h:mm:ss A',

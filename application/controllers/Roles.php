@@ -46,11 +46,11 @@ class Roles extends MY_Controller {
 	// add new role
 	public function add()
 	{
-		if ( ! $this->ion_auth_acl->has_permission('add_role'))
-		{
-			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
-			redirect('/', 'refresh');
-		}
+		// if ( ! $this->ion_auth_acl->has_permission('add_role'))
+		// {
+		// 	$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
+		// 	redirect('/', 'refresh');
+		// }
 
 		$this->data = array(
 			'page_header' => 'Role Management',

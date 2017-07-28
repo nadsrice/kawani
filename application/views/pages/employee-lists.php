@@ -37,7 +37,7 @@
 						<?php foreach ($employees as $employee): ?>
 						<tr>
 							<td>
-								<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employees/details/' . $employee['employee_id']); ?>">
+								<a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employees/informations/' . $employee['employee_id']); ?>">
 									<i class="fa fa-search"></i> View
 								</a>
 								<a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employees/edit/' . $employee['employee_id']); ?>">
