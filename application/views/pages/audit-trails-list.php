@@ -23,15 +23,15 @@
                         <?php if ( ! empty($audit_trails)): ?>
                         <?php foreach ($audit_trails as $audit_trail): ?>
                         <tr>
-                            <td class="text-center"><?php echo $audit_trail['id']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['mode_label']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['timestamp']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['ip_address']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['table_name']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['record_id']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['field_name']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['old_value']; ?></td>
-                            <td class="text-center"><?php echo $audit_trail['new_value']; ?></td>
+                            <td class="text-right"><?php echo $audit_trail['id']; ?></td>
+                            <td class="text-left"><?php echo $audit_trail['mode_label']; ?></td>
+                            <td class="text-right"><?php echo $audit_trail['timestamp']; ?></td>
+                            <td class="text-right"><?php echo $audit_trail['ip_address']; ?></td>
+                            <td class="text-left"><?php echo $audit_trail['table_name']; ?></td>
+                            <td class="text-right"><?php echo $audit_trail['record_id']; ?></td>
+                            <td class="text-left"><?php echo $audit_trail['field_name']; ?></td>
+                            <td class="text-left"><?php echo $audit_trail['old_value']; ?></td>
+                            <td class="text-left"><?php echo $audit_trail['new_value']; ?></td>
                         </tr>
                         <?php endforeach; ?>
                         <?php endif; ?>

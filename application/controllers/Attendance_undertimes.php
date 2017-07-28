@@ -57,7 +57,6 @@ class Attendance_undertimes extends MY_Controller {
 
         $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
 
-
         $this->data = array(
             'page_header'       => 'Undertime Management',
             'undertimes'        => $undertimes,
@@ -78,7 +77,6 @@ class Attendance_undertimes extends MY_Controller {
 
     function add()
     {
-
         $this->data = array(
             'page_header' => 'Undertime Management',
             'active_menu' => $this->active_menu,
@@ -95,6 +93,13 @@ class Attendance_undertimes extends MY_Controller {
 
         if ($this->form_validation->run('undertime_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_undertime',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
+
             $undertime_id = $this->attendance_undertime_model->insert($data);
 
             if ( ! $undertime_id) {
@@ -196,6 +201,14 @@ class Attendance_undertimes extends MY_Controller {
    public function approve($ut_id)
     {
         $this->load->model('attendance_undertime_model');
+
+        // $this->session->set_flashdata('log_parameters', [
+        //     'action_mode' => 0,
+        //     'perm_key'    => 'approve_undertime',
+        //     'old_data'    => NULL,
+        //     'new_data'    => $data
+        // ]);
+
         $update = $this->attendance_undertime_model->update($ut_id, ['approval_status' => 1]);
 
         if ($update) {

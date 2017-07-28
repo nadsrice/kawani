@@ -133,3 +133,13 @@ if ( ! function_exists('add_leave_balance'))
     }
 }
 
+if ( ! function_exists('number_of_hours')) {
+
+    function number_of_hours($time_start, $time_end)
+    {
+        $new_time_start = $time_start;
+        $new_time_end   = $time_end;
+        $total_hours    = strtotime($new_time_start) + strtotime($new_time_end);
+        return (float)$total_hours;
+    }
+}

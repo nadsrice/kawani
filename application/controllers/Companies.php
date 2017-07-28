@@ -59,7 +59,8 @@ class Companies extends MY_Controller {
 			$this->session->set_flashdata('log_parameters', [
 				'action_mode' => 0,
 				'perm_key' 	  => 'add_company',
-				'old_data'	  => NULL
+				'old_data'	  => NULL,
+				'new_data'    => $data
 			]);
 
             $company_id = $this->company_model->insert($data);
@@ -119,19 +120,18 @@ class Companies extends MY_Controller {
 
     public function details($id)
     {
-        $company = $this->company_model->get_company_by(['companies.id' => $id]);
-        $branches = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
+        $company   = $this->company_model->get_company_by(['companies.id' => $id]);
+        $branches  = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
         $employees = $this->employee_model->get_many_employee_by(['company_id' => $id]);
 
 
         $this->data = array(
             'page_header' => 'Company Details',
-            'company'      => $company,
+            'company'     => $company,
             'branches'    => $branches,
-            'employees' => $employees,
+            'employees'   => $employees,
             'active_menu' => $this->active_menu,
         );
-
         $this->load_view('pages/company-details');
     }
 

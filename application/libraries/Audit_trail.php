@@ -21,7 +21,7 @@ class Audit_trail
 	{
 		$user = $this->_ci->ion_auth->user()->row();
 		$permission_data = $this->_ci->system_permission_model->get_by(['method' => $permission_key]);
-		
+
 		$data = [
 			'system_user_id' 		=> $user->id,
 			'system_permission_id'	=> $permission_data['id'],
@@ -33,7 +33,7 @@ class Audit_trail
 		];
 
 		$new_data = array_merge(filter_data($this->_table, $additional_fields), $data);
-
+		
 		$this->_ci->system_audit_trail_model->insert($new_data);
 	}
 }

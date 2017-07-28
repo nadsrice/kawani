@@ -111,6 +111,13 @@ class Attendance_leaves extends MY_Controller {
 
         if ($this->form_validation->run('leave_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_leave',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
+
             $leave_id = $this->attendance_leave_model->insert($data);
 
             if ( ! $leave_id)

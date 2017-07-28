@@ -1,6 +1,15 @@
-<?php 
+<?php
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+$config['log_modes'] = [
+    'CREATED',
+    'MODIFIED',
+    'APPROVED',
+    'REJECTED',
+    'CANCELLED',
+    'ACTIVATED',
+    'DEACTIVATED'
+];
 
 $config['joins']['users']           = 'system_users';
 $config['joins']['groups']          = 'system_groups';

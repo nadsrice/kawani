@@ -55,6 +55,13 @@ class Departments extends MY_Controller {
 
         if ($this->form_validation->run('department_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key' 	  => 'add_department',
+                'old_data'	  => NULL,
+                'new_data'    => $data
+            ]);
+
             $department_id = $this->department_model->insert($data);
 
             if ( ! $department_id) {

@@ -118,6 +118,13 @@ class Attendance_official_businesses extends MY_Controller {
 
         if ($this->form_validation->run('ob_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_ob',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
+
             $official_business_id = $this->attendance_official_business_model->insert($data);
 
             if ( ! $official_business_id) {
@@ -388,15 +395,26 @@ class Attendance_official_businesses extends MY_Controller {
 
         }
 
-        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+        $requester             = $this->employee_model->get_by(['id' => $employee_id]);
         $data['modal_title']   = 'Approve Official Business';
         $data['modal_message'] = sprintf(lang('approve_official_business_message'), $requester['full_name']);
-        $data['url']  = 'attendance_official_businesses/approve_official_business/' . $official_business_data['id'];
-        $data['mode'] = 'approve';
+        $data['url']           = 'attendance_official_businesses/approve_official_business/' . $official_business_data['id'];
+        $data['mode']          = 'approve';
 
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'approve') {
+
+            $test_data = $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 2,
+                'perm_key'    => 'approve_ob',
+                'old_data'    => [
+                    'id' => $official_business_data['id'],
+                    'approval_status' => $official_business_data['approval_status']
+                ],
+                'new_data'    => ['approval_status' => 1],
+            ]);
+
             $result = $this->attendance_official_business_model->update($id, ['approval_status' => 1]);
 
             if ($result){
@@ -493,6 +511,17 @@ class Attendance_official_businesses extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'reject') {
+
+            $test_data = $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 3,
+                'perm_key'    => 'reject_ob',
+                'old_data'    => [
+                    'id' => $official_business_data['id'],
+                    'approval_status' => $official_business_data['approval_status']
+                ],
+                'new_data'    => ['approval_status' => 0],
+            ]);
+
             $result = $this->attendance_official_business_model->update($id, ['approval_status' => 0]);
 
             if ($result){
@@ -540,10 +569,8 @@ class Attendance_official_businesses extends MY_Controller {
         $employee_id = $official_business_data['employee_id'];
 
         if ( ! isset($employee_id) ) {
-
             $this->session->set_flashdata('failed', '');
             redirect('attendance_official_businesses');
-
         }
 
         $requester = $this->employee_model->get_by(['id' => $employee_id]);
@@ -558,10 +585,21 @@ class Attendance_official_businesses extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'cancel') {
+
+            $test_data = $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 4,
+                'perm_key'    => 'cancel_ob',
+                'old_data'    => [
+                    'id' => $official_business_data['id'],
+                    'status' => $official_business_data['status']
+                ],
+                'new_data'    => ['status' => 0],
+            ]);
+
             $result = $this->attendance_official_business_model->update($id, ['status' => 0]);
 
             if ($result){
-                $this->session->set_flashdata('message', 'Official Business successfully cancelled');
+                $this->session->set_flashdata('message', 'Official Business was cancelled');
 
                 $this->load->library('email');
 

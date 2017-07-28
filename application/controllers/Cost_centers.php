@@ -25,7 +25,7 @@ class Cost_centers extends MY_Controller {
 	function index()
 	{
 		$cost_centers = $this->cost_center_model->get_cost_center_all();
-		$companies 		= $this->comapny_model->get_company_all();
+		$companies 		= $this->company_model->get_company_all();
 		$branches 		= $this->branch_model->get_branch_all();
 		$departments 	= $this->department_model->get_department_all();
 		// $teams 				= $this->team_model->get_team_all();
@@ -35,17 +35,22 @@ class Cost_centers extends MY_Controller {
 			'cost_centers'  => $cost_centers,
 			'active_menu'    => $this->active_menu,
 		);
-		$this->load_view('pages/cost_center-list');
+		$this->load_view('pages/cost_center-lists');
 	}
 
 	function add()
 	{
 		// get all company records where status is equal to active
-		$companies = $this->company_model->get_many_by(['active_status' => 1]);
+		$companies 	 = $this->company_model->get_many_by(['active_status' => 1]);
+		$branches  	 = $this->branch_model->get_many_by(['active_status' => 1]);
+		$departments = $this->department_model->get_many_by(['active_status' => 1]);
+		// $teams 		 = $this->team_model->get_many_by(['active_status' => 1]);
 
 		$this->data = array(
 			'page_header' => 'Cost Centers Management',
 			'companies'	  => $companies,
+			'branches'	  => $branches,
+			'departments' => $departments,
 			'active_menu' => $this->active_menu,
 		);
 
@@ -56,13 +61,20 @@ class Cost_centers extends MY_Controller {
 
 		if ($this->form_validation->run('cost_center_add') == TRUE)
 		{
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 0,
+				'perm_key' 	  => 'add_cost_center',
+				'old_data'	  => NULL,
+				'new_data'    => $data
+			]);
+
 			$cost_center_id = $this->cost_center_model->insert($data);
 
 			if ( ! $cost_center_id) {
-				$this->session->set_flashdata('failed', 'Failed to add new cost_center.');
+				$this->session->set_flashdata('failed', 'Failed to add new cost center.');
 				redirect('cost_centers');
 			} else {
-				$this->session->set_flashdata('success', 'Successfully added new cost_center.');
+				$this->session->set_flashdata('success', 'Successfully added new cost center.');
 				redirect('cost_centers');
 			}
 		}

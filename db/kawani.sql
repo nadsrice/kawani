@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
+-- version 4.4.15.10
+-- https://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 13, 2017 at 05:54 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Host: localhost
+-- Generation Time: Jul 26, 2017 at 01:28 AM
+-- Server version: 5.5.52-MariaDB
+-- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,26 +26,17 @@ SET time_zone = "+00:00";
 -- Table structure for table `accounts`
 --
 
-CREATE TABLE `accounts` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `accounts` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(200) DEFAULT NULL,
   `short_name` varchar(100) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `accounts`
---
-
-INSERT INTO `accounts` (`id`, `name`, `short_name`, `description`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 'Lohica', 'LHI', NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 'Systemantech', 'SMTI', NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 'Aspiree', 'AI', NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -53,15 +44,15 @@ INSERT INTO `accounts` (`id`, `name`, `short_name`, `description`, `created`, `c
 -- Table structure for table `attachment_types`
 --
 
-CREATE TABLE `attachment_types` (
-  `id` int(16) UNSIGNED NOT NULL COMMENT '0 = inactive; 1 = active',
+CREATE TABLE IF NOT EXISTS `attachment_types` (
+  `id` int(16) unsigned NOT NULL COMMENT '0 = inactive; 1 = active',
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -70,17 +61,36 @@ CREATE TABLE `attachment_types` (
 -- Table structure for table `attendance_daily_time_records`
 --
 
-CREATE TABLE `attendance_daily_time_records` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `shift_schedule_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_daily_time_records` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `shift_schedule_id` int(16) unsigned NOT NULL,
   `time_in` datetime NOT NULL,
   `time_out` datetime NOT NULL,
-  `number_of_hours` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `number_of_hours` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
   `minutes_tardy` int(11) NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
   `remarks` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance_employee_daily_schedules`
+--
+
+CREATE TABLE IF NOT EXISTS `attendance_employee_daily_schedules` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `date` date NOT NULL,
+  `shift_id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(16) unsigned NOT NULL,
+  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '0 = void 1 = valid'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -89,19 +99,20 @@ CREATE TABLE `attendance_daily_time_records` (
 -- Table structure for table `attendance_holidays`
 --
 
-CREATE TABLE `attendance_holidays` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_holidays` (
+  `id` int(16) unsigned NOT NULL,
   `holiday_date` date NOT NULL,
-  `attendance_holiday_type_id` int(16) UNSIGNED NOT NULL,
+  `attendance_holiday_type_id` int(16) unsigned NOT NULL,
+  `name` varchar(100) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` int(16) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` int(16) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -110,16 +121,16 @@ CREATE TABLE `attendance_holidays` (
 -- Table structure for table `attendance_holiday_types`
 --
 
-CREATE TABLE `attendance_holiday_types` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_holiday_types` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -128,10 +139,10 @@ CREATE TABLE `attendance_holiday_types` (
 -- Table structure for table `attendance_leaves`
 --
 
-CREATE TABLE `attendance_leaves` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `attendance_leave_type_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_leaves` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `attendance_leave_type_id` int(16) unsigned NOT NULL,
   `date_start` date NOT NULL,
   `date_end` date NOT NULL,
   `reason` varchar(200) DEFAULT NULL,
@@ -139,51 +150,18 @@ CREATE TABLE `attendance_leaves` (
   `approver_id` int(16) NOT NULL,
   `approval_status` tinyint(2) NOT NULL COMMENT '0 = denied; 1 = approved; 2 = pending',
   `remarks` tinytext,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
-  `department_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
+  `department_id` int(16) unsigned NOT NULL,
   `costcenter_id` int(16) NOT NULL,
-  `team_id` int(16) UNSIGNED NOT NULL,
-  `status` tinyint(2) UNSIGNED NOT NULL DEFAULT '0' COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed',
-  `payment_status` tinyint(1) NOT NULL COMMENT '0 = without pay; 1 = with pay',
+  `team_id` int(16) unsigned NOT NULL,
+  `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed',
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL
+  `modified_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `attendance_leaves`
---
-
-INSERT INTO `attendance_leaves` (`id`, `employee_id`, `attendance_leave_type_id`, `date_start`, `date_end`, `reason`, `attachment`, `approver_id`, `approval_status`, `remarks`, `company_id`, `branch_id`, `site_id`, `department_id`, `costcenter_id`, `team_id`, `status`, `payment_status`, `created`, `created_by`, `modified`, `modified_by`) VALUES
-(1, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 1, NULL, 0, 0, 0, 0, 0, 0, 0, 0, '2017-07-05 10:26:31', 0, '0000-00-00 00:00:00', 0),
-(2, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:27:07', 0, '0000-00-00 00:00:00', 0),
-(3, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:28:05', 0, '0000-00-00 00:00:00', 0),
-(4, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:28:46', 0, '0000-00-00 00:00:00', 0),
-(5, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:29:05', 0, '0000-00-00 00:00:00', 0),
-(6, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:29:39', 0, '0000-00-00 00:00:00', 0),
-(7, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:30:35', 0, '0000-00-00 00:00:00', 0),
-(8, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:32:02', 0, '0000-00-00 00:00:00', 0),
-(9, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 10:34:30', 0, '0000-00-00 00:00:00', 0),
-(10, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:05:09', 0, '0000-00-00 00:00:00', 0),
-(11, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:09:52', 0, '0000-00-00 00:00:00', 0),
-(12, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:10:18', 0, '0000-00-00 00:00:00', 0),
-(13, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:10:39', 0, '0000-00-00 00:00:00', 0),
-(14, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:13:43', 0, '0000-00-00 00:00:00', 0),
-(15, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:14:02', 0, '0000-00-00 00:00:00', 0),
-(16, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:14:13', 0, '0000-00-00 00:00:00', 0),
-(17, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:14:37', 0, '0000-00-00 00:00:00', 0),
-(18, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:16:36', 0, '0000-00-00 00:00:00', 0),
-(19, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:16:55', 0, '0000-00-00 00:00:00', 0),
-(20, 3, 1, '2017-07-05', '2017-07-08', 'aaaaa', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-05 11:20:53', 0, '0000-00-00 00:00:00', 0),
-(21, 0, 1, '0000-00-00', '0000-00-00', 'sadasdsad', NULL, 0, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 1, '2017-07-06 04:51:18', 0, '0000-00-00 00:00:00', 0),
-(22, 3, 1, '2017-07-06', '2017-07-06', NULL, NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 0, '2017-07-06 05:05:53', 0, '0000-00-00 00:00:00', 0),
-(23, 3, 2, '2017-07-06', '2017-07-10', 'vacation leave', NULL, 2, 0, NULL, 0, 0, 0, 0, 0, 0, 1, 1, '2017-07-06 08:44:04', 0, '0000-00-00 00:00:00', 0),
-(24, 3, 2, '2017-07-06', '2017-07-11', 'vacation leave ni josh', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 1, '2017-07-06 08:45:33', 0, '0000-00-00 00:00:00', 0),
-(25, 3, 2, '2017-07-07', '2017-07-11', 'vacation', NULL, 2, 1, NULL, 0, 0, 0, 0, 0, 0, 0, 1, '2017-07-07 05:50:22', 0, '0000-00-00 00:00:00', 0),
-(26, 3, 2, '2017-07-12', '2017-07-14', 'vacation leave', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, 0, 1, 1, '2017-07-12 06:34:55', 0, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -191,27 +169,27 @@ INSERT INTO `attendance_leaves` (`id`, `employee_id`, `attendance_leave_type_id`
 -- Table structure for table `attendance_leave_types`
 --
 
-CREATE TABLE `attendance_leave_types` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_leave_types` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(200) NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
   `modified_by` int(16) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `attendance_leave_types`
 --
 
 INSERT INTO `attendance_leave_types` (`id`, `name`, `description`, `company_id`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 'Sick Leave', 'Sick Leave', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 'Vacation Leave', 'Vacation Leave', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 'Paternity Leave', 'Paternity Leave', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(4, 'Maternity Leave', 'Maternity Leave', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1);
+(1, 'sick leave', 'sick leave type', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(2, 'vacation leave', 'vacation leave', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(3, 'maternity leave', 'maternity leave', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(4, 'paternity leave', 'paternity leave', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -219,10 +197,10 @@ INSERT INTO `attendance_leave_types` (`id`, `name`, `description`, `company_id`,
 -- Table structure for table `attendance_official_businesses`
 --
 
-CREATE TABLE `attendance_official_businesses` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `account_id` int(16) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_official_businesses` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `account_id` int(16) unsigned DEFAULT NULL,
   `contact_person_id` int(16) DEFAULT NULL,
   `agenda` tinytext,
   `location` varchar(100) DEFAULT NULL,
@@ -230,59 +208,19 @@ CREATE TABLE `attendance_official_businesses` (
   `time_start` time NOT NULL,
   `time_end` time NOT NULL,
   `approver_id` int(16) NOT NULL,
-  `approval_status` tinyint(2) UNSIGNED NOT NULL COMMENT '0 = denied; 1 = approved;  2 = pending',
+  `approval_status` tinyint(2) unsigned NOT NULL COMMENT '0 = denied; 1 = approved;  2 = pending',
   `remarks` tinytext,
   `company_id` int(16) NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `department_id` int(16) UNSIGNED NOT NULL,
-  `costcenter_id` int(16) UNSIGNED NOT NULL,
-  `team_id` int(16) UNSIGNED NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `department_id` int(16) unsigned NOT NULL,
+  `costcenter_id` int(16) unsigned NOT NULL,
+  `team_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `status` tinyint(2) UNSIGNED NOT NULL COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed'
+  `modified_by` int(16) unsigned NOT NULL,
+  `status` tinyint(2) unsigned NOT NULL COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `attendance_official_businesses`
---
-
-INSERT INTO `attendance_official_businesses` (`id`, `employee_id`, `account_id`, `contact_person_id`, `agenda`, `location`, `date`, `time_start`, `time_end`, `approver_id`, `approval_status`, `remarks`, `company_id`, `branch_id`, `department_id`, `costcenter_id`, `team_id`, `created`, `created_by`, `modified`, `modified_by`, `status`) VALUES
-(1, 2, 1, 1, 'Hello, World', 'Quezon City', '2017-06-30', '08:30:00', '02:30:00', 2, 1, NULL, 0, 0, 0, 0, 0, '2017-06-30 08:34:36', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 3, 2, 2, 'sdfdsfdsfdsf', 'QUEZON CITY', '2017-06-30', '04:00:00', '04:00:00', 2, 1, NULL, 0, 0, 0, 0, 0, '2017-06-30 10:03:57', 0, '0000-00-00 00:00:00', 0, 0),
-(3, 3, 3, 3, 'sdfsdfsdfsdfsdf', 'ortigas', '2017-06-30', '04:30:00', '04:30:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 10:43:11', 0, '0000-00-00 00:00:00', 0, 1),
-(4, 3, 2, 2, 'sdsadad', 'QUEZON CITY', '2017-06-30', '04:30:00', '04:30:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 10:48:17', 0, '0000-00-00 00:00:00', 0, 1),
-(5, 2, 3, 3, 'sdasd', 'Ortigas', '2017-07-05', '12:15:00', '05:15:00', 1, 2, NULL, 0, 0, 0, 0, 0, '2017-07-04 11:25:51', 0, '0000-00-00 00:00:00', 0, 1),
-(6, 2, 1, 1, NULL, 'QUEZON CITY', '2017-07-07', '08:00:00', '08:00:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:09:39', 0, '0000-00-00 00:00:00', 0, 1),
-(7, 3, 2, 2, NULL, 'QUEZON CITY', '2017-07-07', '08:00:00', '08:00:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:11:31', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 3, 2, 1, 'sdfsdfsdfdsfsfsdfsdfdf', 'systemantech cordillera', '2017-07-07', '08:00:00', '08:00:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:15:48', 0, '0000-00-00 00:00:00', 0, 1),
-(9, 3, 2, 1, 'sdfsdfsdfdsfsfsdfsdfdf', 'systemantech cordillera', '2017-07-07', '08:00:00', '08:00:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:17:46', 0, '0000-00-00 00:00:00', 0, 1),
-(10, 3, 2, 1, 'sdfsdfsdfdsfsfsdfsdfdf', 'systemantech cordillera', '2017-07-07', '08:00:00', '08:00:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:18:36', 0, '0000-00-00 00:00:00', 0, 1),
-(11, 3, 3, 1, 'dfdfdf', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:15:00', '08:15:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:20:04', 0, '0000-00-00 00:00:00', 0, 1),
-(12, 3, 3, 1, 'dfdfdf', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:15:00', '08:15:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:21:15', 0, '0000-00-00 00:00:00', 0, 1),
-(13, 3, 3, 1, 'dfdfdf', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:15:00', '08:15:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:22:00', 0, '0000-00-00 00:00:00', 0, 1),
-(14, 3, 3, 1, 'dfdfdf', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:15:00', '08:15:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:22:14', 0, '0000-00-00 00:00:00', 0, 1),
-(15, 3, 3, 1, 'dfdfdf', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:15:00', '08:15:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:28:53', 0, '0000-00-00 00:00:00', 0, 1),
-(16, 3, 3, 1, 'dfdfdf', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:15:00', '08:15:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:29:25', 0, '0000-00-00 00:00:00', 0, 1),
-(17, 3, 3, 1, 'dfdfdf', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:15:00', '08:15:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:29:53', 0, '0000-00-00 00:00:00', 0, 1),
-(18, 3, 3, 3, NULL, 'Ortigas, Pasig City', '2017-07-07', '08:30:00', '08:30:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:30:20', 0, '0000-00-00 00:00:00', 0, 1),
-(19, 3, 3, 3, NULL, 'Ortigas, Pasig City', '2017-07-07', '08:30:00', '08:30:00', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:31:06', 0, '0000-00-00 00:00:00', 0, 1),
-(20, 3, 2, 2, 'sadsad', 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '08:30:00', '08:30:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:44:33', 0, '0000-00-00 00:00:00', 0, 1),
-(21, 3, 1, 1, NULL, 'lohica, quezon city', '2017-07-07', '08:45:00', '08:45:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:46:56', 0, '0000-00-00 00:00:00', 0, 1),
-(22, 3, 1, 2, 'ersfsdf', 'lohica, ortigas, pasig city', '2017-07-07', '08:45:00', '08:45:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:48:04', 0, '0000-00-00 00:00:00', 0, 1),
-(23, 3, 3, 3, 'ob', 'sadsad', '2017-07-07', '08:45:00', '08:45:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:57:56', 0, '0000-00-00 00:00:00', 0, 1),
-(24, 3, 3, 1, NULL, 'QUEZON CITY', '2017-07-07', '08:45:00', '08:45:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:59:33', 0, '0000-00-00 00:00:00', 0, 1),
-(25, 3, 3, 3, NULL, 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:06:03', 0, '0000-00-00 00:00:00', 0, 1),
-(26, 3, 3, 3, NULL, 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:09:04', 0, '0000-00-00 00:00:00', 0, 1),
-(27, 3, 3, 3, NULL, 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:09:35', 0, '0000-00-00 00:00:00', 0, 1),
-(28, 3, 3, 3, NULL, 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:09:59', 0, '0000-00-00 00:00:00', 0, 1),
-(29, 3, 3, 3, NULL, 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:10:30', 0, '0000-00-00 00:00:00', 0, 1),
-(30, 3, 3, 3, NULL, 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:10:38', 0, '0000-00-00 00:00:00', 0, 1),
-(31, 3, 3, 3, NULL, 'ORTIGAS CENTER, PASIG CITY', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:10:56', 0, '0000-00-00 00:00:00', 0, 1),
-(32, 3, 1, 1, 'Buiness Proposal with Sir Aguilar', 'Quezon City', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:13:36', 0, '0000-00-00 00:00:00', 0, 1),
-(33, 3, 1, 1, 'Buiness Proposal with Sir Aguilar', 'Quezon City', '2017-07-07', '09:00:00', '09:00:00', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 03:14:03', 0, '0000-00-00 00:00:00', 0, 1),
-(34, 3, 1, 1, 'To meet with sir Aguilar', 'Quezon City', '2017-07-07', '11:30:00', '11:30:00', 2, 1, NULL, 0, 0, 0, 0, 0, '2017-07-07 05:42:22', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -290,46 +228,27 @@ INSERT INTO `attendance_official_businesses` (`id`, `employee_id`, `account_id`,
 -- Table structure for table `attendance_overtimes`
 --
 
-CREATE TABLE `attendance_overtimes` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_overtimes` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `date` date NOT NULL,
   `time_start` time NOT NULL,
   `time_end` time NOT NULL,
   `reason` tinytext,
   `approver_id` int(16) NOT NULL,
-  `approval_status` tinyint(2) UNSIGNED NOT NULL COMMENT '0 = denied; 1 = approved;  2 = pending',
+  `approval_status` tinyint(2) unsigned NOT NULL COMMENT '0 = denied; 1 = approved;  2 = pending',
   `remarks` tinytext,
   `company_id` int(16) NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `department_id` int(16) UNSIGNED NOT NULL,
-  `team_id` int(16) UNSIGNED NOT NULL,
-  `costcenter_id` int(16) UNSIGNED NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `department_id` int(16) unsigned NOT NULL,
+  `team_id` int(16) unsigned NOT NULL,
+  `costcenter_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `status` tinyint(2) UNSIGNED NOT NULL COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed'
+  `modified_by` int(16) unsigned NOT NULL,
+  `status` tinyint(2) unsigned NOT NULL COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `attendance_overtimes`
---
-
-INSERT INTO `attendance_overtimes` (`id`, `employee_id`, `date`, `time_start`, `time_end`, `reason`, `approver_id`, `approval_status`, `remarks`, `company_id`, `branch_id`, `department_id`, `team_id`, `costcenter_id`, `created`, `created_by`, `modified`, `modified_by`, `status`) VALUES
-(1, 1, '2017-06-30', '10:45:00', '10:45:00', 'overtime', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 04:59:41', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 2, '2017-06-30', '11:00:00', '11:00:00', 'need to overtime\r\n', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:01:04', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 3, '2017-06-30', '11:00:00', '11:00:00', 'dasfafdfsdf', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:02:17', 0, '0000-00-00 00:00:00', 0, 1),
-(4, 1, '2017-06-30', '11:00:00', '11:00:00', 'dasfafdfsdf', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:02:54', 0, '0000-00-00 00:00:00', 0, 1),
-(5, 1, '2017-06-30', '11:00:00', '11:00:00', 'dasfafdfsdf', 2, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:02:57', 0, '0000-00-00 00:00:00', 0, 1),
-(6, 1, '2017-06-30', '11:00:00', '11:00:00', 'dasfafdfsdf', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:03:35', 0, '0000-00-00 00:00:00', 0, 1),
-(7, 1, '2017-06-30', '11:00:00', '11:00:00', 'dasfafdfsdf', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:08:30', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 2, '2017-06-30', '11:00:00', '11:00:00', 'dasfafdfsdf', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:08:48', 0, '0000-00-00 00:00:00', 0, 1),
-(9, 2, '2017-06-30', '11:00:00', '11:00:00', NULL, 2, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:09:31', 0, '0000-00-00 00:00:00', 0, 1),
-(10, 2, '2017-06-30', '11:15:00', '11:15:00', NULL, 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:15:15', 0, '0000-00-00 00:00:00', 0, 1),
-(11, 3, '2017-06-30', '11:15:00', '11:15:00', NULL, 0, 2, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:16:13', 0, '0000-00-00 00:00:00', 0, 1),
-(12, 3, '2017-06-30', '11:15:00', '11:15:00', 'overtime filing', 0, 1, NULL, 0, 0, 0, 0, 0, '2017-06-30 05:22:13', 0, '0000-00-00 00:00:00', 0, 0),
-(13, 0, '2017-07-07', '08:45:00', '08:45:00', 'dfdfdsfsdf', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:49:22', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -337,20 +256,21 @@ INSERT INTO `attendance_overtimes` (`id`, `employee_id`, `date`, `time_start`, `
 -- Table structure for table `attendance_shift_schedules`
 --
 
-CREATE TABLE `attendance_shift_schedules` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `shift_code` varchar(50) NOT NULL,
-  `shift_description` varchar(100) DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_shift_schedules` (
+  `id` int(16) unsigned NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `type` tinyint(2) unsigned DEFAULT '0' COMMENT '0 = fixed; 1 = flexi; 2 = variable',
   `time_start` time NOT NULL,
   `time_end` time NOT NULL,
   `grace_period` int(16) NOT NULL COMMENT 'in minutes',
-  `no_of_hours` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `no_of_hours` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -359,14 +279,14 @@ CREATE TABLE `attendance_shift_schedules` (
 -- Table structure for table `attendance_time_logs`
 --
 
-CREATE TABLE `attendance_time_logs` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_time_logs` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `date_time` datetime NOT NULL,
-  `log_type` tinyint(1) UNSIGNED DEFAULT '1' COMMENT '0 = out; 1 = in',
-  `device_id` int(16) UNSIGNED ZEROFILL NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
+  `log_type` tinyint(1) unsigned DEFAULT '1' COMMENT '0 = out; 1 = in',
+  `device_id` int(16) unsigned zerofill NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
   `remarks` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -376,36 +296,47 @@ CREATE TABLE `attendance_time_logs` (
 -- Table structure for table `attendance_undertimes`
 --
 
-CREATE TABLE `attendance_undertimes` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `attendance_undertimes` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `date` date NOT NULL,
   `time_start` time NOT NULL,
   `time_end` time NOT NULL,
   `reason` tinytext,
   `approver_id` int(16) NOT NULL,
-  `approval_status` tinyint(2) UNSIGNED NOT NULL COMMENT '0 = denied; 1 = approved;  2 = pending',
+  `approval_status` tinyint(2) unsigned NOT NULL COMMENT '0 = denied; 1 = approved;  2 = pending',
   `remarks` tinytext,
   `company_id` int(16) NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `department_id` int(16) UNSIGNED NOT NULL,
-  `team_id` int(16) UNSIGNED NOT NULL,
-  `cost_center_id` int(16) UNSIGNED NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `department_id` int(16) unsigned NOT NULL,
+  `team_id` int(16) unsigned NOT NULL,
+  `cost_center_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `status` tinyint(2) UNSIGNED NOT NULL COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed'
+  `modified_by` int(16) unsigned NOT NULL,
+  `status` tinyint(2) unsigned NOT NULL COMMENT '0 = cancelled; 1 = filed; 2 = responded; 3 = changed'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `attendance_undertimes`
+-- Table structure for table `banks`
 --
 
-INSERT INTO `attendance_undertimes` (`id`, `employee_id`, `date`, `time_start`, `time_end`, `reason`, `approver_id`, `approval_status`, `remarks`, `company_id`, `branch_id`, `department_id`, `team_id`, `cost_center_id`, `created`, `created_by`, `modified`, `modified_by`, `status`) VALUES
-(1, 2, '2017-06-30', '09:15:00', '09:15:00', NULL, 1, 1, NULL, 0, 0, 0, 0, 0, '2017-06-30 03:28:46', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 3, '2017-06-30', '02:00:00', '05:00:00', 'not feeling well', 2, 1, NULL, 0, 0, 0, 0, 0, '2017-06-30 06:56:03', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 0, '2017-07-07', '08:45:00', '08:45:00', 'undertime is undertime', 0, 2, NULL, 0, 0, 0, 0, 0, '2017-07-07 02:51:58', 0, '0000-00-00 00:00:00', 0, 1);
+CREATE TABLE IF NOT EXISTS `banks` (
+  `id` int(16) unsigned NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `address` varchar(300) NOT NULL,
+  `contact_person` varchar(50) NOT NULL,
+  `contact_number` varchar(20) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(16) NOT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(16) NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -413,18 +344,18 @@ INSERT INTO `attendance_undertimes` (`id`, `employee_id`, `date`, `time_start`, 
 -- Table structure for table `benefits`
 --
 
-CREATE TABLE `benefits` (
-  `id` int(16) UNSIGNED NOT NULL COMMENT '0 = inactive; 1 = active',
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `benefit_matrix_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `benefits` (
+  `id` int(16) unsigned NOT NULL COMMENT '0 = inactive; 1 = active',
+  `company_id` int(16) unsigned NOT NULL,
+  `benefit_matrix_id` int(16) unsigned NOT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `amount` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `amount` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
   `description` varchar(255) DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -433,15 +364,15 @@ CREATE TABLE `benefits` (
 -- Table structure for table `benefit_matrices`
 --
 
-CREATE TABLE `benefit_matrices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `benefit_matrices` (
+  `id` int(16) unsigned NOT NULL,
   `effectivity_date` datetime NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -450,9 +381,9 @@ CREATE TABLE `benefit_matrices` (
 -- Table structure for table `branches`
 --
 
-CREATE TABLE `branches` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `branches` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `block_number` varchar(4) DEFAULT NULL,
@@ -463,11 +394,11 @@ CREATE TABLE `branches` (
   `street` varchar(100) DEFAULT NULL,
   `location_id` int(16) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `branches`
@@ -478,10 +409,38 @@ INSERT INTO `branches` (`id`, `company_id`, `name`, `description`, `block_number
 (2, 1, 'HR Office', 'Systemantech Human Resource Office Branch', '', NULL, NULL, NULL, NULL, '', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
 (3, 2, 'SD&S Main Office', 'Lohica SD&S Main office Branch', '120', NULL, NULL, NULL, NULL, 'Cordillera St. Sta. Mesa Heights', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
 (4, 3, 'Recruitment Office', 'Aspiree Recruitment Main Office Branch', '', NULL, NULL, NULL, NULL, '', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(5, 2, 'Lohica data center', 'Lohica data center Lohica data centerLohica data centerLohica data centerLohica data centerLohica data centerLohica data centerLohica data centerLohica data center', '123', '123', '123', '123', '123', 'Lohica St.', NULL, '2017-06-08 11:42:20', 0, '0000-00-00 00:00:00', 0, 1),
-(6, 1, 'systemantech retiro branch', 'fsdf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2017-07-12 03:06:23', 0, '0000-00-00 00:00:00', 0, 1),
-(7, 10, 'branch 101', 'branch 101', '1', '1', '1', '1', '1', '1', NULL, '2017-07-12 03:13:18', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 10, 'branch 101', 'branch 1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2017-07-12 03:17:18', 0, '0000-00-00 00:00:00', 0, 1);
+(5, 2, 'Lohica data center', 'Lohica data center Lohica data centerLohica data centerLohica data centerLohica data centerLohica data centerLohica data centerLohica data centerLohica data center', '123', '123', '123', '123', '123', 'Lohica St.', NULL, '2017-06-08 11:42:20', 0, '0000-00-00 00:00:00', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `candidates`
+--
+
+CREATE TABLE IF NOT EXISTS `candidates` (
+  `id` int(16) NOT NULL,
+  `system_user_id` int(11) unsigned NOT NULL,
+  `name_prefix` varchar(10) DEFAULT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `name_suffix` varchar(20) DEFAULT NULL,
+  `birthdate` date NOT NULL,
+  `birthplace` varchar(200) DEFAULT NULL,
+  `gender` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = male; 1 = female',
+  `civil_status_id` int(16) unsigned NOT NULL,
+  `email_address` varchar(50) NOT NULL,
+  `candidate_image` varchar(300) DEFAULT NULL,
+  `resume` varchar(300) NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `character_reference_id` int(16) unsigned DEFAULT NULL,
+  `recruiter_id` int(16) DEFAULT NULL,
+  `recruitment_status` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '0 = rejected; 1 = pending; 3 = hired',
+  `created` datetime NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(16) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -489,12 +448,12 @@ INSERT INTO `branches` (`id`, `company_id`, `name`, `description`, `block_number
 -- Table structure for table `civil_status`
 --
 
-CREATE TABLE `civil_status` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `civil_status` (
+  `id` int(16) unsigned NOT NULL,
   `status_name` varchar(50) DEFAULT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
   `default_status` tinyint(1) NOT NULL COMMENT '0 non-default 1 default'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `civil_status`
@@ -513,43 +472,27 @@ INSERT INTO `civil_status` (`id`, `status_name`, `active_status`, `default_statu
 -- Table structure for table `companies`
 --
 
-CREATE TABLE `companies` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `companies` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(200) DEFAULT NULL,
   `short_name` varchar(100) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `logo_image` varchar(300) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `companies`
 --
 
 INSERT INTO `companies` (`id`, `name`, `short_name`, `description`, `logo_image`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 'test 2', 'tst 2', 'test etse tsetset2', NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(1, 'Systemantech', NULL, NULL, NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
 (2, 'Lohica', NULL, NULL, NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 'Aspire', 'Aspire', 'Aspire', NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(4, 'Google', 'ggl', 'twllkfjejkchsdlkfs\'d vjlskf', NULL, '2017-07-11 11:21:02', 0, '0000-00-00 00:00:00', 0, 1),
-(5, 'Google', 'ggl', 'twllkfjejkchsdlkfs\'d vjlskf', NULL, '2017-07-11 11:22:26', 0, '0000-00-00 00:00:00', 0, 1),
-(6, 'Google', 'ggl', 'twllkfjejkchsdlkfs\'d vjlskf', NULL, '2017-07-11 11:22:49', 0, '0000-00-00 00:00:00', 0, 1),
-(7, 'Google', 'ggl', 'twllkfjejkchsdlkfs\'d vjlskf', NULL, '2017-07-11 11:24:09', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 'Google', 'ggl', 'twllkfjejkchsdlkfs\'d vjlskf', NULL, '2017-07-11 11:25:30', 0, '0000-00-00 00:00:00', 0, 1),
-(9, 'Google', 'ggl', 'twllkfjejkchsdlkfs\'d vjlskf', NULL, '2017-07-11 11:26:11', 0, '0000-00-00 00:00:00', 0, 1),
-(10, 'facebook', 'fb', 'asd;kasd;lsasd', NULL, '2017-07-11 11:26:39', 0, '0000-00-00 00:00:00', 0, 1),
-(11, 'Asd', 'Asd', 'asd', NULL, '2017-07-13 05:09:08', 0, '0000-00-00 00:00:00', 0, 1),
-(12, 'Asd', 'Asd', 'asd', NULL, '2017-07-13 05:09:27', 0, '0000-00-00 00:00:00', 0, 1),
-(13, 'Asd', 'Asd', 'asd', NULL, '2017-07-13 05:10:42', 0, '0000-00-00 00:00:00', 0, 1),
-(14, 'Asd', 'Asd', 'asd', NULL, '2017-07-13 05:12:35', 0, '0000-00-00 00:00:00', 0, 1),
-(15, 'lorem ipsum', 'li', 'aahshsgd gagsjd jasenuxc', NULL, '2017-07-13 05:13:18', 0, '0000-00-00 00:00:00', 0, 1),
-(16, 'asdasdasd', 'asddasdasd', 'asdasdasdasd', NULL, '2017-07-13 05:18:40', 0, '0000-00-00 00:00:00', 0, 1),
-(17, 'asdasdasd', 'asddasdasd', 'asdasdasdasd', NULL, '2017-07-13 05:19:34', 0, '0000-00-00 00:00:00', 0, 1),
-(18, 'asdasdasd', 'asddasdasd', 'asdasdasdasd', NULL, '2017-07-13 05:20:22', 0, '0000-00-00 00:00:00', 0, 1),
-(19, 'asdasdasd', 'asddasdasd', 'asdasdasdasd', NULL, '2017-07-13 05:21:16', 0, '0000-00-00 00:00:00', 0, 1);
+(3, 'Aspiree', NULL, NULL, NULL, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -557,21 +500,21 @@ INSERT INTO `companies` (`id`, `name`, `short_name`, `description`, `logo_image`
 -- Table structure for table `company_addresses`
 --
 
-CREATE TABLE `company_addresses` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `company_addresses` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `block_number` varchar(4) DEFAULT NULL,
   `lot_number` varchar(4) DEFAULT NULL,
   `flr_number` varchar(4) DEFAULT NULL,
   `building_number` varchar(4) DEFAULT NULL,
   `building_name` varchar(100) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,
-  `location_id` int(16) UNSIGNED NOT NULL,
+  `location_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -580,19 +523,19 @@ CREATE TABLE `company_addresses` (
 -- Table structure for table `company_contact_information`
 --
 
-CREATE TABLE `company_contact_information` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `company_contact_information` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `telephone_number` varchar(25) DEFAULT NULL,
   `mobile_number` varchar(25) DEFAULT NULL,
   `fax_number` varchar(25) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
   `website` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -601,18 +544,18 @@ CREATE TABLE `company_contact_information` (
 -- Table structure for table `company_government_id_numbers`
 --
 
-CREATE TABLE `company_government_id_numbers` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `revenue_district_office_id` int(16) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `company_government_id_numbers` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `revenue_district_office_id` int(16) unsigned DEFAULT NULL,
   `tin` varchar(13) DEFAULT '000-000-000',
   `sss` varchar(15) DEFAULT '00-0000000-0',
   `hdmf` varchar(18) DEFAULT '0000-0000-0000',
   `phic` varchar(18) DEFAULT '00-000000000-0',
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL
+  `modified_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -621,12 +564,12 @@ CREATE TABLE `company_government_id_numbers` (
 -- Table structure for table `company_information`
 --
 
-CREATE TABLE `company_information` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `company_address_id` int(16) UNSIGNED NOT NULL,
-  `company_contact_id` int(16) UNSIGNED NOT NULL,
-  `government_id_numbers_id` int(16) UNSIGNED NOT NULL
+CREATE TABLE IF NOT EXISTS `company_information` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `company_address_id` int(16) unsigned NOT NULL,
+  `company_contact_id` int(16) unsigned NOT NULL,
+  `government_id_numbers_id` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -635,29 +578,20 @@ CREATE TABLE `company_information` (
 -- Table structure for table `contact_persons`
 --
 
-CREATE TABLE `contact_persons` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `account_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `contact_persons` (
+  `id` int(16) unsigned NOT NULL,
+  `account_id` int(16) unsigned NOT NULL,
   `name_prefix` varchar(10) DEFAULT NULL,
   `first_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `name_suffix` varchar(20) NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
   `modified_by` int(16) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL
+  `active_status` tinyint(1) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `contact_persons`
---
-
-INSERT INTO `contact_persons` (`id`, `account_id`, `name_prefix`, `first_name`, `middle_name`, `last_name`, `name_suffix`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 1, 'Mr.', 'Ramon', 'Vasquez', 'Aguilar', 'Jr', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 0),
-(2, 2, 'Mr.', 'Roberto', 'Z', 'Ilagan', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 0),
-(3, 3, 'Mr.', 'Mike', '', 'Laguesma', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -665,20 +599,20 @@ INSERT INTO `contact_persons` (`id`, `account_id`, `name_prefix`, `first_name`, 
 -- Table structure for table `cost_centers`
 --
 
-CREATE TABLE `cost_centers` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `cost_centers` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `department_id` int(16) UNSIGNED NOT NULL,
-  `team_id` int(16) UNSIGNED NOT NULL,
-  `approver_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `department_id` int(16) unsigned NOT NULL,
+  `team_id` int(16) unsigned NOT NULL,
+  `approver_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
   `modified_by` int(16) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -687,14 +621,14 @@ CREATE TABLE `cost_centers` (
 -- Table structure for table `countries`
 --
 
-CREATE TABLE `countries` (
-  `id` tinyint(8) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` tinyint(8) unsigned NOT NULL,
   `name` varchar(80) NOT NULL,
   `iso` char(2) NOT NULL,
   `iso3` char(3) DEFAULT NULL,
-  `number_code` smallint(6) UNSIGNED DEFAULT NULL,
-  `phone_code` int(5) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `number_code` smallint(6) unsigned DEFAULT NULL,
+  `phone_code` int(5) unsigned DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `countries`
@@ -753,7 +687,7 @@ INSERT INTO `countries` (`id`, `name`, `iso`, `iso3`, `number_code`, `phone_code
 (50, 'CONGO, THE DEMOCRATIC REPUBLIC OF THE', 'CD', 'COD', 180, 242),
 (51, 'COOK ISLANDS', 'CK', 'COK', 184, 682),
 (52, 'COSTA RICA', 'CR', 'CRI', 188, 506),
-(53, 'COTE D\'IVOIRE', 'CI', 'CIV', 384, 225),
+(53, 'COTE D''IVOIRE', 'CI', 'CIV', 384, 225),
 (54, 'CROATIA', 'HR', 'HRV', 191, 385),
 (55, 'CUBA', 'CU', 'CUB', 192, 53),
 (56, 'CYPRUS', 'CY', 'CYP', 196, 357),
@@ -812,11 +746,11 @@ INSERT INTO `countries` (`id`, `name`, `iso`, `iso3`, `number_code`, `phone_code
 (109, 'KAZAKHSTAN', 'KZ', 'KAZ', 398, 7),
 (110, 'KENYA', 'KE', 'KEN', 404, 254),
 (111, 'KIRIBATI', 'KI', 'KIR', 296, 686),
-(112, 'KOREA, DEMOCRATIC PEOPLE\'S REPUBLIC OF', 'KP', 'PRK', 408, 850),
+(112, 'KOREA, DEMOCRATIC PEOPLE''S REPUBLIC OF', 'KP', 'PRK', 408, 850),
 (113, 'KOREA, REPUBLIC OF', 'KR', 'KOR', 410, 82),
 (114, 'KUWAIT', 'KW', 'KWT', 414, 965),
 (115, 'KYRGYZSTAN', 'KG', 'KGZ', 417, 996),
-(116, 'LAO PEOPLE\'S DEMOCRATIC REPUBLIC', 'LA', 'LAO', 418, 856),
+(116, 'LAO PEOPLE''S DEMOCRATIC REPUBLIC', 'LA', 'LAO', 418, 856),
 (117, 'LATVIA', 'LV', 'LVA', 428, 371),
 (118, 'LEBANON', 'LB', 'LBN', 422, 961),
 (119, 'LESOTHO', 'LS', 'LSO', 426, 266),
@@ -947,19 +881,19 @@ INSERT INTO `countries` (`id`, `name`, `iso`, `iso3`, `number_code`, `phone_code
 -- Table structure for table `deductions`
 --
 
-CREATE TABLE `deductions` (
-  `id` int(16) UNSIGNED NOT NULL COMMENT '0 = inactive; 1 = active',
-  `company_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `deductions` (
+  `id` int(16) unsigned NOT NULL COMMENT '0 = inactive; 1 = active',
+  `company_id` int(16) unsigned NOT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `amount` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `amount` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
   `frequency` tinyint(1) NOT NULL COMMENT '0 = continuous ; 1 = once; 2 = semi-monthly; 3 = monthly; 4 = quarterly; 5 = annually; 6 = semi-annually ',
   `count` int(3) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -968,27 +902,26 @@ CREATE TABLE `deductions` (
 -- Table structure for table `departments`
 --
 
-CREATE TABLE `departments` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `departments` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(100) NOT NULL DEFAULT 'department name',
   `description` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(10) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(10) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `departments`
 --
 
 INSERT INTO `departments` (`id`, `name`, `description`, `company_id`, `branch_id`, `site_id`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 'LOHICA', 'LOHICA', 1, 0, 0, '2017-06-06 07:27:10', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 'SOFTWARE DEVELOPMENT & SOLUTIONS', 'SD&S - Lohica', 0, 0, 0, '2017-07-12 04:07:22', 0, '0000-00-00 00:00:00', 0, 1);
+(1, 'LOHICA', 'LOHICA', 1, 0, 0, '2017-06-06 07:27:10', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -996,18 +929,18 @@ INSERT INTO `departments` (`id`, `name`, `description`, `company_id`, `branch_id
 -- Table structure for table `devices`
 --
 
-CREATE TABLE `devices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `devices` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
   `ip_address` varchar(12) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1016,12 +949,12 @@ CREATE TABLE `devices` (
 -- Table structure for table `educational_attainments`
 --
 
-CREATE TABLE `educational_attainments` (
-  `id` tinyint(8) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `educational_attainments` (
+  `id` tinyint(8) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
   `default_status` tinyint(1) NOT NULL COMMENT '0 non-default 1 default'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `educational_attainments`
@@ -1032,8 +965,8 @@ INSERT INTO `educational_attainments` (`id`, `name`, `active_status`, `default_s
 (2, 'SECONDARY', 1, 0),
 (3, 'VOCATIONAL DEGREE', 1, 0),
 (4, 'ASSOCIATE DEGREE', 1, 0),
-(5, 'BACHELOR\'S DEGREE', 1, 1),
-(6, 'MASTER\'S DEGREE', 1, 0),
+(5, 'BACHELOR''S DEGREE', 1, 1),
+(6, 'MASTER''S DEGREE', 1, 0),
 (7, 'DOCTORATE DEGREE', 1, 0);
 
 -- --------------------------------------------------------
@@ -1042,16 +975,16 @@ INSERT INTO `educational_attainments` (`id`, `name`, `active_status`, `default_s
 -- Table structure for table `education_courses`
 --
 
-CREATE TABLE `education_courses` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `education_courses` (
+  `id` int(16) unsigned NOT NULL,
   `course` varchar(100) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `educational_attainment_id` int(16) UNSIGNED NOT NULL,
+  `educational_attainment_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1060,10 +993,10 @@ CREATE TABLE `education_courses` (
 -- Table structure for table `employees`
 --
 
-CREATE TABLE `employees` (
+CREATE TABLE IF NOT EXISTS `employees` (
   `id` int(16) NOT NULL,
   `employee_code` varchar(15) NOT NULL,
-  `system_user_id` int(11) UNSIGNED NOT NULL,
+  `system_user_id` int(11) unsigned NOT NULL,
   `name_prefix` varchar(10) DEFAULT NULL,
   `first_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) NOT NULL,
@@ -1071,26 +1004,27 @@ CREATE TABLE `employees` (
   `name_suffix` varchar(20) DEFAULT NULL,
   `birthdate` date NOT NULL,
   `birthplace` varchar(200) DEFAULT NULL,
-  `gender` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '0 = male; 1 = female',
-  `civil_status_id` int(16) UNSIGNED NOT NULL,
+  `gender` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = male; 1 = female',
+  `civil_status_id` int(16) unsigned NOT NULL,
   `employee_image` varchar(300) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employees`
 --
 
 INSERT INTO `employees` (`id`, `employee_code`, `system_user_id`, `name_prefix`, `first_name`, `middle_name`, `last_name`, `name_suffix`, `birthdate`, `birthplace`, `gender`, `civil_status_id`, `employee_image`, `company_id`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, '0798', 1, NULL, 'kevin', 'demeza', 'sagun', NULL, '0000-00-00', NULL, 1, 0, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(2, '0811', 2, NULL, 'ramon', 'vasquez', 'aguilar', NULL, '0000-00-00', NULL, 1, 0, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(3, '0772', 3, NULL, 'josh', 'bandiola', 'gono', NULL, '0000-00-00', NULL, 1, 0, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(4, '0897', 4, NULL, 'dean', 'a', 'aquino', NULL, '0000-00-00', NULL, 1, 0, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1);
+(1, '0839', 0, NULL, 'kevin', 'demeza', 'sagun', NULL, '0000-00-00', NULL, 1, 0, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(2, '0811', 0, NULL, 'ramon', 'vasquez', 'aguilar', NULL, '0000-00-00', NULL, 1, 0, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(3, '0072', 0, NULL, 'josh', 'bandiola', 'gono', NULL, '0000-00-00', NULL, 1, 0, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(4, '0771', 0, NULL, 'dean', 'a', 'a', NULL, '0000-00-00', NULL, 1, 0, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
+(5, '', 0, NULL, 'jerome', '', 'manansala', NULL, '0000-00-00', NULL, 0, 0, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1098,20 +1032,20 @@ INSERT INTO `employees` (`id`, `employee_code`, `system_user_id`, `name_prefix`,
 -- Table structure for table `employee_13th_month`
 --
 
-CREATE TABLE `employee_13th_month` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_13th_month` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `rendered_months` decimal(16,2) NOT NULL,
-  `amount` decimal(16,2) UNSIGNED NOT NULL,
+  `amount` decimal(16,2) unsigned NOT NULL,
   `tax` decimal(16,2) NOT NULL,
   `total_amount` decimal(16,2) NOT NULL,
   `year` year(4) NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0 void 1 valid',
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL
+  `modified_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1120,9 +1054,9 @@ CREATE TABLE `employee_13th_month` (
 -- Table structure for table `employee_addresses`
 --
 
-CREATE TABLE `employee_addresses` (
-  `id` int(16) UNSIGNED NOT NULL DEFAULT '0',
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_addresses` (
+  `id` int(16) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(16) unsigned NOT NULL,
   `type` tinyint(1) NOT NULL COMMENT '0 current 1 permanent 2 foreign',
   `block_number` varchar(4) DEFAULT NULL,
   `lot_number` varchar(4) DEFAULT NULL,
@@ -1130,13 +1064,13 @@ CREATE TABLE `employee_addresses` (
   `building_number` varchar(4) DEFAULT NULL,
   `building_name` varchar(100) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,
-  `location_id` int(16) UNSIGNED NOT NULL,
+  `location_id` int(16) unsigned NOT NULL,
   `country_id` int(16) NOT NULL,
   `active_status` tinyint(1) NOT NULL COMMENT '0 inactive 1 active',
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL
+  `modified_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1145,16 +1079,16 @@ CREATE TABLE `employee_addresses` (
 -- Table structure for table `employee_attachments`
 --
 
-CREATE TABLE `employee_attachments` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `attachment_type_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_attachments` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `attachment_type_id` int(16) unsigned NOT NULL,
   `server_path` varchar(100) NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
+  `modified_by` int(16) unsigned NOT NULL,
   `validity` tinyint(1) NOT NULL COMMENT '0 void 1 valid'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1164,18 +1098,18 @@ CREATE TABLE `employee_attachments` (
 -- Table structure for table `employee_awards`
 --
 
-CREATE TABLE `employee_awards` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_awards` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `award` varchar(200) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `comment` varchar(200) NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1184,17 +1118,17 @@ CREATE TABLE `employee_awards` (
 -- Table structure for table `employee_benefits`
 --
 
-CREATE TABLE `employee_benefits` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_benefits` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `benefit_id` int(16) NOT NULL,
   `amount` decimal(16,2) NOT NULL DEFAULT '0.00',
   `created` date NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1203,20 +1137,20 @@ CREATE TABLE `employee_benefits` (
 -- Table structure for table `employee_certifications`
 --
 
-CREATE TABLE `employee_certifications` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_certifications` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `name` varchar(200) DEFAULT NULL,
   `number` varchar(30) DEFAULT NULL,
   `issuing_authority` varchar(100) DEFAULT NULL,
   `date_received` date NOT NULL,
   `validity` date NOT NULL,
   `attachment` varchar(300) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
+  `modified_by` int(16) unsigned NOT NULL,
   `active_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1226,38 +1160,19 @@ CREATE TABLE `employee_certifications` (
 -- Table structure for table `employee_contacts`
 --
 
-CREATE TABLE `employee_contacts` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_contacts` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `telephone_number` varchar(15) DEFAULT NULL,
   `mobile_number` varchar(15) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `emergency_contact_id` int(16) UNSIGNED NOT NULL,
+  `emergency_contact_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `employee_daily_schedules`
---
-
-CREATE TABLE `employee_daily_schedules` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `date` date NOT NULL,
-  `shift_id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
-  `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `status` tinyint(1) UNSIGNED DEFAULT '1' COMMENT '0 = void 1 = valid'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1266,17 +1181,17 @@ CREATE TABLE `employee_daily_schedules` (
 -- Table structure for table `employee_deductions`
 --
 
-CREATE TABLE `employee_deductions` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_deductions` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `deduction_id` int(16) NOT NULL,
   `amount` decimal(16,2) NOT NULL DEFAULT '0.00',
   `created` date NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1285,15 +1200,15 @@ CREATE TABLE `employee_deductions` (
 -- Table structure for table `employee_dependents`
 --
 
-CREATE TABLE `employee_dependents` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_dependents` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `name_prefix` varchar(10) DEFAULT NULL,
   `first_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `name_suffix` varchar(20) DEFAULT NULL,
-  `relationship_id` int(16) UNSIGNED NOT NULL,
+  `relationship_id` int(16) unsigned NOT NULL,
   `birthdate` date NOT NULL,
   `block_number` varchar(4) DEFAULT NULL,
   `lot_number` varchar(4) DEFAULT NULL,
@@ -1301,14 +1216,15 @@ CREATE TABLE `employee_dependents` (
   `building_number` varchar(4) DEFAULT NULL,
   `building_name` varchar(100) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,
-  `location_id` int(16) UNSIGNED NOT NULL,
+  `location_id` int(16) unsigned NOT NULL,
   `remarks` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `birth_certificate` varchar(300) NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1317,26 +1233,26 @@ CREATE TABLE `employee_dependents` (
 -- Table structure for table `employee_educational_attainments`
 --
 
-CREATE TABLE `employee_educational_attainments` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `educational_attainment_id` tinyint(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_educational_attainments` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `educational_attainment_id` tinyint(16) unsigned NOT NULL,
   `school` varchar(150) NOT NULL,
   `year_start` year(4) NOT NULL,
   `year_end` year(4) NOT NULL,
   `certification` varchar(300) DEFAULT NULL,
   `awards` varchar(300) DEFAULT NULL,
-  `gpa` decimal(16,2) UNSIGNED DEFAULT NULL,
-  `major_gpa` decimal(16,2) UNSIGNED DEFAULT NULL,
-  `course_id` int(16) UNSIGNED NOT NULL,
+  `gpa` decimal(16,2) unsigned DEFAULT NULL,
+  `major_gpa` decimal(16,2) unsigned DEFAULT NULL,
+  `course_id` int(16) unsigned NOT NULL,
   `remarks` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employee_educational_attainments`
@@ -1351,15 +1267,15 @@ INSERT INTO `employee_educational_attainments` (`id`, `company_id`, `employee_id
 -- Table structure for table `employee_emergency_contacts`
 --
 
-CREATE TABLE `employee_emergency_contacts` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_emergency_contacts` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `name_prefix` varchar(10) DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `middle_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `name_suffix` varchar(20) DEFAULT NULL,
-  `relationship_id` int(16) UNSIGNED NOT NULL,
+  `relationship_id` int(16) unsigned NOT NULL,
   `telephone_number` varchar(15) DEFAULT NULL,
   `mobile_number` varchar(15) DEFAULT NULL,
   `block_number` varchar(4) DEFAULT NULL,
@@ -1368,12 +1284,12 @@ CREATE TABLE `employee_emergency_contacts` (
   `building_number` varchar(4) DEFAULT NULL,
   `building_name` varchar(100) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,
-  `location_id` int(16) UNSIGNED DEFAULT NULL,
+  `location_id` int(16) unsigned DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1382,18 +1298,18 @@ CREATE TABLE `employee_emergency_contacts` (
 -- Table structure for table `employee_examinations`
 --
 
-CREATE TABLE `employee_examinations` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_examinations` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `score` decimal(16,2) NOT NULL,
   `remarks` tinytext,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1402,8 +1318,8 @@ CREATE TABLE `employee_examinations` (
 -- Table structure for table `employee_government_id_numbers`
 --
 
-CREATE TABLE `employee_government_id_numbers` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_government_id_numbers` (
+  `id` int(16) unsigned NOT NULL,
   `company_id` int(16) NOT NULL,
   `employee_id` int(16) NOT NULL,
   `tin` varchar(13) DEFAULT '000-000-000',
@@ -1411,9 +1327,9 @@ CREATE TABLE `employee_government_id_numbers` (
   `hdmf` varchar(18) DEFAULT '0000-0000-0000',
   `phic` varchar(18) DEFAULT '00-000000000-0',
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL
+  `modified_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1422,18 +1338,18 @@ CREATE TABLE `employee_government_id_numbers` (
 -- Table structure for table `employee_incentives`
 --
 
-CREATE TABLE `employee_incentives` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `incentive_matrix_id` int(16) UNSIGNED NOT NULL,
-  `incentive_id` int(16) UNSIGNED NOT NULL,
-  `amount` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `created` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_incentives` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `incentive_matrix_id` int(16) unsigned NOT NULL,
+  `incentive_id` int(16) unsigned NOT NULL,
+  `amount` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `company_id` int(16) unsigned NOT NULL,
+  `created` int(16) unsigned NOT NULL,
   `created_by` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1442,39 +1358,29 @@ CREATE TABLE `employee_incentives` (
 -- Table structure for table `employee_information`
 --
 
-CREATE TABLE `employee_information` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `branch_id` int(16) UNSIGNED DEFAULT NULL,
-  `cost_center_id` int(16) UNSIGNED DEFAULT NULL,
-  `department_id` int(16) UNSIGNED DEFAULT NULL,
-  `team_id` int(16) UNSIGNED DEFAULT NULL,
-  `site_id` int(16) UNSIGNED DEFAULT NULL,
-  `reports_to` int(16) UNSIGNED DEFAULT NULL,
-  `position_id` int(16) UNSIGNED NOT NULL,
-  `govt_numbers_id` int(16) UNSIGNED NOT NULL,
-  `employment_type_id` int(16) UNSIGNED NOT NULL,
-  `contact_id` int(16) UNSIGNED NOT NULL,
-  `emergency_contact_id` int(16) UNSIGNED NOT NULL,
-  `shift_schedule_id` int(16) UNSIGNED NOT NULL,
-  `employment_status` tinyint(1) UNSIGNED NOT NULL COMMENT '0 unemployed 1 employed',
+CREATE TABLE IF NOT EXISTS `employee_information` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `branch_id` int(16) unsigned DEFAULT NULL,
+  `cost_center_id` int(16) unsigned DEFAULT NULL,
+  `department_id` int(16) unsigned DEFAULT NULL,
+  `team_id` int(16) unsigned DEFAULT NULL,
+  `site_id` int(16) unsigned DEFAULT NULL,
+  `reports_to` int(16) unsigned DEFAULT NULL,
+  `position_id` int(16) unsigned NOT NULL,
+  `govt_numbers_id` int(16) unsigned NOT NULL,
+  `employment_type_id` int(16) unsigned NOT NULL,
+  `contact_id` int(16) unsigned NOT NULL,
+  `emergency_contact_id` int(16) unsigned NOT NULL,
+  `shift_schedule_id` int(16) unsigned NOT NULL,
+  `employment_status` tinyint(1) unsigned NOT NULL COMMENT '0 unemployed 1 employed',
   `date_hired` datetime DEFAULT NULL,
   `regularization_status` tinyint(1) NOT NULL COMMENT '0 probationary 1 regular',
   `date_regularized` datetime DEFAULT NULL,
-  `approver_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '0 = not approver; 1 = approver',
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `employee_information`
---
-
-INSERT INTO `employee_information` (`id`, `employee_id`, `company_id`, `branch_id`, `cost_center_id`, `department_id`, `team_id`, `site_id`, `reports_to`, `position_id`, `govt_numbers_id`, `employment_type_id`, `contact_id`, `emergency_contact_id`, `shift_schedule_id`, `employment_status`, `date_hired`, `regularization_status`, `date_regularized`, `approver_status`, `active_status`) VALUES
-(1, 1, 0, NULL, NULL, NULL, NULL, NULL, 2, 0, 0, 0, 0, 0, 0, 0, NULL, 0, NULL, 0, 1),
-(2, 2, 0, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 0, 0, 0, NULL, 0, NULL, 0, 1),
-(3, 3, 0, NULL, NULL, NULL, NULL, NULL, 2, 0, 0, 0, 0, 0, 0, 0, NULL, 0, NULL, 0, 1),
-(4, 4, 0, NULL, NULL, NULL, NULL, NULL, 2, 0, 0, 0, 0, 0, 0, 0, NULL, 0, NULL, 0, 1);
+  `approver_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = not approver; 1 = approver',
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1482,18 +1388,18 @@ INSERT INTO `employee_information` (`id`, `employee_id`, `company_id`, `branch_i
 -- Table structure for table `employee_languages`
 --
 
-CREATE TABLE `employee_languages` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `language_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_languages` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `language_id` int(16) unsigned NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `proficiency_id` int(16) UNSIGNED NOT NULL,
+  `proficiency_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1502,29 +1408,52 @@ CREATE TABLE `employee_languages` (
 -- Table structure for table `employee_leave_credits`
 --
 
-CREATE TABLE `employee_leave_credits` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `position_leave_credit_id` int(16) UNSIGNED NOT NULL,
-  `balance` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `company_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_leave_credits` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `position_leave_credit_id` int(16) unsigned NOT NULL,
+  `balance` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL
+  `modified_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `employee_leave_credits`
+-- Table structure for table `employee_parents`
 --
 
-INSERT INTO `employee_leave_credits` (`id`, `employee_id`, `position_leave_credit_id`, `balance`, `company_id`, `created`, `created_by`, `modified`, `modified_by`) VALUES
-(1, 3, 1, '54.00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(2, 3, 2, '20.00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(3, 3, 3, '30.00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(4, 2, 1, '20.00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(5, 2, 2, '30.00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(6, 2, 3, '30.00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
+CREATE TABLE IF NOT EXISTS `employee_parents` (
+  `id` int(16) NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `name_prefix` varchar(10) DEFAULT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `name_suffix` varchar(20) DEFAULT NULL,
+  `birthdate` date NOT NULL,
+  `birthplace` varchar(200) DEFAULT NULL,
+  `gender` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = male; 1 = female',
+  `occupation` varchar(30) DEFAULT NULL,
+  `relationship_id` int(16) unsigned NOT NULL,
+  `type` tinyint(1) NOT NULL COMMENT '0 current 1 permanent 2 foreign',
+  `block_number` varchar(4) DEFAULT NULL,
+  `lot_number` varchar(4) DEFAULT NULL,
+  `floor_number` varchar(4) DEFAULT NULL,
+  `building_number` varchar(4) DEFAULT NULL,
+  `building_name` varchar(100) DEFAULT NULL,
+  `street` varchar(100) DEFAULT NULL,
+  `location_id` int(16) unsigned NOT NULL,
+  `country_id` int(16) NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(16) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1532,24 +1461,24 @@ INSERT INTO `employee_leave_credits` (`id`, `employee_id`, `position_leave_credi
 -- Table structure for table `employee_positions`
 --
 
-CREATE TABLE `employee_positions` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `position_id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `department_id` int(16) UNSIGNED NOT NULL,
-  `team_id` int(16) UNSIGNED NOT NULL,
-  `costcenter_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_positions` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `position_id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `department_id` int(16) unsigned NOT NULL,
+  `team_id` int(16) unsigned NOT NULL,
+  `costcenter_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
   `date_started` date NOT NULL,
   `date_ended` date DEFAULT NULL,
   `remarks` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1558,16 +1487,16 @@ CREATE TABLE `employee_positions` (
 -- Table structure for table `employee_salaries`
 --
 
-CREATE TABLE `employee_salaries` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `salary_matrix_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_salaries` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `salary_matrix_id` int(16) unsigned NOT NULL,
   `salary_grade_id` int(16) NOT NULL,
   `monthly_salary` decimal(16,2) NOT NULL DEFAULT '0.00',
   `created` date NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `created_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1576,17 +1505,17 @@ CREATE TABLE `employee_salaries` (
 -- Table structure for table `employee_skills`
 --
 
-CREATE TABLE `employee_skills` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `skill_id` int(16) UNSIGNED NOT NULL,
-  `proficiency_level_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_skills` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `skill_id` int(16) unsigned NOT NULL,
+  `proficiency_level_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1595,9 +1524,9 @@ CREATE TABLE `employee_skills` (
 -- Table structure for table `employee_spouses`
 --
 
-CREATE TABLE `employee_spouses` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_spouses` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `name_prefix` varchar(10) DEFAULT NULL,
   `first_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) NOT NULL,
@@ -1617,10 +1546,11 @@ CREATE TABLE `employee_spouses` (
   `region` varchar(100) DEFAULT NULL,
   `zip_code` varchar(5) DEFAULT NULL,
   `remarks` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `marriage_certificate` varchar(300) NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `created_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1629,19 +1559,21 @@ CREATE TABLE `employee_spouses` (
 -- Table structure for table `employee_trainings`
 --
 
-CREATE TABLE `employee_trainings` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_trainings` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `course` varchar(200) DEFAULT NULL,
   `date_started` date NOT NULL,
   `date_ended` date NOT NULL,
   `validity_date` date NOT NULL,
   `comments` varchar(200) DEFAULT NULL,
   `attachment` varchar(300) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `validity` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = void; 1 = valid',
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
-  `validity` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = void; 1 = valid'
+  `created_by` int(16) unsigned NOT NULL,
+  `modified` datetime DEFAULT NULL,
+  `modified_by` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1650,15 +1582,15 @@ CREATE TABLE `employee_trainings` (
 -- Table structure for table `employee_work_experiences`
 --
 
-CREATE TABLE `employee_work_experiences` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employee_work_experiences` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
   `company_name` varchar(100) DEFAULT NULL,
-  `position_id` int(16) UNSIGNED NOT NULL,
+  `position_id` int(16) unsigned NOT NULL,
   `immediate_superior` varchar(100) NOT NULL,
   `duties` tinytext,
-  `employment_type_id` int(16) UNSIGNED NOT NULL,
-  `salary` decimal(16,2) UNSIGNED DEFAULT NULL,
+  `employment_type_id` int(16) unsigned NOT NULL,
+  `salary` decimal(16,2) unsigned DEFAULT NULL,
   `date_hired` date NOT NULL,
   `date_separated` date NOT NULL,
   `reason_for_leaving` tinytext,
@@ -1668,15 +1600,15 @@ CREATE TABLE `employee_work_experiences` (
   `building_number` varchar(4) DEFAULT NULL,
   `building_name` varchar(100) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,
-  `location_id` int(16) UNSIGNED NOT NULL,
+  `location_id` int(16) unsigned NOT NULL,
   `mobile_number` varchar(15) DEFAULT NULL,
   `telephone_number` varchar(15) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1685,12 +1617,23 @@ CREATE TABLE `employee_work_experiences` (
 -- Table structure for table `employment_types`
 --
 
-CREATE TABLE `employment_types` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `employment_types` (
+  `id` int(16) unsigned NOT NULL,
   `type_name` varchar(50) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
   `active_status` tinyint(1) NOT NULL COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employment_types`
+--
+
+INSERT INTO `employment_types` (`id`, `type_name`, `description`, `active_status`) VALUES
+(1, 'Permanent', NULL, 1),
+(2, 'Casual', NULL, 1),
+(3, 'Apprentice', NULL, 1),
+(4, 'Employment Agency Staff', NULL, 1),
+(5, 'Contractor / Sub-contractor', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1698,16 +1641,16 @@ CREATE TABLE `employment_types` (
 -- Table structure for table `hdmf_matrices`
 --
 
-CREATE TABLE `hdmf_matrices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `hdmf_matrices` (
+  `id` int(16) unsigned NOT NULL,
   `year_effective` year(4) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `attachment` varchar(300) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1716,27 +1659,27 @@ CREATE TABLE `hdmf_matrices` (
 -- Table structure for table `hdmf_rates`
 --
 
-CREATE TABLE `hdmf_rates` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `hdmf_matrix_id` int(16) UNSIGNED NOT NULL,
-  `minimum_range` decimal(16,2) UNSIGNED NOT NULL,
-  `maximum_range` decimal(16,2) UNSIGNED NOT NULL,
-  `employee_share` decimal(16,2) UNSIGNED NOT NULL,
-  `employer_share` decimal(16,2) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `hdmf_rates` (
+  `id` int(16) unsigned NOT NULL,
+  `hdmf_matrix_id` int(16) unsigned NOT NULL,
+  `minimum_range` decimal(16,2) unsigned NOT NULL,
+  `maximum_range` decimal(16,2) unsigned NOT NULL,
+  `employee_share` decimal(16,2) unsigned NOT NULL,
+  `employer_share` decimal(16,2) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime DEFAULT NULL,
-  `modified_by` int(16) UNSIGNED DEFAULT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned DEFAULT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hdmf_rates`
 --
 
 INSERT INTO `hdmf_rates` (`id`, `hdmf_matrix_id`, `minimum_range`, `maximum_range`, `employee_share`, `employer_share`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 1, '0.00', '1500.00', '0.01', '0.02', '2017-05-05 11:02:54', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 1, '1500.01', '999999.99', '0.02', '0.02', '2017-05-05 11:04:03', 0, '0000-00-00 00:00:00', 0, 1);
+(1, 1, 0.00, 1500.00, 0.01, 0.02, '2017-05-05 11:02:54', 0, '0000-00-00 00:00:00', 0, 1),
+(2, 1, 1500.01, 999999.99, 0.02, 0.02, '2017-05-05 11:04:03', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1744,16 +1687,16 @@ INSERT INTO `hdmf_rates` (`id`, `hdmf_matrix_id`, `minimum_range`, `maximum_rang
 -- Table structure for table `incentives`
 --
 
-CREATE TABLE `incentives` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `incentive_matrix_id` int(16) UNSIGNED NOT NULL,
-  `incentive_type_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `incentives` (
+  `id` int(16) unsigned NOT NULL,
+  `incentive_matrix_id` int(16) unsigned NOT NULL,
+  `incentive_type_id` int(16) unsigned NOT NULL,
   `amount` decimal(16,2) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(10) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
+  `modified_by` int(10) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1762,16 +1705,16 @@ CREATE TABLE `incentives` (
 -- Table structure for table `incentive_matrices`
 --
 
-CREATE TABLE `incentive_matrices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `incentive_matrices` (
+  `id` int(16) unsigned NOT NULL,
   `year_effective` year(4) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1780,16 +1723,16 @@ CREATE TABLE `incentive_matrices` (
 -- Table structure for table `incentive_types`
 --
 
-CREATE TABLE `incentive_types` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `incentive_types` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
   `modified_by` int(16) NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
+  `company_id` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1798,10 +1741,10 @@ CREATE TABLE `incentive_types` (
 -- Table structure for table `languages`
 --
 
-CREATE TABLE `languages` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `languages` (
+  `id` int(16) unsigned NOT NULL,
   `language` varchar(100) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
   `default_status` tinyint(4) NOT NULL COMMENT '0 non-default 1 default'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1811,15 +1754,15 @@ CREATE TABLE `languages` (
 -- Table structure for table `locations`
 --
 
-CREATE TABLE `locations` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `locations` (
+  `id` int(16) unsigned NOT NULL,
   `barangay` varchar(60) CHARACTER SET utf8 DEFAULT NULL,
   `city` varchar(60) CHARACTER SET utf8 DEFAULT NULL,
   `province` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `region` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
   `zipcode` varchar(6) DEFAULT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=42030 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `locations`
@@ -7758,7 +7701,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (5922, 'GATBUCA', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
 (5923, 'GUGO', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
 (5924, 'IBA ESTE', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
-(5925, 'IBA O\'ESTE', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
+(5925, 'IBA O''ESTE', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
 (5926, 'LONGOS', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
 (5927, 'MEYSULAO', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
 (5928, 'MEYTO', 'CALUMPIT', 'BULACAN', 'CENTRAL LUZON', NULL, 1),
@@ -9710,7 +9653,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (7871, 'LAWY', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
 (7872, 'MANGA', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
 (7873, 'MANLAPIG', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
-(7874, 'O\'DONNELL', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
+(7874, 'O''DONNELL', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
 (7875, 'SANTA LUCIA', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
 (7876, 'SANTA RITA', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
 (7877, 'SANTO DOMINGO 1ST', 'CAPAS', 'TARLAC', 'CENTRAL LUZON', NULL, 1),
@@ -15425,24 +15368,24 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (13578, 'TAGOLANGO', 'BATARAZA', 'PALAWAN', 'MIMAROPA', NULL, 1),
 (13579, 'TARATAK', 'BATARAZA', 'PALAWAN', 'MIMAROPA', NULL, 1),
 (13580, 'TARUSAN', 'BATARAZA', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13581, 'AMAS', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13582, 'ARIBUNGOS', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13583, 'BARONG-BARONG', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13584, 'CALASAGUEN', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13585, 'IMULNOD', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13586, 'IPILAN', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13587, 'MAASIN', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13588, 'MAINIT', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13589, 'MALIS', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13590, 'MAMBALOT', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13591, 'ORING-ORING', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13592, 'PANGOBILIAN', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13593, 'POBLACION I', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13594, 'POBLACION II', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13595, 'SALOGON', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13596, 'SAMAREÑANA', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13597, 'SARAZA', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
-(13598, 'TUBTUB', 'BROOKE\'S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13581, 'AMAS', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13582, 'ARIBUNGOS', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13583, 'BARONG-BARONG', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13584, 'CALASAGUEN', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13585, 'IMULNOD', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13586, 'IPILAN', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13587, 'MAASIN', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13588, 'MAINIT', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13589, 'MALIS', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13590, 'MAMBALOT', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13591, 'ORING-ORING', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13592, 'PANGOBILIAN', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13593, 'POBLACION I', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13594, 'POBLACION II', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13595, 'SALOGON', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13596, 'SAMAREÑANA', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13597, 'SARAZA', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
+(13598, 'TUBTUB', 'BROOKE''S POINT', 'PALAWAN', 'MIMAROPA', NULL, 1),
 (13599, 'BOGTONG', 'BUSUANGA', 'PALAWAN', 'MIMAROPA', NULL, 1),
 (13600, 'BULUANG', 'BUSUANGA', 'PALAWAN', 'MIMAROPA', NULL, 1),
 (13601, 'CHEEY', 'BUSUANGA', 'PALAWAN', 'MIMAROPA', NULL, 1),
@@ -16225,7 +16168,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (14377, 'BGY. 64 - BAGACAY (BGY. 41 BAGACAY)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14378, 'BGY. 48 - BAGONG ABRE (BGY. 42)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14379, 'BGY. 66 - BANQUEROHAN (BGY. 43)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
-(14380, 'BGY. 1 - EM\'S BARRIO (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
+(14380, 'BGY. 1 - EM''S BARRIO (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14381, 'BGY. 11 - MAOYOD POB. (BGY. 10 & 11)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14382, 'BGY. 12 - TULA-TULA (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14383, 'BGY. 13 - ILAWOD WEST POB. (ILAWOD 1)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
@@ -16234,7 +16177,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (14386, 'BGY. 16 - KAWIT-EAST WASHINGTON DRIVE (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14387, 'BGY. 17 - RIZAL SREET., ILAWOD (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14388, 'BGY. 19 - CABAGÑAN', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
-(14389, 'BGY. 2 - EM\'S BARRIO SOUTH (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
+(14389, 'BGY. 2 - EM''S BARRIO SOUTH (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14390, 'BGY. 18 - CABAGÑAN WEST (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14391, 'BGY. 21 - BINANUAHAN WEST (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14392, 'BGY. 22 - BINANUAHAN EAST (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
@@ -16245,7 +16188,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (14397, 'BGY. 27 - VICTORY VILLAGE SOUTH (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14398, 'BGY. 28 - VICTORY VILLAGE NORTH (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14399, 'BGY. 29 - SABANG (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
-(14400, 'BGY. 3 - EM\'S BARRIO EAST (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
+(14400, 'BGY. 3 - EM''S BARRIO EAST (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14401, 'BGY. 36 - KAPANTAWAN (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14402, 'BGY. 30 - PIGCALE (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
 (14403, 'BGY. 31 - CENTRO-BAYBAY (POB.)', 'LEGAZPI CITY (CAPITAL)', 'ALBAY', 'BICOL REGION', NULL, 1),
@@ -32519,7 +32462,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (30646, 'TIMALANG', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
 (30647, 'TOMITOM', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
 (30648, 'UPPER PANGI', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
-(30649, 'VETERAN\'S VILLAGE (RUIZ)', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
+(30649, 'VETERAN''S VILLAGE (RUIZ)', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
 (30650, 'MAKILAS', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
 (30651, 'CAPARAN', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
 (30652, 'DOMANDAN', 'IPIL (CAPITAL)', 'ZAMBOANGA SIBUGAY', 'ZAMBOANGA PENINSULA', NULL, 1),
@@ -35971,7 +35914,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (34092, 'DATU DANWATA', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
 (34093, 'DEMOLOC', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
 (34094, 'FELIS', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
-(34095, 'FISHING VILLAGE (FISHERMAN\'S VILLAGE)', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
+(34095, 'FISHING VILLAGE (FISHERMAN''S VILLAGE)', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
 (34096, 'KIBALATONG', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
 (34097, 'KIDALAPONG', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
 (34098, 'KILALAG', 'MALITA', 'DAVAO OCCIDENTAL', 'DAVAO REGION', NULL, 1),
@@ -36318,43 +36261,43 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (34439, 'VILLARICA', 'MIDSAYAP', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
 (34440, 'KIWANAN', 'MIDSAYAP', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
 (34441, 'SAN PEDRO', 'MIDSAYAP', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34442, 'BAGONTAPAY', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34443, 'BIALONG', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34444, 'BUAYAN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34445, 'CALUNASAN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34446, 'DALIPE', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34447, 'DAGONG', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34448, 'DUNGO-AN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34449, 'GAUNAN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34450, 'INAS', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34451, 'KATIPUNAN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34452, 'LA FORTUNA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34453, 'LA SUERTE', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34454, 'LANGKONG', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34455, 'LEPAGA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34456, 'LIBOO', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34457, 'LIKA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34458, 'LUZ VILLAGE', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34459, 'MAGALLON', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34460, 'MALAYAN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34461, 'NEW ANTIQUE', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34462, 'NEW BARBAZA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34463, 'NEW KALIBO', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34464, 'NEW CONSOLACION', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34465, 'NEW ESPERANZA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34466, 'NEW JANIUAY', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34467, 'NEW LAWA-AN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34468, 'NEW RIZAL', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34469, 'NUEVA VIDA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34470, 'PAG-ASA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34471, 'POBLACION', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34472, 'PULANG-LUPA', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34473, 'SANGAT', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34474, 'TAWANTAWAN', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34475, 'TIBAO', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34476, 'UGPAY', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34477, 'PALMA-PEREZ', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
-(34478, 'POBLACION B', 'M\'LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34442, 'BAGONTAPAY', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34443, 'BIALONG', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34444, 'BUAYAN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34445, 'CALUNASAN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34446, 'DALIPE', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34447, 'DAGONG', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34448, 'DUNGO-AN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34449, 'GAUNAN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34450, 'INAS', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34451, 'KATIPUNAN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34452, 'LA FORTUNA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34453, 'LA SUERTE', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34454, 'LANGKONG', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34455, 'LEPAGA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34456, 'LIBOO', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34457, 'LIKA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34458, 'LUZ VILLAGE', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34459, 'MAGALLON', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34460, 'MALAYAN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34461, 'NEW ANTIQUE', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34462, 'NEW BARBAZA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34463, 'NEW KALIBO', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34464, 'NEW CONSOLACION', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34465, 'NEW ESPERANZA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34466, 'NEW JANIUAY', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34467, 'NEW LAWA-AN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34468, 'NEW RIZAL', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34469, 'NUEVA VIDA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34470, 'PAG-ASA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34471, 'POBLACION', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34472, 'PULANG-LUPA', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34473, 'SANGAT', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34474, 'TAWANTAWAN', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34475, 'TIBAO', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34476, 'UGPAY', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34477, 'PALMA-PEREZ', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
+(34478, 'POBLACION B', 'M''LANG', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
 (34479, 'ANICK (UPPER BALOGO)', 'PIGKAWAYAN', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
 (34480, 'UPPER BAGUER (BAGUER)', 'PIGKAWAYAN', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
 (34481, 'BALACAYON', 'PIGKAWAYAN', 'COTABATO (NORTH COTABATO)', 'SOCCSKSARGEN', NULL, 1),
@@ -36728,31 +36671,31 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (34848, 'SAN FELIPE', 'TANTANGAN', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
 (34849, 'NEW CUYAPO', 'TANTANGAN', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
 (34850, 'TINONGCOP', 'TANTANGAN', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34851, 'BASAG', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34852, 'EDWARDS (POB.)', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34853, 'KEMATU', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34854, 'LACONON', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34855, 'LAMSALOME', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34856, 'NEW DUMANGAS', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34857, 'SINOLON', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34858, 'LAMBANGAN', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34859, 'MAAN', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34860, 'AFUS', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34861, 'LAMBULING', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34862, 'LAMHAKO', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34863, 'POBLACION', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34864, 'TALCON', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34865, 'TALUFO', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34866, 'TUDOK', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34867, 'AFLEK', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34868, 'DATAL BOB', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34869, 'DESAWO', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34870, 'DLANAG', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34871, 'LEMSNOLON', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34872, 'MALUGONG', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34873, 'MONGOCAYO', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34874, 'SALACAFE', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
-(34875, 'T\'BOLOK', 'T\'BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34851, 'BASAG', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34852, 'EDWARDS (POB.)', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34853, 'KEMATU', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34854, 'LACONON', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34855, 'LAMSALOME', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34856, 'NEW DUMANGAS', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34857, 'SINOLON', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34858, 'LAMBANGAN', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34859, 'MAAN', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34860, 'AFUS', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34861, 'LAMBULING', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34862, 'LAMHAKO', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34863, 'POBLACION', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34864, 'TALCON', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34865, 'TALUFO', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34866, 'TUDOK', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34867, 'AFLEK', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34868, 'DATAL BOB', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34869, 'DESAWO', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34870, 'DLANAG', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34871, 'LEMSNOLON', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34872, 'MALUGONG', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34873, 'MONGOCAYO', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34874, 'SALACAFE', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
+(34875, 'T''BOLOK', 'T''BOLI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
 (34876, 'ACMONAN', 'TUPI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
 (34877, 'BOLOLMALA', 'TUPI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
 (34878, 'BUNAO', 'TUPI', 'SOUTH COTABATO', 'SOCCSKSARGEN', NULL, 1),
@@ -36853,7 +36796,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (34973, 'SALUMPING', 'ESPERANZA', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (34974, 'BAMBAD', 'ISULAN (CAPITAL)', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (34975, 'BUAL', 'ISULAN (CAPITAL)', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
-(34976, 'D\'LOTILLA', 'ISULAN (CAPITAL)', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
+(34976, 'D''LOTILLA', 'ISULAN (CAPITAL)', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (34977, 'DANSULI', 'ISULAN (CAPITAL)', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (34978, 'IMPAO', 'ISULAN (CAPITAL)', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (34979, 'KALAWAG I (POB.)', 'ISULAN (CAPITAL)', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
@@ -37010,7 +36953,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (35130, 'BUENAFLOR', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (35131, 'CALEAN', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (35132, 'CARMEN', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
-(35133, 'D\'LEDESMA', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
+(35133, 'D''LEDESMA', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (35134, 'GANSING', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (35135, 'KALANDAGAN', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
 (35136, 'LOWER KATUNGAL', 'CITY OF TACURONG', 'SULTAN KUDARAT', 'SOCCSKSARGEN', NULL, 1),
@@ -37162,7 +37105,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (35281, 'ATLAE', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
 (35282, 'BANAHAW', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
 (35283, 'BANATE', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
-(35284, 'B\'LAAN', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
+(35284, 'B''LAAN', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
 (35285, 'DATAL BATONG', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
 (35286, 'DATAL BILA', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
 (35287, 'DATAL TAMPAL', 'MALUNGON', 'SARANGANI', 'SOCCSKSARGEN', NULL, 1),
@@ -39256,7 +39199,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (37372, 'BAYAN PARK EAST', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37373, 'BROOKSPOINT', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37374, 'BROOKSIDE', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
-(37375, 'CABINET HILL-TEACHER\'S CAMP', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
+(37375, 'CABINET HILL-TEACHER''S CAMP', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37376, 'CAMP ALLEN', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37377, 'CAMP 7', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37378, 'CAMP 8', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
@@ -39269,7 +39212,7 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 (37385, 'DPS AREA', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37386, 'DIZON SUBDIVISION', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37387, 'QUIRINO HILL, EAST', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
-(37388, 'ENGINEERS\' HILL', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
+(37388, 'ENGINEERS'' HILL', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37389, 'FAIRVIEW VILLAGE', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37390, 'FORT DEL PILAR', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
 (37391, 'GENERAL LUNA, UPPER', 'BAGUIO CITY', 'BENGUET', 'CAR', NULL, 1),
@@ -43924,12 +43867,12 @@ INSERT INTO `locations` (`id`, `barangay`, `city`, `province`, `region`, `zipcod
 -- Table structure for table `nationalities`
 --
 
-CREATE TABLE `nationalities` (
-  `id` tinyint(8) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `nationalities` (
+  `id` tinyint(8) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `active_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
   `default_status` tinyint(1) NOT NULL COMMENT '0 non-default 1 default'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `nationalities`
@@ -44144,10 +44087,10 @@ INSERT INTO `nationalities` (`id`, `name`, `active_status`, `default_status`) VA
 -- Table structure for table `occupations`
 --
 
-CREATE TABLE `occupations` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `occupations` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44156,15 +44099,15 @@ CREATE TABLE `occupations` (
 -- Table structure for table `payroll`
 --
 
-CREATE TABLE `payroll` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `payroll` (
+  `id` int(16) unsigned NOT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
+  `modified_by` int(16) unsigned NOT NULL,
   `validity_status` tinyint(1) NOT NULL COMMENT '0 = void; 1 = valid'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44174,10 +44117,10 @@ CREATE TABLE `payroll` (
 -- Table structure for table `payroll_employees`
 --
 
-CREATE TABLE `payroll_employees` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED NOT NULL,
-  `payroll_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `payroll_employees` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned NOT NULL,
+  `payroll_id` int(16) unsigned NOT NULL,
   `salary` decimal(16,2) NOT NULL,
   `overtime` decimal(16,2) NOT NULL,
   `benefits` decimal(16,2) NOT NULL,
@@ -44187,9 +44130,9 @@ CREATE TABLE `payroll_employees` (
   `deductions` decimal(16,2) NOT NULL,
   `tax` decimal(16,2) NOT NULL,
   `net_pay` decimal(16,2) NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` date NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL
+  `created_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44198,14 +44141,14 @@ CREATE TABLE `payroll_employees` (
 -- Table structure for table `payroll_employee_benefits`
 --
 
-CREATE TABLE `payroll_employee_benefits` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED DEFAULT NULL,
-  `employee_benefit_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `payroll_employee_benefits` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned DEFAULT NULL,
+  `employee_benefit_id` int(16) unsigned NOT NULL,
   `amount` decimal(16,2) NOT NULL,
   `payroll_employee_id` int(16) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0 = cancelled; 1 = generated; 2 = summed '
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44215,14 +44158,14 @@ CREATE TABLE `payroll_employee_benefits` (
 -- Table structure for table `payroll_employee_deductions`
 --
 
-CREATE TABLE `payroll_employee_deductions` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED DEFAULT NULL,
-  `employee_deduction_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `payroll_employee_deductions` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned DEFAULT NULL,
+  `employee_deduction_id` int(16) unsigned NOT NULL,
   `amount` decimal(16,2) NOT NULL,
   `payroll_employee_id` int(16) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0 = cancelled; 1 = generated; 2 = summed '
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44232,15 +44175,15 @@ CREATE TABLE `payroll_employee_deductions` (
 -- Table structure for table `payroll_employee_hdmfs`
 --
 
-CREATE TABLE `payroll_employee_hdmfs` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `payroll_employee_hdmfs` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned DEFAULT NULL,
   `amount_employee` decimal(16,2) NOT NULL,
   `amount_employer` decimal(16,2) NOT NULL,
   `amount_total` decimal(16,2) NOT NULL,
   `payroll_employee_id` int(16) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0 = cancelled; 1 = generated; 2 = summed '
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44250,15 +44193,15 @@ CREATE TABLE `payroll_employee_hdmfs` (
 -- Table structure for table `payroll_employee_id`
 --
 
-CREATE TABLE `payroll_employee_id` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `payroll_employee_id` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned DEFAULT NULL,
   `amount_employee` decimal(16,2) NOT NULL,
   `amount_employer` decimal(16,2) NOT NULL,
   `amount_total` decimal(16,2) NOT NULL,
   `payroll_employee_id` int(16) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0 = cancelled; 1 = generated; 2 = summed '
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44268,15 +44211,15 @@ CREATE TABLE `payroll_employee_id` (
 -- Table structure for table `payroll_employee_phics`
 --
 
-CREATE TABLE `payroll_employee_phics` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `payroll_employee_phics` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned DEFAULT NULL,
   `amount_employee` decimal(16,2) NOT NULL,
   `amount_employer` decimal(16,2) NOT NULL,
   `amount_total` decimal(16,2) NOT NULL,
   `payroll_employee_id` int(16) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0 = cancelled; 1 = generated; 2 = summed '
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44286,13 +44229,13 @@ CREATE TABLE `payroll_employee_phics` (
 -- Table structure for table `payroll_employee_salaries`
 --
 
-CREATE TABLE `payroll_employee_salaries` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `employee_id` int(16) UNSIGNED DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `payroll_employee_salaries` (
+  `id` int(16) unsigned NOT NULL,
+  `employee_id` int(16) unsigned DEFAULT NULL,
   `amount` decimal(16,2) NOT NULL,
   `payroll_employee_id` int(16) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0 = cancelled; 1 = generated '
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44302,17 +44245,17 @@ CREATE TABLE `payroll_employee_salaries` (
 -- Table structure for table `phic_matrices`
 --
 
-CREATE TABLE `phic_matrices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `phic_matrices` (
+  `id` int(16) unsigned NOT NULL,
   `effectivity_date` date NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `attachment` varchar(300) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `phic_matrices`
@@ -44327,55 +44270,55 @@ INSERT INTO `phic_matrices` (`id`, `effectivity_date`, `description`, `attachmen
 -- Table structure for table `phic_rates`
 --
 
-CREATE TABLE `phic_rates` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `phic_matrix_id` int(16) UNSIGNED NOT NULL,
-  `minimum_range` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `maximum_range` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `monthly_salary_base` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `employee_share` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `employer_share` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `total_monthly_premium` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
+CREATE TABLE IF NOT EXISTS `phic_rates` (
+  `id` int(16) unsigned NOT NULL,
+  `phic_matrix_id` int(16) unsigned NOT NULL,
+  `minimum_range` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `maximum_range` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `monthly_salary_base` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `employee_share` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `employer_share` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
+  `total_monthly_premium` decimal(16,2) unsigned NOT NULL DEFAULT '0.00',
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `phic_rates`
 --
 
 INSERT INTO `phic_rates` (`id`, `phic_matrix_id`, `minimum_range`, `maximum_range`, `monthly_salary_base`, `employee_share`, `employer_share`, `total_monthly_premium`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 1, '0.00', '8999.99', '8000.00', '100.00', '100.00', '200.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 1, '9000.00', '9999.99', '9000.00', '112.50', '112.50', '225.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 1, '10000.00', '10999.99', '10000.00', '125.00', '125.00', '250.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(4, 1, '11000.00', '11999.99', '11000.00', '137.50', '137.50', '275.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(5, 1, '12000.00', '12999.99', '12000.00', '150.00', '150.00', '300.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(6, 1, '13000.00', '13999.99', '13000.00', '162.50', '162.50', '325.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(7, 1, '14000.00', '14999.99', '14000.00', '175.00', '175.00', '350.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 1, '15000.00', '15999.99', '15000.00', '187.50', '187.50', '375.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(9, 1, '16000.00', '16999.99', '16000.00', '200.00', '200.00', '400.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(10, 1, '17000.00', '17999.99', '17000.00', '212.50', '212.50', '425.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(11, 1, '18000.00', '18999.99', '18000.00', '225.00', '225.00', '450.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(12, 1, '19000.00', '19999.99', '19000.00', '237.50', '237.50', '475.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(13, 1, '20000.00', '20999.99', '20000.00', '250.00', '250.00', '500.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(14, 1, '21000.00', '21999.99', '21000.00', '262.50', '262.50', '525.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(15, 1, '22000.00', '22999.99', '22000.00', '275.00', '275.00', '550.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(16, 1, '23000.00', '23999.99', '23000.00', '287.50', '287.50', '575.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(17, 1, '24000.00', '24999.99', '24000.00', '300.00', '300.00', '600.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(18, 1, '25000.00', '25999.99', '25000.00', '312.50', '312.50', '625.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(19, 1, '26000.00', '26999.99', '26000.00', '325.00', '325.00', '650.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(20, 1, '27000.00', '27999.99', '27000.00', '337.50', '337.50', '675.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(21, 1, '28000.00', '28999.99', '28000.00', '350.00', '350.00', '700.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(22, 1, '29000.00', '29999.99', '29000.00', '362.50', '362.50', '725.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(23, 1, '30000.00', '30999.99', '30000.00', '375.00', '375.00', '750.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(24, 1, '31000.00', '31999.99', '31000.00', '387.50', '387.50', '775.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(25, 1, '32000.00', '32999.99', '32000.00', '400.00', '400.00', '800.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(26, 1, '33000.00', '33999.99', '33000.00', '412.50', '412.50', '825.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(27, 1, '34000.00', '34999.99', '34000.00', '425.00', '425.00', '850.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
-(28, 1, '35000.00', '999999.99', '35000.00', '437.50', '437.50', '875.00', '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1);
+(1, 1, 0.00, 8999.99, 8000.00, 100.00, 100.00, 200.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(2, 1, 9000.00, 9999.99, 9000.00, 112.50, 112.50, 225.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(3, 1, 10000.00, 10999.99, 10000.00, 125.00, 125.00, 250.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(4, 1, 11000.00, 11999.99, 11000.00, 137.50, 137.50, 275.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(5, 1, 12000.00, 12999.99, 12000.00, 150.00, 150.00, 300.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(6, 1, 13000.00, 13999.99, 13000.00, 162.50, 162.50, 325.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(7, 1, 14000.00, 14999.99, 14000.00, 175.00, 175.00, 350.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(8, 1, 15000.00, 15999.99, 15000.00, 187.50, 187.50, 375.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(9, 1, 16000.00, 16999.99, 16000.00, 200.00, 200.00, 400.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(10, 1, 17000.00, 17999.99, 17000.00, 212.50, 212.50, 425.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(11, 1, 18000.00, 18999.99, 18000.00, 225.00, 225.00, 450.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(12, 1, 19000.00, 19999.99, 19000.00, 237.50, 237.50, 475.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(13, 1, 20000.00, 20999.99, 20000.00, 250.00, 250.00, 500.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(14, 1, 21000.00, 21999.99, 21000.00, 262.50, 262.50, 525.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(15, 1, 22000.00, 22999.99, 22000.00, 275.00, 275.00, 550.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(16, 1, 23000.00, 23999.99, 23000.00, 287.50, 287.50, 575.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(17, 1, 24000.00, 24999.99, 24000.00, 300.00, 300.00, 600.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(18, 1, 25000.00, 25999.99, 25000.00, 312.50, 312.50, 625.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(19, 1, 26000.00, 26999.99, 26000.00, 325.00, 325.00, 650.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(20, 1, 27000.00, 27999.99, 27000.00, 337.50, 337.50, 675.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(21, 1, 28000.00, 28999.99, 28000.00, 350.00, 350.00, 700.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(22, 1, 29000.00, 29999.99, 29000.00, 362.50, 362.50, 725.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(23, 1, 30000.00, 30999.99, 30000.00, 375.00, 375.00, 750.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(24, 1, 31000.00, 31999.99, 31000.00, 387.50, 387.50, 775.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(25, 1, 32000.00, 32999.99, 32000.00, 400.00, 400.00, 800.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(26, 1, 33000.00, 33999.99, 33000.00, 412.50, 412.50, 825.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(27, 1, 34000.00, 34999.99, 34000.00, 425.00, 425.00, 850.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1),
+(28, 1, 35000.00, 999999.99, 35000.00, 437.50, 437.50, 875.00, '2017-05-05 10:40:31', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -44383,30 +44326,30 @@ INSERT INTO `phic_rates` (`id`, `phic_matrix_id`, `minimum_range`, `maximum_rang
 -- Table structure for table `positions`
 --
 
-CREATE TABLE `positions` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `positions` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `salary_grade_id` int(16) NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` date NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `positions`
 --
 
 INSERT INTO `positions` (`id`, `name`, `description`, `salary_grade_id`, `company_id`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(7, 'Manager', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 'System Engineer', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
-(9, 'System Analyst', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
-(10, 'Software Engineer I', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
-(11, 'Software Engineer II', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
-(12, 'Graphics Designer', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1);
+(1, 'Manager', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
+(2, 'System Engineer', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
+(3, 'System Analyst', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
+(4, 'Software Engineer 1', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
+(5, 'Software Engineer 1', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1),
+(6, 'Graphics Designer', NULL, 0, 1, '0000-00-00', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -44414,28 +44357,18 @@ INSERT INTO `positions` (`id`, `name`, `description`, `salary_grade_id`, `compan
 -- Table structure for table `position_leave_credits`
 --
 
-CREATE TABLE `position_leave_credits` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `position_id` int(16) UNSIGNED NOT NULL,
-  `attendance_leave_type_id` int(16) UNSIGNED NOT NULL,
-  `credits` decimal(16,2) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `position_leave_credits` (
+  `id` int(16) unsigned NOT NULL,
+  `position_id` int(16) unsigned NOT NULL,
+  `attendance_leave_type_id` int(16) unsigned NOT NULL,
+  `credits` decimal(16,2) unsigned NOT NULL,
   `remarks` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL
+  `modified_by` int(16) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `position_leave_credits`
---
-
-INSERT INTO `position_leave_credits` (`id`, `position_id`, `attendance_leave_type_id`, `credits`, `remarks`, `company_id`, `created`, `created_by`, `modified`, `modified_by`) VALUES
-(1, 7, 1, '15.00', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(2, 7, 2, '15.00', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(3, 7, 3, '15.00', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(4, 7, 4, '60.00', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -44443,11 +44376,11 @@ INSERT INTO `position_leave_credits` (`id`, `position_id`, `attendance_leave_typ
 -- Table structure for table `proficiency_levels`
 --
 
-CREATE TABLE `proficiency_levels` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `proficiency_levels` (
+  `id` int(16) unsigned NOT NULL,
   `proficiency` varchar(30) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44456,12 +44389,12 @@ CREATE TABLE `proficiency_levels` (
 -- Table structure for table `relations`
 --
 
-CREATE TABLE `relations` (
+CREATE TABLE IF NOT EXISTS `relations` (
   `id` tinyint(5) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active',
   `default_status` tinyint(1) NOT NULL COMMENT '0 non-default 1 default'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `relations`
@@ -44482,12 +44415,12 @@ INSERT INTO `relations` (`id`, `name`, `active_status`, `default_status`) VALUES
 -- Table structure for table `revenue_district_offices`
 --
 
-CREATE TABLE `revenue_district_offices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `revenue_district_offices` (
+  `id` int(16) unsigned NOT NULL,
   `rdo_code` varchar(3) NOT NULL,
   `rdo_name` varchar(50) NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `revenue_district_offices`
@@ -44620,15 +44553,15 @@ INSERT INTO `revenue_district_offices` (`id`, `rdo_code`, `rdo_name`, `active_st
 -- Table structure for table `salaries`
 --
 
-CREATE TABLE `salaries` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `salary_matrix_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `salaries` (
+  `id` int(16) unsigned NOT NULL,
+  `salary_matrix_id` int(16) unsigned NOT NULL,
   `montly_salary` decimal(16,2) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44637,16 +44570,16 @@ CREATE TABLE `salaries` (
 -- Table structure for table `salary_grades`
 --
 
-CREATE TABLE `salary_grades` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `salary_grades` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `grade_code` varchar(30) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44655,16 +44588,16 @@ CREATE TABLE `salary_grades` (
 -- Table structure for table `salary_matrices`
 --
 
-CREATE TABLE `salary_matrices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `salary_matrices` (
+  `id` int(16) unsigned NOT NULL,
   `company_id` int(16) NOT NULL,
   `effectivity_date` date NOT NULL,
   `description` varchar(50) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44673,17 +44606,17 @@ CREATE TABLE `salary_matrices` (
 -- Table structure for table `sanctions`
 --
 
-CREATE TABLE `sanctions` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `sanction_type_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `sanctions` (
+  `id` int(16) unsigned NOT NULL,
+  `sanction_type_id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` text,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `created` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `created` int(16) unsigned NOT NULL,
   `created_by` datetime NOT NULL,
-  `modified` int(16) UNSIGNED NOT NULL,
+  `modified` int(16) unsigned NOT NULL,
   `modified_by` datetime NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44692,16 +44625,16 @@ CREATE TABLE `sanctions` (
 -- Table structure for table `sanction_types`
 --
 
-CREATE TABLE `sanction_types` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `sanction_types` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `created` int(16) UNSIGNED NOT NULL,
+  `created` int(16) unsigned NOT NULL,
   `created_by` datetime NOT NULL,
-  `modified` int(16) UNSIGNED NOT NULL,
+  `modified` int(16) unsigned NOT NULL,
   `modified_by` datetime NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44710,8 +44643,8 @@ CREATE TABLE `sanction_types` (
 -- Table structure for table `schools`
 --
 
-CREATE TABLE `schools` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `schools` (
+  `id` int(16) unsigned NOT NULL,
   `school` varchar(300) DEFAULT NULL,
   `block_number` varchar(4) DEFAULT NULL,
   `lot_number` varchar(4) DEFAULT NULL,
@@ -44719,12 +44652,12 @@ CREATE TABLE `schools` (
   `building_number` varchar(4) DEFAULT NULL,
   `building_name` varchar(100) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,
-  `location_id` int(16) UNSIGNED NOT NULL,
-  `country_id` int(16) UNSIGNED NOT NULL,
+  `location_id` int(16) unsigned NOT NULL,
+  `country_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
+  `modified_by` int(16) unsigned NOT NULL,
   `active_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -44734,8 +44667,8 @@ CREATE TABLE `schools` (
 -- Table structure for table `sites`
 --
 
-CREATE TABLE `sites` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `sites` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
   `block_number` varchar(4) DEFAULT NULL,
@@ -44744,24 +44677,15 @@ CREATE TABLE `sites` (
   `building_number` varchar(4) DEFAULT NULL,
   `building_name` varchar(100) DEFAULT NULL,
   `street` varchar(100) DEFAULT NULL,
-  `location_id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `location_id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `branch_id` int(16) NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `sites`
---
-
-INSERT INTO `sites` (`id`, `name`, `description`, `block_number`, `lot_number`, `floor_number`, `building_number`, `building_name`, `street`, `location_id`, `company_id`, `branch_id`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 'Quezon City Site', 'Quezon City Site', '1', '1', '1', '1', '1', '1', 0, 1, 1, '2017-07-06 10:36:19', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 'Site 201', 'description of site 201', '2', '2', '1', '1', '3', '3', 0, 10, 3, '2017-07-12 04:23:46', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 'SITE 404', 'HEHE', NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, 5, '2017-07-12 04:30:17', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -44769,15 +44693,15 @@ INSERT INTO `sites` (`id`, `name`, `description`, `block_number`, `lot_number`, 
 -- Table structure for table `skills`
 --
 
-CREATE TABLE `skills` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `skills` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -44786,17 +44710,17 @@ CREATE TABLE `skills` (
 -- Table structure for table `sss_matrix`
 --
 
-CREATE TABLE `sss_matrix` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `sss_matrix` (
+  `id` int(16) unsigned NOT NULL,
   `year_effective` year(4) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `attachment` varchar(300) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sss_matrix`
@@ -44811,58 +44735,58 @@ INSERT INTO `sss_matrix` (`id`, `year_effective`, `description`, `attachment`, `
 -- Table structure for table `sss_rates`
 --
 
-CREATE TABLE `sss_rates` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `sss_matrix_id` int(16) UNSIGNED NOT NULL,
-  `minimum_range` decimal(16,2) UNSIGNED NOT NULL COMMENT 'RANGE OF COMPENSATION',
-  `maximum_range` decimal(16,2) UNSIGNED NOT NULL COMMENT 'RANGE OF COMPENSATION',
-  `monthly_salary_base` decimal(16,2) UNSIGNED NOT NULL,
-  `employer_share` decimal(16,2) UNSIGNED NOT NULL COMMENT 'SOCIAL SECUTIY - ER',
-  `employee_share` decimal(16,2) UNSIGNED NOT NULL COMMENT 'SOCIAL SECUTIY - EE',
-  `total` decimal(16,2) UNSIGNED NOT NULL COMMENT 'SOCIAL SECUTIY - TOTAL',
+CREATE TABLE IF NOT EXISTS `sss_rates` (
+  `id` int(16) unsigned NOT NULL,
+  `sss_matrix_id` int(16) unsigned NOT NULL,
+  `minimum_range` decimal(16,2) unsigned NOT NULL COMMENT 'RANGE OF COMPENSATION',
+  `maximum_range` decimal(16,2) unsigned NOT NULL COMMENT 'RANGE OF COMPENSATION',
+  `monthly_salary_base` decimal(16,2) unsigned NOT NULL,
+  `employer_share` decimal(16,2) unsigned NOT NULL COMMENT 'SOCIAL SECUTIY - ER',
+  `employee_share` decimal(16,2) unsigned NOT NULL COMMENT 'SOCIAL SECUTIY - EE',
+  `total` decimal(16,2) unsigned NOT NULL COMMENT 'SOCIAL SECUTIY - TOTAL',
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sss_rates`
 --
 
 INSERT INTO `sss_rates` (`id`, `sss_matrix_id`, `minimum_range`, `maximum_range`, `monthly_salary_base`, `employer_share`, `employee_share`, `total`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(1, 1, '1000.00', '1249.99', '1000.00', '73.70', '36.30', '110.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(2, 1, '1250.00', '1749.99', '1500.00', '110.50', '54.50', '165.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 1, '1750.00', '2249.99', '2000.00', '147.30', '72.70', '220.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(4, 1, '2250.00', '2749.99', '2500.00', '184.20', '90.80', '275.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(5, 1, '2750.00', '3249.99', '3000.00', '221.00', '109.00', '330.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(6, 1, '3250.00', '3749.99', '3500.00', '257.80', '127.20', '385.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(7, 1, '3750.00', '4249.99', '4000.00', '294.70', '145.30', '440.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 1, '4250.00', '4749.99', '4500.00', '331.50', '163.50', '495.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(9, 1, '4750.00', '5249.99', '5000.00', '368.30', '181.70', '550.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(10, 1, '5250.00', '5749.99', '5500.00', '405.20', '199.80', '605.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(11, 1, '5750.00', '6249.99', '6000.00', '442.00', '218.00', '660.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(12, 1, '6250.00', '6749.99', '6500.00', '478.80', '263.20', '742.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(13, 1, '6750.00', '7249.99', '7000.00', '515.70', '254.30', '770.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(14, 1, '7250.00', '7749.99', '7500.00', '552.50', '272.50', '825.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(15, 1, '7750.00', '8249.99', '8000.00', '589.30', '290.00', '879.30', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(16, 1, '8250.00', '8749.99', '8500.00', '626.20', '308.80', '935.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(17, 1, '8750.00', '9249.99', '9000.00', '663.00', '327.00', '990.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(18, 1, '9250.00', '9749.99', '9500.00', '699.80', '345.20', '1045.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(19, 1, '9750.00', '10249.99', '10000.00', '736.70', '363.30', '1100.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(20, 1, '10250.00', '10749.99', '10500.00', '773.50', '381.50', '1155.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(21, 1, '10750.00', '11249.99', '11000.00', '810.30', '399.70', '1210.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(22, 1, '11250.00', '11749.99', '11500.00', '847.20', '417.80', '1265.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(23, 1, '11750.00', '12249.99', '12000.00', '884.00', '436.00', '1320.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(24, 1, '12250.00', '12749.99', '12500.00', '920.80', '454.20', '1375.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(25, 1, '12750.00', '13249.99', '13000.00', '957.70', '472.30', '1430.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(26, 1, '13250.00', '13749.99', '13500.00', '994.50', '490.50', '1485.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(27, 1, '13750.00', '14249.99', '14000.00', '1031.30', '508.70', '1540.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(28, 1, '14250.00', '14749.99', '14500.00', '1068.20', '526.80', '1595.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(29, 1, '14750.00', '15249.99', '15000.00', '1105.00', '545.00', '1650.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(30, 1, '15250.00', '15749.99', '15500.00', '1141.80', '563.20', '1705.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
-(31, 1, '15750.00', '999999.99', '16000.00', '1178.70', '581.30', '1760.00', '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1);
+(1, 1, 1000.00, 1249.99, 1000.00, 73.70, 36.30, 110.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(2, 1, 1250.00, 1749.99, 1500.00, 110.50, 54.50, 165.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(3, 1, 1750.00, 2249.99, 2000.00, 147.30, 72.70, 220.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(4, 1, 2250.00, 2749.99, 2500.00, 184.20, 90.80, 275.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(5, 1, 2750.00, 3249.99, 3000.00, 221.00, 109.00, 330.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(6, 1, 3250.00, 3749.99, 3500.00, 257.80, 127.20, 385.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(7, 1, 3750.00, 4249.99, 4000.00, 294.70, 145.30, 440.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(8, 1, 4250.00, 4749.99, 4500.00, 331.50, 163.50, 495.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(9, 1, 4750.00, 5249.99, 5000.00, 368.30, 181.70, 550.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(10, 1, 5250.00, 5749.99, 5500.00, 405.20, 199.80, 605.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(11, 1, 5750.00, 6249.99, 6000.00, 442.00, 218.00, 660.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(12, 1, 6250.00, 6749.99, 6500.00, 478.80, 263.20, 742.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(13, 1, 6750.00, 7249.99, 7000.00, 515.70, 254.30, 770.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(14, 1, 7250.00, 7749.99, 7500.00, 552.50, 272.50, 825.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(15, 1, 7750.00, 8249.99, 8000.00, 589.30, 290.00, 879.30, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(16, 1, 8250.00, 8749.99, 8500.00, 626.20, 308.80, 935.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(17, 1, 8750.00, 9249.99, 9000.00, 663.00, 327.00, 990.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(18, 1, 9250.00, 9749.99, 9500.00, 699.80, 345.20, 1045.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(19, 1, 9750.00, 10249.99, 10000.00, 736.70, 363.30, 1100.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(20, 1, 10250.00, 10749.99, 10500.00, 773.50, 381.50, 1155.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(21, 1, 10750.00, 11249.99, 11000.00, 810.30, 399.70, 1210.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(22, 1, 11250.00, 11749.99, 11500.00, 847.20, 417.80, 1265.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(23, 1, 11750.00, 12249.99, 12000.00, 884.00, 436.00, 1320.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(24, 1, 12250.00, 12749.99, 12500.00, 920.80, 454.20, 1375.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(25, 1, 12750.00, 13249.99, 13000.00, 957.70, 472.30, 1430.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(26, 1, 13250.00, 13749.99, 13500.00, 994.50, 490.50, 1485.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(27, 1, 13750.00, 14249.99, 14000.00, 1031.30, 508.70, 1540.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(28, 1, 14250.00, 14749.99, 14500.00, 1068.20, 526.80, 1595.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(29, 1, 14750.00, 15249.99, 15000.00, 1105.00, 545.00, 1650.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(30, 1, 15250.00, 15749.99, 15500.00, 1141.80, 563.20, 1705.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1),
+(31, 1, 15750.00, 999999.99, 16000.00, 1178.70, 581.30, 1760.00, '2017-05-04 17:15:41', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -44870,92 +44794,21 @@ INSERT INTO `sss_rates` (`id`, `sss_matrix_id`, `minimum_range`, `maximum_range`
 -- Table structure for table `system_audit_trails`
 --
 
-CREATE TABLE `system_audit_trails` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `system_user_id` int(16) UNSIGNED NOT NULL,
-  `action_mode` tinyint(2) UNSIGNED NOT NULL COMMENT '0 = created; 1 = modified; 2 = deleted',
+CREATE TABLE IF NOT EXISTS `system_audit_trails` (
+  `id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `system_user_id` int(16) unsigned NOT NULL,
+  `action_mode` tinyint(2) unsigned NOT NULL COMMENT '0 = created; 1 = modified; 2 = deleted',
   `timestamp` datetime NOT NULL,
-  `system_module_id` int(16) UNSIGNED NOT NULL,
-  `system_function_id` int(16) UNSIGNED NOT NULL,
-  `system_permission_id` int(16) UNSIGNED NOT NULL,
-  `record_id` int(16) UNSIGNED NOT NULL,
+  `system_module_id` int(16) unsigned NOT NULL,
+  `system_function_id` int(16) unsigned NOT NULL,
+  `system_permission_id` int(16) unsigned NOT NULL,
+  `record_id` int(16) unsigned NOT NULL,
   `field_name` varchar(50) NOT NULL,
   `old_value` varchar(500) DEFAULT NULL,
   `new_value` varchar(500) DEFAULT NULL,
-  `ip_address` varchar(45) NOT NULL,
-  `table_name` varchar(50) NOT NULL
+  `ip_address` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `system_audit_trails`
---
-
-INSERT INTO `system_audit_trails` (`id`, `company_id`, `system_user_id`, `action_mode`, `timestamp`, `system_module_id`, `system_function_id`, `system_permission_id`, `record_id`, `field_name`, `old_value`, `new_value`, `ip_address`, `table_name`) VALUES
-(1, 0, 1, 3, '2017-07-11 11:26:11', 1, 6, 168, 9, 'name', '', 'Google', '::1', 'companies'),
-(2, 0, 1, 5, '2017-07-11 11:26:11', 1, 6, 168, 9, 'short_name', '', 'ggl', '::1', 'companies'),
-(3, 0, 1, 1, '2017-07-11 11:26:11', 1, 6, 168, 9, 'description', '', 'twllkfjejkchsdlkfs\'d vjlskf', '::1', 'companies'),
-(4, 0, 1, 2, '2017-07-11 11:26:40', 1, 6, 168, 10, 'name', '', 'facebook', '::1', 'companies'),
-(5, 0, 1, 4, '2017-07-11 11:26:40', 1, 6, 168, 10, 'short_name', '', 'fb', '::1', 'companies'),
-(6, 0, 1, 0, '2017-07-11 11:26:40', 1, 6, 168, 10, 'description', '', 'asd;kasd;lsasd', '::1', 'companies'),
-(7, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'name', '', 'branch 1', '::1', 'branches'),
-(8, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'company_id', '', '10', '::1', 'branches'),
-(9, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'description', '', 'branch 1', '::1', 'branches'),
-(10, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'block_number', '', '', '::1', 'branches'),
-(11, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'lot_number', '', '', '::1', 'branches'),
-(12, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'floor_number', '', '', '::1', 'branches'),
-(13, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'building_number', '', '', '::1', 'branches'),
-(14, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'building_name', '', '', '::1', 'branches'),
-(15, 0, 1, 0, '2017-07-12 03:17:18', 1, 4, 170, 8, 'street', '', '', '::1', 'branches'),
-(16, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'name', 'branch 1', 'branch 101', '::1', 'branches'),
-(17, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'company_id', '10', '10', '::1', 'branches'),
-(18, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'description', 'branch 1', 'branch 101', '::1', 'branches'),
-(19, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'block_number', '', '1', '::1', 'branches'),
-(20, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'lot_number', '', '1', '::1', 'branches'),
-(21, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'floor_number', '', '1', '::1', 'branches'),
-(22, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'building_number', '', '1', '::1', 'branches'),
-(23, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'building_name', '', '1', '::1', 'branches'),
-(24, 0, 1, 1, '2017-07-12 03:45:13', 1, 4, 171, 7, 'street', '', '1', '::1', 'branches'),
-(25, 0, 1, 0, '2017-07-12 04:07:22', 0, 10, 57, 2, 'name', '', 'SOFTWARE DEVELOPMENT & SOLUTIONS', '::1', 'departments'),
-(26, 0, 1, 0, '2017-07-12 04:07:22', 0, 10, 57, 2, 'description', '', 'SD&S', '::1', 'departments'),
-(27, 0, 1, 1, '2017-07-12 04:07:53', 0, 10, 59, 2, 'name', 'SOFTWARE DEVELOPMENT & SOLUTIONS', 'SOFTWARE DEVELOPMENT & SOLUTIONS', '::1', 'departments'),
-(28, 0, 1, 1, '2017-07-12 04:07:53', 0, 10, 59, 2, 'description', 'SD&S', 'SD&S - Lohica', '::1', 'departments'),
-(29, 0, 1, 1, '2017-07-12 04:28:33', 0, 3, 12, 2, 'name', 'Site 201', 'Site 201', '::1', 'sites'),
-(30, 0, 1, 1, '2017-07-12 04:28:33', 0, 3, 12, 2, 'company_id', '10', '10', '::1', 'sites'),
-(31, 0, 1, 1, '2017-07-12 04:28:33', 0, 3, 12, 2, 'branch_id', '3', '3', '::1', 'sites'),
-(32, 0, 1, 1, '2017-07-12 04:28:33', 0, 3, 12, 2, 'description', 'description', 'description of site 201', '::1', 'sites'),
-(33, 0, 1, 1, '2017-07-12 04:28:33', 0, 3, 12, 2, 'block_number', '', '2', '::1', 'sites'),
-(34, 0, 1, 1, '2017-07-12 04:28:33', 0, 3, 12, 2, 'lot_number', '', '2', '::1', 'sites'),
-(35, 0, 1, 1, '2017-07-12 04:28:34', 0, 3, 12, 2, 'floor_number', '', '1', '::1', 'sites'),
-(36, 0, 1, 1, '2017-07-12 04:28:34', 0, 3, 12, 2, 'building_number', '', '1', '::1', 'sites'),
-(37, 0, 1, 1, '2017-07-12 04:28:34', 0, 3, 12, 2, 'building_name', '', '3', '::1', 'sites'),
-(38, 0, 1, 1, '2017-07-12 04:28:34', 0, 3, 12, 2, 'street', '', '3', '::1', 'sites'),
-(39, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'name', '', 'SITE 404', '::1', 'sites'),
-(40, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'company_id', '', '2', '::1', 'sites'),
-(41, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'branch_id', '', '5', '::1', 'sites'),
-(42, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'description', '', 'HEHE', '::1', 'sites'),
-(43, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'block_number', '', '', '::1', 'sites'),
-(44, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'lot_number', '', '', '::1', 'sites'),
-(45, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'floor_number', '', '', '::1', 'sites'),
-(46, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'building_number', '', '', '::1', 'sites'),
-(47, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'building_name', '', '', '::1', 'sites'),
-(48, 0, 1, 0, '2017-07-12 04:30:18', 0, 3, 10, 3, 'street', '', '', '::1', 'sites'),
-(49, 0, 1, 1, '2017-07-12 06:27:56', 1, 6, 169, 3, 'name', 'Aspiree', 'Aspire', '::1', 'companies'),
-(50, 0, 1, 1, '2017-07-12 06:27:56', 1, 6, 169, 3, 'short_name', '', 'Aspire', '::1', 'companies'),
-(51, 0, 1, 1, '2017-07-12 06:27:56', 1, 6, 169, 3, 'description', '', 'Aspire', '::1', 'companies'),
-(52, 0, 3, 0, '2017-07-12 06:34:55', 5, 29, 173, 26, 'payment_status', '', '1', '::1', 'attendance_leaves'),
-(53, 0, 3, 0, '2017-07-12 06:34:55', 5, 29, 173, 26, 'attendance_leave_type_id', '', '2', '::1', 'attendance_leaves'),
-(54, 0, 3, 0, '2017-07-12 06:34:55', 5, 29, 173, 26, 'date_start', '', '07/12/2017', '::1', 'attendance_leaves'),
-(55, 0, 3, 0, '2017-07-12 06:34:55', 5, 29, 173, 26, 'date_end', '', '07/14/2017', '::1', 'attendance_leaves'),
-(56, 0, 3, 0, '2017-07-12 06:34:55', 5, 29, 173, 26, 'reason', '', 'vacation leave', '::1', 'attendance_leaves'),
-(57, 0, 3, 2, '2017-07-13 05:12:35', 5, 29, 179, 14, 'name', '', 'Asd', '::1', 'companies'),
-(58, 0, 3, 2, '2017-07-13 05:12:35', 5, 29, 179, 14, 'short_name', '', 'Asd', '::1', 'companies'),
-(59, 0, 3, 2, '2017-07-13 05:12:35', 5, 29, 179, 14, 'description', '', 'asd', '::1', 'companies'),
-(60, 0, 3, 2, '2017-07-13 05:13:18', 5, 29, 179, 15, 'name', '', 'lorem ipsum', '::1', 'companies'),
-(61, 0, 3, 2, '2017-07-13 05:13:18', 5, 29, 179, 15, 'short_name', '', 'li', '::1', 'companies'),
-(62, 0, 3, 2, '2017-07-13 05:13:18', 5, 29, 179, 15, 'description', '', 'aahshsgd gagsjd jasenuxc', '::1', 'companies'),
-(63, 0, 3, 1, '2017-07-13 05:42:48', 1, 4, 171, 1, 'name', 'Head Office', 'Head Office', '::1', 'branches'),
-(64, 0, 3, 1, '2017-07-13 05:43:46', 1, 4, 171, 8, 'name', 'branch 1', 'branch 101', '::1', 'branches');
 
 -- --------------------------------------------------------
 
@@ -44963,9 +44816,11 @@ INSERT INTO `system_audit_trails` (`id`, `company_id`, `system_user_id`, `action
 -- Table structure for table `system_functions`
 --
 
-CREATE TABLE `system_functions` (
+CREATE TABLE IF NOT EXISTS `system_functions` (
   `id` int(12) NOT NULL,
   `system_module_id` int(12) NOT NULL,
+  `parent_function_id` int(16) unsigned NOT NULL,
+  `function_level` int(16) unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
   `active_menu` varchar(50) NOT NULL,
   `link` varchar(250) NOT NULL,
@@ -44973,59 +44828,114 @@ CREATE TABLE `system_functions` (
   `description` varchar(250) NOT NULL,
   `created_by` int(12) NOT NULL,
   `created` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Functions In A Module';
+) ENGINE=MyISAM AUTO_INCREMENT=102 DEFAULT CHARSET=latin1 COMMENT='Functions In A Module';
 
 --
 -- Dumping data for table `system_functions`
 --
 
-INSERT INTO `system_functions` (`id`, `system_module_id`, `name`, `active_menu`, `link`, `icon`, `description`, `created_by`, `created`) VALUES
-(1, 1, 'Users', '1', 'users', 'fa fa-user', 'System users', 1, '2015-12-17 00:00:00'),
-(2, 1, 'Roles', '1', 'roles', 'fa fa-group', 'System roles', 1, '2015-12-17 00:00:00'),
-(3, 1, 'Sites', '1', 'sites', 'fa fa-map-marker', 'Sites', 1, '2015-12-17 00:00:00'),
-(4, 1, 'Branches', '1', 'branches', 'fa fa-building', 'Branches', 1, '2015-12-17 00:00:00'),
-(5, 1, 'Departments', '1', 'departments', 'fa fa-building', 'Departments', 1, '2015-12-17 00:00:00'),
-(6, 1, 'Companies', '1', 'companies', 'fa fa-building', 'Companies', 1, '2015-12-17 00:00:00'),
-(7, 1, 'Cost Centers', '1', 'cost_centers', 'fa fa-building', 'Cost Centers', 1, '2015-12-17 00:00:00'),
-(8, 1, 'Agencies', '1', 'agencies', 'fa fa-bank', 'Manning agencies', 1, '2015-12-17 00:00:00'),
-(9, 1, 'Violations', '1', 'violations', 'fa fa-warning', 'Employee Departments', 1, '2015-12-17 00:00:00'),
-(10, 2, 'Departments', '2', 'departments', 'fa fa-sitemap', 'Employee types', 1, '2015-12-17 00:00:00'),
-(11, 2, 'Employee Types', '2', 'employees/types', 'fa fa-user', 'Employee types', 1, '2015-12-17 00:00:00'),
-(12, 2, 'Employees ', '2', 'employees', 'fa fa-user', 'Employee profiles', 1, '2015-12-17 00:00:00'),
-(13, 2, 'Employee Time Shifts', '2', 'employees/time_shifts', 'fa fa-clock-o', 'Time shifts', 1, '2015-12-17 00:00:00'),
-(14, 2, 'Employee Schedule', '2', 'employees/schedules', 'fa fa-calendar', 'Employee timeshift and site assignments', 1, '2015-12-17 00:00:00'),
-(15, 3, 'Room View', '3', 'tagboard', 'fa fa-list', 'Room dashboard', 1, '2015-12-17 00:00:00'),
-(16, 3, 'Positions', '3', 'positions', 'fa fa-user', 'Positions', 1, '2015-12-17 00:00:00'),
-(17, 3, 'Reservations', '3', 'reservations', 'fa fa-calendar-check-o', 'Room reservations', 1, '2015-12-17 00:00:00'),
-(18, 3, 'Check-ins', '3', 'checkins', 'fa fa-hourglass-1', 'Guest check-ins', 1, '2015-12-17 00:00:00'),
-(19, 3, 'Meals', '3', 'meals', 'fa fa-cutlery', 'Meals', 1, '2015-12-17 00:00:00'),
-(20, 3, 'Orders', '3', 'orders', 'fa fa-shopping-cart', 'Guest orders', 1, '2015-12-17 00:00:00'),
-(21, 3, 'Violation Records', '3', 'violation_records', 'fa fa-warning', 'Violation records', 1, '2015-12-17 00:00:00'),
-(22, 4, 'Rates', '4', 'rate_matrices', 'fa fa-money', 'Billing rates', 1, '2015-12-17 00:00:00'),
-(23, 4, 'Billing', '4', 'billings', 'fa fa-file-text-o', 'Billing records', 1, '2015-12-17 00:00:00'),
-(24, 4, 'Statements', '4', 'billing_statements', 'fa fa-file-text-o', 'Agency billing statements', 1, '2015-12-17 00:00:00'),
-(25, 4, 'Cashiering', '4', 'payments', 'fa fa-credit-card', 'Received payments', 1, '2015-12-17 00:00:00'),
-(26, 4, 'Remittance', '4', 'remittance', 'fa fa-money', 'Cash remittance', 1, '2015-12-17 00:00:00'),
-(27, 4, 'Petty Cash', '4', 'petty_cash', 'fa fa-money', 'Petty cash disbursements', 1, '2015-12-17 00:00:00'),
-(28, 5, 'Official Business Filing', '5', 'attendance_official_businesses', 'fa fa-chart-area', 'Official Business Filing', 1, '2015-12-17 00:00:00'),
-(29, 5, 'Leave Filing', '5', 'attendance_leaves', 'fa fa-chart-area', 'Leave Filing', 1, '2015-12-17 00:00:00'),
-(30, 5, 'Overtime Filing', '5', 'attendance_overtimes', 'fa fa-chart-area', 'Overtime Filing', 1, '2015-12-17 00:00:00'),
-(31, 5, 'Undertime Filing', '5', 'attendance_undertimes', 'fa fa-chart-area', 'Undertime Filing', 1, '2015-12-17 00:00:00'),
-(32, 5, 'Accounts Receivable', '5', 'reports/accounts_receivable', 'fa fa-chart-area', 'Accounts receivable', 1, '2015-12-17 00:00:00'),
-(33, 5, 'AR Aging', '5', 'reports/ar_aging', 'fa fa-chart-area', 'Accounts receivable aging', 1, '2015-12-17 00:00:00'),
-(34, 5, 'Collection Report', '5', 'reports/collection', 'fa fa-chart-area', 'Report on collections', 1, '2015-12-17 00:00:00'),
-(35, 5, 'Remittance Report', '5', 'reports/remittances', 'fa fa-chart-area', 'Report on remittances', 1, '2015-12-17 00:00:00'),
-(36, 6, 'Check-in', '6', 'cancellation/check_in', 'fa fa-sign-in', '', 1, '2016-05-19 00:00:00'),
-(37, 6, 'Extension', '6', 'cancellation/extension', 'fa fa-arrows-h', '', 1, '2016-05-19 00:00:00'),
-(38, 6, 'Check-out', '6', 'cancellation/check_out', 'fa fa-sign-out', '', 1, '2016-05-19 00:00:00'),
-(39, 6, 'Payment', '6', 'cancellation/payment', 'fa fa-calculator', '', 1, '2016-05-19 00:00:00'),
-(40, 6, 'Check-in', '6', 'cancellation/check_in', 'fa fa-sign-in', '', 1, '2016-05-19 00:00:00'),
-(41, 6, 'Extension', '6', 'cancellation/extension', 'fa fa-arrows-h', '', 1, '2016-05-19 00:00:00'),
-(42, 6, 'Check-out', '6', 'cancellation/check_out', 'fa fa-sign-out', '', 1, '2016-05-19 00:00:00'),
-(43, 6, 'Payment', '6', 'cancellation/payment', 'fa fa-calculator', '', 1, '2016-05-19 00:00:00'),
-(44, 6, 'Order', '', 'cancellation/order', 'fa fa-opencart', '', 1, '2016-06-01 00:00:00'),
-(45, 1, 'Access Admin', '1', '', 'fa fa-user', 'Access Admin', 1, '2015-12-17 00:00:00'),
-(46, 1, 'System Logs', '1', 'audit_trails', 'fa fa-list', '', 0, '0000-00-00 00:00:00');
+INSERT INTO `system_functions` (`id`, `system_module_id`, `parent_function_id`, `function_level`, `name`, `active_menu`, `link`, `icon`, `description`, `created_by`, `created`) VALUES
+(1, 1, 0, 0, 'User', '1', 'users', '', '', 1, '2017-07-05 11:01:00'),
+(2, 1, 0, 0, 'Roles', '1', 'roles', '', '', 1, '2017-07-06 11:01:00'),
+(3, 1, 0, 0, 'Companies', '1', 'companies', '', '', 1, '2017-07-07 11:01:00'),
+(4, 1, 0, 0, 'Branches', '1', 'branches', '', '', 1, '2017-07-08 11:01:00'),
+(5, 1, 0, 0, 'Sites', '1', 'sites', '', '', 1, '2017-07-09 11:01:00'),
+(6, 1, 0, 0, 'Cost Centers', '1', 'cost_centers', '', '', 1, '2017-07-10 11:01:00'),
+(7, 1, 0, 0, 'Banks', '1', 'banks', '', '', 1, '2017-07-11 11:01:00'),
+(8, 1, 0, 0, 'Attachment Types', '1', 'attachment_types', '', '', 1, '2017-07-12 11:01:00'),
+(9, 1, 0, 0, 'Devices', '1', 'devices', '', '', 1, '2017-07-13 11:01:00'),
+(10, 1, 0, 0, 'Discipline', '1', 'discipline', '', '', 1, '2017-07-14 11:01:00'),
+(11, 1, 10, 1, 'Violation Levels', '1', 'violation_levels', '', '', 1, '2017-07-15 11:01:00'),
+(12, 1, 10, 1, 'Violation Types', '1', 'violation_types', '', '', 1, '2017-07-16 11:01:00'),
+(13, 1, 10, 1, 'Violations', '1', 'violations', '', '', 1, '2017-07-17 11:01:00'),
+(14, 1, 10, 1, 'Sanction Types', '1', 'santion_types', '', '', 1, '2017-07-18 11:01:00'),
+(15, 1, 10, 1, 'Sanctions', '1', 'sanctions', '', '', 1, '2017-07-19 11:01:00'),
+(16, 1, 0, 0, 'Tax Matrix', '1', 'tax_matrix', '', '', 1, '2017-07-20 11:01:00'),
+(17, 1, 16, 1, 'Tax Rates', '1', 'tax_rates', '', '', 1, '2017-07-21 11:01:00'),
+(18, 1, 0, 0, 'SSS Contribution Matrix', '1', 'sss_contribution_matrix', '', '', 1, '2017-07-22 11:01:00'),
+(19, 1, 18, 1, 'SSS Contribution Rates', '1', 'sss_contribution_rates', '', '', 1, '2017-07-23 11:01:00'),
+(20, 1, 0, 0, 'PHIC Contribution Matrix', '1', 'phic_contribution_matrix', '', '', 1, '2017-07-24 11:01:00'),
+(21, 1, 20, 1, 'PHIC Contribution Rates', '1', 'phic_contribution_rates', '', '', 1, '2017-07-25 11:01:00'),
+(22, 1, 0, 0, 'HDMF Contribution Matrix', '1', 'hfmf_contribution_matrix', '', '', 1, '2017-07-26 11:01:00'),
+(23, 1, 22, 1, 'HDMF Contribution Rates', '1', 'hdmf_contribution_rates', '', '', 1, '2017-07-27 11:01:00'),
+(24, 1, 0, 0, 'User Logs', '1', 'user_logs', '', '', 1, '2017-07-28 11:01:00'),
+(25, 2, 0, 0, 'Candidates', '2', 'candidates', '', '', 1, '2017-07-29 11:01:00'),
+(26, 2, 0, 0, 'Clients', '2', 'clients', '', '', 1, '2017-07-30 11:01:00'),
+(27, 2, 0, 0, 'Recruitment Campaigns', '2', 'recruitment_campaigns', '', '', 1, '2017-07-31 11:01:00'),
+(28, 2, 0, 0, 'Job Postings', '2', 'job_postings', '', '', 1, '2017-08-01 11:01:00'),
+(29, 2, 0, 0, 'Candidate Referrals', '2', 'candidate_referrals', '', '', 1, '2017-08-02 11:01:00'),
+(30, 2, 0, 0, 'Interviewers', '2', 'interviewers', '', '', 1, '2017-08-03 11:01:00'),
+(31, 2, 0, 0, 'Examinations', '2', 'examinations', '', '', 1, '2017-08-04 11:01:00'),
+(32, 2, 0, 0, 'Interview Schedules', '2', 'interview_schedules', '', '', 1, '2017-08-05 11:01:00'),
+(33, 3, 0, 0, 'Employees', '3', 'employees', '', '', 1, '2017-08-06 11:01:00'),
+(34, 3, 33, 1, 'Personal Background', '3', 'personal_background', '', '', 1, '2017-08-07 11:01:00'),
+(35, 3, 34, 2, 'Personal Information', '3', 'personal_information', '', '', 1, '2017-08-08 11:01:00'),
+(36, 3, 34, 2, 'Parents Information', '3', 'parents_information', '', '', 1, '2017-08-09 11:01:00'),
+(37, 3, 34, 2, 'Spouse Information', '3', 'spouse_information', '', '', 1, '2017-08-10 11:01:00'),
+(38, 3, 34, 2, 'Dependents', '3', 'dependents', '', '', 1, '2017-08-11 11:01:00'),
+(39, 3, 33, 1, 'Contact Information', '3', 'contact_information', '', '', 1, '2017-08-12 11:01:00'),
+(40, 3, 39, 2, 'Addresses', '3', 'addresses', '', '', 1, '2017-08-13 11:01:00'),
+(41, 3, 39, 2, 'Contact Numbers', '3', 'contact_numbers', '', '', 1, '2017-08-14 11:01:00'),
+(42, 3, 39, 2, 'Emergency Contact', '3', 'emergency_contact', '', '', 1, '2017-08-15 11:01:00'),
+(43, 3, 33, 1, 'Professional Background', '3', 'professional_background', '', '', 1, '2017-08-16 11:01:00'),
+(44, 3, 43, 2, 'Educational Background', '3', 'educational_background', '', '', 1, '2017-08-17 11:01:00'),
+(45, 3, 43, 2, 'Employee Skills', '3', 'employee_skills', '', '', 1, '2017-08-18 11:01:00'),
+(46, 3, 43, 2, 'Work Experiences', '3', 'work_experiences', '', '', 1, '2017-08-19 11:01:00'),
+(47, 3, 43, 2, 'Employee Trainings', '3', 'employee_trainings', '', '', 1, '2017-08-20 11:01:00'),
+(48, 3, 43, 2, 'Employee Certifications', '3', 'employee_certifications', '', '', 1, '2017-08-21 11:01:00'),
+(49, 3, 43, 2, 'Employee Awards', '3', 'employee_awards', '', '', 1, '2017-08-22 11:01:00'),
+(50, 3, 33, 1, 'Employment Details', '3', 'employment_details', '', '', 1, '2017-08-23 11:01:00'),
+(51, 3, 50, 2, 'Employment Information', '3', 'employment_information', '', '', 1, '2017-08-24 11:01:00'),
+(52, 3, 50, 2, 'Positions', '3', 'employee_positions', '', '', 1, '2017-08-25 11:01:00'),
+(53, 3, 50, 2, 'Salary', '3', 'employee_salary', '', '', 1, '2017-08-26 11:01:00'),
+(54, 3, 50, 2, 'Benefits', '3', 'employee_benefits', '', '', 1, '2017-08-27 11:01:00'),
+(55, 3, 33, 1, 'Discipline', '3', 'employee_discipline', '', '', 1, '2017-08-28 11:01:00'),
+(56, 3, 55, 2, 'Violations', '3', 'employee_violations', '', '', 1, '2017-08-29 11:01:00'),
+(57, 3, 55, 2, 'Sanctions', '3', 'employee_sanctions', '', '', 1, '2017-08-30 11:01:00'),
+(58, 3, 33, 1, 'Attachments', '3', 'employee_attachments', '', '', 1, '2017-08-31 11:01:00'),
+(59, 3, 33, 1, 'Attendance', '3', 'employee_attendance', '', '', 1, '2017-09-01 11:01:00'),
+(60, 3, 33, 1, 'Payroll', '3', 'employee_payroll', '', '', 1, '2017-09-02 11:01:00'),
+(61, 3, 0, 0, 'Certificates', '3', 'certificates', '', '', 1, '2017-09-03 11:01:00'),
+(62, 3, 0, 0, 'Clerances', '3', 'clearances', '', '', 1, '2017-09-04 11:01:00'),
+(63, 3, 0, 0, 'Employee Hierarchy', '3', 'employee_hierarchy', '', '', 1, '2017-09-05 11:01:00'),
+(64, 3, 0, 0, 'Departments', '3', 'departments', '', '', 1, '2017-09-06 11:01:00'),
+(65, 3, 0, 0, 'Teams', '3', 'teams', '', '', 1, '2017-09-07 11:01:00'),
+(66, 3, 0, 0, 'Employment Types', '3', 'employment_types', '', '', 1, '2017-09-08 11:01:00'),
+(67, 3, 0, 0, 'Credentials', '3', 'credentials', '', '', 1, '2017-09-09 11:01:00'),
+(68, 3, 67, 1, 'Skills', '3', 'skills', '', '', 1, '2017-09-10 11:01:00'),
+(69, 3, 67, 1, 'Courses', '3', 'courses', '', '', 1, '2017-09-11 11:01:00'),
+(70, 3, 67, 1, 'Educational Attainment', '3', 'educational_attainment', '', '', 1, '2017-09-12 11:01:00'),
+(71, 3, 0, 0, 'Training Plan', '3', 'training_plan', '', '', 1, '2017-09-13 11:01:00'),
+(72, 3, 71, 1, 'Trainings', '3', 'trainings', '', '', 1, '2017-09-14 11:01:00'),
+(73, 4, 0, 0, 'Daily Time Record', '4', 'daily_time_record', '', '', 1, '2017-09-15 11:01:00'),
+(74, 4, 0, 0, 'Shift Schedules', '4', 'shift_schedules', '', '', 1, '2017-09-16 11:01:00'),
+(75, 4, 0, 0, 'Employee Schedules', '4', 'employee_schedules', '', '', 1, '2017-09-17 11:01:00'),
+(76, 4, 0, 0, 'Official Business', '4', 'official_business', '', '', 1, '2017-09-18 11:01:00'),
+(77, 4, 0, 0, 'Overtime', '4', 'overtime', '', '', 1, '2017-09-19 11:01:00'),
+(78, 4, 0, 0, 'Undertime', '4', 'undertime', '', '', 1, '2017-09-20 11:01:00'),
+(79, 4, 0, 0, 'Leave', '4', 'leave', '', '', 1, '2017-09-21 11:01:00'),
+(80, 4, 0, 0, 'Leave Types', '4', 'leave_types', '', '', 1, '2017-09-22 11:01:00'),
+(81, 4, 0, 0, 'Holidays', '4', 'holidays', '', '', 1, '2017-09-23 11:01:00'),
+(82, 4, 81, 1, 'Holidays', '4', 'holiday_dates', '', '', 1, '2017-09-24 11:01:00'),
+(83, 4, 81, 1, 'Holiday Types', '4', 'holiday_types', '', '', 1, '2017-09-25 11:01:00'),
+(84, 4, 0, 0, 'Employee Leave Credits', '4', 'employee_leave_credits', '', '', 1, '2017-09-26 11:01:00'),
+(85, 5, 0, 0, 'Payroll Order', '5', 'payroll_order', '', '', 1, '2017-09-27 11:01:00'),
+(86, 5, 0, 0, '13th Month', '5', '13th_month', '', '', 1, '2017-09-28 11:01:00'),
+(87, 5, 0, 0, 'Leave Monetization', '5', 'leave_monetization', '', '', 1, '2017-09-29 11:01:00'),
+(88, 5, 0, 0, 'Deductions', '5', 'employee_deductions', '', '', 1, '2017-09-30 11:01:00'),
+(89, 5, 0, 0, 'Incentives', '5', 'employee_incentives', '', '', 1, '2017-10-01 11:01:00'),
+(90, 5, 0, 0, 'Payslips', '5', 'employee_payslips', '', '', 1, '2017-10-02 11:01:00'),
+(91, 5, 0, 0, 'Last Pay', '5', 'last_pay', '', '', 1, '2017-10-03 11:01:00'),
+(92, 5, 0, 0, 'Other Payout', '5', 'other_payout', '', '', 1, '2017-10-04 11:01:00'),
+(93, 5, 0, 0, 'Configurations', '5', 'Configurations', '', '', 1, '2017-10-05 11:01:00'),
+(94, 5, 93, 1, 'Salary Grades', '5', 'salary_grades', '', '', 1, '2017-10-06 11:01:00'),
+(95, 5, 93, 1, 'Salary Matrix', '5', 'salary_matrix', '', '', 1, '2017-10-07 11:01:00'),
+(96, 5, 95, 2, 'Salaries', '5', 'employee_salaries', '', '', 1, '2017-10-08 11:01:00'),
+(97, 5, 93, 1, 'Benefits', '5', 'benefits', '', '', 1, '2017-10-09 11:01:00'),
+(98, 5, 93, 1, 'Incentives', '5', 'incentives', '', '', 1, '2017-10-10 11:01:00'),
+(99, 5, 93, 1, 'Compensation Packages', '5', 'compensation_packages', '', '', 1, '2017-10-11 11:01:00'),
+(100, 5, 93, 1, 'Deductions', '5', 'deductions', '', '', 1, '2017-10-12 11:01:00'),
+(101, 5, 93, 1, 'Payroll Cutoff', '5', 'payroll_cutoff', '', '', 1, '2017-10-13 11:01:00');
 
 -- --------------------------------------------------------
 
@@ -45033,15 +44943,15 @@ INSERT INTO `system_functions` (`id`, `system_module_id`, `name`, `active_menu`,
 -- Table structure for table `system_groups`
 --
 
-CREATE TABLE `system_groups` (
-  `id` mediumint(8) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `system_groups` (
+  `id` mediumint(8) unsigned NOT NULL,
   `company_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
   `description` varchar(100) NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(11) NOT NULL,
   `active_status` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `system_groups`
@@ -45063,11 +44973,11 @@ INSERT INTO `system_groups` (`id`, `company_id`, `name`, `description`, `created
 -- Table structure for table `system_login_attempts`
 --
 
-CREATE TABLE `system_login_attempts` (
-  `id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `system_login_attempts` (
+  `id` int(11) unsigned NOT NULL,
   `ip_address` varchar(15) NOT NULL,
   `login` varchar(100) NOT NULL,
-  `time` int(11) UNSIGNED DEFAULT NULL
+  `time` int(11) unsigned DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -45076,7 +44986,7 @@ CREATE TABLE `system_login_attempts` (
 -- Table structure for table `system_modules`
 --
 
-CREATE TABLE `system_modules` (
+CREATE TABLE IF NOT EXISTS `system_modules` (
   `id` int(12) NOT NULL,
   `name` varchar(25) NOT NULL,
   `description` varchar(250) NOT NULL,
@@ -45085,7 +44995,7 @@ CREATE TABLE `system_modules` (
   `created_by` int(12) NOT NULL,
   `created` datetime NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '1 = active; 0 = inactive'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='System Modules';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COMMENT='System Modules';
 
 --
 -- Dumping data for table `system_modules`
@@ -45094,10 +45004,10 @@ CREATE TABLE `system_modules` (
 INSERT INTO `system_modules` (`id`, `name`, `description`, `link`, `icon`, `created_by`, `created`, `status`) VALUES
 (1, 'System', '', '', 'fa fa-gear', 1, '2015-12-17 05:18:15', 1),
 (2, 'Recruitment', '', '', 'fa fa-users', 1, '2015-12-17 05:18:44', 1),
-(3, 'Employee', '', '', 'fa fa-desktop', 1, '2015-12-17 05:19:02', 1),
-(4, 'Payroll', '', '', 'fa fa-money', 1, '2015-12-17 05:19:19', 1),
-(5, 'Attendance', '', '', 'fa fa-area-chart', 1, '2015-12-17 05:19:19', 1),
-(6, 'Reports', '', '', 'fa fa-ban', 1, '2016-05-19 00:00:00', 1);
+(3, 'Human Resource', '', '', 'fa fa-users', 1, '2015-12-17 05:19:02', 1),
+(4, 'Attendance', '', '', 'fa fa-calendar', 1, '2015-12-17 05:19:19', 1),
+(5, 'Payroll', '', '', 'fa fa-money', 1, '2015-12-17 05:19:19', 1),
+(6, 'Reports', '', '', 'fa fa-file-text-o', 1, '2016-05-19 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -45105,200 +45015,16 @@ INSERT INTO `system_modules` (`id`, `name`, `description`, `link`, `icon`, `crea
 -- Table structure for table `system_permissions`
 --
 
-CREATE TABLE `system_permissions` (
+CREATE TABLE IF NOT EXISTS `system_permissions` (
   `id` int(12) NOT NULL,
   `name` varchar(50) NOT NULL,
   `method` varchar(50) NOT NULL COMMENT 'the method being called',
   `description` varchar(100) NOT NULL,
-  `system_module_id` varchar(12) NOT NULL,
-  `system_function_id` int(12) NOT NULL,
-  `created` datetime NOT NULL
+  `system_module_id` int(16) NOT NULL,
+  `system_function_id` int(16) NOT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(16) unsigned NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `system_permissions`
---
-
-INSERT INTO `system_permissions` (`id`, `name`, `method`, `description`, `system_module_id`, `system_function_id`, `created`) VALUES
-(1, 'Add User', 'create_user', 'add user ', '', 1, '2015-12-17 00:00:00'),
-(2, 'View User', 'user_details', 'View user details', '', 1, '2015-12-17 00:00:00'),
-(3, 'Change Password', 'reset_password', 'change password', '', 1, '2015-12-17 00:00:00'),
-(4, 'View Roles', 'groups', 'view role listing', '', 2, '2015-12-17 00:00:00'),
-(5, 'Add Role', 'add_group', 'add new role', '', 2, '2015-12-17 00:00:00'),
-(6, 'View Role', 'group_details', 'view role details', '', 2, '2015-12-17 00:00:00'),
-(7, 'Update Role', 'edit_group', 'update role details', '', 2, '2015-12-17 00:00:00'),
-(8, 'Configure Role', 'edit_permissions', 'set role privileges', '', 2, '2015-12-17 00:00:00'),
-(9, 'View Sites', 'index', 'view site listing', '', 3, '2015-12-17 00:00:00'),
-(10, 'Add Site', 'add_site', 'add new site', '', 3, '2015-12-17 00:00:00'),
-(11, 'View Site', 'site_details', 'view site details', '', 3, '2015-12-17 00:00:00'),
-(12, 'Update Site', 'edit_site', 'update site details', '', 3, '2015-12-17 00:00:00'),
-(13, 'Activate Site', 'activate', 'set site as active', '', 3, '2015-12-17 00:00:00'),
-(14, 'De-activate Site', 'deactivate', 'set site as inactive', '', 3, '2015-12-17 00:00:00'),
-(15, 'View Buildings', 'index', 'view buildings list', '', 4, '2015-12-17 00:00:00'),
-(16, 'Add Building', 'add_building', 'add new building', '', 4, '2015-12-17 00:00:00'),
-(17, 'View Building', 'building_details', 'view building details', '', 4, '2015-12-17 00:00:00'),
-(18, 'Update Building', 'edit_building', 'update building details', '', 4, '2015-12-17 00:00:00'),
-(19, 'Activate Building', 'activate', 'set building as inactive', '', 4, '2015-12-17 00:00:00'),
-(20, 'De-activate Building', 'deactivate', 'set building as inactive', '', 4, '2015-12-17 00:00:00'),
-(21, 'View Rooms', 'index', 'view rooms list', '', 5, '2015-12-17 00:00:00'),
-(22, 'Add Room', 'add_room', 'add new room', '', 5, '2015-12-17 00:00:00'),
-(23, 'View Room', 'room_details', 'view room details', '', 5, '2015-12-17 00:00:00'),
-(24, 'Update Room', 'edit_room', 'update room details', '', 5, '2015-12-17 00:00:00'),
-(25, 'Activate Room', 'activate', 'set room as active', '', 5, '2015-12-17 00:00:00'),
-(26, 'De-activate Room', 'deactivate', 'set room as inactive', '', 5, '2015-12-17 00:00:00'),
-(27, 'Reserve Room', 'reserve', 'reserve room for guest', '', 5, '2015-12-17 00:00:00'),
-(28, 'Update Status', 'update_status', 'update room status', '', 5, '2015-12-17 00:00:00'),
-(29, 'View Beds', 'index', 'view beds list', '', 6, '2015-12-17 00:00:00'),
-(30, 'Add Bed', 'add_bed', 'add new bed', '', 6, '2015-12-17 00:00:00'),
-(31, 'View Bed', 'details', 'view bed details', '', 6, '2015-12-17 00:00:00'),
-(32, 'Update Bed', 'update_bed', 'update bed details', '', 6, '2015-12-17 00:00:00'),
-(33, 'Activate Bed', 'activate', 'set bed to active', '', 6, '2015-12-17 00:00:00'),
-(34, 'De-activate Bed', 'de_activate', 'set bed to inactive', '', 6, '2015-12-17 00:00:00'),
-(35, 'Check-in', 'checkin_guest', 'checkin guest', '', 6, '2015-12-17 00:00:00'),
-(36, 'Check-out', 'checkout_guest', 'checkout guest', '', 6, '2015-12-17 00:00:00'),
-(37, 'Update Status', 'update_status', 'update bed status', '', 6, '2015-12-17 00:00:00'),
-(38, 'View Products', 'index', 'view product listing', '', 7, '2015-12-17 00:00:00'),
-(39, 'Add Product', 'add_product', 'add new product', '', 7, '2015-12-17 00:00:00'),
-(40, 'View Product', 'product_details', 'view product details', '', 7, '2015-12-17 00:00:00'),
-(41, 'Update Product', 'edit_product', 'update product details', '', 7, '2015-12-17 00:00:00'),
-(42, 'Activate Product', 'activate', 'set [product as active', '', 7, '2015-12-17 00:00:00'),
-(43, 'De-activate Product', 'deactivate', 'set product as inactive', '', 7, '2015-12-17 00:00:00'),
-(44, 'View Agencies', 'index', 'view manning agencies', '', 8, '2015-12-17 00:00:00'),
-(45, 'Add Agency', 'add_agency', 'add new agency', '', 8, '2015-12-17 00:00:00'),
-(46, 'View Agency', 'agency_details', 'view agency details', '', 8, '2015-12-17 00:00:00'),
-(47, 'Update Agency', 'edit_agency', 'update agency details', '', 8, '2015-12-17 00:00:00'),
-(48, 'Activate Agency', 'activate', 'set agency as active', '', 8, '2015-12-17 00:00:00'),
-(49, 'De-activate Agency', 'deactivate', 'set agency as inactive', '', 8, '2015-12-17 00:00:00'),
-(50, 'View Violations', 'index', 'view violations listing', '', 9, '2015-12-17 00:00:00'),
-(51, 'Add Violation', 'add_violation', 'add new violation type', '', 9, '2015-12-17 00:00:00'),
-(52, 'View Violation', 'violation_details', 'view violation details', '', 9, '2015-12-17 00:00:00'),
-(53, 'Update Violation', 'edit_violation', 'update violation details', '', 9, '2015-12-17 00:00:00'),
-(54, 'Activate Violation', 'activate', 'set violation as active', '', 9, '2015-12-17 00:00:00'),
-(55, 'De-activate Violation', 'deactivate', 'set violation as inactive', '', 9, '2015-12-17 00:00:00'),
-(56, 'View Departments', 'index', 'view department listing', '', 10, '2015-12-17 00:00:00'),
-(57, 'Add Department', 'add_department', 'add new department', '', 10, '2015-12-17 00:00:00'),
-(58, 'View Department', 'department_details', 'view department details', '', 10, '2015-12-17 00:00:00'),
-(59, 'Update Department', 'edit_department', 'edit department details', '', 10, '2015-12-17 00:00:00'),
-(60, 'Activate Department', 'activate', 'set department as active', '', 10, '2015-12-17 00:00:00'),
-(61, 'De-activate Department', 'deactivate', 'set department as inactive', '', 10, '2015-12-17 00:00:00'),
-(62, 'View Employee Types', 'index', 'view employee type listing', '', 11, '2015-12-17 00:00:00'),
-(63, 'Add Employee Type', 'add_employee_type', 'add new employee type', '', 11, '2015-12-17 00:00:00'),
-(64, 'View Employee Type', 'employee_type_details', 'view employee type details', '', 11, '2015-12-17 00:00:00'),
-(65, 'Update Employee Type', 'edit_employee_type', 'update employee type details', '', 11, '2015-12-17 00:00:00'),
-(66, 'Activate Employee Type', 'activate', 'set employee type as active', '', 11, '2015-12-17 00:00:00'),
-(67, 'De-activate Employee Type', 'deactivate', 'set employee type as inactive', '', 11, '2015-12-17 00:00:00'),
-(68, 'View Employees', 'index', 'view employee listing', '', 12, '2015-12-17 00:00:00'),
-(69, 'Add Employee', 'add_employee', 'add new employee', '', 12, '2015-12-17 00:00:00'),
-(70, 'View Employee', 'employee_details', 'view employee details', '', 12, '2015-12-17 00:00:00'),
-(71, 'Update Employee', 'edit_employee', 'edit employee details', '', 12, '2015-12-17 00:00:00'),
-(72, 'Activate Employee', 'activate', 'set employee as active', '', 12, '2015-12-17 00:00:00'),
-(73, 'De-activate Employee', 'deactivate', 'set employee as inactive', '', 12, '2015-12-17 00:00:00'),
-(74, 'View Employee Time Shifts', 'index', 'view employee time shift list', '', 13, '2015-12-17 00:00:00'),
-(75, 'Add Employee Time Shift', 'add_shift', 'add new time shift', '', 13, '2015-12-17 00:00:00'),
-(76, 'View Employee Time Shift', 'shift_details', 'view time shift details', '', 13, '2015-12-17 00:00:00'),
-(77, 'Update Employee Time Shift', 'edit_shift_details', 'update time shift details', '', 13, '2015-12-17 00:00:00'),
-(78, 'Activate Employee Time Shift', 'activate', 'set time shift as active', '', 13, '2015-12-17 00:00:00'),
-(79, 'De-activate Employee Time Shift', 'deactivate', 'set time shift as inactive', '', 13, '2015-12-17 00:00:00'),
-(80, 'View Schedules', 'index', 'view employee schedules', '', 14, '2015-12-17 00:00:00'),
-(81, 'Add Schedule', 'add_schedule', 'add new employee schedule', '', 14, '2015-12-17 00:00:00'),
-(82, 'View Schedule', 'schedule_details', 'view employee schedule details', '', 14, '2015-12-17 00:00:00'),
-(83, 'Update Schedule', 'edit_schedule', 'update employee schedule', '', 14, '2015-12-17 00:00:00'),
-(84, 'Load Room View', 'romm_view', 'view room dashboard', '', 15, '2015-12-17 00:00:00'),
-(85, 'Check-in Guest', 'checkin_guest', 'checkin guest', '', 15, '2015-12-17 00:00:00'),
-(86, 'Check-out Guest', 'checkout_guest', 'checkout guest', '', 15, '2015-12-17 00:00:00'),
-(87, 'Reserve Room', 'reserve', 'reserve room for guest', '', 15, '2015-12-17 00:00:00'),
-(88, 'Update Room Status', 'update_status', 'update the room status', '', 15, '2015-12-17 00:00:00'),
-(89, 'Take Order', 'take_order', 'take guest order', '', 15, '2015-12-17 00:00:00'),
-(90, 'View Guests', 'index', 'view guest listing', '', 16, '2015-12-17 00:00:00'),
-(91, 'Add Guest', 'add_guest', 'register new guest', '', 16, '2015-12-17 00:00:00'),
-(92, 'View Guest', 'guest_details', 'view guest details', '', 16, '2015-12-17 00:00:00'),
-(93, 'Update Guest', 'edit_guest', 'update guest details', '', 16, '2015-12-17 00:00:00'),
-(94, 'Reserve Room', 'reserve', 'reserve room for guest', '', 16, '2015-12-17 00:00:00'),
-(95, 'Check-in Guest', 'checkin_guest', 'checkin guest', '', 16, '2015-12-17 00:00:00'),
-(96, 'Check-out Guest', 'checkout_guest', 'checkout guest', '', 16, '2015-12-17 00:00:00'),
-(97, 'Add Violation Record', 'record_violation', 'record guest violation', '', 16, '2015-12-17 00:00:00'),
-(98, 'Vew Reservations', 'index', 'view reservation listing', '', 17, '2015-12-17 00:00:00'),
-(99, 'Add Reservation', 'add_reservation', 'reserve room for guest', '', 17, '2015-12-17 00:00:00'),
-(100, 'View Reservation', 'reservation_details', 'view guest reservation details', '', 17, '2015-12-17 00:00:00'),
-(101, 'Update Reservation', 'edit_reservation', 'update reservation details', '', 17, '2015-12-17 00:00:00'),
-(102, 'Cancel Reservation', 'cancel_reservation', 'cancel reservation', '', 17, '2015-12-17 00:00:00'),
-(103, 'Approve Reservation Cancellation', 'approve_cancel_reservation', 'approve reservation cancellation', '', 17, '2015-12-17 00:00:00'),
-(104, 'View Check-ins', 'index', 'view guest checkins', '', 18, '2015-12-17 00:00:00'),
-(105, 'Check-in Guest', 'checkin_guest', 'checkin guest', '', 18, '2015-12-17 00:00:00'),
-(106, 'Extend Guest', 'extend_guest', 'extend guest stay', '', 18, '2015-12-17 00:00:00'),
-(107, 'Transfer Guest', 'transfer_guest', 'transfer guest', '', 18, '2015-12-17 00:00:00'),
-(108, 'Check-out Guest', 'checkout_guest', 'checkout guest', '', 18, '2015-12-17 00:00:00'),
-(109, 'Cancel Check-out', 'cancel_checkout', 'cancel guest check_out', '', 18, '2015-12-17 00:00:00'),
-(110, 'Approve Check-out Cancellation', 'approve_cancel_checkout', 'approve checkut cancellation', '', 18, '2015-12-17 00:00:00'),
-(111, 'View Meal Stubs', 'index', 'view meal stub listing', '', 19, '2015-12-17 00:00:00'),
-(112, 'Add Meal Stub', 'add_meal', 'create new meal stub', '', 19, '2015-12-17 00:00:00'),
-(113, 'Update Meal Stub', 'edit_meal', 'update meal stub details', '', 19, '2015-12-17 00:00:00'),
-(114, 'Mark Meal Stub', 'mark_meal', 'mark meal stub as used', '', 19, '2015-12-17 00:00:00'),
-(115, 'Cancel Meal Stub', 'cancel_meal', 'cancel meal stub', '', 19, '2015-12-17 00:00:00'),
-(116, 'View Orders', 'index', 'view guest orders', '', 20, '2015-12-17 00:00:00'),
-(117, 'Take Order', 'take_order', 'take order', '', 20, '2015-12-17 00:00:00'),
-(118, 'Update Order', 'edit_order', 'update order', '', 20, '2015-12-17 00:00:00'),
-(119, 'Cancel Order', 'cancel_order', 'cancel order', '', 20, '2015-12-17 00:00:00'),
-(120, 'View Violation Records', 'index', 'view violation records', '', 21, '2015-12-17 00:00:00'),
-(121, 'Add Violation Record', 'add_violation_record', 'record guest violation', '', 21, '2015-12-17 00:00:00'),
-(122, 'View Violation Record', 'violation_record_details', 'view violation record details', '', 21, '2015-12-17 00:00:00'),
-(123, 'Update Violation Record', 'update_violation_record', 'update violation record', '', 21, '2015-12-17 00:00:00'),
-(124, 'Cancel Violation Record', 'cancel_violation_record', 'cancel violation record', '', 21, '2015-12-17 00:00:00'),
-(125, 'View Rate Matrices', 'index', 'view rate matrix listing', '', 22, '2015-12-17 00:00:00'),
-(126, 'Add Rate Matrix', 'add_rate_matrix', 'create new rate matrix', '', 22, '2015-12-17 00:00:00'),
-(127, 'Update Rate Matrix', 'edit_rate_matrix', 'update rate matrix details', '', 22, '2015-12-17 00:00:00'),
-(128, 'Activate Rate Matrix', 'activate', 'set rate matrix as active', '', 22, '2015-12-17 00:00:00'),
-(129, 'De-activate Rate Matrix', 'deactivate', 'set rate matrix as inactive', '', 22, '2015-12-17 00:00:00'),
-(130, 'View Rate', 'rate_details', 'view rate details', '', 22, '2015-12-17 00:00:00'),
-(131, 'Update Rate', 'edit_rate', 'update rate', '', 22, '2015-12-17 00:00:00'),
-(132, 'Activate Rate', 'activate', 'set rate as active', '', 22, '2015-12-17 00:00:00'),
-(133, 'De-activate Rate', 'deactivate', 'set rate as inactive', '', 22, '2015-12-17 00:00:00'),
-(134, 'View Billings', 'index', 'view billing records', '', 23, '2015-12-17 00:00:00'),
-(135, 'Add Billing', 'add_billing', 'create guest billing', '', 23, '2015-12-17 00:00:00'),
-(136, 'View Billing', 'billing_details', 'view billing details', '', 23, '2015-12-17 00:00:00'),
-(137, 'Update Billing', 'edit_billing', 'update billing', '', 23, '2015-12-17 00:00:00'),
-(138, 'Cancel Billing', 'cancel_billing', 'cancel guest billing', '', 23, '2015-12-17 00:00:00'),
-(139, 'Approve Billing Cancellation', 'approve_cancel_billing', 'approve cancel guest billing', '', 23, '2015-12-17 00:00:00'),
-(140, 'View Statements', 'view_statements', 'view billing statements', '', 24, '2015-12-17 00:00:00'),
-(141, 'Generate Billing Statement', 'generate_billing', 'generate billing statement for cut-off period', '', 24, '2015-12-17 00:00:00'),
-(142, 'View Statement', 'statement_details', 'view billing statement details', '', 24, '2015-12-17 00:00:00'),
-(143, 'Cancel Billing Statement', 'cancel_statement', 'cancel billing statement', '', 24, '2015-12-17 00:00:00'),
-(144, 'View Payments', 'index', 'view payments received', '', 25, '2015-12-17 00:00:00'),
-(145, 'Receive Payment', 'receive_payment', 'record received payment', '', 25, '2015-12-17 00:00:00'),
-(146, 'Cancel Payment', 'cancel_payment', 'cancel received payment', '', 25, '2015-12-17 00:00:00'),
-(147, 'Approve Payment Cancellation', 'approve_cancel_payment', 'approve cancelled payment', '', 25, '2015-12-17 00:00:00'),
-(148, 'View Remittances', 'index', 'view remittances', '', 26, '2015-12-17 00:00:00'),
-(149, 'Remit', 'remit', 'create remittance report and record cash breakdown', '', 26, '2015-12-17 00:00:00'),
-(150, 'Cancel Remittance', 'cancel_remittance', 'cancel remittance entry', '', 26, '2015-12-17 00:00:00'),
-(151, 'Approve Remittance Cancellation', 'approve_cancel_remittance', 'approve cancelled remittance', '', 26, '2015-12-17 00:00:00'),
-(152, 'View Petty Cash Vouchers', 'index', 'view petty cash vouchers', '', 27, '2015-12-17 00:00:00'),
-(153, 'Add Petty Cash', 'add_petty_cash', 'create petty cash voucher', '', 27, '2015-12-17 00:00:00'),
-(154, 'View Petty Cash', 'petty_cash_details', 'view petty cash details', '', 27, '2015-12-17 00:00:00'),
-(155, 'Update Petty Cash', 'update_petty_cash', 'update petty cash details', '', 27, '2015-12-17 00:00:00'),
-(156, 'Cancel Petty Cash', 'cancel_petty_cash', 'cancel petty cash entry', '', 27, '2015-12-17 00:00:00'),
-(157, 'Generate Reservation Report', 'reservation_report', 'generate report on reservations', '', 28, '2015-12-17 00:00:00'),
-(158, 'Generate Daily Sales Report', 'daily_sales_report', 'generate report on daily sales', '', 29, '2015-12-17 00:00:00'),
-(159, 'Generate Sales Report', 'sales_report', 'generate report on sales', '', 30, '2015-12-17 00:00:00'),
-(160, 'Generate Census', 'census', 'generate report on headcount per room', '', 31, '2015-12-17 00:00:00'),
-(161, 'Generate AR Report', 'ar_report', 'generate report on uncollected billing', '', 32, '2015-12-17 00:00:00'),
-(162, 'Generate AR Aging Report', 'ar_aging_report', 'generate report on age in days of uncollected billing', '', 33, '2015-12-17 00:00:00'),
-(163, 'Generate Collection Report', 'collection_report', 'generate report on received payments', '', 34, '2015-12-17 00:00:00'),
-(164, 'Generate Remittance Report', 'remittance_report', 'generate report on remittances', '', 35, '2015-12-17 00:00:00'),
-(165, '', 'ob_filing', '', '', 45, '2015-12-17 00:00:00'),
-(166, 'ACCESS ADMIN', 'access_admin', 'ACCESS ADMIN', '1', 45, '2015-12-17 00:00:00'),
-(167, 'Audit Trails', 'audit_trails', '', '1', 46, '0000-00-00 00:00:00'),
-(168, 'Add Company', 'add_company', '', '1', 6, '0000-00-00 00:00:00'),
-(169, 'Edit Company', 'edit_company', '', '1', 6, '0000-00-00 00:00:00'),
-(170, 'Add Branch', 'add_branch', '', '1', 4, '0000-00-00 00:00:00'),
-(171, 'Edit Branch', 'edit_branch', '', '1', 4, '0000-00-00 00:00:00'),
-(172, 'File Official Business', 'file_ob', '', '5', 28, '0000-00-00 00:00:00'),
-(173, 'File Leave', 'file_leave', '', '5', 29, '0000-00-00 00:00:00'),
-(174, 'File Overtime', 'file_overtime', '', '5', 30, '0000-00-00 00:00:00'),
-(175, 'File Undertime', 'file_undertime', '', '5', 31, '0000-00-00 00:00:00'),
-(176, 'Approve Official Business', 'approve_ob', '', '5', 28, '0000-00-00 00:00:00'),
-(177, 'Add Cost Center', 'add_cost_center', '', '1', 7, '0000-00-00 00:00:00'),
-(178, 'Edit Cost Center', 'edit_cost_center', '', '1', 7, '0000-00-00 00:00:00'),
-(179, 'Approve Leave', 'approve_leave', '', '5', 29, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -45306,7 +45032,7 @@ INSERT INTO `system_permissions` (`id`, `name`, `method`, `description`, `system
 -- Table structure for table `system_role_permissions`
 --
 
-CREATE TABLE `system_role_permissions` (
+CREATE TABLE IF NOT EXISTS `system_role_permissions` (
   `id` int(12) NOT NULL,
   `role_id` int(12) NOT NULL,
   `system_module_id` int(12) NOT NULL,
@@ -45317,7 +45043,7 @@ CREATE TABLE `system_role_permissions` (
   `created_by` int(16) NOT NULL,
   `modified` datetime NOT NULL,
   `modified_by` int(16) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Defines Group Privileges to different methods';
+) ENGINE=MyISAM AUTO_INCREMENT=1327 DEFAULT CHARSET=latin1 COMMENT='Defines Group Privileges to different methods';
 
 --
 -- Dumping data for table `system_role_permissions`
@@ -46650,137 +46376,7 @@ INSERT INTO `system_role_permissions` (`id`, `role_id`, `system_module_id`, `sys
 (1323, 1, 6, 38, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (1324, 1, 6, 39, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (1325, 1, 6, 40, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(1326, 4, 6, 40, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(1327, 1, 1, 45, 166, 1, '0000-00-00 00:00:00', 0, '2017-07-13 04:14:25', 0),
-(1328, 1, 0, 9, 54, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1329, 1, 0, 8, 45, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1330, 1, 0, 6, 30, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1331, 1, 0, 23, 135, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1332, 1, 0, 4, 16, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1333, 1, 0, 10, 57, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1334, 1, 0, 12, 69, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1335, 1, 0, 13, 75, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1336, 1, 0, 11, 63, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1337, 1, 0, 16, 91, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1338, 1, 0, 19, 112, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1339, 1, 0, 27, 153, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1340, 1, 0, 7, 39, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1341, 1, 0, 22, 126, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0);
-INSERT INTO `system_role_permissions` (`id`, `role_id`, `system_module_id`, `system_function_id`, `system_permission_id`, `active_status`, `created`, `created_by`, `modified`, `modified_by`) VALUES
-(1342, 1, 0, 17, 99, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1343, 1, 0, 2, 5, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1344, 1, 0, 5, 22, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1345, 1, 0, 14, 81, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1346, 1, 0, 3, 10, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1347, 1, 0, 1, 1, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1348, 1, 0, 9, 51, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1349, 1, 0, 16, 97, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1350, 1, 0, 21, 121, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1351, 1, 0, 23, 139, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1352, 1, 0, 18, 110, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1353, 1, 0, 25, 147, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1354, 1, 0, 26, 151, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1355, 1, 0, 17, 103, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1356, 1, 1, 46, 167, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1357, 1, 0, 23, 138, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1358, 1, 0, 24, 143, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1359, 1, 0, 18, 109, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1360, 1, 0, 19, 115, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1361, 1, 0, 20, 119, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1362, 1, 0, 25, 146, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1363, 1, 0, 27, 156, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1364, 1, 0, 26, 150, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1365, 1, 0, 17, 102, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1366, 1, 0, 21, 124, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1367, 1, 0, 1, 3, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1368, 1, 0, 16, 95, 1, '2017-07-11 11:20:20', 0, '2017-07-12 08:08:01', 0),
-(1369, 1, 0, 15, 86, 1, '2017-07-11 11:20:20', 0, '2017-07-12 03:44:13', 0),
-(1370, 1, 0, 2, 8, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1371, 1, 0, 9, 55, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1372, 1, 0, 6, 34, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1373, 1, 0, 18, 106, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1374, 1, 0, 33, 162, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1375, 1, 0, 32, 161, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1376, 1, 0, 24, 141, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1377, 1, 0, 31, 160, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1378, 1, 0, 34, 163, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1379, 1, 0, 29, 158, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1380, 1, 0, 35, 164, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1381, 1, 0, 28, 157, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1382, 1, 0, 30, 159, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1383, 1, 0, 15, 84, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1384, 1, 0, 19, 114, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1385, 1, 0, 25, 145, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1386, 1, 0, 26, 149, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1387, 1, 0, 15, 87, 1, '2017-07-11 11:20:20', 0, '0000-00-00 00:00:00', 0),
-(1388, 1, 0, 20, 117, 1, '2017-07-11 11:20:20', 0, '0000-00-00 00:00:00', 0),
-(1389, 1, 0, 18, 107, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1390, 1, 0, 8, 47, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1391, 1, 0, 6, 32, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1392, 1, 0, 23, 137, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1393, 1, 0, 4, 18, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1394, 1, 0, 10, 59, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1395, 1, 0, 12, 71, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1396, 1, 0, 13, 77, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1397, 1, 0, 11, 65, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1398, 1, 0, 16, 93, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1399, 1, 0, 19, 113, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1400, 1, 0, 20, 118, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1401, 1, 0, 27, 155, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1402, 1, 0, 7, 41, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1403, 1, 0, 22, 131, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1404, 1, 0, 22, 127, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1405, 1, 0, 17, 101, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1406, 1, 0, 2, 7, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1407, 1, 0, 5, 24, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1408, 1, 0, 6, 37, 1, '2017-07-11 11:20:20', 0, '2017-07-12 08:08:01', 0),
-(1409, 1, 0, 14, 83, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1410, 1, 0, 3, 12, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1411, 1, 0, 9, 53, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1412, 1, 0, 21, 123, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1413, 1, 0, 9, 50, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:25', 0),
-(1414, 1, 0, 8, 46, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1415, 1, 0, 6, 31, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1416, 1, 0, 23, 136, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1417, 1, 0, 4, 17, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1418, 1, 0, 10, 58, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1419, 1, 0, 12, 70, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1420, 1, 0, 13, 76, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1421, 1, 0, 11, 64, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1422, 1, 0, 16, 92, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1423, 1, 0, 27, 154, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1424, 1, 0, 7, 40, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1425, 1, 0, 22, 130, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1426, 1, 0, 17, 100, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1427, 1, 0, 2, 6, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1428, 1, 0, 2, 4, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1429, 1, 0, 5, 23, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1430, 1, 0, 14, 82, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1431, 1, 0, 3, 11, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1432, 1, 0, 24, 142, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1433, 1, 0, 24, 140, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1434, 1, 0, 1, 2, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1435, 1, 0, 9, 52, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1436, 1, 0, 21, 122, 1, '2017-07-11 11:20:20', 0, '2017-07-13 04:14:26', 0),
-(1437, 1, 1, 4, 170, 1, '2017-07-12 03:44:13', 0, '2017-07-13 04:14:25', 0),
-(1438, 1, 1, 6, 168, 1, '2017-07-12 03:44:13', 0, '2017-07-13 04:14:25', 0),
-(1439, 1, 1, 4, 171, 1, '2017-07-12 03:44:13', 0, '2017-07-13 04:14:25', 0),
-(1440, 1, 1, 6, 169, 1, '2017-07-12 03:44:13', 0, '2017-07-13 04:14:25', 0),
-(1441, 1, 0, 5, 27, 1, '2017-07-12 03:44:13', 0, '2017-07-13 04:14:25', 0),
-(1442, 1, 0, 15, 89, 1, '2017-07-12 03:44:13', 0, '2017-07-13 04:14:25', 0),
-(1443, 1, 0, 5, 28, 1, '2017-07-12 03:44:13', 0, '2017-07-13 04:14:25', 0),
-(1444, 1, 0, 16, 96, 1, '2017-07-12 08:07:48', 0, '2017-07-12 08:08:01', 0),
-(1445, 1, 5, 29, 173, 1, '2017-07-12 08:07:48', 0, '2017-07-13 04:14:25', 0),
-(1446, 1, 5, 28, 172, 1, '2017-07-12 08:07:48', 0, '2017-07-13 04:14:25', 0),
-(1447, 1, 5, 30, 174, 1, '2017-07-12 08:07:48', 0, '2017-07-13 04:14:25', 0),
-(1448, 1, 5, 31, 175, 1, '2017-07-12 08:07:48', 0, '2017-07-13 04:14:25', 0),
-(1449, 1, 0, 16, 94, 1, '2017-07-12 08:07:48', 0, '2017-07-12 08:08:01', 0),
-(1450, 1, 5, 28, 176, 1, '2017-07-12 08:08:01', 0, '2017-07-13 04:14:25', 0),
-(1451, 1, 1, 7, 177, 1, '2017-07-12 08:18:02', 0, '2017-07-13 04:14:25', 0),
-(1452, 1, 0, 18, 105, 1, '2017-07-12 08:18:02', 0, '2017-07-13 04:14:25', 0),
-(1453, 1, 0, 18, 108, 1, '2017-07-12 08:18:02', 0, '2017-07-13 04:14:25', 0),
-(1454, 1, 1, 7, 178, 1, '2017-07-12 08:18:02', 0, '2017-07-13 04:14:25', 0),
-(1455, 1, 5, 29, 179, 1, '2017-07-13 04:14:25', 0, '0000-00-00 00:00:00', 0);
+(1326, 4, 6, 40, NULL, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -46788,10 +46384,10 @@ INSERT INTO `system_role_permissions` (`id`, `role_id`, `system_module_id`, `sys
 -- Table structure for table `system_users`
 --
 
-CREATE TABLE `system_users` (
-  `id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `system_users` (
+  `id` int(11) unsigned NOT NULL,
   `company_id` int(11) NOT NULL,
-  `employee_id` int(11) UNSIGNED NOT NULL,
+  `employee_id` int(11) unsigned NOT NULL,
   `ip_address` varchar(45) NOT NULL,
   `username` varchar(100) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -46799,26 +46395,24 @@ CREATE TABLE `system_users` (
   `email` varchar(100) NOT NULL,
   `activation_code` varchar(40) DEFAULT NULL,
   `forgotten_password_code` varchar(40) DEFAULT NULL,
-  `forgotten_password_time` int(11) UNSIGNED DEFAULT NULL,
+  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
   `remember_code` varchar(40) DEFAULT NULL,
-  `created_on` int(11) UNSIGNED NOT NULL,
-  `last_login` int(11) UNSIGNED DEFAULT NULL,
-  `active` tinyint(1) UNSIGNED DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `last_login` int(11) unsigned DEFAULT NULL,
+  `active` tinyint(1) unsigned DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `company` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `system_users`
 --
 
 INSERT INTO `system_users` (`id`, `company_id`, `employee_id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, 0, 1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, NULL, 1268889823, 1499821977, 1, 'Admin', 'istrator', 'Systemantech', '0'),
-(2, 0, 2, '127.0.0.1', 'ramon.aguilar', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'ramon.aguilar@systemantech.com', '', NULL, NULL, NULL, 1268889823, 1499399621, 1, 'Ramon', 'Aguilar', 'Systemantech', '0'),
-(3, 0, 3, '127.0.0.1', 'josh.gono', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'joseph.gono@systemantech.com', '', NULL, NULL, NULL, 1268889823, 1499911416, 1, 'Josh', 'Gono', 'Systemantech', '0'),
-(4, 0, 4, '127.0.0.1', 'dean.aquino', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'deanjoe.aquino@systemantech.com', '', NULL, NULL, NULL, 1268889823, 1498792254, 1, 'Dean Joe', 'Aquino', 'Systemantech', '0');
+(1, 1, 2, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, NULL, 1268889823, 1499922279, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(2, 0, 0, '192.168.1.29', 'kevin.sagun', '$2y$08$t879QmNhTE./3t0u9E7p7utD9dU8qqzTd5a2syh5U8RInysbaYvM6', NULL, 'cristhiansagun@gmail.com', '1e8daac454aae24f4693777c8365c966fadf3eb3', NULL, NULL, NULL, 1499393599, NULL, 0, 'kevin', 'sagun', 'systemantech inc', '09068133327');
 
 -- --------------------------------------------------------
 
@@ -46826,12 +46420,12 @@ INSERT INTO `system_users` (`id`, `company_id`, `employee_id`, `ip_address`, `us
 -- Table structure for table `system_users_groups`
 --
 
-CREATE TABLE `system_users_groups` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `system_users_groups` (
+  `id` int(16) unsigned NOT NULL,
   `system_user_id` int(16) NOT NULL,
   `system_group_id` int(16) NOT NULL,
-  `default_status` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `default_status` tinyint(1) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `system_users_groups`
@@ -46839,9 +46433,7 @@ CREATE TABLE `system_users_groups` (
 
 INSERT INTO `system_users_groups` (`id`, `system_user_id`, `system_group_id`, `default_status`) VALUES
 (1, 1, 1, 1),
-(2, 2, 1, 1),
-(3, 3, 1, 1),
-(4, 4, 1, 1);
+(2, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -46849,7 +46441,7 @@ INSERT INTO `system_users_groups` (`id`, `system_user_id`, `system_group_id`, `d
 -- Table structure for table `system_user_permissions`
 --
 
-CREATE TABLE `system_user_permissions` (
+CREATE TABLE IF NOT EXISTS `system_user_permissions` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `system_permission_id` int(11) NOT NULL,
@@ -46864,13 +46456,13 @@ CREATE TABLE `system_user_permissions` (
 -- Table structure for table `tax_exemption_status`
 --
 
-CREATE TABLE `tax_exemption_status` (
-  `id` tinyint(4) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `tax_exemption_status` (
+  `id` tinyint(4) unsigned NOT NULL,
   `tax_status` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `tax_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `active_status` tinyint(1) NOT NULL COMMENT '0 inactive 1 active',
   `default_status` tinyint(1) NOT NULL COMMENT '0 non-default 1 default'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tax_exemption_status`
@@ -46890,17 +46482,17 @@ INSERT INTO `tax_exemption_status` (`id`, `tax_status`, `tax_code`, `active_stat
 -- Table structure for table `tax_matrices`
 --
 
-CREATE TABLE `tax_matrices` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `tax_matrices` (
+  `id` int(16) unsigned NOT NULL,
   `year_effective` year(4) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `attachment` varchar(300) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tax_matrices`
@@ -46915,67 +46507,67 @@ INSERT INTO `tax_matrices` (`id`, `year_effective`, `description`, `attachment`,
 -- Table structure for table `tax_tables`
 --
 
-CREATE TABLE `tax_tables` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `tax_matrix_id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `tax_tables` (
+  `id` int(16) unsigned NOT NULL,
+  `tax_matrix_id` int(16) unsigned NOT NULL,
   `tax_exemption_status_id` int(16) NOT NULL,
-  `base_tax` decimal(16,2) UNSIGNED NOT NULL DEFAULT '0.00' COMMENT 'base tax based on exemption status',
-  `percentage_over` decimal(16,2) UNSIGNED NOT NULL COMMENT 'percentage multiplier of salary exceeding minimum amount',
+  `base_tax` decimal(16,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'base tax based on exemption status',
+  `percentage_over` decimal(16,2) unsigned NOT NULL COMMENT 'percentage multiplier of salary exceeding minimum amount',
   `minimum_monthly_salary` decimal(16,2) NOT NULL,
   `maximum_monthly_salary` decimal(16,2) NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime DEFAULT NULL,
-  `modified_by` int(16) UNSIGNED DEFAULT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified_by` int(16) unsigned DEFAULT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tax_tables`
 --
 
 INSERT INTO `tax_tables` (`id`, `tax_matrix_id`, `tax_exemption_status_id`, `base_tax`, `percentage_over`, `minimum_monthly_salary`, `maximum_monthly_salary`, `created`, `created_by`, `modified`, `modified_by`, `active_status`) VALUES
-(2, 1, 1, '41.67', '0.10', '833.00', '2500.00', '2017-06-10 15:14:00', 0, '0000-00-00 00:00:00', 0, 1),
-(3, 1, 1, '208.33', '0.15', '2500.00', '5833.00', '2017-06-10 15:14:00', 0, '0000-00-00 00:00:00', 0, 1),
-(4, 1, 1, '708.33', '0.20', '5833.00', '11667.00', '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
-(5, 1, 1, '1875.00', '0.25', '11667.00', '20833.00', '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
-(6, 1, 1, '4166.67', '0.30', '20833.00', '41667.00', '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
-(7, 1, 1, '10416.67', '0.32', '41667.00', '999999.00', '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
-(8, 1, 2, '0.00', '0.05', '4167.00', '5000.00', '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
-(9, 1, 2, '41.67', '0.10', '5000.00', '6667.00', '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
-(10, 1, 2, '208.33', '0.15', '6667.00', '10000.00', '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
-(11, 1, 2, '708.33', '0.20', '10000.00', '15833.00', '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
-(12, 1, 2, '1875.00', '0.25', '15833.00', '25000.00', '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
-(13, 1, 2, '4166.67', '0.30', '25000.00', '45833.00', '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
-(14, 1, 2, '10416.67', '0.32', '45833.00', '999999.00', '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
-(15, 1, 3, '0.00', '0.05', '6250.00', '7083.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(16, 1, 3, '41.67', '0.10', '7083.00', '8750.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(17, 1, 3, '208.33', '0.15', '8750.00', '12083.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(18, 1, 3, '708.33', '0.20', '12083.00', '17917.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(19, 1, 3, '1875.00', '0.25', '17917.00', '27083.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(20, 1, 3, '4167.67', '0.30', '27083.00', '47917.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(21, 1, 3, '10416.67', '0.32', '47917.00', '999999.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(22, 1, 4, '0.00', '0.05', '8333.00', '9167.00', '2017-06-11 06:52:30', 0, '0000-00-00 00:00:00', 0, 1),
-(23, 1, 4, '41.67', '0.10', '9167.00', '10833.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(24, 1, 4, '208.33', '0.15', '10833.00', '14167.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(25, 1, 4, '708.33', '0.20', '14167.00', '20000.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(26, 1, 4, '1875.00', '0.25', '20000.00', '29167.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(27, 1, 4, '4166.67', '0.30', '29167.00', '50000.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(28, 1, 4, '10416.67', '0.32', '50000.00', '999999.00', '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
-(29, 1, 5, '0.00', '0.05', '10417.00', '11250.00', '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
-(30, 1, 5, '41.67', '0.10', '11250.00', '12917.00', '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
-(31, 1, 5, '208.33', '0.15', '12917.00', '16250.00', '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
-(32, 1, 5, '708.33', '0.20', '16250.00', '22083.00', '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
-(33, 1, 5, '1875.00', '0.25', '22083.00', '31250.00', '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
-(34, 1, 5, '4166.67', '0.30', '31250.00', '52083.00', '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
-(35, 1, 5, '10416.67', '0.32', '52083.00', '999999.00', '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
-(36, 1, 6, '0.00', '0.05', '12500.00', '13333.00', '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
-(37, 1, 6, '41.67', '0.10', '13333.00', '15000.00', '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
-(38, 1, 6, '208.33', '0.15', '15000.00', '18333.00', '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
-(39, 1, 6, '708.33', '0.20', '18333.00', '24167.00', '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
-(40, 1, 6, '1875.00', '0.25', '24167.00', '33333.00', '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
-(41, 1, 6, '4166.67', '0.30', '33333.00', '54167.00', '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
-(42, 0, 6, '10416.67', '0.32', '54167.00', '999999.00', '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1);
+(2, 1, 1, 41.67, 0.10, 833.00, 2500.00, '2017-06-10 15:14:00', 0, '0000-00-00 00:00:00', 0, 1),
+(3, 1, 1, 208.33, 0.15, 2500.00, 5833.00, '2017-06-10 15:14:00', 0, '0000-00-00 00:00:00', 0, 1),
+(4, 1, 1, 708.33, 0.20, 5833.00, 11667.00, '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
+(5, 1, 1, 1875.00, 0.25, 11667.00, 20833.00, '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
+(6, 1, 1, 4166.67, 0.30, 20833.00, 41667.00, '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
+(7, 1, 1, 10416.67, 0.32, 41667.00, 999999.00, '2017-06-10 15:17:56', 0, '0000-00-00 00:00:00', 0, 1),
+(8, 1, 2, 0.00, 0.05, 4167.00, 5000.00, '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
+(9, 1, 2, 41.67, 0.10, 5000.00, 6667.00, '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
+(10, 1, 2, 208.33, 0.15, 6667.00, 10000.00, '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
+(11, 1, 2, 708.33, 0.20, 10000.00, 15833.00, '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
+(12, 1, 2, 1875.00, 0.25, 15833.00, 25000.00, '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
+(13, 1, 2, 4166.67, 0.30, 25000.00, 45833.00, '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
+(14, 1, 2, 10416.67, 0.32, 45833.00, 999999.00, '2017-06-10 21:52:07', 0, '0000-00-00 00:00:00', 0, 1),
+(15, 1, 3, 0.00, 0.05, 6250.00, 7083.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(16, 1, 3, 41.67, 0.10, 7083.00, 8750.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(17, 1, 3, 208.33, 0.15, 8750.00, 12083.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(18, 1, 3, 708.33, 0.20, 12083.00, 17917.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(19, 1, 3, 1875.00, 0.25, 17917.00, 27083.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(20, 1, 3, 4167.67, 0.30, 27083.00, 47917.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(21, 1, 3, 10416.67, 0.32, 47917.00, 999999.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(22, 1, 4, 0.00, 0.05, 8333.00, 9167.00, '2017-06-11 06:52:30', 0, '0000-00-00 00:00:00', 0, 1),
+(23, 1, 4, 41.67, 0.10, 9167.00, 10833.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(24, 1, 4, 208.33, 0.15, 10833.00, 14167.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(25, 1, 4, 708.33, 0.20, 14167.00, 20000.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(26, 1, 4, 1875.00, 0.25, 20000.00, 29167.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(27, 1, 4, 4166.67, 0.30, 29167.00, 50000.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(28, 1, 4, 10416.67, 0.32, 50000.00, 999999.00, '2017-06-11 06:35:28', 0, '0000-00-00 00:00:00', 0, 1),
+(29, 1, 5, 0.00, 0.05, 10417.00, 11250.00, '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
+(30, 1, 5, 41.67, 0.10, 11250.00, 12917.00, '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
+(31, 1, 5, 208.33, 0.15, 12917.00, 16250.00, '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
+(32, 1, 5, 708.33, 0.20, 16250.00, 22083.00, '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
+(33, 1, 5, 1875.00, 0.25, 22083.00, 31250.00, '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
+(34, 1, 5, 4166.67, 0.30, 31250.00, 52083.00, '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
+(35, 1, 5, 10416.67, 0.32, 52083.00, 999999.00, '2017-06-11 07:15:28', 0, '0000-00-00 00:00:00', 0, 1),
+(36, 1, 6, 0.00, 0.05, 12500.00, 13333.00, '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
+(37, 1, 6, 41.67, 0.10, 13333.00, 15000.00, '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
+(38, 1, 6, 208.33, 0.15, 15000.00, 18333.00, '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
+(39, 1, 6, 708.33, 0.20, 18333.00, 24167.00, '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
+(40, 1, 6, 1875.00, 0.25, 24167.00, 33333.00, '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
+(41, 1, 6, 4166.67, 0.30, 33333.00, 54167.00, '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1),
+(42, 0, 6, 10416.67, 0.32, 54167.00, 999999.00, '2017-06-11 08:25:39', 0, '0000-00-00 00:00:00', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -46983,20 +46575,20 @@ INSERT INTO `tax_tables` (`id`, `tax_matrix_id`, `tax_exemption_status_id`, `bas
 -- Table structure for table `teams`
 --
 
-CREATE TABLE `teams` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `teams` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `branch_id` int(16) UNSIGNED NOT NULL,
-  `cost_center_id` int(16) UNSIGNED NOT NULL,
-  `department_id` int(16) UNSIGNED NOT NULL,
-  `site_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `branch_id` int(16) unsigned NOT NULL,
+  `cost_center_id` int(16) unsigned NOT NULL,
+  `department_id` int(16) unsigned NOT NULL,
+  `site_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -47005,16 +46597,16 @@ CREATE TABLE `teams` (
 -- Table structure for table `violations`
 --
 
-CREATE TABLE `violations` (
-  `id` int(16) UNSIGNED NOT NULL,
-  `violation_level_id` int(16) UNSIGNED NOT NULL,
-  `violation_type_id` int(16) UNSIGNED NOT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `created` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `violations` (
+  `id` int(16) unsigned NOT NULL,
+  `violation_level_id` int(16) unsigned NOT NULL,
+  `violation_type_id` int(16) unsigned NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `created` int(16) unsigned NOT NULL,
   `created_by` datetime NOT NULL,
-  `modified` int(16) UNSIGNED NOT NULL,
+  `modified` int(16) unsigned NOT NULL,
   `modified_by` datetime NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -47023,16 +46615,16 @@ CREATE TABLE `violations` (
 -- Table structure for table `violation_levels`
 --
 
-CREATE TABLE `violation_levels` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `violation_levels` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
-  `created` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
+  `created` int(16) unsigned NOT NULL,
   `created_by` datetime NOT NULL,
-  `modified` int(16) UNSIGNED NOT NULL,
+  `modified` int(16) unsigned NOT NULL,
   `modified_by` datetime NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -47041,16 +46633,16 @@ CREATE TABLE `violation_levels` (
 -- Table structure for table `violation_types`
 --
 
-CREATE TABLE `violation_types` (
-  `id` int(16) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `violation_types` (
+  `id` int(16) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `company_id` int(16) UNSIGNED NOT NULL,
+  `company_id` int(16) unsigned NOT NULL,
   `created` datetime NOT NULL,
-  `created_by` int(16) UNSIGNED NOT NULL,
+  `created_by` int(16) unsigned NOT NULL,
   `modified` datetime NOT NULL,
-  `modified_by` int(16) UNSIGNED NOT NULL,
-  `active_status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
+  `modified_by` int(16) unsigned NOT NULL,
+  `active_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '0 = inactive; 1 = active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -47073,6 +46665,12 @@ ALTER TABLE `attachment_types`
 -- Indexes for table `attendance_daily_time_records`
 --
 ALTER TABLE `attendance_daily_time_records`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `attendance_employee_daily_schedules`
+--
+ALTER TABLE `attendance_employee_daily_schedules`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -47130,6 +46728,12 @@ ALTER TABLE `attendance_undertimes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `banks`
+--
+ALTER TABLE `banks`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `benefits`
 --
 ALTER TABLE `benefits`
@@ -47145,6 +46749,12 @@ ALTER TABLE `benefit_matrices`
 -- Indexes for table `branches`
 --
 ALTER TABLE `branches`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `candidates`
+--
+ALTER TABLE `candidates`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -47280,12 +46890,6 @@ ALTER TABLE `employee_contacts`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `employee_daily_schedules`
---
-ALTER TABLE `employee_daily_schedules`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `employee_deductions`
 --
 ALTER TABLE `employee_deductions`
@@ -47343,6 +46947,12 @@ ALTER TABLE `employee_languages`
 -- Indexes for table `employee_leave_credits`
 --
 ALTER TABLE `employee_leave_credits`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `employee_parents`
+--
+ALTER TABLE `employee_parents`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -47702,477 +47312,492 @@ ALTER TABLE `violation_types`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attachment_types`
 --
 ALTER TABLE `attachment_types`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '0 = inactive; 1 = active';
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT COMMENT '0 = inactive; 1 = active';
 --
 -- AUTO_INCREMENT for table `attendance_daily_time_records`
 --
 ALTER TABLE `attendance_daily_time_records`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attendance_holiday_types`
 --
 ALTER TABLE `attendance_holiday_types`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attendance_leaves`
 --
 ALTER TABLE `attendance_leaves`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attendance_leave_types`
 --
 ALTER TABLE `attendance_leave_types`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `attendance_official_businesses`
 --
 ALTER TABLE `attendance_official_businesses`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attendance_overtimes`
 --
 ALTER TABLE `attendance_overtimes`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attendance_shift_schedules`
 --
 ALTER TABLE `attendance_shift_schedules`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attendance_time_logs`
 --
 ALTER TABLE `attendance_time_logs`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attendance_undertimes`
 --
 ALTER TABLE `attendance_undertimes`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `banks`
+--
+ALTER TABLE `banks`
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `benefits`
 --
 ALTER TABLE `benefits`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '0 = inactive; 1 = active';
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT COMMENT '0 = inactive; 1 = active';
 --
 -- AUTO_INCREMENT for table `benefit_matrices`
 --
 ALTER TABLE `benefit_matrices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `branches`
 --
 ALTER TABLE `branches`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `candidates`
+--
+ALTER TABLE `candidates`
+  MODIFY `id` int(16) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `civil_status`
 --
 ALTER TABLE `civil_status`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `company_addresses`
 --
 ALTER TABLE `company_addresses`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `company_contact_information`
 --
 ALTER TABLE `company_contact_information`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `company_government_id_numbers`
 --
 ALTER TABLE `company_government_id_numbers`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `company_information`
 --
 ALTER TABLE `company_information`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `contact_persons`
 --
 ALTER TABLE `contact_persons`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `cost_centers`
 --
 ALTER TABLE `cost_centers`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `id` tinyint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
+  MODIFY `id` tinyint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=240;
 --
 -- AUTO_INCREMENT for table `deductions`
 --
 ALTER TABLE `deductions`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '0 = inactive; 1 = active';
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT COMMENT '0 = inactive; 1 = active';
 --
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `devices`
 --
 ALTER TABLE `devices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `educational_attainments`
 --
 ALTER TABLE `educational_attainments`
-  MODIFY `id` tinyint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` tinyint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `education_courses`
 --
 ALTER TABLE `education_courses`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(16) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `employee_13th_month`
 --
 ALTER TABLE `employee_13th_month`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_attachments`
 --
 ALTER TABLE `employee_attachments`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_awards`
 --
 ALTER TABLE `employee_awards`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_benefits`
 --
 ALTER TABLE `employee_benefits`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_certifications`
 --
 ALTER TABLE `employee_certifications`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_contacts`
 --
 ALTER TABLE `employee_contacts`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_deductions`
 --
 ALTER TABLE `employee_deductions`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_dependents`
 --
 ALTER TABLE `employee_dependents`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_educational_attainments`
 --
 ALTER TABLE `employee_educational_attainments`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `employee_emergency_contacts`
 --
 ALTER TABLE `employee_emergency_contacts`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_examinations`
 --
 ALTER TABLE `employee_examinations`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_government_id_numbers`
 --
 ALTER TABLE `employee_government_id_numbers`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_incentives`
 --
 ALTER TABLE `employee_incentives`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_information`
 --
 ALTER TABLE `employee_information`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_languages`
 --
 ALTER TABLE `employee_languages`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_leave_credits`
 --
 ALTER TABLE `employee_leave_credits`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `employee_parents`
+--
+ALTER TABLE `employee_parents`
+  MODIFY `id` int(16) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_positions`
 --
 ALTER TABLE `employee_positions`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_salaries`
 --
 ALTER TABLE `employee_salaries`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_skills`
 --
 ALTER TABLE `employee_skills`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_spouses`
 --
 ALTER TABLE `employee_spouses`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_trainings`
 --
 ALTER TABLE `employee_trainings`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee_work_experiences`
 --
 ALTER TABLE `employee_work_experiences`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employment_types`
 --
 ALTER TABLE `employment_types`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `hdmf_matrices`
 --
 ALTER TABLE `hdmf_matrices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `hdmf_rates`
 --
 ALTER TABLE `hdmf_rates`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `incentives`
 --
 ALTER TABLE `incentives`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `incentive_matrices`
 --
 ALTER TABLE `incentive_matrices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `incentive_types`
 --
 ALTER TABLE `incentive_types`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `languages`
 --
 ALTER TABLE `languages`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42030;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42030;
 --
 -- AUTO_INCREMENT for table `nationalities`
 --
 ALTER TABLE `nationalities`
-  MODIFY `id` tinyint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
+  MODIFY `id` tinyint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=202;
 --
 -- AUTO_INCREMENT for table `occupations`
 --
 ALTER TABLE `occupations`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll`
 --
 ALTER TABLE `payroll`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll_employees`
 --
 ALTER TABLE `payroll_employees`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll_employee_benefits`
 --
 ALTER TABLE `payroll_employee_benefits`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll_employee_deductions`
 --
 ALTER TABLE `payroll_employee_deductions`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll_employee_hdmfs`
 --
 ALTER TABLE `payroll_employee_hdmfs`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll_employee_id`
 --
 ALTER TABLE `payroll_employee_id`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll_employee_phics`
 --
 ALTER TABLE `payroll_employee_phics`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `payroll_employee_salaries`
 --
 ALTER TABLE `payroll_employee_salaries`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `phic_matrices`
 --
 ALTER TABLE `phic_matrices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `phic_rates`
 --
 ALTER TABLE `phic_rates`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `positions`
 --
 ALTER TABLE `positions`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `position_leave_credits`
 --
 ALTER TABLE `position_leave_credits`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `proficiency_levels`
 --
 ALTER TABLE `proficiency_levels`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `relations`
 --
 ALTER TABLE `relations`
-  MODIFY `id` tinyint(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` tinyint(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `revenue_district_offices`
 --
 ALTER TABLE `revenue_district_offices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=120;
 --
 -- AUTO_INCREMENT for table `salaries`
 --
 ALTER TABLE `salaries`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `salary_grades`
 --
 ALTER TABLE `salary_grades`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `salary_matrices`
 --
 ALTER TABLE `salary_matrices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sanctions`
 --
 ALTER TABLE `sanctions`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sanction_types`
 --
 ALTER TABLE `sanction_types`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `schools`
 --
 ALTER TABLE `schools`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sites`
 --
 ALTER TABLE `sites`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `skills`
 --
 ALTER TABLE `skills`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sss_matrix`
 --
 ALTER TABLE `sss_matrix`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `sss_rates`
 --
 ALTER TABLE `sss_rates`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `system_audit_trails`
 --
 ALTER TABLE `system_audit_trails`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `system_functions`
 --
 ALTER TABLE `system_functions`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=102;
 --
 -- AUTO_INCREMENT for table `system_groups`
 --
 ALTER TABLE `system_groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `system_login_attempts`
 --
 ALTER TABLE `system_login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `system_modules`
 --
 ALTER TABLE `system_modules`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `system_permissions`
 --
 ALTER TABLE `system_permissions`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `system_role_permissions`
 --
 ALTER TABLE `system_role_permissions`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1456;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1327;
 --
 -- AUTO_INCREMENT for table `system_users`
 --
 ALTER TABLE `system_users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `system_users_groups`
 --
 ALTER TABLE `system_users_groups`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `system_user_permissions`
 --
@@ -48182,37 +47807,37 @@ ALTER TABLE `system_user_permissions`
 -- AUTO_INCREMENT for table `tax_exemption_status`
 --
 ALTER TABLE `tax_exemption_status`
-  MODIFY `id` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` tinyint(4) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `tax_matrices`
 --
 ALTER TABLE `tax_matrices`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tax_tables`
 --
 ALTER TABLE `tax_tables`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `violations`
 --
 ALTER TABLE `violations`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `violation_levels`
 --
 ALTER TABLE `violation_levels`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `violation_types`
 --
 ALTER TABLE `violation_types`
-  MODIFY `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(16) unsigned NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

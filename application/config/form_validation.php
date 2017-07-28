@@ -663,6 +663,325 @@ $config = array(
             'label' => 'Reason',
             'rules' => 'trim'
         )
-    )
+    ),
 
+    'cost_center_add' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Cost Center Name',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'branch_id',
+            'label' => 'Branch',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'department_id',
+            'label' => 'Department',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'team_id',
+            'label' => 'Team',
+            'rules' => 'trim'
+        )
+    ),
+
+    'cost_center_edit' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Cost Center Name',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'branch_id',
+            'label' => 'Branch',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'department_id',
+            'label' => 'Department',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'team_id',
+            'label' => 'Team',
+            'rules' => 'trim'
+        )
+    ),
+
+    'bank_add' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Bank',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'address',
+            'label' => 'Address',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'contact_person',
+            'label' => 'Contact Person',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'contact_number',
+            'label' => 'Contact Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        )
+    ),
+
+    'bank_edit' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Bank',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'address',
+            'label' => 'Address',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'contact_person',
+            'label' => 'Contact Person',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'contact_number',
+            'label' => 'Contact Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        )
+    ),
+
+    'holiday_type_add' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Holiday',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim|required'
+        )
+    ),
+
+    'holiday_type_edit' => array(
+        array(
+            'field' => 'name',
+            'label' => 'Holiday',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim|required'
+        )
+    ),
+
+    'holiday_add' => array(
+        array(
+            'field' => 'attendance_holiday_type_id',
+            'label' => 'Holiday',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'holiday_date',
+            'label' => 'Holiday Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'name',
+            'label' => 'Holiday',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'branch_id',
+            'label' => 'Branch',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'site_id',
+            'label' => 'Site',
+            'rules' => 'trim'
+        )
+    ),
+
+    'holiday_edit' => array(
+        array(
+            'field' => 'attendance_holiday_type_id',
+            'label' => 'Holiday',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'holiday_date',
+            'label' => 'Holiday Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'name',
+            'label' => 'Holiday',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'branch_id',
+            'label' => 'Branch',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'site_id',
+            'label' => 'Site',
+            'rules' => 'trim'
+        )
+    ),
+
+    'shift_schedule_add' => array(
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'code',
+            'label' => 'Shift Code',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'type',
+            'label' => 'Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'grace_period',
+            'label' => 'Grace Period',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'no_of_hours',
+            'label' => 'Number of Hours',
+            'rules' => 'trim'
+        )
+    ),
+
+    'shift_schedule_edit' => array(
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'code',
+            'label' => 'Shift Code',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'description',
+            'label' => 'Description',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'type',
+            'label' => 'Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'time_start',
+            'label' => 'Time Start',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'time_end',
+            'label' => 'Time End',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'grace_period',
+            'label' => 'Grace Period',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'no_of_hours',
+            'label' => 'Number of Hours',
+            'rules' => 'trim'
+        )
+    )
 );

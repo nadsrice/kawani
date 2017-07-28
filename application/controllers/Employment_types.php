@@ -60,6 +60,13 @@ class Employment_types extends MY_Controller {
 
         if ($this->form_validation->run('employment_type_add') == TRUE)
         {
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 0,
+				'perm_key' 	  => 'add_employment_type',
+				'old_data'	  => NULL,
+				'new_data'    => $data
+			]);
+
             $employment_type_id = $this->employment_type_model->insert($data);
 
             if ( ! $employment_type_id) {
@@ -110,9 +117,9 @@ class Employment_types extends MY_Controller {
         $employment_type = $this->employment_type_model->get_employment_types_by(['employment_types.id' => $id]);
 
         $this->data = array(
-            'page_header' => 'Employment Type Details',
-            'employment_type'      => $employment_type,
-            'active_menu' => $this->active_menu,
+            'page_header' 	  => 'Employment Type Details',
+            'employment_type' => $employment_type,
+            'active_menu' 	  => $this->active_menu,
         );
         $this->load_view('pages/employment_type-details');
 	}

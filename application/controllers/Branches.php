@@ -52,6 +52,13 @@ class Branches extends MY_Controller {
 
 		if ($this->form_validation->run('branch_add') == TRUE)
 		{
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 0,
+				'perm_key' 	  => 'add_branch',
+				'old_data'	  => NULL,
+				'new_data'    => $data
+			]);
+
 			$branch_id = $this->branch_model->insert($data);
 
 			if ( ! $branch_id) {
@@ -154,16 +161,23 @@ class Branches extends MY_Controller {
 
             if ($post['mode'] == 'De-activate')
             {
-                dump('De-activating...');
+				$old_data = 1;
+				$new_data = 0;
                 $result = $this->branch_model->update($id, ['active_status' => 0]);
-                dump($this->db->last_query());
             }
             if ($post['mode'] == 'Activate')
             {
-                dump('Activating...');
+				$old_data = 0;
+				$new_data = 1;
                 $result = $this->branch_model->update($id, ['active_status' => 1]);
-                dump($this->db->last_query());
             }
+
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 6,
+				'perm_key'    => 'update_branch_status',
+				'old_data'    => $old_data,
+				'new_data'    => $new_data
+			]);
 
             if ($result)
             {
@@ -175,7 +189,6 @@ class Branches extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$branch_data['name'].'!');
                 redirect('branches');
             }
-
         }
         else
         {

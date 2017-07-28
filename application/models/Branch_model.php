@@ -21,8 +21,9 @@ class Branch_model extends MY_Model {
      */
     protected $before_create = ['generate_date_created_status'];
     protected $after_get     = ['set_default_data'];
-    protected $after_create  = ['write_audit_trail(0, add_branch)'];
-    protected $after_update  = ['write_audit_trail(1, edit_branch)'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
+
     // protected $after_update = ['set_modified_data'];
 
     protected function generate_date_created_status($branch)

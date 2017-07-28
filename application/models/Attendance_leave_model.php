@@ -22,8 +22,8 @@ class Attendance_leave_model extends MY_Model {
      */
     protected $before_create = ['generate_date_created_status'];
     protected $after_get     = ['set_default_menus'];
-    protected $after_create  = ['write_audit_trail(0, file_leave)'];
-    protected $after_update  = ['write_audit_trail(2, approve_leave)'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
 
     protected function generate_date_created_status($leave)
     {

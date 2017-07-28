@@ -66,6 +66,12 @@ class Attendance_overtimes extends MY_Controller {
 
         if ($this->form_validation->run('overtime_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_overtime',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
             $overtime_id = $this->attendance_overtime_model->insert($data);
 
             if ( ! $overtime_id) {

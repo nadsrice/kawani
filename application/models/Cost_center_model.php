@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Cost_center_model extends MY_Model {
 
-    protected $_table = 'cost_centers';
+    protected $_table      = 'cost_centers';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
@@ -20,14 +20,15 @@ class Cost_center_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_data'];
-    // protected $after_update = ['set_modified_data'];
+    protected $after_get     = ['set_default_data'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
 
     protected function generate_date_created_status($cost_center)
     {
         $cost_center['created']       = date('Y-m-d H:i:s');
-        $cost_center['active_status'] = 1;
         $cost_center['created_by']    = 0;
+        $cost_center['active_status'] = 1;
         return $cost_center;
     }
 
@@ -40,11 +41,11 @@ class Cost_center_model extends MY_Model {
     protected function set_default_data($cost_center)
     {
         $cost_center['active_status']  = ($cost_center['active_status'] == 1) ? 'Active' : 'Inactive';
-        // $cost_center['status_label']   = ($cost_center['active_status'] == 'Active') ? 'De-activate' : 'Activate';
+        $cost_center['status_label']   = ($cost_center['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $cost_center;
     }
 
-    public function get_branch_by($param)
+    public function get_cost_center_by($param)
     {
         $query = $this->db;
         $query->select('cost_centers.*, companies.name as company_name');
@@ -54,7 +55,7 @@ class Cost_center_model extends MY_Model {
         return $this->get_by($param);
     }
 
-    public function get_many_branch_by($param)
+    public function get_many_cost_center_by($param)
     {
         $query = $this->db;
         $query->select('cost_centers.*, companies.name as company_name');
@@ -64,7 +65,7 @@ class Cost_center_model extends MY_Model {
         return $this->get_many_by($param);
     }
 
-    public function get_branch_all()
+    public function get_cost_center_all()
     {
         $query = $this->db;
         $query->select('cost_centers.*, companies.name as company_name');
