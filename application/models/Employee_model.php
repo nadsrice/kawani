@@ -26,7 +26,7 @@ class Employee_model extends MY_Model {
     {
         $employee['created'] = date('Y-m-d H:i:s');
         $employee['active_status'] = 1;
-        $employee['created_by'] = '0';
+        $employee['created_by'] = $this->ion_auth->users()->row()->id;
         return $employee;
     }
 
@@ -35,8 +35,8 @@ class Employee_model extends MY_Model {
         if ( ! isset($employee)) {
             return FALSE;
         }
-                 
-        $full_name = $employee['last_name'].', '.$employee['first_name'].' '.$employee['middle_name'];
+        $middle_name = ( ! empty($employee['middle_name'])) ? $employee['middle_name'] : '';
+        $full_name = $employee['last_name'].', '.$employee['first_name'].' '.$middle_name;
         $employee['full_name'] = strtoupper($full_name);
         $employee['label_status'] = ($employee['active_status'] == 1) ? 'Active' : 'Inactive';
 
@@ -76,8 +76,6 @@ class Employee_model extends MY_Model {
         ');
         $query->join('companies', 'employees.company_id = companies.id', 'left');
 
-        $query->select('*');
-
         $query->order_by('last_name', 'asc');
 
         return $this->get_all();
@@ -91,7 +89,6 @@ class Employee_model extends MY_Model {
         $query = $this->db->select('*')->from($from)->get();
 
         return $query->result_array();
-
     }
 
     /**
@@ -143,5 +140,77 @@ class Employee_model extends MY_Model {
 
         return $balance_checker;
     }
+
+    public function get_civil_status()
+    {
+        $query = $this->db
+                    ->select('*')
+                    ->from('civil_status')
+                    ->where('active_status', 1)
+                    ->get()
+                    ->result_array();
+
+        return $query;
+    }
+
+    public function create_account()
+    {
+        dump('Creating user account.....');
+
+        $post_data = $this->input->post();
+
+        // check if employee name is multiple then splice it and make it as one word
+        $exploded_name = explode(' ', strtolower($post_data['first_name']));
+        $first_name    = implode('', $exploded_name);
+
+        // User account parameters
+        $last_name = $post_data['last_name'];
+        $identity  = $first_name.'.'.$last_name;
+        $password  = $this->_generate_password();
+        $email     = strtolower($this->input->post('email'));
+
+        $additional_data = array(
+            'first_name' => strtoupper($post_data['first_name']),
+            'last_name'  => strtoupper($post_data['last_name']),
+        );
+
+        $user_id = $this->ion_auth->register($identity, $password, $email, $additional_data, [8]);
+        if ($user_id) {
+
+            $employee_id = $this->employee_model->insert([
+                'system_user_id' => $user_id,
+                'first_name'     => strtoupper($post_data['first_name']),
+                'last_name'      => strtoupper($post_data['last_name']),
+            ]);
+
+            if ( ! $this->user_account_update($user_id, $employee_id)) {
+                $this->session->set_flashdata('failed', lang('unable_to_create_employee_account'));
+                redirect('employees');
+            }
+
+            $this->session->set_flashdata('success', lang('successfully_created_employee_account'));
+            redirect('employees/edit/'.$employee_id);
+        }
+    }
+
+    protected function user_account_update($user_id, $employee_id)
+    {
+        return $this->db->where('id', $user_id)->update('system_users', ['employee_id' => $employee_id]);
+    }
+
+    private function _generate_password()
+	{
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		$pass = array(); //remember to declare $pass as an array
+		$alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+
+		for ($i = 0; $i < 15; $i++)
+		{
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+		}
+
+		return implode($pass);
+	}
 
 }
