@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 /**
  * Some class description here...
  *
@@ -24,6 +23,7 @@ class Attendance_leaves extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->library('audit_trail');
         $this->load->model([
             'attendance_leave_model',
             'leave_type_model',
@@ -71,7 +71,6 @@ class Attendance_leaves extends MY_Controller {
 
         $employee_information = $this->employee_model->get_employee_information(['employee_id' => $employee_id]);
         $employee_data = $this->employee_model->get_by(['id' => $employee_id]);
-        
 
         $without_pay = FALSE;
 
@@ -80,14 +79,12 @@ class Attendance_leaves extends MY_Controller {
             $without_pay = TRUE;
         }
 
-        
-
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('leave_add'));
 
         if (isset($data['date_start']) && isset($data['date_end'])) {
 
             $data['date_start'] = date('Y-m-d', strtotime($data['date_start']));
-            $data['date_end'] = date('Y-m-d', strtotime($data['date_end']));
+            $data['date_end']   = date('Y-m-d', strtotime($data['date_end']));
         }
 
         if (isset($data['attendance_leave_type_id']))
@@ -114,6 +111,13 @@ class Attendance_leaves extends MY_Controller {
 
         if ($this->form_validation->run('leave_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_leave',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
+
             $leave_id = $this->attendance_leave_model->insert($data);
 
             if ( ! $leave_id)
@@ -123,7 +127,6 @@ class Attendance_leaves extends MY_Controller {
             }
             else
             {
-
                 $leave_days_request = daterange($data['date_start'], $data['date_end']);
                 $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
                     'attendance_leaves.id' => $leave_id
@@ -136,17 +139,17 @@ class Attendance_leaves extends MY_Controller {
                 $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
 
                 $data = [
-                    'requester_data'  => $requester_data,
-                    'requester_email' => $requester_email,
-                    'approver_data'   => $approver_data,
-                    'approver_email'  => $approver_email,
-                    'leave_data'      => $leave_data,
+                    'requester_data'     => $requester_data,
+                    'requester_email'    => $requester_email,
+                    'approver_data'      => $approver_data,
+                    'approver_email'     => $approver_email,
+                    'leave_data'         => $leave_data,
                     'leave_days_request' => $leave_days_request
                 ];
 
-                $subject = 'Leave Request'; // TODO: let's make this dynamic
+                $subject        = 'Leave Request'; // TODO: let's make this dynamic
                 $email_template = 'templates/email/leave.tpl.php'; // TODO: let's make this dynamic also
-                $name = $subject.' - '.$requester_data['full_name'];
+                $name           = $subject.' - '.$requester_data['full_name'];
 
                 $message = $this->load->view($email_template, $data, TRUE);
 
@@ -159,11 +162,11 @@ class Attendance_leaves extends MY_Controller {
 
                 $this->session->set_flashdata('success', 'Successfully added new leave.');
 
-                redirect('attendance_leaves');                
+                redirect('attendance_leaves');
             }
         }
 
-        $this->load_view('forms/attendance_leave-add');  
+        $this->load_view('forms/attendance_leave-add');
     }
 
     public function approve($attendance_leave_id)
@@ -172,13 +175,13 @@ class Attendance_leaves extends MY_Controller {
         $withpay          = $attendance_leave['payment_status'];
 
         $leave_types = $this->employee_model->get_employee_leave_credit([
-            'employee_leave_credits.employee_id' => $attendance_leave['employee_id'], 
+            'employee_leave_credits.employee_id' => $attendance_leave['employee_id'],
             'position_leave_credits.attendance_leave_type_id' => $attendance_leave['attendance_leave_type_id']
         ]);
 
         $leave_balance   = $leave_types[0]['elc_balance'];
         $updated_balance = 0;
-            
+
         $total_days_filed = daterange($attendance_leave['date_start'], $attendance_leave['date_end']);
 
         //Calculate days filed of Leave...
@@ -186,8 +189,10 @@ class Attendance_leaves extends MY_Controller {
 
 
        if ($updated_balance != 0) {
-        
+
             $employee_leave_credits_id = $leave_types[0]['elc_id'];
+
+            $this->session->set_flashdata('old_data', $attendance_leave);
 
             $update_leave_credit    = $this->employee_leave_credit_model->update($employee_leave_credits_id, ['balance' => $updated_balance]);
             $update_approval_status = $this->attendance_leave_model->update($attendance_leave_id, ['approval_status' => 1]);
@@ -223,22 +228,22 @@ class Attendance_leaves extends MY_Controller {
             $this->email->subject($subject);
             $this->email->message($message);
             $this->email->send();
-            
+
             $this->load->library('email');
 
             $this->session->set_flashdata('success', 'You have successfully approved the filed leave.');
-            redirect('attendance_leaves');     
+            redirect('attendance_leaves');
 
         } else {
 
-            $update_approval_status = $this->attendance_leave_model->update($attendance_leave_id, ['payment_status' => 0]);     
+            $update_approval_status = $this->attendance_leave_model->update($attendance_leave_id, ['payment_status' => 0]);
 
             if ($update_approval_status) {
 
                 $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
                     'attendance_leaves.id' => $attendance_leave_id
                 ]);
-                    
+
                 $approver_data   = $this->employee_model->get_by(['id' => $leave_data['approver_id']]);
                 $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
 
@@ -265,7 +270,7 @@ class Attendance_leaves extends MY_Controller {
                 $this->email->subject($subject);
                 $this->email->message($message);
                 $this->email->send();
-                
+
                 $this->load->library('email');
 
                 // $message = $this->load->view('templates/email/leave_approve.tpl.php', [], true);
@@ -279,7 +284,7 @@ class Attendance_leaves extends MY_Controller {
                 // $this->email->send();
 
                 // //an email notificaton will be sent to user that filed an OB
-             
+
                 // $this->email->from('gono.josh@gmail.com', 'OBR - Josh Gono');
                 // $this->email->to('joseph.gono@systemantech.com');
 
@@ -291,7 +296,7 @@ class Attendance_leaves extends MY_Controller {
             } else {
 
             }
-        } 
+        }
     }
 
     public function disapprove($leave_id)
@@ -301,7 +306,7 @@ class Attendance_leaves extends MY_Controller {
         // $update = $this->attendance_leave_model->update($leave_id, ['approval_status' => 0]);
 
         // if ($update) {
-            
+
         //     $this->load->library('email');
 
         //     $message = $this->load->view('templates/email/leave_disapprove.tpl.php', [], true);
@@ -343,7 +348,7 @@ class Attendance_leaves extends MY_Controller {
 
         // $leaves = $this->attendance_leave_model->get_leave_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('leave_add'));
-        
+
         $this->form_validation->set_data($data);
         // dump($data);exit();
 
@@ -359,20 +364,20 @@ class Attendance_leaves extends MY_Controller {
                 redirect('attendance_leaves');
             }
         }
-        $this->load_view('forms/attendance_leave-edit');         
+        $this->load_view('forms/attendance_leave-edit');
     }
 
     public function details($id)
     {
         $leave = $this->attendance_leave_model->get_leave_by(['attendance_leaves.id' => $id]);
-      
+
         $this->data = array(
-            'page_header'       => 'Leave Details',
-            'leave'             => $leave,
-            'active_menu'       => $this->active_menu,
+            'page_header' => 'Leave Details',
+            'leave'       => $leave,
+            'active_menu' => $this->active_menu,
         );
 
-        $this->load_view('pages/attendance_leave-details');          
+        $this->load_view('pages/attendance_leave-details');
     }
 
     public function approve_leave($id)
@@ -382,14 +387,14 @@ class Attendance_leaves extends MY_Controller {
         $withpay          = $attendance_leave['payment_status'];
 
         $leave_types = $this->employee_model->get_employee_leave_credit([
-            'employee_leave_credits.employee_id' => $attendance_leave['employee_id'], 
+            'employee_leave_credits.employee_id' => $attendance_leave['employee_id'],
             'position_leave_credits.attendance_leave_type_id' => $attendance_leave['attendance_leave_type_id']
         ]);
 
 
         $leave_balance   = $leave_types[0]['elc_balance'];
         $updated_balance = 0;
-            
+
         $total_days_filed = daterange($attendance_leave['date_start'], $attendance_leave['date_end']);  //Number of days filed...
         $updated_balance  = calculate_leave_balance($leave_balance, $total_days_filed);                 //Calculate days filed of Leave...
 
@@ -443,14 +448,14 @@ class Attendance_leaves extends MY_Controller {
                 $this->email->subject($subject);
                 $this->email->message($message);
                 $this->email->send();
-                
+
                 $this->load->library('email');
 
                 $this->session->set_flashdata('success', 'You have successfully approved the filed leave.');
                 redirect('attendance_leaves');
             } else {
-                
-                $update_payment_status  = $this->attendance_leave_model->update($id, ['payment_status' => 0]);     
+
+                $update_payment_status  = $this->attendance_leave_model->update($id, ['payment_status' => 0]);
                 $update_approval_status = $this->attendance_leave_model->update($id, ['approval_status' => 1]);
 
                 if ($update_approval_status) {
@@ -506,13 +511,13 @@ class Attendance_leaves extends MY_Controller {
         $withpay          = $attendance_leave['payment_status'];
 
         $leave_types = $this->employee_model->get_employee_leave_credit([
-            'employee_leave_credits.employee_id' => $attendance_leave['employee_id'], 
+            'employee_leave_credits.employee_id' => $attendance_leave['employee_id'],
             'position_leave_credits.attendance_leave_type_id' => $attendance_leave['attendance_leave_type_id']
         ]);
 
         $leave_balance   = $leave_types[0]['elc_balance'];
         $updated_balance = 0;
-            
+
         $total_days_filed = daterange($attendance_leave['date_start'], $attendance_leave['date_end']);
 
         //Calculate days filed of Leave...
@@ -530,7 +535,7 @@ class Attendance_leaves extends MY_Controller {
 
         if (isset($post['mode']) && $post['mode'] == 'cancel') {
             if ($updated_balance != 0) {
-        
+
                 $employee_leave_credits_id = $leave_types[0]['elc_id'];
 
                 $update_leave_credit    = $this->employee_leave_credit_model->update($employee_leave_credits_id, ['balance' => $updated_balance]);
@@ -563,27 +568,27 @@ class Attendance_leaves extends MY_Controller {
 
                 // $this->email->from('cristhiansagun@gmail.com');
                 $this->email->from($approver_email);
-                $this->email->to('cristhiansagun@gmail.com', $name);
+                $this->email->to($requester_email, $name);
                 $this->email->subject($subject);
                 $this->email->message('Your '.$leave_types['leave_type'].' has been cancelled by '.$approver_data['full_name']);
                 $this->email->send();
-                
+
                 $this->load->library('email');
 
                 $this->session->set_flashdata('success', 'You have been cancelled the filed leave.');
-                redirect('attendance_leaves');     
+                redirect('attendance_leaves');
 
             } else {
 
-                $update_payment_status  = $this->attendance_leave_model->update($id, ['payment_status' => 0]);  
-                $update_approval_status = $this->attendance_leave_model->update($id, ['status' => 0]);   
+                $update_payment_status  = $this->attendance_leave_model->update($id, ['payment_status' => 0]);
+                $update_approval_status = $this->attendance_leave_model->update($id, ['status' => 0]);
 
                 if ($update_approval_status) {
 
                     $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
                         'attendance_leaves.id' => $id
                     ]);
-                        
+
                     $approver_data   = $this->employee_model->get_by(['id' => $leave_data['approver_id']]);
                     $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
 
@@ -605,12 +610,12 @@ class Attendance_leaves extends MY_Controller {
                     $message = $this->load->view($email_template, $data, TRUE);
 
                     $this->email->from($approver_email);
-                    // $this->email->to($approver_email);
-                    $this->email->to('cristhiansagun@gmail.com', $name);
+                    $this->email->to($approver_email);
+                    // $this->email->to('cristhiansagun@gmail.com', $name);
                     $this->email->subject($subject);
                     $this->email->message('Your '.$leave_types['leave_type'].' has been cancelled by '.$approver_data['full_name']);
                     $this->email->send();
-                    
+
                     $this->load->library('email');
 
                     // $message = $this->load->view('templates/email/leave_approve.tpl.php', [], true);
@@ -624,7 +629,7 @@ class Attendance_leaves extends MY_Controller {
                     // $this->email->send();
 
                     // //an email notificaton will be sent to user that filed an OB
-                 
+
                     // $this->email->from('gono.josh@gmail.com', 'OBR - Josh Gono');
                     // $this->email->to('joseph.gono@systemantech.com');
 
@@ -645,7 +650,7 @@ class Attendance_leaves extends MY_Controller {
     public function ajax_check_leave_balance()
     {
         $response_data = [];
-        
+
         $posted_data = $this->input->post();
 
         $employee_id = $this->ion_auth->user()->row()->employee_id;

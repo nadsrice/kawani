@@ -18,16 +18,17 @@ class Leave_types extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('audit_trail');
 		$this->load->model(['leave_type_model']);
 	}
 
 	function index()
 	{
 		$leave_types = $this->leave_type_model->get_leave_type_all();
-		
+
 		$this->data = array(
 			'page_header' => 'Leave Type Management',
-			'leave_types'    => $leave_types,
+			'leave_types' => $leave_types,
 			'active_menu' => $this->active_menu,
 		);
 		$this->load_view('pages/leave_type-lists');
@@ -35,7 +36,6 @@ class Leave_types extends MY_Controller {
 
 	function add()
 	{
-
 		$this->data = array(
 			'page_header' => 'Leave Type Management',
 			'active_menu' => $this->active_menu,
@@ -43,11 +43,19 @@ class Leave_types extends MY_Controller {
 
 		$leave_types = $this->leave_type_model->get_leave_type_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('leave_type_add'));
-		
+
 		$this->form_validation->set_data($data);
 
 		if ($this->form_validation->run('leave_type_add') == TRUE)
 		{
+			//write to system_logs
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 0,
+				'perm_key' 	  => 'add_leave_type',
+				'old_data' 	  => NULL,
+				'new_data'	  => $data
+			]);
+
 			$leave_type_id = $this->leave_type_model->insert($data);
 
 			if ( ! $leave_type_id) {
@@ -63,11 +71,11 @@ class Leave_types extends MY_Controller {
 
 	function details($id)
 	{
-		$leave_type = $this->leave_type_model->get_leave_type_by(['leave_types.id' => $id]);
-		
+		$leave_type = $this->leave_type_model->get_leave_type_by(['attendance_leave_types.id' => $id]);
+
 		$this->data = array(
 			'page_header' => 'Leave Type Details',
-			'leave_type'      => $leave_type,
+			'leave_type'  => $leave_type,
 			'active_menu' => $this->active_menu,
 		);
 		$this->load_view('pages/leave_type-detail');
@@ -76,8 +84,8 @@ class Leave_types extends MY_Controller {
 	function edit($id)
 	{
 		// get specific leave_type based on the id
-		$leave_type = $this->leave_type_model->get_leave_type_by(['leave_types.id' => $id]);
-	
+		$leave_type = $this->leave_type_model->get_leave_type_by(['attendance_leave_types.id' => $id]);
+
 		$this->data = array(
 			'page_header' => 'Leave Type Management',
 			'leave_type' 	  => $leave_type,
@@ -86,11 +94,19 @@ class Leave_types extends MY_Controller {
 
 		$leave_types = $this->leave_type_model->get_leave_type_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('leave_type_add'));
-		
+
 		$this->form_validation->set_data($data);
 
 		if ($this->form_validation->run('leave_type_add') == TRUE)
 		{
+			//write to system_logs
+			$this->session->set_flashdata('log_parameters',[
+				'action_mode' => 1,
+				'perm_key'    => 'edit_leave_type',
+				'old_data'    => $leave_type,
+				'new_data'    => $data
+			]);
+
 			$leave_type_id = $this->leave_type_model->update($id, $data);
 
 			if ( ! $leave_type_id) {
@@ -120,7 +136,7 @@ class Leave_types extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']))
-        {   
+        {
             $result = FALSE;
 
             if ($post['mode'] == 'De-activate')
@@ -137,7 +153,7 @@ class Leave_types extends MY_Controller {
             }
 
             if ($result)
-            {               
+            {
                  $this->session->set_flashdata('message', $leave_type_data['name'].' successfully '.$post['mode'].'d!');
                  redirect('leave_types');
             }
@@ -146,7 +162,7 @@ class Leave_types extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$leave_type_data['name'].'!');
                 redirect('leave_types');
             }
-            
+
         }
         else
         {

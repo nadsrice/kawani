@@ -25,6 +25,7 @@ class Attendance_undertimes extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->library('audit_trail');
         $this->load->model(['attendance_undertime_model', 'user_model', 'employee_model']);
     }
 
@@ -40,7 +41,7 @@ class Attendance_undertimes extends MY_Controller {
 
         $total_denied       = $this->attendance_undertime_model->count_by(['approval_status' => 0]); //0 = denied
         $total_approved     = $this->attendance_undertime_model->count_by(['approval_status' => 1]); //1 = approved
-        $total_pending      = $this->attendance_undertime_model->count_by(['approval_status' => 2]); //2 = pending 
+        $total_pending      = $this->attendance_undertime_model->count_by(['approval_status' => 2]); //2 = pending
         $total_cancelled    = $this->attendance_undertime_model->count_by(['status' => 0]);         //0 = cancelled
 
         $user_id            = $this->ion_auth->user()->row()->id;
@@ -55,7 +56,6 @@ class Attendance_undertimes extends MY_Controller {
         ]);
 
         $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
-
 
         $this->data = array(
             'page_header'       => 'Undertime Management',
@@ -77,7 +77,6 @@ class Attendance_undertimes extends MY_Controller {
 
     function add()
     {
-
         $this->data = array(
             'page_header' => 'Undertime Management',
             'active_menu' => $this->active_menu,
@@ -94,6 +93,13 @@ class Attendance_undertimes extends MY_Controller {
 
         if ($this->form_validation->run('undertime_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_undertime',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
+
             $undertime_id = $this->attendance_undertime_model->insert($data);
 
             if ( ! $undertime_id) {
@@ -107,10 +113,10 @@ class Attendance_undertimes extends MY_Controller {
 
                 $ut_data = $this->attendance_undertime_model->get_by(['id' => $undertime_id]);
                 $ut_id = $undertime_id;
-                
+
                 $user_id = $this->ion_auth->user()->row()->id;
                 $user_data = $this->user_model->get_by(['id' => $user_id]);
-                
+
                 $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
 
                 $data = [
@@ -128,7 +134,7 @@ class Attendance_undertimes extends MY_Controller {
                 $this->email->message($message);
 
                 $this->email->send();
-                redirect('attendance_undertimes');    
+                redirect('attendance_undertimes');
             }
         }
 
@@ -195,10 +201,18 @@ class Attendance_undertimes extends MY_Controller {
    public function approve($ut_id)
     {
         $this->load->model('attendance_undertime_model');
+
+        // $this->session->set_flashdata('log_parameters', [
+        //     'action_mode' => 0,
+        //     'perm_key'    => 'approve_undertime',
+        //     'old_data'    => NULL,
+        //     'new_data'    => $data
+        // ]);
+
         $update = $this->attendance_undertime_model->update($ut_id, ['approval_status' => 1]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
@@ -212,7 +226,7 @@ class Attendance_undertimes extends MY_Controller {
             $this->email->send();
 
             //an email notificaton will be sent to user that filed an OB
-         
+
             $this->email->from('gono.josh@gmail.com', 'Undertime - Josh Gono');
             $this->email->to('joseph.gono@systemantech.com');
 
@@ -220,7 +234,7 @@ class Attendance_undertimes extends MY_Controller {
             $this->email->message('Approval notification has been successfully sent to Josh Gono');
 
             $this->email->send();
-            redirect('attendance_undertimes'); 
+            redirect('attendance_undertimes');
 
         } else {
 
@@ -233,7 +247,7 @@ class Attendance_undertimes extends MY_Controller {
         $update = $this->attendance_undertime_model->update($ut_id, ['approval_status' => 0]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
@@ -256,7 +270,7 @@ class Attendance_undertimes extends MY_Controller {
             $this->email->message('Disapproval notification has been successfully sent to Josh Gono');
 
             $this->email->send();
-            redirect('attendance_undertimes'); 
+            redirect('attendance_undertimes');
 
         } else {
 
@@ -269,7 +283,7 @@ class Attendance_undertimes extends MY_Controller {
         $update = $this->attendance_undertime_model->update($ut_id, ['status' => 0]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
@@ -292,7 +306,7 @@ class Attendance_undertimes extends MY_Controller {
             $this->email->message('Cancellation notification has been successfully sent to Josh Gono');
 
             $this->email->send();
-            redirect('attendance_undertimes'); 
+            redirect('attendance_undertimes');
 
         } else {
 
@@ -323,10 +337,10 @@ class Attendance_undertimes extends MY_Controller {
                 $this->load->library('email');
 
                 $ut_id = $undertime_data;
-                
+
                 $user_id = $this->ion_auth->user()->row()->id;
                 $user_data = $this->user_model->get_by(['id' => $user_id]);
-                
+
                 $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
 
                 $data = [
@@ -345,7 +359,7 @@ class Attendance_undertimes extends MY_Controller {
                 $this->email->send();
                 redirect('attendance_undertimes');
 
-                //Don't Repeat Your Code                
+                //Don't Repeat Your Code
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to approve undertime');
@@ -405,7 +419,7 @@ class Attendance_undertimes extends MY_Controller {
                 $this->email->message('Your undertime request was rejected');
 
                 $this->email->send();
-                redirect('attendance_undertimes');  
+                redirect('attendance_undertimes');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to reject undertime');

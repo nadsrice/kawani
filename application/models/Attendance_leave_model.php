@@ -22,16 +22,18 @@ class Attendance_leave_model extends MY_Model {
      */
     protected $before_create = ['generate_date_created_status'];
     protected $after_get     = ['set_default_menus'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
 
     protected function generate_date_created_status($leave)
     {
-        $leave['created']           = date('Y-m-d H:i:s');
-        $leave['created_by']        = 0;
-        $leave['status']            = 1;
-        $leave['approval_status']   = 2;
+        $leave['created']         = date('Y-m-d H:i:s');
+        $leave['created_by']      = 0;
+        $leave['status']          = 1;
+        $leave['approval_status'] = 2;
         return $leave;
     }
-    
+
     public function get_leave_by($param)
     {
         $query = $this->db;
@@ -74,7 +76,7 @@ class Attendance_leave_model extends MY_Model {
     }
 
     protected function set_default_menus($attendance_leave)
-    {   
+    {
         $btn_settings = $this->config->item('btn_settings');
 
         if ( ! isset($attendance_leave)) {
@@ -132,7 +134,7 @@ class Attendance_leave_model extends MY_Model {
                 ')
                 ->join('employees', $this->_table.'.employee_id = employees.id', 'left')
                 ->join('attendance_leave_types', $this->_table.'.attendance_leave_type_id = attendance_leave_types.id', 'left');
-        
+
         return $this->get_by($where);
     }
 }

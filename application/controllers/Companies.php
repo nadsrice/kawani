@@ -12,7 +12,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Companies extends MY_Controller {
 
-
 	private $active_menu = 'System';
 
 	/**
@@ -57,6 +56,13 @@ class Companies extends MY_Controller {
 
         if ($this->form_validation->run('company_add') == TRUE)
         {
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 0,
+				'perm_key' 	  => 'add_company',
+				'old_data'	  => NULL,
+				'new_data'    => $data
+			]);
+
             $company_id = $this->company_model->insert($data);
 
             if ( ! $company_id) {
@@ -86,13 +92,18 @@ class Companies extends MY_Controller {
             'active_menu' => $this->active_menu,
         );
 
-        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('company_add'));
+        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('company_edit'));
 
         $this->form_validation->set_data($data);
 
-        if ($this->form_validation->run('company_add') == TRUE)
+        if ($this->form_validation->run('company_edit') == TRUE)
         {
-			$this->session->set_flashdata('old_data', $company);
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 1,
+				'perm_key' 	  => 'edit_company',
+				'old_data'	  => $company,
+				'new_data'	  => $data
+			]);
 
             $company_id = $this->company_model->update($company_id, $data);
 
@@ -109,19 +120,18 @@ class Companies extends MY_Controller {
 
     public function details($id)
     {
-        $company = $this->company_model->get_company_by(['companies.id' => $id]);
-        $branches = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
+        $company   = $this->company_model->get_company_by(['companies.id' => $id]);
+        $branches  = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
         $employees = $this->employee_model->get_many_employee_by(['company_id' => $id]);
 
 
         $this->data = array(
             'page_header' => 'Company Details',
-            'company'      => $company,
+            'company'     => $company,
             'branches'    => $branches,
-            'employees' => $employees,
+            'employees'   => $employees,
             'active_menu' => $this->active_menu,
         );
-
         $this->load_view('pages/company-details');
     }
 

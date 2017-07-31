@@ -25,13 +25,14 @@ class Departments extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->library('audit_trail');
         // $this->load->model(['employee_info_model']);
     }
 
     function index()
     {
         $departments = $this->department_model->get_department_all();
-        
+
         $this->data = array(
             'page_header' => 'Department Management',
             'departments'    => $departments,
@@ -42,18 +43,25 @@ class Departments extends MY_Controller {
 
     function add()
     {
-        
+
         $this->data = array(
             'page_header' => 'Departments Management',
             'active_menu' => $this->active_menu,
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('department_add'));
-        
+
         $this->form_validation->set_data($data);
 
         if ($this->form_validation->run('department_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key' 	  => 'add_department',
+                'old_data'	  => NULL,
+                'new_data'    => $data
+            ]);
+
             $department_id = $this->department_model->insert($data);
 
             if ( ! $department_id) {
@@ -65,7 +73,7 @@ class Departments extends MY_Controller {
             }
         }
 
-        
+
         $this->load_view('forms/department-add');
     }
 
@@ -77,6 +85,13 @@ class Departments extends MY_Controller {
         // get all company records where status is equal to active
         //$companies = $this->company_model->get_many_by(['active_status' => 1]);
         // dump($this->db->last_query());exit;
+
+        if ( ! $this->ion_auth_acl->has_permission('edit_department'))
+		{
+			$this->session->set_flashdata('failed', 'You have no permission to access this module');
+			redirect('/', 'refresh');
+		}
+
         $this->data = array(
             'page_header' => 'Department Management',
             'department'      => $department,
@@ -85,12 +100,14 @@ class Departments extends MY_Controller {
 
         // $departments = $this->department_model->get_department_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('department_add'));
-        
+
         $this->form_validation->set_data($data);
         // dump($data);exit();
 
         if ($this->form_validation->run('department_add') == TRUE)
         {
+            $this->session->set_flashdata('old_data', $department);
+
             $department_id = $this->department_model->update($id, $data);
 
             if ( ! $department_id) {
@@ -101,21 +118,21 @@ class Departments extends MY_Controller {
                 redirect('departments');
             }
         }
-        $this->load_view('forms/department-edit');       
+        $this->load_view('forms/department-edit');
     }
 
     function details($id)
     {
         $department = $this->department_model->get_department_by(['departments.id' => $id]);
         $employee_infos = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
-        
+
         $this->data = array(
             'page_header' => 'Department Details',
             'department'      => $department,
             'employee_infos' => $employee_infos,
             'active_menu' => $this->active_menu,
         );
-        $this->load_view('pages/department-details');           
+        $this->load_view('pages/department-details');
     }
 
     public function edit_confirmation($id)
@@ -134,7 +151,7 @@ class Departments extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']))
-        {   
+        {
             $result = FALSE;
 
             if ($post['mode'] == 'De-activate')
@@ -151,7 +168,7 @@ class Departments extends MY_Controller {
             }
 
             if ($result)
-            {               
+            {
                  $this->session->set_flashdata('message', $department_data['name'].' successfully '.$post['mode'].'d!');
                  redirect('departments');
             }
@@ -160,7 +177,7 @@ class Departments extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$department_data['name'].'!');
                 redirect('departments');
             }
-            
+
         }
         else
         {

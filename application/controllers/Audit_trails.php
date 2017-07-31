@@ -5,7 +5,6 @@
  */
 class Audit_trails extends MY_Controller
 {
-
     function __construct()
     {
         parent::__construct();
@@ -22,7 +21,7 @@ class Audit_trails extends MY_Controller
 
         $audit_trails = $this->system_audit_trail_model->get_all();
 
-        $this->data['page_header'] = 'Audit Trails';
+        $this->data['page_header']  = 'Audit Trails';
         $this->data['audit_trails'] = $audit_trails;
 
         $this->load_view('pages/audit-trails-list');

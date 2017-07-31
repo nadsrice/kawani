@@ -11,8 +11,7 @@
 </div>
 <br>
 
-
-<div class="row">  
+<div class="row">
 
 	<div class="col-md-3">
 		<div class="box box-primary">
@@ -164,7 +163,7 @@
                                     <div class="modal fade" id="<?php echo $action_menu['modal_id']; ?>" role="dialog">
                                         <div class="modal-dialog">
                                             <div class="modal-content"></div>
-                                        </div>  
+                                        </div>
                                     </div>
                                 <?php endforeach ?>
 								<?php endforeach; ?>
@@ -176,5 +175,5 @@
 				</div>
 			</div>
 		</div>
-	</div> 
+	</div>
 </div>

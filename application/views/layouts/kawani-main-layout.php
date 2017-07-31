@@ -28,6 +28,7 @@
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/fullcalendar/dist/fullcalendar.min.css'); ?>">
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/kawani-styles.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>">
@@ -76,6 +77,8 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/datatables/dataTables.bootstrap.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/select2/select2.full.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/slimScroll/jquery.slimscroll.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/fullcalendar/dist/fullcalendar.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/fullcalendar/dist/gcal.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/fastclick/fastclick.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/iCheck/icheck.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.min.js'); ?>"></script>
@@ -105,8 +108,13 @@
 					timePicker: true,
 					timePickerIncrement: 1,
 				});
+
 				$(".timepicker").timepicker({
 					showInputs: false
+				});
+
+				$('.datepicker').datepicker({
+					format: "yyyy-mm-dd"
 				});
 
 				$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({

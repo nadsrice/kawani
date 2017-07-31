@@ -1,7 +1,17 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+<?php
+
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+$config['log_modes'] = [
+    'CREATED',
+    'MODIFIED',
+    'APPROVED',
+    'REJECTED',
+    'CANCELLED',
+    'ACTIVATED',
+    'DEACTIVATED'
+];
 $config['profile_image_path'] = '';
-
 $config['joins'] = [
     '_13th_month',
     '_addresses',

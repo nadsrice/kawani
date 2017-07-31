@@ -20,7 +20,7 @@ class Team_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_data'];
+    protected $after_get     = ['set_default_data'];
 
     protected function generate_date_created_status($team)
     {
@@ -31,7 +31,7 @@ class Team_model extends MY_Model {
     }
 
     protected function set_default_data($team)
-    {   
+    {
         $team['active_status']  = ($team['active_status'] == 1) ? 'Active' : 'Inactive';
         return $team;
     }

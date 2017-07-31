@@ -18,13 +18,14 @@ class Branches extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->library('audit_trail');
 		// $this->load->model(['employee_info_model');
 	}
 
 	function index()
 	{
 		$branches = $this->branch_model->get_branch_all();
-		
+
 		$this->data = array(
 			'page_header' => 'Branch Management',
 			'branches'    => $branches,
@@ -51,6 +52,13 @@ class Branches extends MY_Controller {
 
 		if ($this->form_validation->run('branch_add') == TRUE)
 		{
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 0,
+				'perm_key' 	  => 'add_branch',
+				'old_data'	  => NULL,
+				'new_data'    => $data
+			]);
+
 			$branch_id = $this->branch_model->insert($data);
 
 			if ( ! $branch_id) {
@@ -70,14 +78,14 @@ class Branches extends MY_Controller {
 		$site 			= $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
 		$sites 			= $this->site_model->get_many_site_by(['sites.branch_id' => $id]);
 		$employee_infos = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
-		
+
 		$this->data = array(
-			'page_header' => 'Branch Details',
-			'branch'      => $branch,
-			'sites' => $site,
-			'sites' => $sites,
+			'page_header'    => 'Branch Details',
+			'branch'         => $branch,
+			'sites' 		 => $site,
+			'sites' 		 => $sites,
 			'employee_infos' => $employee_infos,
-			'active_menu' => $this->active_menu,
+			'active_menu' 	 => $this->active_menu,
 		);
 		$this->load_view('pages/branch-detail');
 	}
@@ -86,24 +94,39 @@ class Branches extends MY_Controller {
 	{
 		// get specific branch based on the id
 		$branch = $this->branch_model->get_branch_by(['branches.id' => $id]);
-		// dump($branch);exit;
 		// get all company records where status is equal to active
 		$companies = $this->company_model->get_many_by(['active_status' => 1]);
-		// dump($this->db->last_query());exit;
+
+		if ( ! $this->ion_auth_acl->has_permission('edit_branch'))
+		{
+			$this->session->set_flashdata('failed', 'You have no permission to access this module');
+			redirect('/', 'refresh');
+		}
+
+        $branch_data = $this->branch_model->get_branch_by(['branches.id' => $id]);
+
 		$this->data = array(
 			'page_header' => 'Branch Management',
 			'branch' 	  => $branch,
+			'branch_data' => $branch_data,
 			'companies'	  => $companies,
 			'active_menu' => $this->active_menu,
 		);
 
 		$branches = $this->branch_model->get_branch_all();
-		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('branch_add'));
-		
+		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('branch_edit'));
+
 		$this->form_validation->set_data($data);
 
-		if ($this->form_validation->run('branch_add') == TRUE)
+		if ($this->form_validation->run('branch_edit') == TRUE)
 		{
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 1,
+				'perm_key'    => 'edit_branch',
+				'old_data'    => $branch_data,
+				'new_data'    => $data
+			]);
+
 			$branch_id = $this->branch_model->update($id, $data);
 
 			if ( ! $branch_id) {
@@ -133,24 +156,31 @@ class Branches extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']))
-        {   
+        {
             $result = FALSE;
 
             if ($post['mode'] == 'De-activate')
             {
-                dump('De-activating...');
+				$old_data = 1;
+				$new_data = 0;
                 $result = $this->branch_model->update($id, ['active_status' => 0]);
-                dump($this->db->last_query());
             }
             if ($post['mode'] == 'Activate')
             {
-                dump('Activating...');
+				$old_data = 0;
+				$new_data = 1;
                 $result = $this->branch_model->update($id, ['active_status' => 1]);
-                dump($this->db->last_query());
             }
 
+			$this->session->set_flashdata('log_parameters', [
+				'action_mode' => 6,
+				'perm_key'    => 'update_branch_status',
+				'old_data'    => $old_data,
+				'new_data'    => $new_data
+			]);
+
             if ($result)
-            {               
+            {
                  $this->session->set_flashdata('message', $branch_data['name'].' successfully '.$post['mode'].'d!');
                  redirect('branches');
             }
@@ -159,7 +189,6 @@ class Branches extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$branch_data['name'].'!');
                 redirect('branches');
             }
-            
         }
         else
         {

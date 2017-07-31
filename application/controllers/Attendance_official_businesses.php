@@ -25,6 +25,7 @@ class Attendance_official_businesses extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->library('audit_trail');
         $this->load->model([
             'attendance_official_business_model',
             'account_model',
@@ -49,7 +50,7 @@ class Attendance_official_businesses extends MY_Controller {
 
         $total_rejected     = $this->attendance_official_business_model->count_by(['approval_status' => 0]); //0 = denied
         $total_approved     = $this->attendance_official_business_model->count_by(['approval_status' => 1]); //1 = approved
-        $total_pending      = $this->attendance_official_business_model->count_by(['approval_status' => 2]); //2 = pending 
+        $total_pending      = $this->attendance_official_business_model->count_by(['approval_status' => 2]); //2 = pending
         $total_cancelled    = $this->attendance_official_business_model->count_by(['status' => 0]);         //0 = cancelled
 
         $user                       = $this->ion_auth->user()->row();
@@ -90,10 +91,10 @@ class Attendance_official_businesses extends MY_Controller {
         $employee_id = $this->ion_auth->user()->row()->employee_id;
         $employee_information = $this->employee_model->get_employee_information(['employee_id' => $employee_id]);
         $employee_data = $this->employee_model->get_by(['id' => $employee_id]);
-          
+
         $this->data = array(
             'page_header'     => 'Official Business Management',
-            'accounts'        => $accounts, 
+            'accounts'        => $accounts,
             'contact_persons' => $contact_persons,
             'user_data'       => $user_data,
             'approver_id'     => $approver_id,
@@ -101,7 +102,7 @@ class Attendance_official_businesses extends MY_Controller {
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('ob_add'));
-        
+
         if (isset($data['date'])) {
             // convert date format from mm/dd/yyyy to yyyy-mm-dd
             $data['date'] = date('Y-m-d', strtotime($data['date']));
@@ -117,6 +118,13 @@ class Attendance_official_businesses extends MY_Controller {
 
         if ($this->form_validation->run('ob_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_ob',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
+
             $official_business_id = $this->attendance_official_business_model->insert($data);
 
             if ( ! $official_business_id) {
@@ -130,10 +138,10 @@ class Attendance_official_businesses extends MY_Controller {
 
                 // $ob_data = $this->attendance_official_business_model->get_by(['id' => $official_business_id]);
                 // $ob_id = $official_business_id;
-                
+
                 $user_id = $this->ion_auth->user()->row()->id;
                 $user_data = $this->user_model->get_by(['id' => $user_id]);
-                
+
 
 
                 // $data = [
@@ -144,7 +152,7 @@ class Attendance_official_businesses extends MY_Controller {
                 //     'ob_id'          => $ob_id,
 
                 /**
-                 * 
+                 *
                  */
 
                 $ob_data = $this->attendance_official_business_model->get_ob_requests_by([
@@ -173,7 +181,7 @@ class Attendance_official_businesses extends MY_Controller {
                 ];
 
                 // dump($data);exit;
-                
+
 
                 $subject = '[HRIS - Approval] Attendance: Official Business Request'.'-'.$official_business_id;   // TODO: let's make this dynamic
                 //$email_template = 'templates/email/official_business.tpl.php';                              // TODO: let's make this dynamic also
@@ -193,14 +201,14 @@ class Attendance_official_businesses extends MY_Controller {
                 $this->email->to($requester_email);
                 $this->email->subject($subject);
                 $this->email->message("You've successfully filed an official business request - ".$official_business_id." to ".$approver_data['full_name']);
-                $this->email->send(); 
+                $this->email->send();
 
-                $this->session->set_flashdata('success', 'Successfully added new official business.');              
-                redirect('attendance_official_businesses');                
-               
+                $this->session->set_flashdata('success', 'Successfully added new official business.');
+                redirect('attendance_official_businesses');
+
             }
         }
-        $this->load_view('forms/attendance_official_business-add');  
+        $this->load_view('forms/attendance_official_business-add');
     }
 
     public function approve($ob_id)
@@ -209,7 +217,7 @@ class Attendance_official_businesses extends MY_Controller {
         $update = $this->attendance_official_business_model->update($ob_id, ['approval_status' => 1]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             $message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
@@ -223,7 +231,7 @@ class Attendance_official_businesses extends MY_Controller {
             $this->email->send();
 
             //an email notificaton will be sent to user that filed an OB
-         
+
             $this->email->from('gono.josh@gmail.com', 'OBR - Josh Gono');
             $this->email->to('joseph.gono@systemantech.com');
 
@@ -243,7 +251,7 @@ class Attendance_official_businesses extends MY_Controller {
         $update = $this->attendance_official_business_model->update($ob_id, ['approval_status' => 0]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             $message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
@@ -278,7 +286,7 @@ class Attendance_official_businesses extends MY_Controller {
         $update = $this->attendance_official_business_model->update($ob_id, ['status' => 0]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             $message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
@@ -324,7 +332,7 @@ class Attendance_official_businesses extends MY_Controller {
 
         // $official_businesses = $this->attendance_official_business_model->get_ob_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('ob_add'));
-        
+
         $this->form_validation->set_data($data);
         // dump($data);exit();
 
@@ -340,20 +348,20 @@ class Attendance_official_businesses extends MY_Controller {
                 redirect('attendance_official_businesses');
             }
         }
-        $this->load_view('forms/attendance_official_business-edit');         
+        $this->load_view('forms/attendance_official_business-edit');
     }
 
     public function details($id)
     {
         $official_business = $this->attendance_official_business_model->get_ob_by(['attendance_official_businesses.id' => $id]);
-      
+
         $this->data = array(
             'page_header'       => 'Official Business Details',
             'official_business' => $official_business,
             'active_menu'       => $this->active_menu,
         );
 
-        $this->load_view('pages/attendance_official_business-details');          
+        $this->load_view('pages/attendance_official_business-details');
     }
 
     public function view_ob($id)
@@ -387,15 +395,26 @@ class Attendance_official_businesses extends MY_Controller {
 
         }
 
-        $requester = $this->employee_model->get_by(['id' => $employee_id]);
+        $requester             = $this->employee_model->get_by(['id' => $employee_id]);
         $data['modal_title']   = 'Approve Official Business';
         $data['modal_message'] = sprintf(lang('approve_official_business_message'), $requester['full_name']);
-        $data['url']  = 'attendance_official_businesses/approve_official_business/' . $official_business_data['id'];
-        $data['mode'] = 'approve';
+        $data['url']           = 'attendance_official_businesses/approve_official_business/' . $official_business_data['id'];
+        $data['mode']          = 'approve';
 
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'approve') {
+
+            $test_data = $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 2,
+                'perm_key'    => 'approve_ob',
+                'old_data'    => [
+                    'id' => $official_business_data['id'],
+                    'approval_status' => $official_business_data['approval_status']
+                ],
+                'new_data'    => ['approval_status' => 1],
+            ]);
+
             $result = $this->attendance_official_business_model->update($id, ['approval_status' => 1]);
 
             if ($result){
@@ -403,10 +422,10 @@ class Attendance_official_businesses extends MY_Controller {
                 $this->load->library('email');
 
                 // $ut_id = $official_business_data;
-                
+
                 // $user_id = $this->ion_auth->user()->row()->id;
                 // $user_data = $this->user_model->get_by(['id' => $user_id]);
-                
+
                 // $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
 
                 // $data = [
@@ -457,7 +476,7 @@ class Attendance_official_businesses extends MY_Controller {
                 $this->email->message("You've successfully approved the official business request - ".$id." of ".$requester_data['full_name']);
 
                 $this->email->send();
-                redirect('attendance_official_businesses');                
+                redirect('attendance_official_businesses');
 
                 $this->session->set_flashdata('message', 'Official Business successfully approved');
             }
@@ -492,6 +511,17 @@ class Attendance_official_businesses extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'reject') {
+
+            $test_data = $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 3,
+                'perm_key'    => 'reject_ob',
+                'old_data'    => [
+                    'id' => $official_business_data['id'],
+                    'approval_status' => $official_business_data['approval_status']
+                ],
+                'new_data'    => ['approval_status' => 0],
+            ]);
+
             $result = $this->attendance_official_business_model->update($id, ['approval_status' => 0]);
 
             if ($result){
@@ -520,7 +550,7 @@ class Attendance_official_businesses extends MY_Controller {
                 $this->email->message('Your official business request was rejected');
 
                 $this->email->send();
-                redirect('attendance_official_businesses');  
+                redirect('attendance_official_businesses');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to reject official business');
@@ -539,10 +569,8 @@ class Attendance_official_businesses extends MY_Controller {
         $employee_id = $official_business_data['employee_id'];
 
         if ( ! isset($employee_id) ) {
-
             $this->session->set_flashdata('failed', '');
             redirect('attendance_official_businesses');
-
         }
 
         $requester = $this->employee_model->get_by(['id' => $employee_id]);
@@ -557,10 +585,21 @@ class Attendance_official_businesses extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'cancel') {
+
+            $test_data = $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 4,
+                'perm_key'    => 'cancel_ob',
+                'old_data'    => [
+                    'id' => $official_business_data['id'],
+                    'status' => $official_business_data['status']
+                ],
+                'new_data'    => ['status' => 0],
+            ]);
+
             $result = $this->attendance_official_business_model->update($id, ['status' => 0]);
 
             if ($result){
-                $this->session->set_flashdata('message', 'Official Business successfully cancelled');
+                $this->session->set_flashdata('message', 'Official Business was cancelled');
 
                 $this->load->library('email');
 

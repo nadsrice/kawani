@@ -20,7 +20,7 @@ class Contact_person_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_data'];
+    protected $after_get     = ['set_default_data'];
 
     protected function generate_date_created_status($contact_person)
     {
@@ -31,14 +31,14 @@ class Contact_person_model extends MY_Model {
     }
 
     protected function set_default_data($contact_person)
-    {   
-        $contact_person['active_status']  = ($contact_person['active_status'] == 1) ? 'Active' : 'Inactive'; 
+    {
+        $contact_person['active_status']  = ($contact_person['active_status'] == 1) ? 'Active' : 'Inactive';
         $contact_person['full_name'] = $contact_person['first_name'].' '.
                                        $contact_person['middle_name'].' '.
                                        $contact_person['last_name'];
         return $contact_person;
     }
-    
+
     public function get_contact_person_by($param)
     {
         $query = $this->db;

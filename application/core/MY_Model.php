@@ -941,19 +941,20 @@ class MY_Model extends CI_Model
     /**
      * Author: kevin sagun
      */
-    public function write_audit_trail($company)
+    public function write_audit_trail($return_data)
     {
-        $action_mode = $this->callback_parameters[0];
-        $perm_key    = trim($this->callback_parameters[1], " ");
-        $user_id     = $this->ion_auth->user()->row()->id;
+        $log_parameters = $this->session->flashdata('log_parameters');
 
-        $old_data = $this->session->flashdata('old_data');
-        $new_data = $this->input->post();
+        $action_mode = $log_parameters['action_mode'];
+        $perm_key    = $log_parameters['perm_key'];
+        $old_data    = isset($log_parameters['old_data']) ? $log_parameters['old_data'] : '';
+        $new_data    = isset($log_parameters['new_data']) ? $log_parameters['new_data'] : '';
+
+        $user_id = $this->ion_auth->user()->row()->id;
 
         $additional_fields = [];
         $additional_fields['table_name'] = $this->_table;
-
-        $additional_fields['record_id'] = isset($old_data['id']) ? $old_data['id'] : $company;
+        $additional_fields['record_id'] = isset($old_data['id']) ? $old_data['id'] : $return_data;
 
         foreach ($new_data as $key => $data)
         {

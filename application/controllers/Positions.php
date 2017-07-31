@@ -18,13 +18,14 @@ class Positions extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		
 		$this->load->model(['position_model']);
 	}
 
 	function index()
 	{
 		$positions = $this->position_model->get_position_all();
-		
+
 		$this->data = array(
 			'page_header' => 'Position Management',
 			'positions'    => $positions,
@@ -46,7 +47,7 @@ class Positions extends MY_Controller {
 
 		$positions = $this->position_model->get_position_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('position_add'));
-		
+
 		$this->form_validation->set_data($data);
 
 		if ($this->form_validation->run('position_add') == TRUE)
@@ -70,7 +71,7 @@ class Positions extends MY_Controller {
 		$site = $this->site_model->get_many_site_by(['sites.position_id' => $id]);
 		$sites = $this->site_model->get_many_site_by(['sites.position_id' => $id]);
 		$employee_infos = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
-		
+
 		$this->data = array(
 			'page_header' => 'Position Details',
 			'position'      => $position,
@@ -99,7 +100,7 @@ class Positions extends MY_Controller {
 
 		$positions = $this->position_model->get_position_all();
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('position_add'));
-		
+
 		$this->form_validation->set_data($data);
 
 		if ($this->form_validation->run('position_add') == TRUE)
@@ -133,7 +134,7 @@ class Positions extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']))
-        {   
+        {
             $result = FALSE;
 
             if ($post['mode'] == 'De-activate')
@@ -150,7 +151,7 @@ class Positions extends MY_Controller {
             }
 
             if ($result)
-            {               
+            {
                  $this->session->set_flashdata('message', $position_data['name'].' successfully '.$post['mode'].'d!');
                  redirect('positions');
             }
@@ -159,7 +160,7 @@ class Positions extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$position_data['name'].'!');
                 redirect('positions');
             }
-            
+
         }
         else
         {

@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Employment_type_model extends MY_Model {
 
-    protected $_table = 'employment_types';
+    protected $_table      = 'employment_types';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
@@ -20,7 +20,9 @@ class Employment_type_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_data'];
+    protected $after_get     = ['set_default_data'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
 
     protected function generate_date_created_status($employment_types)
     {
@@ -29,11 +31,11 @@ class Employment_type_model extends MY_Model {
     }
 
     protected function set_default_data($employment_types)
-    {   
+    {
         $employment_types['active_status']  = ($employment_types['active_status'] == 1) ? 'Active' : 'Inactive';
         return $employment_types;
     }
-    
+
     public function get_employment_types_by($param)
     {
         $query = $this->db;

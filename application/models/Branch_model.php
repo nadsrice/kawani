@@ -20,7 +20,10 @@ class Branch_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_data'];
+    protected $after_get     = ['set_default_data'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
+
     // protected $after_update = ['set_modified_data'];
 
     protected function generate_date_created_status($branch)
@@ -38,7 +41,7 @@ class Branch_model extends MY_Model {
     // }
 
     protected function set_default_data($branch)
-    {   
+    {
         $branch['active_status']  = ($branch['active_status'] == 1) ? 'Active' : 'Inactive';
         $branch['status_label'] = ($branch['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $branch;

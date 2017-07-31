@@ -22,6 +22,8 @@ class Attendance_official_business_model extends MY_Model {
      */
     protected $before_create = ['generate_date_created_status'];
     protected $after_get     = ['set_default_data', 'set_default_menus'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
 
     protected function generate_date_created_status($official_business)
     {
@@ -33,15 +35,15 @@ class Attendance_official_business_model extends MY_Model {
     }
 
     protected function set_default_data($official_business)
-    {   
+    {
         $official_business['active_status']  = ($official_business['status'] == 1) ? 'Active' : 'Inactive';
         return $official_business;
     }
-    
+
     public function get_ob_by($param)
     {
         $query = $this->db;
-        $query->select('attendance_official_businesses.*, 
+        $query->select('attendance_official_businesses.*,
                         CONCAT_WS(' . '" "' . ', employees.first_name," " ,employees.last_name) as full_name');
         $query->join('employees', 'employees.id = attendance_official_businesses.employee_id', 'left');
         $query->order_by('full_name', 'asc');
@@ -53,7 +55,7 @@ class Attendance_official_business_model extends MY_Model {
     public function get_many_ob_by($param)
     {
         $query = $this->db;
-        $query->select('attendance_official_businesses.*, 
+        $query->select('attendance_official_businesses.*,
                         CONCAT_WS(' . '" "' . ', employees.first_name," " ,employees.last_name) as full_name');
         $query->join('employees', 'employees.id = attendance_official_businesses.employee_id', 'left');
         $query->order_by('full_name', 'asc');
@@ -66,7 +68,7 @@ class Attendance_official_business_model extends MY_Model {
     public function get_ob_all()
     {
         $query = $this->db;
-        $query->select('attendance_official_businesses.*, 
+        $query->select('attendance_official_businesses.*,
                        CONCAT_WS(' . '" "' . ', employees.first_name," " ,employees.last_name) as full_name,
                        CONCAT_WS(' . '" "' . ', contact_persons.first_name," " ,contact_persons.last_name) as contact_person,
                        CONCAT_WS(' . '" "' . ', attendance_official_businesses.time_start," - " ,attendance_official_businesses.time_end) as ob_time,
@@ -106,7 +108,7 @@ class Attendance_official_business_model extends MY_Model {
 
         return $query->result_array();
     }
-    
+
     public function get_ob_requests_by($where = '')
     {
         $this->db->select('
@@ -131,7 +133,7 @@ class Attendance_official_business_model extends MY_Model {
     }
 
     protected function set_default_menus($official_business)
-    {   
+    {
         $btn_settings = $this->config->item('btn_settings');
 
         if ( ! isset($official_business)) {

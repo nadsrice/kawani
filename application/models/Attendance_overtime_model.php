@@ -18,7 +18,9 @@ class Attendance_overtime_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_menus'];
+    protected $after_get     = ['set_default_menus'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
 
     protected function generate_date_created_status($overtime)
     {
@@ -30,7 +32,7 @@ class Attendance_overtime_model extends MY_Model {
     }
 
     // protected function set_default_data($overtime)
-    // {   
+    // {
     //     $overtime['active_status']  = ($overtime['active_status'] == 1) ? 'Active' : 'Inactive';
     //     $overtime['status_label']  = ($overtime['active_status'] == 'Active') ? 'De-activate' : 'Activate';
     //     return $overtime;
@@ -56,7 +58,7 @@ class Attendance_overtime_model extends MY_Model {
     }
 
     protected function set_default_menus($overtime)
-    {   
+    {
         $btn_settings = $this->config->item('btn_settings');
 
         if ( ! isset($overtime)) {

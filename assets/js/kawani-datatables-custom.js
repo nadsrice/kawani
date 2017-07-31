@@ -10,5 +10,5 @@ $(function() {
 	$("#datatables-approval_undertimes").DataTable();
 	$("#datatables-my_overtimes").DataTable();
 	$("#datatables-approval_overtimes").DataTable();
+	$("#datatables-shift_schedules").DataTable();
 });
-

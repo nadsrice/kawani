@@ -25,6 +25,7 @@ class Attendance_overtimes extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        $this->load->library('audit_trail');
         $this->load->model(['attendance_overtime_model']);
     }
 
@@ -65,6 +66,12 @@ class Attendance_overtimes extends MY_Controller {
 
         if ($this->form_validation->run('overtime_add') == TRUE)
         {
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key'    => 'file_overtime',
+                'old_data'    => NULL,
+                'new_data'    => $data
+            ]);
             $overtime_id = $this->attendance_overtime_model->insert($data);
 
             if ( ! $overtime_id) {
@@ -77,10 +84,10 @@ class Attendance_overtimes extends MY_Controller {
 
                 $ot_data = $this->attendance_overtime_model->get_by(['id' => $overtime_id]);
                 $ot_id = $overtime_id;
-                
+
                 $user_id = $this->ion_auth->user()->row()->id;
                 $user_data = $this->user_model->get_by(['id' => $user_id]);
-                
+
                 $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
 
                 $data = [
@@ -101,8 +108,8 @@ class Attendance_overtimes extends MY_Controller {
                 $this->email->message($message);
 
                 $this->email->send();
-                
-                redirect('attendance_overtimes'); 
+
+                redirect('attendance_overtimes');
             }
         }
 
@@ -213,7 +220,7 @@ class Attendance_overtimes extends MY_Controller {
         $update = $this->attendance_overtime_model->update($ot_id, ['approval_status' => 1]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             //$message = $this->load->view('templates/email/ob_approve.tpl.php', [], true);
@@ -227,7 +234,7 @@ class Attendance_overtimes extends MY_Controller {
             $this->email->send();
 
             //an email notificaton will be sent to user that filed an OB
-         
+
             $this->email->from('gono.josh@gmail.com', 'Overtime - Josh Gono');
             $this->email->to('joseph.gono@systemantech.com');
 
@@ -235,7 +242,7 @@ class Attendance_overtimes extends MY_Controller {
             $this->email->message('Approval notification has been successfully sent to Josh Gono');
 
             $this->email->send();
-            redirect('attendance_overtimes'); 
+            redirect('attendance_overtimes');
 
         } else {
 
@@ -248,7 +255,7 @@ class Attendance_overtimes extends MY_Controller {
         $update = $this->attendance_overtime_model->update($ot_id, ['approval_status' => 0]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
@@ -271,7 +278,7 @@ class Attendance_overtimes extends MY_Controller {
             $this->email->message('Disapproval notification has been successfully sent to Josh Gono');
 
             $this->email->send();
-            redirect('attendance_overtimes'); 
+            redirect('attendance_overtimes');
 
         } else {
 
@@ -284,7 +291,7 @@ class Attendance_overtimes extends MY_Controller {
         $update = $this->attendance_overtime_model->update($ot_id, ['status' => 0]);
 
         if ($update) {
-            
+
             $this->load->library('email');
 
             //$message = $this->load->view('templates/email/ob_disapprove.tpl.php', [], true);
@@ -307,7 +314,7 @@ class Attendance_overtimes extends MY_Controller {
             $this->email->message('Cancellation notification has been successfully sent to Josh Gono');
 
             $this->email->send();
-            redirect('attendance_overtimes'); 
+            redirect('attendance_overtimes');
 
         } else {
 
@@ -335,10 +342,10 @@ class Attendance_overtimes extends MY_Controller {
                 $this->load->library('email');
 
                 $ut_id = $overtime_data;
-                
+
                 $user_id = $this->ion_auth->user()->row()->id;
                 $user_data = $this->user_model->get_by(['id' => $user_id]);
-                
+
                 $employee_data = $this->employee_model->get_by(['id' => $user_data['employee_id']]);
 
                 $data = [
@@ -355,7 +362,7 @@ class Attendance_overtimes extends MY_Controller {
                 $this->email->message('Your overtime request has been successfully approved');
 
                 $this->email->send();
-                redirect('attendance_overtimes');                
+                redirect('attendance_overtimes');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to approve overtime');
@@ -407,7 +414,7 @@ class Attendance_overtimes extends MY_Controller {
                 $this->email->message('Your overtime request was rejected');
 
                 $this->email->send();
-                redirect('attendance_overtimes');  
+                redirect('attendance_overtimes');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to reject overtime');
