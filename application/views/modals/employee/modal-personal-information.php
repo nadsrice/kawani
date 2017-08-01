@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo site_url('employees/'); ?>" method="post">
+<form class="form-horizontal" action="<?php echo site_url('employees/edit/personal_information/'.$employee_id); ?>" method="post">
     <div class="modal-header">
         <h4 class="modal-title">Modal</h4>
     </div>
@@ -13,28 +13,28 @@
         <div class="form-group">
             <label for="" class="control-label col-sm-4">Middle Name</label>
             <div class="col-sm-6">
-                <input type="text" name="middle_name" class="form-control" value="<?php echo $personal_information['first_name']; ?>">
+                <input type="text" name="middle_name" class="form-control" value="<?php echo $personal_information['middle_name']; ?>">
                 <div class="validation_error"><?php echo form_error('middle_name'); ?></div>
             </div>
         </div>
         <div class="form-group">
             <label for="" class="control-label col-sm-4">Last Name</label>
             <div class="col-sm-6">
-                <input type="text" name="last_name" class="form-control" value="<?php echo $personal_information['first_name']; ?>">
+                <input type="text" name="last_name" class="form-control" value="<?php echo $personal_information['last_name']; ?>">
                 <div class="validation_error"><?php echo form_error('last_name'); ?></div>
             </div>
         </div>
         <div class="form-group">
             <label for="" class="control-label col-sm-4">Birthdate</label>
             <div class="col-sm-6">
-                <input type="text" name="birthdate" class="form-control" value="<?php echo $personal_information['first_name']; ?>">
+                <input type="text" name="birthdate" class="form-control" value="<?php echo $personal_information['birthdate']; ?>">
                 <div class="validation_error"><?php echo form_error('birthdate'); ?></div>
             </div>
         </div>
         <div class="form-group">
             <label for="" class="control-label col-sm-4">Birthplace</label>
             <div class="col-sm-6">
-                <input type="text" name="birthplace" class="form-control" value="<?php echo $personal_information['first_name']; ?>">
+                <input type="text" name="birthplace" class="form-control" value="<?php echo $personal_information['birthplace']; ?>">
                 <div class="validation_error"><?php echo form_error('birthplace'); ?></div>
             </div>
         </div>
@@ -55,8 +55,8 @@
 
             <label for="" class="control-label col-sm-4">Gender</label>
             <div class="col-sm-6">
-                <input type="radio" name="r3" class="flat-red form-group" <?php echo ($personal_information['gender'] == 1) ? 'checked' : ''; ?>/> Male
-                <input type="radio" name="r3" class="flat-red form-group" <?php echo ($personal_information['gender'] == 0) ? 'checked' : ''; ?>/> Female
+                <input type="radio" name="gender" class="flat-red form-group" <?php echo ($personal_information['gender'] == 1) ? 'checked value="1"' : ''; ?>/> Male
+                <input type="radio" name="gender" class="flat-red form-group" <?php echo ($personal_information['gender'] == 0) ? 'checked value="0"' : ''; ?>/> Female
                 <div class="validation_error"><?php echo form_error('gender'); ?></div>
             </div>
         </div>

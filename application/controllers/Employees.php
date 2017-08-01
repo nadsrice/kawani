@@ -82,31 +82,17 @@ class Employees extends MY_Controller {
         $this->load_view('pages/employee-informations');
     }
 
-    public function edit($employee_id)
+    public function edit()
     {
-        $employee_data = $this->employee_model->get_by(['id' => $employee_id]);
-        $parents_information   = $this->employee_parent_model->get_many_by(['employee_id' => $employee_id]);
-        $spouse_information    = $this->employee_spouse_model->get_by(['employee_id' => $employee_id]);
-        $dependent_information = $this->employee_dependent_model->get_by(['employee_id' => $employee_id]);
-        $dependent_information = $this->employee_dependent_model->get_by(['employee_id' => $employee_id]);
+        $param = array(
+            'information_type' => $this->uri->segment(3),
+            'employee_id'      => $this->uri->segment(4),
+            'posted_data'      => $this->input->post()
+        );
 
-        $civil_status_id = $employee_data['civil_status_id'];
+        dump($param);
 
-        $this->data['page_header']  = 'Employee Details';
-        $this->data['employee_id']  = $employee_id;
-        $this->data['civil_status'] = $this->remove_specific_data($civil_status_id, $this->civil_status_model->get_many_by(['active_status' => 1]));
-        $this->data['current_civil_status'] = $this->civil_status_model->get_by(['id' => $civil_status_id]);
-        $this->data['relationships'] = $this->relationship_model->get_all();
-        $this->data['personal_background'] = [
-            'personal_information'  => $employee_data,
-            'parents_information'   => $parents_information,
-            'spouse_information'    => $spouse_information,
-            'dependent_information' => $dependent_information
-        ];
 
-        // dump($this->data['personal_background']['parents_information']);exit;
-
-        $this->load_view('forms/employee-edit');
     }
 
     public function save_changes()
