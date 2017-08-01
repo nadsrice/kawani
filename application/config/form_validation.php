@@ -983,5 +983,51 @@ $config = array(
             'label' => 'Number of Hours',
             'rules' => 'trim'
         )
+    ),
+
+    'employee_schedule_add' => array(
+        array(
+            'field' => 'employee_id',
+            'label' => 'Employee',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'date',
+            'label' => 'Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'shift_id',
+            'label' => 'Shift Code',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim'
+        )
+    ),
+
+    'employee_schedule_edit' => array(
+        array(
+            'field' => 'employee_id',
+            'label' => 'Employee',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'date',
+            'label' => 'Date',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'shift_id',
+            'label' => 'Shift Code',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'company_id',
+            'label' => 'Company',
+            'rules' => 'trim'
+        )
     )
 );
