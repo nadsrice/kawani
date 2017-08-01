@@ -8,7 +8,7 @@
                 <a id="uploadLink" style="cursor:pointer">
                     <img class="profile-user-img img-responsive img-circle" src="<?php echo site_url('assets/img/employee/2017/EMPLOYEE-0001.jpg'); ?>" alt="User profile picture">
                 </a>
-                <h3 class="profile-username text-center"><?php echo $personal_background['personal_information']['full_name']; ?></h3>
+                <h3 class="profile-username text-center"><?php echo $personal_information['full_name']; ?></h3>
                 <p class="text-muted text-center">Software Engineer</p>
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
@@ -137,9 +137,23 @@
                 <?php $this->load->view('partials/employee/details/tab-payroll'); ?>
             </div>
         </div>
+
+        <?php if ($show_edit_modal): ?>
+        <script>
+            $(document).ready(function(){
+                $('#modal-edit').modal('show');
+            });
+        </script>
+        <div class="modal fade" id="modal-edit">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <?php $this->load->view($modal_content); ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
-
 <script src="<?php echo site_url('assets/js/employee-profile-image.js'); ?>" charset="utf-8"></script>
 <script>
 	$('#function-menu > ul.dropdown-menu li').on('click', function (evt) {

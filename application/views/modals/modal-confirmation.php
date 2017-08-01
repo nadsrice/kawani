@@ -8,6 +8,9 @@
 		<h4><?php echo $modal_message; ?></h4>
 	</div>
 	<div class="modal-footer">
+		<?php if (isset($information_type)): ?>
+		<input type="hidden" name="information_type" value="<?php echo $information_type; ?>">
+		<?php endif; ?>
 		<input type="hidden" name="mode" value="<?php echo $mode; ?>">
 		<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 		<button type="submit" class="btn btn-success">Yes</button>

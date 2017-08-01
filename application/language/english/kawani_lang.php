@@ -28,3 +28,5 @@ $lang['cancel_official_business_message']  = 'Do you want to <strong>cancel</str
 // ADD EMPLOYEE
 $lang['unable_to_create_employee_account']     = 'Unable update user table. Invalid user id or employee id.';
 $lang['successfully_created_employee_account'] = 'Successfully added new employee and created account. Update the employment information now.';
+
+$lang['confirmation_edit_employee_detail'] = 'Are you sure you want to %s of <strong>%s</strong>';
