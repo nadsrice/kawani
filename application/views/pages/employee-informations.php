@@ -12,13 +12,16 @@
                 <p class="text-muted text-center">Software Engineer</p>
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <b>Followers</b> <a class="pull-right">1,322</a>
+                        <b>Employee Number</b> <a class="pull-right">0839</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Following</b> <a class="pull-right">543</a>
+                        <b>Department</b> <a class="pull-right">SD&S</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Friends</b> <a class="pull-right">13,287</a>
+                        <b>Birthday</b> <a class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Date Hired</b> <a class="pull-right"></a>
                     </li>
                 </ul>
                 <a href="javascript:void(0);" class="btn btn-primary btn-block">

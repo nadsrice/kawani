@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo site_url('employees/edit/personal_information/'.$employee_id); ?>" method="post">
+<form class="form-horizontal" action="<?php echo site_url('employees/edit/employee_personal_information/'.$employee_id); ?>" method="post">
     <div class="modal-header">
         <h4 class="modal-title">Modal</h4>
     </div>
@@ -52,18 +52,16 @@
             </div>
         </div>
         <div class="form-group">
-
             <label for="" class="control-label col-sm-4">Gender</label>
             <div class="col-sm-6">
-                <input type="radio" name="gender" class="flat-red form-group" <?php echo ($personal_information['gender'] == 1) ? 'checked value="1"' : ''; ?>/> Male
-                <input type="radio" name="gender" class="flat-red form-group" <?php echo ($personal_information['gender'] == 0) ? 'checked value="0"' : ''; ?>/> Female
+                <label for="" class="radio-inline"><input type="radio" name="gender" class="form-group" <?php echo ($personal_information['gender'] == 1) ? 'checked value="1"' : ''; ?>/> Male</label>
+                <label for="" class="radio-inline"><input type="radio" name="gender" class="form-group" <?php echo ($personal_information['gender'] == 0) ? 'checked value="0"' : ''; ?>/> Female</label>
                 <div class="validation_error"><?php echo form_error('gender'); ?></div>
             </div>
         </div>
-
     </div>
     <div class="modal-footer">
-        <a href="<?php site_url('employees/cancel_edit'); ?>" name="button" class="btn btn-default">Cancel</a>
-        <button name="button" class="btn btn-primary">Submit</button>
+        <a href="<?php site_url('employees/cancel_edit'); ?>" class="btn btn-default">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
