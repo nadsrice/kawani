@@ -30,3 +30,13 @@ $lang['unable_to_create_employee_account']     = 'Unable update user table. Inva
 $lang['successfully_created_employee_account'] = 'Successfully added new employee and created account. Update the employment information now.';
 
 $lang['confirmation_edit_employee_detail'] = 'Are you sure you want to %s of <strong>%s</strong>';
+
+$lang['success_update_personal_data'] = 'successfully updated employee personal information.';
+$lang['success_update_parent_data'] = 'successfully update parents information.';
+$lang['success_update_spouse_data'] = 'successfully updated spouse information';
+
+$lang['unable_update_personal_data'] = 'unable to update employee personal information.';
+$lang['unable_update_parent_data'] = 'unable to update employee parents information.';
+$lang['unable_update_spouse_data'] = 'unable to update employee spouse information.';
+
+$lang['no_spouse_data_found'] = 'No spouse information found in database. Please try again.';

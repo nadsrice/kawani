@@ -12,13 +12,16 @@
                 <p class="text-muted text-center">Software Engineer</p>
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
-                        <b>Followers</b> <a class="pull-right">1,322</a>
+                        <b>Employee Number</b> <a class="pull-right">0839</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Following</b> <a class="pull-right">543</a>
+                        <b>Department</b> <a class="pull-right">SD&S</a>
                     </li>
                     <li class="list-group-item">
-                        <b>Friends</b> <a class="pull-right">13,287</a>
+                        <b>Birthday</b> <a class="pull-right"></a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Date Hired</b> <a class="pull-right"></a>
                     </li>
                 </ul>
                 <a href="javascript:void(0);" class="btn btn-primary btn-block">
@@ -52,6 +55,11 @@
         </div>
     </div>
     <div class="col-md-9">
+
+        <?php $civil_status_id = $personal_information['civil_status_id']; ?>
+        <?php $index_id = array_search($civil_status_id, array_column($civil_status, 'id')); ?>
+        <?php $civil_status = $civil_status[$index_id]['status_name']; ?>
+
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="dropdown">
@@ -61,7 +69,9 @@
                     <ul class="dropdown-menu">
                         <li role="presentation"><a data-toggle="tab" href="#tab-personal-information">Personal Information</a></li>
                         <li role="presentation"><a data-toggle="tab" href="#tab-parents-information">Parents Information</a></li>
+                        <?php if ($civil_status != 'SINGLE'): ?>
                         <li role="presentation"><a data-toggle="tab" href="#tab-spouse-information">Spouse Information</a></li>
+                        <?php endif; ?>
                         <li role="presentation"><a data-toggle="tab" href="#tab-dependents">Dependents</a></li>
                     </ul>
                 </li>

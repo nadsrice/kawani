@@ -1029,5 +1029,135 @@ $config = array(
             'label' => 'Company',
             'rules' => 'trim'
         )
+    ),
+
+    'employee_personal_information' => array(
+        array(
+            'field' => 'first_name',
+            'label' => 'First Name',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'middle_name',
+            'label' => 'Middle Name',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'last_name',
+            'label' => 'Last Name',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'birthdate',
+            'label' => 'Birthdate',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'birthplace',
+            'label' => 'Birthplace',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'gender',
+            'label' => 'Gender',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'civil_status_id',
+            'label' => 'Civil Status',
+            'rules' => 'trim'
+        )
+    ),
+
+    'employee_parents_information' => array(
+        array(
+            'field' => 'first_name',
+            'label' => 'First Name',
+            'rules' => 'trim|required'
+        ),
+        array(
+            'field' => 'middle_name',
+            'label' => 'Middle Name',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'last_name',
+            'label' => 'Last Name',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'birthdate',
+            'label' => 'Birthdate',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'birthplace',
+            'label' => 'Birthplace',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'gender',
+            'label' => 'Gender',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'occupation',
+            'label' => 'Occupation',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'relationship_id',
+            'label' => 'Relationship',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'type',
+            'label' => 'Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'block_number',
+            'label' => 'Block Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'lot_number',
+            'label' => 'Type',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'floor_number',
+            'label' => 'Floor Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'street',
+            'label' => 'Street',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'build_number',
+            'label' => 'Building Number',
+            'rules' => 'trim'
+        ),
+        array(
+            'field' => 'building_name',
+            'label' => 'Building Name',
+            'rules' => 'trim'
+        )
+    ),
+
+    'employee_spouse_information' => array(
+        array('field' => 'first_name', 'label' => 'first_name', 'rules' => 'trim|required'),
+        array('field' => 'middle_name', 'label' => 'middle_name', 'rules' => 'trim'),
+        array('field' => 'last_name', 'label' => 'last_name', 'rules' => 'trim|required'),
+        array('field' => 'birthdate', 'label' => 'birthdate', 'rules' => 'trim'),
+        array('field' => 'block_number', 'label' => 'block_number', 'rules' => 'trim'),
+        array('field' => 'lot_number', 'label' => 'lot_number', 'rules' => 'trim'),
+        array('field' => 'floor_number', 'label' => 'floor_number', 'rules' => 'trim'),
+        array('field' => 'building_number', 'label' => 'building_number', 'rules' => 'trim'),
+        array('field' => 'building_name', 'label' => 'building_name', 'rules' => 'trim'),
+        array('field' => 'street', 'label' => 'street', 'rules' => 'trim'),
+        array('field' => 'barangay', 'label' => 'barangay', 'rules' => 'trim')
     )
 );
