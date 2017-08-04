@@ -12,28 +12,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://systemantech.com
  */
 
-
  class Employee_schedules extends MY_Controller {
 
      private $active_menu = 'Administration';
 
      function __construct()
      {
-         parent::__construct();
-         $this->load->library('audit_trail');
-         $this->load->model('employee_schedule_model');
+        parent::__construct();
+        $this->load->library('audit_trail');
+        $this->load->model([
+            'employee_schedule_model',
+            'shift_schedule_model',
+            'employee_model'
+        ]);
      }
 
      public function index()
      {
-         $employee_schedules = $this->employee_schedule_model->get_employee_schedule_all();
+         $user               = $this->ion_auth->user()->row();
+         $employee_schedules = $this->employee_schedule_model->get_employees_by([
+             'employee_information.reports_to' => $user->employee_id
+         ]);
 
          $this->data = array(
             'page_header'        => 'Employee Schedule Management',
             'employee_schedules' => $employee_schedules,
             'active_menu'        => $this->active_menu
          );
-         $this->load_view('pages/employee_schedule-lists');
+
+         $this->load_view('pages/employee_schedules-employees');
      }
 
      public function add()
@@ -47,11 +54,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $where['id'] = $user->company_id;
         }
 
+        // get specific employee_schedule based on the id
+        // $employee  = $this->employee_model
+        $shift_schedules = $this->shift_schedule_model->get_shift_schedule_all();
         $companies = $this->company_model->get_many_by($where);
 
         $this->data = array(
             'page_header' => 'Employee Schedule Mangement',
             'companies'   => $companies,
+            'shift_schedules' => $shift_schedules,
             'active_menu' => $this->active_menu,
         );
 
@@ -61,17 +72,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         if ($this->form_validation->run('employee_schedule_add') == TRUE)
         {
-            // $this->session->set_flashdata('log_parameters', [
-            //     'action_mode' => 0,
-            //     'perm_key' 	  => 'add_employee_schedule',
-            //     'old_data'	  => NULL,
-            //     'new_data'    => $data
-            // ]);
+            $this->session->set_flashdata('log_parameters', [
+                'action_mode' => 0,
+                'perm_key' 	  => 'add_employee_schedule',
+                'old_data'	  => NULL,
+                'new_data'    => $data
+            ]);
 
             $employee_schedule_id = $this->employee_schedule_model->insert($data);
 
             if ( ! $employee_schedule_id) {
-                $this->session->set_flashdata('failed', 'Failed to add new employee_schedule.');
+                $this->session->set_flashdata('failed', 'Failed to add new employee schedule.');
                 redirect('employee_schedules');
             } else {
             $this->session->set_flashdata('success', 'Successfully added ' .$data['']);
@@ -84,14 +95,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
      function details($id)
      {
-         $employee_schedule = $this->employee_schedule_model->get_employee_schedule_by(['attendance_employee_daily_schedules.id' => $id]);
+         $employee_schedule = $this->employee_schedule_model->get_employee_schedule_by(['attendance_employee_daily_schedules.employee_id' => $id]);
 
          $this->data = array(
              'page_header'       => 'Employee Schedule Details',
              'employee_schedule' => $employee_schedule,
              'active_menu'       => $this->active_menu,
          );
-         $this->load_view('pages/employee_schedule-detail');
+         $this->load_view('pages/employee_schedule-details');
      }
 
      public function edit($id)
@@ -166,7 +177,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                  $result = $this->employee_schedule_model->update($id, ['active_status' => 1]);
                  dump($this->db->last_query());
              }
-
              if ($result)
              {
                   $this->session->set_flashdata('message', $employee_schedule_data['code'].' successfully '.$post['mode'].'d!');
@@ -177,7 +187,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                  $this->session->set_flashdata('failed', 'Unable to '.$post['mode'].' '.$employee_schedule_data['code'].'!');
                  redirect('employee_schedules');
              }
-
          }
          else
          {

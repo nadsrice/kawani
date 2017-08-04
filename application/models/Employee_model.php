@@ -35,9 +35,9 @@ class Employee_model extends MY_Model {
         if ( ! isset($employee)) {
             return FALSE;
         }
-        $middle_name = ( ! empty($employee['middle_name'])) ? $employee['middle_name'] : '';
-        $full_name = $employee['last_name'].', '.$employee['first_name'].' '.$middle_name;
-        $employee['full_name'] = strtoupper($full_name);
+        $middle_name              = ( ! empty($employee['middle_name'])) ? $employee['middle_name'] : '';
+        $full_name                = $employee['last_name'].', '.$employee['first_name'].' '.$middle_name;
+        $employee['full_name']    = strtoupper($full_name);
         $employee['label_status'] = ($employee['active_status'] == 1) ? 'Active' : 'Inactive';
 
         return $employee;

@@ -21,12 +21,12 @@
                     <thead>
                         <tr>
                             <th style="width: 250px;">&nbsp;</th>
+                            <th class="text-left">Time Start</th>
+                            <th class="text-left">Time End</th>
                             <th class="text-left">Company</th>
                             <th class="text-left">Shift Code</th>
                             <th class="text-left">Description</th>
                             <th class="text-left">Type</th>
-                            <th class="text-left">Time Start</th>
-                            <th class="text-left">Time End</th>
                             <th class="text-left">Grace Period</th>
                             <th class="text-left">Number of Hours</th>
                         </tr>
@@ -47,12 +47,12 @@
                                         </a>
                                     </td>
                                     <!-- <td class="text-right"><?php echo $shift_schedule['id']; ?></td> -->
+                                    <td class="text-right"><?php echo $shift_schedule['time_start']; ?></td>
+                                    <td class="text-right"><?php echo $shift_schedule['time_end']; ?></td>
                                     <td class="text-left"><?php echo $shift_schedule['company_name']; ?></td>
                                     <td class="text-left"><?php echo $shift_schedule['code']; ?></td>
                                     <td class="text-left"><?php echo $shift_schedule['description']; ?></td>
                                     <td class="text-left"><?php echo $shift_schedule['type_label']; ?></td>
-                                    <td class="text-right"><?php echo $shift_schedule['time_start']; ?></td>
-                                    <td class="text-right"><?php echo $shift_schedule['time_end']; ?></td>
                                     <td class="text-right"><?php echo $shift_schedule['grace_period']; ?></td>
                                     <td class="text-right"><?php echo $shift_schedule['no_of_hours']; ?></td>
                                 </tr>
