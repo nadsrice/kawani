@@ -27,12 +27,11 @@ class Employee_parent_information_model extends MY_Model
 
         $result = array();
         foreach ($new_data as $data) {
-
             $data['modified'] = date('Y-m-d H:i:s');
             $result[] = $this->db->where(['relationship_id' => $data['relationship_id'], 'employee_id' => $data['employee_id']])->update($this->_table, $data);
         }
 
-        $this->session->set_flashdata('success', 'successfully update parents information.');
+        $this->session->set_flashdata('success', lang('success_update_parent_data'));
         redirect('employees/informations/'.$employee_id);
     }
 }

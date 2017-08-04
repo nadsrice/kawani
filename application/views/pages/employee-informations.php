@@ -55,6 +55,11 @@
         </div>
     </div>
     <div class="col-md-9">
+
+        <?php $civil_status_id = $personal_information['civil_status_id']; ?>
+        <?php $index_id = array_search($civil_status_id, array_column($civil_status, 'id')); ?>
+        <?php $civil_status = $civil_status[$index_id]['status_name']; ?>
+
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="dropdown">
@@ -64,7 +69,9 @@
                     <ul class="dropdown-menu">
                         <li role="presentation"><a data-toggle="tab" href="#tab-personal-information">Personal Information</a></li>
                         <li role="presentation"><a data-toggle="tab" href="#tab-parents-information">Parents Information</a></li>
+                        <?php if ($civil_status != 'SINGLE'): ?>
                         <li role="presentation"><a data-toggle="tab" href="#tab-spouse-information">Spouse Information</a></li>
+                        <?php endif; ?>
                         <li role="presentation"><a data-toggle="tab" href="#tab-dependents">Dependents</a></li>
                     </ul>
                 </li>

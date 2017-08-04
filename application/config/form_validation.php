@@ -1145,5 +1145,19 @@ $config = array(
             'label' => 'Building Name',
             'rules' => 'trim'
         )
+    ),
+
+    'employee_spouse_information' => array(
+        array('field' => 'first_name', 'label' => 'first_name', 'rules' => 'trim|required'),
+        array('field' => 'middle_name', 'label' => 'middle_name', 'rules' => 'trim'),
+        array('field' => 'last_name', 'label' => 'last_name', 'rules' => 'trim|required'),
+        array('field' => 'birthdate', 'label' => 'birthdate', 'rules' => 'trim'),
+        array('field' => 'block_number', 'label' => 'block_number', 'rules' => 'trim'),
+        array('field' => 'lot_number', 'label' => 'lot_number', 'rules' => 'trim'),
+        array('field' => 'floor_number', 'label' => 'floor_number', 'rules' => 'trim'),
+        array('field' => 'building_number', 'label' => 'building_number', 'rules' => 'trim'),
+        array('field' => 'building_name', 'label' => 'building_name', 'rules' => 'trim'),
+        array('field' => 'street', 'label' => 'street', 'rules' => 'trim'),
+        array('field' => 'barangay', 'label' => 'barangay', 'rules' => 'trim')
     )
 );

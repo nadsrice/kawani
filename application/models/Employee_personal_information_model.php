@@ -24,7 +24,7 @@ class Employee_personal_information_model extends MY_Model
         $updated = $this->update($id, $data);
 
         if ( ! $updated) {
-            $this->session->set_flashdata('failed', 'unable to updat employee personal information.');
+            $this->session->set_flashdata('failed', lang('unable_update_personal_data'));
             redirect('employees/informations/'.$id);
         }
 
@@ -35,7 +35,7 @@ class Employee_personal_information_model extends MY_Model
         //     'new_data'    => $data
         // ]);
 
-        $this->session->set_flashdata('success', 'successfully updated employee personal information.');
+        $this->session->set_flashdata('success', lang('success_update_personal_data'));
         redirect('employees/informations/'.$id);
     }
 }

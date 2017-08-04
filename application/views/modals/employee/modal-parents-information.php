@@ -6,26 +6,26 @@
         <div class="nav-tabs-custom">
 
             <ul class="nav nav-tabs" id="tabContent">
-            <?php foreach ($parents_information as $navtabtitle): ?>
+            <?php foreach ($parents_information as $k => $navtabtitle): ?>
             <?php
                 $relationship_id = $navtabtitle['relationship_id'];
                 $index_id = array_search($relationship_id, array_column($relationships, 'id'));
                 $relationship = $relationships[$index_id]['name'];
             ?>
-            <li class="<?php echo ($navtabtitle['id'] == 1) ? 'active':''; ?>">
+            <li class="<?php echo ($k == 0) ? 'active':''; ?>">
                 <a href="<?php echo '#'.strtolower($relationship); ?>" data-toggle="tab"><?php echo ucwords($relationship); ?></a>
             </li>
             <?php endforeach; ?>
             </ul>
 
             <div class="tab-content">
-                <?php foreach ($parents_information as $parent_information): ?>
+                <?php foreach ($parents_information as $j => $parent_information): ?>
                 <?php
                     $relationship_id = $parent_information['relationship_id'];
                     $index_id = array_search($relationship_id, array_column($relationships, 'id'));
                     $relationship = $relationships[$index_id]['name'];
                 ?>
-                <div class="tab-pane fade in <?php echo ($parent_information['id'] == 1) ? 'active':''; ?>" id="<?php echo strtolower($relationship); ?>">
+                <div class="tab-pane fade in <?php echo ($j == 0) ? 'active':''; ?>" id="<?php echo strtolower($relationship); ?>">
                     <div class="form-group">
                         <div class="form-group">
                             <label for="" class="control-label col-sm-3">First Name</label>
