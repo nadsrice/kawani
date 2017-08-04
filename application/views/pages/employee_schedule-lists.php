@@ -4,7 +4,7 @@
         <div class="pull-right">
             <a href="<?php echo site_url('employee_schedules/add'); ?>" class="btn btn-primary">
                 <i class="fa fa-plus"></i>
-                <span>Add Employee Schedule<span>
+                <span>Set Employee Schedule<span>
             </a>
         </div>
     </div>
@@ -111,8 +111,9 @@
                                 <th>&nbsp;</th>
                                 <th class="text-left">Employee Code</th>
                                 <th class="text-left">Employee Name</th>
-                                <th class="text-left">Shift Code</th>
                                 <th class="text-left">Company</th>
+                                <th class="text-left">Shift Code</th>
+                                <th class="text-left">Shift</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,34 +121,35 @@
                             <?php foreach ($employee_schedules as $employee_schedule): ?>
                             <tr>
                                 <td>
-                                    <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employee_schedules/view_ob/' . $employee_schedule['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($employee_schedule['id']); ?>">
-                                    <i class="fa fa-search"></i> View
+                                    <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employee_schedules/details/' . $employee_schedule['id']); ?>">
+                                        <i class="fa fa-search"></i> View
                                     </a>
-
-                                    <?php foreach ($employee_schedule['action_menus'] as $action_menu): ?>
-                                        <a class="<?php echo $action_menu['button_style']; ?>" href="<?php echo $action_menu['url']; ?>" <?php echo ($action_menu['modal_status']) ? $action_menu['modal_attributes'] : ''; ?>>
-                                            <i class="<?php echo $action_menu['icon']; ?>"></i> <?php echo $action_menu['label']; ?>
-                                        </a>
-                                    <?php endforeach ?>
+                                    <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employee_schedules/edit_confirmation/' . $employee_schedule['id']); ?>" data-toggle="modal" data-target="#update-employee_chedule-<?php echo md5($employee_schedule['id']); ?>">
+                                        <i class="fa fa-pencil-square-o"></i> Edit
+                                    </a>
+                                     <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employee_schedules/update_status/' . $employee_schedule['id']); ?>" data-toggle="modal" data-target="#update-employee_chedule-status-<?php echo md5($employee_schedule['id']); ?>">
+                                        <i class="fa fa-cog"></i> <?php echo $employee_schedule['status_label']; ?>
+                                    </a>
                                 </td>
 
                                 <td class="text-right"><?php echo $employee_schedule['employee_code']; ?></td>
                                 <td class="text-left"><?php echo $employee_schedule['full_name']; ?></td>
-                                <td class="text-left"><?php echo $employee_schedule['shift_code']; ?></td>
                                 <td class="text-left"><?php echo $employee_schedule['company_name']; ?></td>
+                                <td class="text-left"><?php echo $employee_schedule['shift_code']; ?></td>
+                                <td class="text-left"><?php echo $employee_schedule['date']; ?></td>
                             </tr>
                             <div class="modal fade" id="view-ob-<?php echo md5($employee_schedule['id']); ?>" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content"></div>
                                 </div>
                             </div>
-                            <?php foreach ($employee_schedule['action_menus'] as $action_menu): ?>
+                            <!-- <?php foreach ($employee_schedule['action_menus'] as $action_menu): ?>
                                 <div class="modal fade" id="<?php echo $action_menu['modal_id']; ?>" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content"></div>
                                     </div>
                                 </div>
-                            <?php endforeach ?>
+                            <?php endforeach ?> -->
                             <?php endforeach; ?>
                         <?php endif; ?>
                         </tbody>

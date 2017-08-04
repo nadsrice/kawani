@@ -50,9 +50,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $companies = $this->company_model->get_many_by($where);
 
         $this->data = array(
-            'page_header' => 'Shift Schedule Mangement',
-            'companies'   => $companies,
-            'active_menu' => $this->active_menu,
+            'page_header'  => 'Shift Schedule Mangement',
+            'companies'    => $companies,
+            'active_menu'  => $this->active_menu,
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('shift_schedule_add'));

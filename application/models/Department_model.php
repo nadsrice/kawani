@@ -21,14 +21,14 @@ class Department_model extends MY_Model {
      */
     protected $before_create = ['generate_date_created_status'];
     protected $after_get     = ['set_default_data'];
-    protected $after_create  = ['write_audit_trail(0, add_department)'];
-    protected $after_update  = ['write_audit_trail(1, edit_department)'];
+    protected $after_create  = ['write_audit_trail'];
+    protected $after_update  = ['write_audit_trail'];
 
     protected function generate_date_created_status($department)
     {
-        $department['created'] = date('Y-m-d H:i:s');
+        $department['created']       = date('Y-m-d H:i:s');
         $department['active_status'] = 1;
-        $department['created_by'] = '0';
+        $department['created_by']    = '0';
         return $department;
     }
 

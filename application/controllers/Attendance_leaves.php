@@ -70,7 +70,7 @@ class Attendance_leaves extends MY_Controller {
         ]);
 
         $employee_information = $this->employee_model->get_employee_information(['employee_id' => $employee_id]);
-        $employee_data = $this->employee_model->get_by(['id' => $employee_id]);
+        $employee_data        = $this->employee_model->get_by(['id' => $employee_id]);
 
         $without_pay = FALSE;
 

@@ -16,11 +16,11 @@ class Employee_schedule_model extends MY_Model {
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
-    /**
-     * Callbacks or Observers
-     */
+    // /**
+    //  * Callbacks or Observers
+    //  */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get     = ['set_default_data'];
+    protected $after_get     = ['set_default_data', ];
     protected $after_create  = ['write_audit_trail'];
     protected $after_update  = ['write_audit_trail'];
 
@@ -32,11 +32,22 @@ class Employee_schedule_model extends MY_Model {
         return $employee_schedule;
     }
 
-    protected function set_default_data($shift_schedule)
+    protected function set_default_data($employee_schedule)
     {
-        $shift_schedule['active_status']  = ($shift_schedule['active_status'] == 1) ? 'Active' : 'Inactive';
-        $shift_schedule['status_label']   = ($shift_schedule['active_status'] == 'Active') ? 'De-activate' : 'Activate';
-        return $shift_schedule;
+        $employee_schedule['active_status'] = ($employee_schedule['status'] == 1) ? 'Active' : 'Inactive';
+        $employee_schedule['status_label']  = ($employee_schedule['status'] == 'Active') ? 'De-activate' : 'Activate';
+
+        if ( ! isset($employee_schedule['id'])) return FALSE;
+
+        $fullname = array(
+            $employee_schedule['last_name'].',',
+            $employee_schedule['first_name'],
+            $employee_schedule['middle_name']
+        );
+
+        $employee_schedule['fullname'] = strtoupper(implode(' ', $fullname));
+
+        return $employee_schedule;
     }
 
     public function get_employee_schedule_by($where)
@@ -44,9 +55,15 @@ class Employee_schedule_model extends MY_Model {
         $query = $this->db;
         $query->select('
                     attendance_employee_daily_schedules.*,
-                    companies.name as company_name
+                    employees.*,
+                    companies.name as company_name,
+                    employees.employee_code as employee_code,
+                    attendance_shift_schedules.code as shift_code
                 ');
         $query->join('companies', 'attendance_employee_daily_schedules.company_id = companies.id', 'left');
+        $query->join('employees', 'attendance_employee_daily_schedules.employee_id = employees.id', 'left');
+        $query->join('attendance_shift_schedules', 'attendance_employee_daily_schedules.shift_id = attendance_shift_schedules.id', 'left');
+        $query->order_by('date', 'desc');
 
         return $this->get_by($where);
     }
@@ -63,9 +80,36 @@ class Employee_schedule_model extends MY_Model {
         $query = $this->db;
         $query->select('
                     attendance_employee_daily_schedules.*,
-                    companies.name as company_name
+                    companies.name as company_name,
+                    employees.employee_code as employee_code,
+                    CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name,
+                    attendance_shift_schedules.code as shift_code
                 ');
         $query->join('companies', 'attendance_employee_daily_schedules.company_id = companies.id', 'left');
+        $query->join('employees', 'attendance_employee_daily_schedules.employee_id = employees.id', 'left');
+        $query->join('attendance_shift_schedules', 'attendance_employee_daily_schedules.shift_id = attendance_shift_schedules.id', 'left');
+        $query->order_by('date', 'desc');
+
         return $this->get_all();
+    }
+
+    public function get_employees_by($where = '')
+    {
+        $this->db->select('
+            attendance_employee_daily_schedules.*,
+            employees.*,
+            employees.employee_code as employee_code,
+            CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name,
+            employee_information.reports_to,
+            companies.name as company_name,
+            attendance_shift_schedules.code as shift_code
+            ')
+        ->join('employees', 'employees.id = attendance_employee_daily_schedules.employee_id', 'left')
+        ->join('employee_information', 'employee_information.id = attendance_employee_daily_schedules.employee_id', 'left')
+        ->join('companies', 'attendance_employee_daily_schedules.company_id = companies.id', 'left')
+        ->join('attendance_shift_schedules', 'attendance_employee_daily_schedules.shift_id = attendance_shift_schedules.id', 'left')
+        ->order_by('employees.last_name', 'asc');
+
+        return $this->get_many_by($where);
     }
 }
