@@ -375,7 +375,6 @@ class Attendance_official_businesses extends MY_Controller {
             'view_ob'           => $view_ob,
             'account_name'      => $account_name,
             'contact_person'    => $contact_person,
-
         );
 
         $this->load->view('modals/modal-ob', $data);
@@ -409,7 +408,7 @@ class Attendance_official_businesses extends MY_Controller {
                 'action_mode' => 2,
                 'perm_key'    => 'approve_ob',
                 'old_data'    => [
-                    'id' => $official_business_data['id'],
+                    'id'      => $official_business_data['id'],
                     'approval_status' => $official_business_data['approval_status']
                 ],
                 'new_data'    => ['approval_status' => 1],

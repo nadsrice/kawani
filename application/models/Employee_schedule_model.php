@@ -27,7 +27,7 @@ class Employee_schedule_model extends MY_Model {
     protected function generate_date_created_status($employee_schedule)
     {
         $employee_schedule['created']       = date('Y-m-d H:i:s');
-        $employee_schedule['active_status'] = 1;
+        $employee_schedule['status'] = 1;
         $employee_schedule['created_by']    = 0;
         return $employee_schedule;
     }
@@ -65,7 +65,7 @@ class Employee_schedule_model extends MY_Model {
         $query->join('attendance_shift_schedules', 'attendance_employee_daily_schedules.shift_id = attendance_shift_schedules.id', 'left');
         $query->order_by('date', 'desc');
 
-        return $this->get_by($where);
+        return $this->get_many_by($where);
     }
 
     public function get_many_employee_schedule_by($param)
@@ -97,7 +97,9 @@ class Employee_schedule_model extends MY_Model {
     {
         $this->db->select('
             attendance_employee_daily_schedules.*,
+            attendance_employee_daily_schedules.id as attendance_id,
             employees.*,
+            employees.id as employee_id,
             employees.employee_code as employee_code,
             CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name,
             employee_information.reports_to,
@@ -111,5 +113,10 @@ class Employee_schedule_model extends MY_Model {
         ->order_by('employees.last_name', 'asc');
 
         return $this->get_many_by($where);
+    }
+
+    public function employee_details()
+    {
+
     }
 }

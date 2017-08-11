@@ -24,38 +24,36 @@
                             <th class="text-left">Employee Code</th>
                             <th class="text-left">Employee Name</th>
                             <th class="text-left">Company</th>
-                            <th class="text-left">Shift Code</th>
-                            <th class="text-left">Shift</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if ( ! empty($employee_schedules)): ?>
-                            <?php foreach ($employee_schedules as $employee_schedule): ?>
+                        <?php if ( ! empty($employees)): ?>
+                            <?php foreach ($employees as $employee): ?>
                             <tr>
                                 <td>
-                                    <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employee_schedules/details/' . $employee_schedule['employee_id']); ?>">
+                                    <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('employee_schedules/details/' . $employee['id']); ?>">
                                         <i class="fa fa-search"></i> View
                                     </a>
-                                    <!-- <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employee_schedules/edit_confirmation/' . $employee_schedule['id']); ?>" data-toggle="modal" data-target="#update-employee_chedule-<?php echo md5($employee_schedule['id']); ?>">
+                                   <!--  <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employee_schedules/edit_confirmation/' . $employee['id']); ?>" data-toggle="modal" data-target="#update-employee_chedule-<?php echo md5($employee['id']); ?>">
                                         <i class="fa fa-pencil-square-o"></i> Edit
                                     </a> -->
-                                     <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employee_schedules/update_status/' . $employee_schedule['id']); ?>" data-toggle="modal" data-target="#update-employee_chedule-status-<?php echo md5($employee_schedule['id']); ?>">
-                                        <i class="fa fa-cog"></i> <?php echo $employee_schedule['status_label']; ?>
-                                    </a>
+                             <!--         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employee_schedules/update_status/' . $employee['id']); ?>" data-toggle="modal" data-target="#update-employee_chedule-status-<?php echo md5($employee['id']); ?>">
+                                        <i class="fa fa-cog"></i> <?php echo $employee['status_label']; ?>
+                                    </a> -->
                                 </td>
 
-                                <td class="text-right"><?php echo $employee_schedule['employee_code']; ?></td>
-                                <td class="text-left"><?php echo $employee_schedule['full_name']; ?></td>
-                                <td class="text-left"><?php echo $employee_schedule['company_name']; ?></td>
-                                <td class="text-left"><?php echo $employee_schedule['shift_code']; ?></td>
-                                <td class="text-left"><?php echo $employee_schedule['date']; ?></td>
+                                <td class="text-right"><?php echo $employee['employee_code']; ?></td>
+                                <td class="text-left"><?php echo strtoupper($employee['full_name']); ?></td>
+                                <td class="text-left"><?php echo $employee['company_name']; ?></td>
+                                <!-- <td class="text-left"><?php echo $employee['shift_code']; ?></td> -->
+                                <!-- <td class="text-left"><?php echo date('d F Y', strtotime($employee['date'])); ?></td> -->
                             </tr>
-                            <div class="modal fade" id="view-ob-<?php echo md5($employee_schedule['id']); ?>" role="dialog">
+                            <div class="modal fade" id="view-ob-<?php echo md5($employee['id']); ?>" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content"></div>
                                 </div>
                             </div>
-                            <!-- <?php foreach ($employee_schedule['action_menus'] as $action_menu): ?>
+                            <!-- <?php foreach ($employee['action_menus'] as $action_menu): ?>
                                 <div class="modal fade" id="<?php echo $action_menu['modal_id']; ?>" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content"></div>
