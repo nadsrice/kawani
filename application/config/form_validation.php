@@ -989,12 +989,12 @@ $config = array(
         array(
             'field' => 'employee_id',
             'label' => 'Employee',
-            'rules' => 'trim|required'
+            'rules' => 'trim'
         ),
         array(
             'field' => 'date',
             'label' => 'Date',
-            'rules' => 'trim|required'
+            'rules' => 'trim'
         ),
         array(
             'field' => 'shift_id',

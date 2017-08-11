@@ -43,11 +43,27 @@ class Employee_model extends MY_Model {
         return $employee;
     }
 
+    public function get_employees($where = '')
+    {
+        $query = $this->db->select('
+            employees.*,
+            companies.name as company_name
+            ')
+        ->join('employee_information', 'employee_information.employee_id = employees.id', 'left')
+        ->join('companies', 'companies.id = employee_information.company_id', 'left')
+        ->order_by('last_name', 'asc');
+
+        return $this->get_many_by($where);
+    }
+
     public function get_employee_by($param)
     {
-        $query = $this->db;
-        $query->select('*');
-        $query->order_by('last_name', 'asc');
+        $query = $this->db->select('
+            employees.*,
+            companies.name as company_name
+            ')
+        ->join('employee_information', 'employee_information.employee_id = employees.id', 'left')
+        ->join('companies', 'companies.id = employee_information.company_id', 'left');
 
         return $this->get_by($param);
     }

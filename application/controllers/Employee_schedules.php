@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 /**
  * Some class description here...
  *
@@ -29,21 +28,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
      public function index()
      {
-         $user               = $this->ion_auth->user()->row();
-         $employee_schedules = $this->employee_schedule_model->get_employees_by([
-             'employee_information.reports_to' => $user->employee_id
-         ]);
-
+         $user      = $this->ion_auth->user()->row();
+         $employees = $this->employee_model->get_employees([
+            'employee_information.reports_to' => $user->employee_id
+        ]);
+         // $employee_schedules = $this->employee_schedule_model->get_employees_by([
+         //     'employee_information.reports_to' => $user->employee_id
+         // ]);
+         // dump($employees);
+         // dump($this->db->last_query());exit;
          $this->data = array(
-            'page_header'        => 'Employee Schedule Management',
-            'employee_schedules' => $employee_schedules,
-            'active_menu'        => $this->active_menu
+            'page_header'   => 'Employee Schedule Management',
+            'employees'     => $employees,
+            'active_menu'   => $this->active_menu
          );
 
          $this->load_view('pages/employee_schedules-employees');
      }
 
-     public function add()
+     public function add($employee_id)
      {
         $user  = $this->ion_auth->user()->row();
         $where = [];
@@ -56,14 +59,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         // get specific employee_schedule based on the id
         // $employee  = $this->employee_model
-        $shift_schedules = $this->shift_schedule_model->get_shift_schedule_all();
-        $companies = $this->company_model->get_many_by($where);
+        $shift_schedules  = $this->shift_schedule_model->get_shift_schedule_all();
+        $companies        = $this->company_model->get_many_by($where);
+        $employee_details = $this->employee_model->get_employee_by([
+            'employees.id' => $employee_id]);
+
+
+        // dump($shift_schedules);exit;
 
         $this->data = array(
-            'page_header' => 'Employee Schedule Mangement',
-            'companies'   => $companies,
+            'page_header'     => 'Employee Schedule Mangement',
+            'companies'       => $companies,
+            'employee_id'     => $employee_id,
             'shift_schedules' => $shift_schedules,
-            'active_menu' => $this->active_menu,
+            'employee_details'=> $employee_details,
+            'active_menu'     => $this->active_menu,
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('employee_schedule_add'));
@@ -72,35 +82,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         if ($this->form_validation->run('employee_schedule_add') == TRUE)
         {
-            $this->session->set_flashdata('log_parameters', [
-                'action_mode' => 0,
-                'perm_key' 	  => 'add_employee_schedule',
-                'old_data'	  => NULL,
-                'new_data'    => $data
-            ]);
+            // $this->session->set_flashdata('log_parameters', [
+            //     'action_mode' => 0,
+            //     'perm_key'    => 'add_employee_schedule',
+            //     'old_data'    => NULL,
+            //     'new_data'    => $data
+            // ]);
 
             $employee_schedule_id = $this->employee_schedule_model->insert($data);
 
             if ( ! $employee_schedule_id) {
-                $this->session->set_flashdata('failed', 'Failed to add new employee schedule.');
-                redirect('employee_schedules');
+                $this->session->set_flashdata('failed', 'Failed to set new Schedule.');
+                redirect('employee_schedules/details/'.$employee_id);
             } else {
-            $this->session->set_flashdata('success', 'Successfully added ' .$data['']);
-                redirect('employee_schedules');
+            $this->session->set_flashdata('success', 'Successfully set new Schedule.');
+                redirect('employee_schedules/details/'.$employee_id);
             }
         }
 
         $this->load_view('forms/employee_schedule-add');
     }
 
-     function details($id)
+     function details($employee_id)
      {
-         $employee_schedule = $this->employee_schedule_model->get_employee_schedule_by(['attendance_employee_daily_schedules.employee_id' => $id]);
+         $employee_schedules = $this->employee_schedule_model->get_employees_by([
+            'attendance_employee_daily_schedules.employee_id' => $employee_id]);
+
+         $employee_details = $this->employee_model->get_employee_by([
+            'employees.id' => $employee_id]);
+
+         dump($employee_schedules);
+         dump('ADHGAGASDASDGASDGFASD');
+         dump($employee_details);exit;
+
 
          $this->data = array(
-             'page_header'       => 'Employee Schedule Details',
-             'employee_schedule' => $employee_schedule,
-             'active_menu'       => $this->active_menu,
+             'page_header'        => 'Employee Schedule Details',
+             'employee_schedules' => $employee_schedules,
+             'employee_details'   => $employee_details,
+             'active_menu'        => $this->active_menu,
          );
          $this->load_view('pages/employee_schedule-details');
      }
@@ -108,11 +128,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      public function edit($id)
      {
          // get specific employee_schedule based on the id
-         $employee_schedule = $this->employee_schedule_model->get_employee_schedule_by(['attendance_employee_daily_schedules.id' => $id]);
-        //  dump($employee_schedule);exit;
          // get all company records where status is equal to active
+
+         $employee_schedule = $this->employee_schedule_model->get_employee_schedule_by(['attendance_employee_daily_schedules.id' => $id]);
          $companies = $this->company_model->get_many_by(['active_status' => 1]);
-        //  dump($this->db->last_query());exit;
+
          $this->data = array(
              'page_header'       => 'Employee Schedule Management',
              'employee_schedule' => $employee_schedule,
@@ -121,27 +141,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          );
 
          $employee_schedules = $this->employee_schedule_model->get_employee_schedule_all();
-         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('employee_schedule_add'));
+         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('employee_schedule_edit'));
 
          $this->form_validation->set_data($data);
 
-         if ($this->form_validation->run('employee_schedule_add') == TRUE)
+         if ($this->form_validation->run('employee_schedule_edit') == TRUE)
          {
              $this->session->set_flashdata('log_parameters', [
                  'action_mode' => 1,
-                 'perm_key'	  => 'edit_employee_schedule_type',
-                 'old_data'	  => $employee_schedule,
-                 'new_data'	  => $data
+                 'perm_key'	   => 'edit_employee_schedule_type',
+                 'old_data'	   => $employee_schedule,
+                 'new_data'	   => $data
              ]);
 
              $employee_schedule_id = $this->employee_schedule_model->update($id, $data);
 
              if ( ! $employee_schedule_id) {
                  $this->session->set_flashdata('failed', 'Failed to update employee_schedule.');
-                 redirect('employee_schedules');
+                 redirect('employee_schedules/details/'.$employee_id);
              } else {
                  $this->session->set_flashdata('success', 'Employee Schedule successfully updated!');
-                 redirect('employee_schedules');
+                 redirect('employee_schedules/details/'.$employee_id);
              }
          }
          $this->load_view('forms/employee_schedule-edit');
@@ -149,9 +169,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
      public function edit_confirmation($id)
      {
-         $edit_employee_schedule         = $this->employee_schedule_model->get_by(['id' => $id]);
-         $data['edit_employee_schedule'] = $edit_employee_schedule;
-         $this->load->view('modals/modal-update-employee_schedule', $data);
+        $edit_employee_schedule         = $this->employee_schedule_model->get_by(['id' => $id]);
+        $data['edit_employee_schedule'] = $edit_employee_schedule;\
+        dump($data);
+        $this->load->view('modals/modal-update-employee_schedule', $data);
      }
 
      public function update_status($id)
@@ -167,13 +188,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
              if ($post['mode'] == 'De-activate')
              {
-                 dump('De-activating...');
+                 // dump('De-activating...');
                  $result = $this->employee_schedule_model->update($id, ['active_status' => 0]);
                  dump($this->db->last_query());
              }
              if ($post['mode'] == 'Activate')
              {
-                 dump('Activating...');
+                 // dump('Activating...');
                  $result = $this->employee_schedule_model->update($id, ['active_status' => 1]);
                  dump($this->db->last_query());
              }
