@@ -1,0 +1,65 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * 
+ */
+class Employee_salaries_model extends MY_Model
+{
+	protected $_table = 'employee_salaries';
+	protected $primary_key = 'id';
+	protected $return_type = 'array';
+
+	// Callbacks or Observers
+	protected $after_get = array('prep_details');
+	
+	protected function prep_details($employee_salary)
+	{
+		if ( ! isset($employee_salary)) return FALSE;
+		
+		// get middle initial base on middle name
+		$middle_initial = (strlen($employee_salary['middle_name']) > 1) ? substr($employee_salary['middle_name'], 0, 1) : $employee_salary['middle_name'];
+
+		$full_name = array(
+			$employee_salary['last_name'].', ',
+			$employee_salary['first_name'].' ',
+			$middle_initial
+		);
+
+		// concat employee first name, middle name, last name
+		$employee_salary['full_name'] = strtoupper(implode('', $full_name));
+
+		// check if active or inactive then set labels
+		$employee_salary['status_label'] = ($employee_salary['active_status'] == 1) ? 'ACTIVE':'INACTIVE';
+
+		return $employee_salary;
+	}
+
+	public function get_details($method, $where)
+    {
+        $this->db->select('
+                employee_salaries.id as employee_salaries_id,
+                employee_salaries.employee_id,
+                employee_salaries.company_id as employee_company_id,
+                employee_salaries.salary_matrix_id as employee_salary_matrix_id,
+                employee_salaries.salary_grade_id as employee_salary_grade_id,
+                employee_salaries.monthly_salary as employee_monthly_salary,
+                employee_salaries.active_status,
+                salary_matrix.effectivity_date as salary_matrix_effectivity_date,
+                salary_grade.grade_code as salary_grade_code,
+                employee.first_name,
+                employee.middle_name,
+                employee.last_name
+            ')
+            ->join('employees as employee', 'employee_salaries.employee_id = employee.id', 'left')
+            ->join('companies as company', 'employee_salaries.company_id = company.id', 'left')
+            ->join('salary_matrices as salary_matrix', 'employee_salaries.salary_matrix_id = salary_matrix.id', 'left')
+            ->join('salary_grades as salary_grade', 'employee_salaries.salary_grade_id = salary_grade.id', 'left');
+
+        return $this->{$method}($where);
+    }
+}
+
+// End of file Employee_salaries_model.php
+// Location: ./application/models/Employee_salaries_model.php
