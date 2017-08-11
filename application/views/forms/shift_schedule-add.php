@@ -84,7 +84,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-3">Number of Hours</label>
                         <div class="col-md-6">
-                            <input id="no_of_hours" type="text" name="no_of_hours" class="form-control" value="<?php echo set_value('no_of_hours'); ?>">
+                            <input id="no_of_hours" type="text" name="no_of_hours" class="form-control" value="8">
                             <div class="validation_error"><?php echo form_error('no_of_hours'); ?></div>
                         </div>
                     </div>
