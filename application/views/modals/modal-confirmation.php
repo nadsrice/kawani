@@ -1,4 +1,4 @@
-<form method="post" action=" <?php echo site_url($url); ?> ">
+<form method="post" action="<?php echo site_url($url); ?>">
 
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">&times;</button>

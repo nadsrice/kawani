@@ -2,6 +2,7 @@
     <div class="modal-header">
         <h4 class="modal-title">Modal Spouse Information</h4>
     </div>
+    <?php dump($spouse_id); ?>
     <div class="modal-body">
         <div class="form-group">
             <label for="" class="control-label col-sm-4">First Name</label>
@@ -82,7 +83,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="<?php site_url('employees/cancel_edit'); ?>" class="btn btn-default">Cancel</a>
+        <a href="<?php site_url('employees/cancel_edit'.$employee_id); ?>" class="btn btn-default">Cancel</a>
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>

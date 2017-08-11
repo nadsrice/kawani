@@ -151,7 +151,11 @@
         <?php if ($show_edit_modal): ?>
         <script>
             $(document).ready(function(){
-                $('#modal-edit').modal('show');
+                $('#modal-edit').modal({
+                    show     : true,
+                    keyboard : false,
+                    backdrop : false
+                });
             });
         </script>
         <div class="modal fade" id="modal-edit">

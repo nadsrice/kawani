@@ -22,7 +22,7 @@ class MY_Controller extends CI_Controller {
 		'department_model',
 		'employee_info_model',
 		'employment_type_model',
-		'employee_position_model',
+		'employee_positions_model',
 		'educational_attainment_model',
 		'employee_leave_credit_model',
 	];

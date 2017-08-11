@@ -35,6 +35,10 @@ class Attendance_official_businesses extends MY_Controller {
             'employee_info_model'
         ]);
     }
+    public function view_official_business()
+    {
+        $this->ion_auth_acl->has_permission('my_official_business');
+    }
 
     public function index()
     {
