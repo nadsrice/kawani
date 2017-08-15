@@ -29,14 +29,20 @@ $lang['cancel_official_business_message']  = 'Do you want to <strong>cancel</str
 $lang['unable_to_create_employee_account']     = 'Unable update user table. Invalid user id or employee id.';
 $lang['successfully_created_employee_account'] = 'Successfully added new employee and created account. Update the employment information now.';
 
-$lang['confirmation_edit_employee_detail'] = 'Are you sure you want to %s of <strong>%s</strong>';
+$lang['confirmation_message'] = 'Are you sure you want to %s of <strong>%s</strong>';
+
+$lang['success_add_employee_spouse'] = 'successfully added new employee spouse';
+$lang['success_add_employee_benefit'] = 'successfully added new employee benefit';
+$lang['success_add_employee_dependent'] = 'successfully added new employee dependent';
 
 $lang['success_update_personal_data'] = 'successfully updated employee personal information.';
 $lang['success_update_parent_data'] = 'successfully update parents information.';
-$lang['success_update_spouse_data'] = 'successfully updated spouse information';
+$lang['success_update_employee_spouse'] = 'successfully updated spouse information';
+$lang['success_update_employee_dependent'] = 'successfully updated dependent information';
 
 $lang['unable_update_personal_data'] = 'unable to update employee personal information.';
 $lang['unable_update_parent_data'] = 'unable to update employee parents information.';
 $lang['unable_update_spouse_data'] = 'unable to update employee spouse information.';
+$lang['unable_update_dependent_data'] = 'unable to update employee dependent information.';
 
 $lang['no_spouse_data_found'] = 'No spouse information found in database. Please try again.';

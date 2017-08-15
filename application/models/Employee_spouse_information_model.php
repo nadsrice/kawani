@@ -57,6 +57,40 @@ class Employee_spouse_information_model extends MY_Model
             redirect('employees/informations/'.$employee_id);
         }
     }
+
+	public function save($employee_id, $posted_data)
+	{
+		$mode = $posted_data['mode'];
+		$data = remove_unknown_field($posted_data, $this->form_validation->get_field_names('employee_spouse_information'));
+		$data['employee_id'] = $employee_id;
+
+		// check who is logged in user
+		$user = $this->ion_auth->user()->row();
+
+		if ($mode == 'add') {
+			$data['created'] = date('Y-m-d H:i:s');
+			$data['created_by'] = $user->id;
+			$data['active_status'] = 0;
+
+			$last_id = $this->insert($data);
+
+			if ($last_id) {
+				$this->session->set_flashdata('success', lang('success_add_employee_spouse'));
+				redirect('employees/informations/'.$employee_id);
+			}
+		}
+
+		if ($mode == 'edit') {
+			$data['modified'] = date('Y-m-d H:i:s');
+			$data['modified_by'] = $user->id;
+			$updated = $this->db->where('employee_id', $employee_id)->update($this->_table, $data);
+
+			if ($updated) {
+				$this->session->set_flashdata('success', lang('success_update_employee_spouse'));
+				redirect('employees/informations/'.$employee_id);
+			}
+		}
+	}
 }
 
 // End of file Employee_spouse_model.php

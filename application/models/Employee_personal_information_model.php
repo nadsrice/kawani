@@ -12,6 +12,7 @@ class Employee_personal_information_model extends MY_Model
     protected $_table       = 'employees';
     protected $primary_key  = 'id';
     protected $return_type  = 'array';
+    
     // protected $after_create = ['write_audit_trail'];
     // protected $after_update = ['write_audit_trail'];
 

@@ -58,6 +58,42 @@ class Employee_benefits_model extends MY_Model
 
         return $this->{$method}($where);
     }
+
+    public function save($employee_id, $posted_data)
+    {
+		$mode = $posted_data['mode'];
+		$data = remove_unknown_field($posted_data, $this->form_validation->get_field_names('employee_benefits'));
+		$data['employee_id'] = $employee_id;
+
+		$this->load->model('employee_employment_information_model');
+		$employee = $this->employee_employment_information_model->get_details('get_by', ['employee_information.employee_id' => $employee_id]);
+		$data['company_id'] = $employee['company_id'];
+
+		// check who is logged in user
+		$user = $this->ion_auth->user()->row();
+
+		if ($mode == 'add') {
+			$data['created'] = date('Y-m-d H:i:s');
+			$data['created_by'] = $user->id;
+			$last_id = $this->insert($data);
+
+			if ($last_id) {
+				$this->session->set_flashdata('success', lang('success_add_employee_benefit'));
+				redirect('employees/informations/'.$employee_id);
+			}
+		}
+
+		if ($mode == 'edit') {
+			$data['modified'] = date('Y-m-d H:i:s');
+			$data['modified_by'] = $user->id;
+			$updated = $this->db->where('employee_id', $employee_id)->update($this->_table, $data);
+
+			if ($updated) {
+				$this->session->set_flashdata('success', lang('success_update_spouse_data'));
+				redirect('employees/informations/'.$employee_id);
+			}
+		}
+    }
 }
 
 // End of file Employee_benefits_model.php
