@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      function __construct()
      {
         parent::__construct();
-        $this->load->library('audit_trail');
+        $this->load->library('audit_trail');    
         $this->load->model([
             'employee_schedule_model',
             'shift_schedule_model',
@@ -110,10 +110,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
          $employee_details = $this->employee_model->get_employee_by([
             'employees.id' => $employee_id]);
-
-         dump($employee_schedules);
-         dump('ADHGAGASDASDGASDGFASD');
-         dump($employee_details);exit;
 
 
          $this->data = array(
