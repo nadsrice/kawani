@@ -1,6 +1,5 @@
 <?php 
 
-<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -49,8 +48,8 @@ class Daily_time_record_model extends MY_Model {
 		);
 
 		$daily_time_record['full_name']     = strtoupper(implode('', $full_name));
-        $daily_time_record['active_status'] = ($daily_time_record['active_status'] == 1) ? 'Active' : 'Inactive';
-        $daily_time_record['status_label']  = ($daily_time_record['active_status'] == 'Active') ? 'De-activate' : 'Activate';
+        // $daily_time_record['active_status'] = ($daily_time_record['active_status'] == 1) ? 'Active' : 'Inactive';
+        // $daily_time_record['status_label']  = ($daily_time_record['active_status'] == 'Active') ? 'De-activate' : 'Activate';
         return $daily_time_record;
     }
 
@@ -61,10 +60,14 @@ class Daily_time_record_model extends MY_Model {
 			employee.first_name,
 			employee.middle_name,
 			employee.last_name,
-    	');
+            companies.name as comany_name,
+            attendance_shift_schedules.code as shift_code,
+
+    	')
     	->join('employees as employee', 'attendance_daily_time_records.employee_id = employee.id', 'left')
-    	->join('employees as employee', 'attendance_daily_time_records.employee_id = employee.id', 'left')
-    	->join('employees as employee', 'attendance_daily_time_records.employee_id = employee.id', 'left')
+    	->join('attendance_shift_schedules', 'attendance_daily_time_records.shift_schedule_id = attendance_shift_schedules.id', 'left')
+    	->join('companies', 'attendance_daily_time_records.company_id = companies.id', 'left');
+        
     	return $this->{$method}($where);
     }
 }

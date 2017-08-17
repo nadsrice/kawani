@@ -1168,7 +1168,7 @@ $config = array(
         array('field' => 'time_out',          'label' => 'Time Out',         'rules' => 'trim|required'),
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
-        array('field' => 'company_id'         'label' => 'Company',          'rules' => 'trim')
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
     ),
 
     'daily_time_record_edit' => array(
@@ -1178,7 +1178,7 @@ $config = array(
         array('field' => 'time_out',          'label' => 'Time Out',         'rules' => 'trim|required'),
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
-        array('field' => 'company_id'         'label' => 'Company',          'rules' => 'trim')
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
     ),
 
     'daily_time_log_add' => array(

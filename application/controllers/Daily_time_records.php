@@ -38,10 +38,11 @@ class Daily_time_records extends MY_Controller {
         // todo: get all companies records from database order by name ascending
             // todo: load daily_time_record model
             // todo: load view & past the retrieved data from model
-        $daily_time_records = $this->daily_time_record_model->get_daily_time_record_all();
+        $user               = $this->ion_auth->user()->row();
+        $daily_time_records = $this->daily_time_record_model->get_details('get_many_by', ['employee_id' => $user->employee_id]);
 
         $this->data = array(
-            'page_header'        => 'Daily Time Records Management',
+            'page_header'        => 'Attendance  Management',
             'daily_time_records' => $daily_time_records,
             'active_menu'        => $this->active_menu,
         );
@@ -52,7 +53,7 @@ class Daily_time_records extends MY_Controller {
     public function add()
     {
         $this->data = array(
-            'page_header' => 'Daily Time Record Management',
+            'page_header' => 'Attendance Management',
             'active_menu' => $this->active_menu,
         );
 
@@ -62,12 +63,12 @@ class Daily_time_records extends MY_Controller {
 
         if ($this->form_validation->run('daily_time_record_add') == TRUE)
         {
-            $this->session->set_flashdata('log_parameters', [
-                'action_mode' => 0,
-                'perm_key'    => 'add_daily_time_record',
-                'old_data'    => NULL,
-                'new_data'    => $data
-            ]);
+            // $this->session->set_flashdata('log_parameters', [
+            //     'action_mode' => 0,
+            //     'perm_key'    => 'add_daily_time_record',
+            //     'old_data'    => NULL,
+            //     'new_data'    => $data
+            // ]);
 
             $daily_time_record_id = $this->daily_time_record_model->insert($data);
 
@@ -76,6 +77,39 @@ class Daily_time_records extends MY_Controller {
                 redirect('daily_time_records');
             } else {
                 $this->session->set_flashdata('success', 'Successfully added new daily time record.');
+                redirect('daily_time_records');
+            }
+        }
+        $this->load_view('forms/daily_time_record-add');
+    }
+
+    public function time_in()
+    {
+        $this->data = array(
+            'page_header' => 'Attendance Management',
+            'active_menu' => $this->active_menu,
+        );
+
+        $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('daily_time_record_add'));
+
+        $this->form_validation->set_data($data);
+
+        if ($this->form_validation->run('daily_time_record_add') == TRUE)
+        {
+            // $this->session->set_flashdata('log_parameters', [
+            //     'action_mode' => 0,
+            //     'perm_key'    => 'add_daily_time_record',
+            //     'old_data'    => NULL,
+            //     'new_data'    => $data
+            // ]);
+
+            $daily_time_record_id = $this->daily_time_record_model->insert($data);
+
+            if ( ! $daily_time_record_id) {
+                $this->session->set_flashdata('failed', 'Failed to Time In');
+                redirect('daily_time_records');
+            } else {
+                $this->session->set_flashdata('success', 'Successfully Timed In');
                 redirect('daily_time_records');
             }
         }
@@ -93,7 +127,7 @@ class Daily_time_records extends MY_Controller {
         $daily_time_record = $this->daily_time_record_model->get_daily_time_record_by(['attendance_daily_time_records.id' => $daily_time_record_id]);
 
         $this->data = array(
-            'page_header' => 'Daily Time Record Management',
+            'page_header' => 'Attendance Management',
             'daily_time_record'     => $daily_time_record,
             'active_menu' => $this->active_menu,
         );
@@ -117,7 +151,7 @@ class Daily_time_records extends MY_Controller {
                 $this->session->set_flashdata('failed', 'Failed to update daily_time_record.');
                 redirect('daily_time_records');
             } else {
-                $this->session->set_flashdata('success', 'Daily Time Record successfully updated!');
+                $this->session->set_flashdata('success', 'Attendance successfully updated!');
                 redirect('daily_time_records');
             }
         }
@@ -131,7 +165,7 @@ class Daily_time_records extends MY_Controller {
 
 
         $this->data = array(
-            'page_header'       => 'Daily Time Record Details',
+            'page_header'       => 'Attendance Details',
             'daily_time_record' => $daily_time_record,
             'branches'          => $branches,
             'employees'         => $employees,
