@@ -26,9 +26,12 @@ class Employees extends MY_Controller {
 			'employee_parent_information_model',
 			'employee_spouse_information_model',
 			'employee_dependent_model',
+			'employee_address_model',
+			'employee_contact_model',
 			'employee_positions_model',
 			'employee_salaries_model',
 			'employee_benefits_model',
+			'employee_emergency_contact_model',
 			'employee_employment_information_model',
 			'civil_status_model',
 			'relationship_model',
@@ -80,10 +83,13 @@ class Employees extends MY_Controller {
 		$this->data['personal_information']   = $this->employee_model->get_by(['id' => $employee_id]);
 		$this->data['parents_information']    = $this->employee_parent_information_model->get_many_by(['employee_id' => $employee_id, 'relationship_id' => [2,3]]);
 		$this->data['employee_dependents']    = $this->employee_dependent_model->get_details('get_many_by', ['employee_dependents.employee_id' => $employee_id]);
-		$this->data['employment_information'] = $this->employee_employment_information_model->get_details('get_many_by', ['employee_information.employee_id' => $employee_id]);
+		$this->data['employee_adresses']	  = $this->employee_address_model->get_details('get_many_by', ['employee_addresses.employee_id' => $employee_id]);
+		$this->data['employee_contacts']	  = $this->employee_contact_model->get_details('get_many_by', ['employee_contacts.employee_id' => $employee_id]);
 		$this->data['employee_benefits']	  = $this->employee_benefits_model->get_details('get_many_by', ['employee_benefits.employee_id' => $employee_id]);
 		$this->data['employee_positions']	  = $this->employee_positions_model->get_details('get_many_by', ['employee_positions.employee_id' => $employee_id]);
 		$this->data['employee_salaries']	  = $this->employee_salaries_model->get_details('get_many_by', ['employee_salaries.employee_id' => $employee_id]);
+		$this->data['emergency_contacts']	  = $this->employee_emergency_contact_model->get_details('get_many_by', ['employee_emergency_contacts.employee_id' => $employee_id]);
+		$this->data['employment_information'] = $this->employee_employment_information_model->get_details('get_many_by', ['employee_information.employee_id' => $employee_id]);
 		$this->data['civil_status']           = $this->civil_status_model->get_many_by(['active_status' => 1]);
 		$this->data['relationships']          = $this->relationship_model->get_all();
 		$this->data['show_edit_modal']        = FALSE;
@@ -104,8 +110,7 @@ class Employees extends MY_Controller {
 			$this->data['show_edit_modal'] = TRUE;
 			$this->data['modal_content'] = ($post['mode'] == 'edit') ? $form['edit'] : $form['add'];
 			$this->data['modal_title'] = ucwords($modal_title);
-
-			// dump($this->data['modal_content']);exit;
+			
 		}
 
 		$this->load_view('pages/employee-informations');
@@ -186,43 +191,59 @@ class Employees extends MY_Controller {
 
 	public function view_employment_information($employee_information_id)
 	{
-		$employment_information = $this->employee_employment_information_model->get_details('get_by', ['employee_information.id' => $employee_information_id]);
+		$data['employment_information'] = $this->employee_employment_information_model->get_details('get_by', ['employee_information.id' => $employee_information_id]);
 		
-		$data['employment_information'] = $employment_information;
 		$this->load->view('modals/employee/details/employment-information', $data);
 	}
 
 
 	public function view_dependent_information($employee_dependent_id)
 	{
-		$employee_dependent = $this->employee_dependent_model->get_details('get_by', ['employee_dependents.id' => $employee_dependent_id]);
+		$data['employee_dependent'] = $this->employee_dependent_model->get_details('get_by', ['employee_dependents.id' => $employee_dependent_id]);
 		
-		$data['employee_dependent'] = $employee_dependent;
 		$this->load->view('modals/employee/details/employee-dependent', $data);
 	}
 
 	public function view_position_information($employee_positions_id)
 	{
-		$employee_position = $this->employee_positions_model->get_details('get_by', ['employee_positions.id' => $employee_positions_id]);
+		$data['employee_position'] = $this->employee_positions_model->get_details('get_by', ['employee_positions.id' => $employee_positions_id]);
 		
-		$data['employee_position'] = $employee_position;
 		$this->load->view('modals/employee/details/employee-positions', $data);
 	}
 
 	public function view_benefit_information($employee_benefits_id)
 	{
-		$employee_benefit = $this->employee_benefits_model->get_details('get_by', ['employee_benefits.id' => $employee_benefits_id]);
+		$data['employee_benefit'] = $this->employee_benefits_model->get_details('get_by', ['employee_benefits.id' => $employee_benefits_id]);
 		
-		$data['employee_benefit'] = $employee_benefit;
 		$this->load->view('modals/employee/details/employee-benefits', $data);
 	}
 
 	public function view_salary_information($employee_salaries_id)
 	{
-		$employee_salary = $this->employee_salaries_model->get_details('get_by', ['employee_salaries.id' => $employee_salaries_id]);
+		$$data['employee_salary'] = $this->employee_salaries_model->get_details('get_by', ['employee_salaries.id' => $employee_salaries_id]);
 		
-		$data['employee_salary'] = $employee_salary;
 		$this->load->view('modals/employee/details/employee-salaries', $data);
+	}
+
+	public function view_address_information($employee_address_id)
+	{
+		$data['employee_address'] = $this->employee_address_model->get_details('get_by', ['employee_addresses.id' => $employee_address_id]);
+		
+		$this->load->view('modals/employee/details/employee-address', $data);
+	}
+
+	public function view_contact_information($employee_contact_id)
+	{
+		$data['employee_contact'] = $this->employee_contact_model->get_details('get_by', ['employee_contacts.id' => $employee_contact_id]);
+		
+		$this->load->view('modals/employee/details/employee-contact', $data);
+	}
+
+	public function view_emergency_contact($emergency_contact_id)
+	{
+		$data['emergency_contact'] = $this->employee_emergency_contact_model->get_details('get_by', ['employee_emergency_contacts.id' => $emergency_contact_id]);
+		
+		$this->load->view('modals/employee/details/emergency-contact', $data);
 	}
 
 	// AJAX calls
@@ -239,6 +260,14 @@ class Employees extends MY_Controller {
 				dump($post);
 				exit;
 				echo json_encode(array('data' => $this->benefit_model->get_by()));
+			break;
+			case 'get-locations':
+				$this->load->model('location_model');
+				echo json_encode(array('data' => $this->location_model->get_all()));
+			break;
+			case 'get-countries':
+				$this->load->model('country_model');
+				echo json_encode(array('data' => $this->country_model->get_all()));
 			break;
 
 			default:

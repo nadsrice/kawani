@@ -19,7 +19,6 @@ $lang['approve_leave_message'] = 'Do you want to <strong>approve</strong> the le
 $lang['reject_leave_message']  = 'Do you want to <strong>reject</strong> the leave request of <strong>%s</strong>';
 $lang['cancel_leave_message']  = 'Do you want to <strong>cancel</strong> the leave request of <strong>%s</strong>';
 
-
 //OFFICIAL BUSINESS
 $lang['approve_official_business_message'] = 'Do you want to <strong>approve</strong> the official business request of <strong>%s</strong>';
 $lang['reject_official_business_message']  = 'Do you want to <strong>reject</strong> the official business request of <strong>%s</strong>';
@@ -31,18 +30,21 @@ $lang['successfully_created_employee_account'] = 'Successfully added new employe
 
 $lang['confirmation_message'] = 'Are you sure you want to %s of <strong>%s</strong>';
 
-$lang['success_add_employee_spouse'] = 'successfully added new employee spouse';
-$lang['success_add_employee_benefit'] = 'successfully added new employee benefit';
+$lang['success_add_employee_spouse'] 	= 'successfully added new employee spouse';
+$lang['success_add_employee_benefit'] 	= 'successfully added new employee benefit';
 $lang['success_add_employee_dependent'] = 'successfully added new employee dependent';
+$lang['success_add_employee_address'] 	= 'successfully added employee address';
 
-$lang['success_update_personal_data'] = 'successfully updated employee personal information.';
-$lang['success_update_parent_data'] = 'successfully update parents information.';
-$lang['success_update_employee_spouse'] = 'successfully updated spouse information';
-$lang['success_update_employee_dependent'] = 'successfully updated dependent information';
+$lang['success_update_personal_data'] 		= 'successfully updated employee personal information.';
+$lang['success_update_parent_data'] 		= 'successfully update parents information.';
+$lang['success_update_employee_spouse'] 	= 'successfully updated spouse information';
+$lang['success_update_employee_dependent']  = 'successfully updated dependent information';
+$lang['success_update_employee_address'] 	= 'successfully updated employee address';
 
-$lang['unable_update_personal_data'] = 'unable to update employee personal information.';
-$lang['unable_update_parent_data'] = 'unable to update employee parents information.';
-$lang['unable_update_spouse_data'] = 'unable to update employee spouse information.';
-$lang['unable_update_dependent_data'] = 'unable to update employee dependent information.';
+$lang['unable_update_personal_data'] 	= 'unable to update employee personal information.';
+$lang['unable_update_parent_data'] 		= 'unable to update employee parents information.';
+$lang['unable_update_spouse_data'] 		= 'unable to update employee spouse information.';
+$lang['unable_update_dependent_data'] 	= 'unable to update employee dependent information.';
+$lang['unable_update_address_data'] 	= 'unable to update employee address.';
 
 $lang['no_spouse_data_found'] = 'No spouse information found in database. Please try again.';

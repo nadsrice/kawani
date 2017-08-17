@@ -379,5 +379,18 @@ $config = array(
 		array('field' => 'remarks', 'label' => 'remarks', 'rules' => 'trim'),
 		array('field' => 'birth_certificate', 'label' => 'birth_certificate', 'rules' => 'trim'),
 		array('field' => 'company_id', 'label' => 'company_id', 'rules' => 'trim'),
-	)
+	),
+
+	'add_employee_address' => array(
+		array('field' => 'employee_id', 'label' => 'Employee', 'rules' => 'trim|required'),
+		array('field' => 'type', 'label' => 'Type', 'rules' => 'trim|required'),
+		array('field' => 'block_number', 'label' => 'Block Number', 'rules' => 'trim'),
+		array('field' => 'lot_number', 'label' => 'Lot Number', 'rules' => 'trim'),
+		array('field' => 'floor_number', 'label' => 'Floor Number', 'rules' => 'trim'),
+		array('field' => 'building_number', 'label' => 'Building Number', 'rules' => 'trim'),
+		array('field' => 'building_name', 'label' => 'Building Name', 'rules' => 'trim'),
+		array('field' => 'street', 'label' => 'Street', 'rules' => 'trim'),
+		array('field' => 'location_id', 'label' => 'Location', 'rules' => 'trim'),
+		array('field' => 'country_id', 'label' => 'Country', 'rules' => 'trim')
+	),
 );
