@@ -87,6 +87,7 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/dropzone/dropzone.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/parsleyjs/dist/parsleyjs.js'); ?>"></script>
 
 		<!-- Custom Javascript -->
 		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>

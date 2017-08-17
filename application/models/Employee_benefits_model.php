@@ -59,8 +59,8 @@ class Employee_benefits_model extends MY_Model
         return $this->{$method}($where);
     }
 
-    public function save($employee_id, $posted_data)
-    {
+	public function save($employee_id, $posted_data)
+	{
 		$mode = $posted_data['mode'];
 		$data = remove_unknown_field($posted_data, $this->form_validation->get_field_names('employee_benefits'));
 		$data['employee_id'] = $employee_id;
