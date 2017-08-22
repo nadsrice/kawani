@@ -24,11 +24,11 @@ class Users extends MY_Controller {
 	function index()
 	{
 		// dump($this->ion_auth_acl->has_permission('view_users'));exit;
-		if ( ! $this->ion_auth_acl->has_permission('my_official_business'))
-		{
-			$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
-			redirect('/', '');
-		}
+		// if ( ! $this->ion_auth_acl->has_permission('my_official_business'))
+		// {
+		// 	$this->session->set_flashdata('failed', 'Sorry you have no permission to access this function.');
+		// 	redirect('/', '');
+		// }
 
 		$this->data['has_permission'] = [
 			'assign_role' => $this->ion_auth_acl->has_permission('assign_roles'),

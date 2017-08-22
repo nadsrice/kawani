@@ -8,7 +8,7 @@
 			<div class="col-lg-7">
 				<?php $key = array_search($current_position['position_id'], array_column($positions, 'id')); ?>
 				<?php unset($positions[$key]); ?>
-				<select name="position_id" id="position_id" class="form-control">
+				<select name="position_id" id="position_id" class="form-control" required="true">
 					<option value="<?php echo $current_position['position_id']; ?>"><?php echo $current_position['position']; ?></option>
 					<option value="">--</option>
 					<?php foreach ($positions as $index => $position): ?>

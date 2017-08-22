@@ -1,5 +1,5 @@
 <div class="tab-pane fade" id="tab-salary">
-    <table class="table table-striped">
+    <table class="table table-striped" id="dt-employee-positions">
 		<tr>
 			<th>&nbsp;</th>
 			<th>Salary Matrix Effective Date</th>
