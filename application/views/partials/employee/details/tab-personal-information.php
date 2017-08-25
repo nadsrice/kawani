@@ -1,4 +1,4 @@
-<div class="tab-pane fade active in" id="tab-personal-information">
+<div class="tab-pane fade in" id="tab-personal-information">
     <div class="row">
         <div class="col-sm-12">
             <h4 class="pull-left">Personal Information</h4>

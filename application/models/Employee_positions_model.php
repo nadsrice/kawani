@@ -46,9 +46,10 @@ class Employee_positions_model extends MY_Model {
 
     protected function generate_date_created_status($employee_position)
     {
-        $employee_position['created'] = date('Y-m-d H:i:s');
+        $employee_position['created']       = date('Y-m-d H:i:s');
+        $employee_position['created_by']    = $this->ion_auth->user()->row()->id;
         $employee_position['active_status'] = 1;
-        $employee_position['created_by'] = '0';
+
         return $employee_position;
     }
 
@@ -69,6 +70,7 @@ class Employee_positions_model extends MY_Model {
                 department.name AS department,
                 team.name AS team,
                 site.name AS site,
+                position.id AS position_id,
                 position.name AS position,
             ')
             ->join('employees as employee', 'employee_positions.employee_id = employee.id', 'left')
@@ -77,9 +79,15 @@ class Employee_positions_model extends MY_Model {
             ->join('branches as branch', 'employee_positions.branch_id = branch.id', 'left')
             ->join('departments as department', 'employee_positions.department_id = department.id', 'left')
             ->join('teams as team', 'employee_positions.team_id = team.id', 'left')
-            ->join('cost_centers as cost_center', 'employee_positions.costcenter_id = cost_center.id', 'left')
-            ->join('sites as site', 'employee_positions.site_id = site.id', 'left');
+            ->join('cost_centers as cost_center', 'employee_positions.cost_center_id = cost_center.id', 'left')
+            ->join('sites as site', 'employee_positions.site_id = site.id', 'left')
+            ->order_by('employee_positions.id', 'desc');
 
         return $this->{$method}($where);
+    }
+
+    public function get_fields()
+    {
+        return $this->db->list_fields($this->_table);
     }
 }

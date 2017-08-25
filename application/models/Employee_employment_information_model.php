@@ -37,6 +37,7 @@ class Employee_employment_information_model extends MY_Model
 		$this->db->select('
 				employee_information.id as employee_information_id,
 				employee_information.employee_id,
+				employee_information.company_id,
 				employee_information.date_hired,
 				employee_information.date_regularized,
 				employee_information.regularization_status,
