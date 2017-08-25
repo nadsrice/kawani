@@ -2,11 +2,16 @@
     <div class="col-md-6">&nbsp;</div>
     <div class="col-md-6">
         <div class="pull-right">
-            <a href="<?php echo site_url('daily_time_records/time_in'); ?>" class="btn btn-primary">
+            <a href="<?php echo site_url('daily_time_records/time_in/'.$employee_id); ?>" class="btn btn-primary">
                 <i class="fa fa-clock-o"></i>
                 <span>Time In</span>
             </a>
-        </div>
+
+            <a href="<?php echo site_url('daily_time_records/time_out/'.$employee_id); ?>" class="btn btn-primary">
+                <i class="fa fa-clock-o"></i>
+                <span>Time Out</span>
+            </a>
+        </div>    
     </div>
 </div>
 <br>
@@ -27,6 +32,7 @@
                             <th class="text-left">Time Out</th>
                             <th class="text-left">Hours Rendered</th>
                             <th class="text-left">Tardiness</th>
+                            <!-- <th class="text-left">Remarks</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -36,10 +42,10 @@
                                     <td>
                                         <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('daily_time_records/details/' . $daily_time_record['id']); ?>">
                                             <i class="fa fa-search"></i> View
-                                        </a>
+                                        </a><!-- 
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('daily_time_records/edit_confirmation/' . $daily_time_record['id']); ?>" data-toggle="modal" data-target="#update-daily_time_record-<?php echo md5($daily_time_record['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
-                                        </a>
+                                        </a> -->
                                         <!-- <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('daily_time_records/update_status/' . $daily_time_record['id']); ?>" data-toggle="modal" data-target="#update-daily_time_record-status-<?php echo md5($daily_time_record['id']); ?>">
                                             <i class="fa fa-cog"></i> <?php echo $daily_time_record['status_label']; ?>
                                         </a> -->

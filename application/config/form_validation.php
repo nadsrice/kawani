@@ -1168,6 +1168,7 @@ $config = array(
         array('field' => 'time_out',          'label' => 'Time Out',         'rules' => 'trim|required'),
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
+        array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
         array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
     ),
 
@@ -1178,15 +1179,18 @@ $config = array(
         array('field' => 'time_out',          'label' => 'Time Out',         'rules' => 'trim|required'),
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
+        array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
         array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
     ),
 
     'daily_time_log_add' => array(
         array('field' => 'employee_id', 'label' => 'Employee',    'rules' => 'trim|required'),
         array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim|required'),
-        array('field' => 'log_type',    'label' => 'Log Type',    'rules' => 'trim|required'),
-        array('field' => 'device_id',   'label' => 'Device',      'rules' => 'trim|required'),
-        array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim')
+        array('field' => 'log_type',    'label' => 'Log Type',    'rules' => 'trim'),
+        array('field' => 'device_id',   'label' => 'Device',      'rules' => 'trim'),
+        array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim'),
+        array('field' => 'latitude',    'label' => 'Latitude',    'rules' => 'trim'),
+        array('field' => 'longitude',   'label' => 'Longitude',   'rules' => 'trim')
     ),
 
     'daily_time_log_edit' => array(
@@ -1194,6 +1198,8 @@ $config = array(
         array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim|required'),
         array('field' => 'log_type',    'label' => 'Log Type',    'rules' => 'trim|required'),
         array('field' => 'device_id',   'label' => 'Device',      'rules' => 'trim|required'),
-        array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim')
+        array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim'),
+        array('field' => 'latitude',    'label' => 'Latitude',    'rules' => 'trim'),
+        array('field' => 'longitude',   'label' => 'Longitude',   'rules' => 'trim')
     ),
 );

@@ -21,7 +21,7 @@ class Daily_time_record_model extends MY_Model {
     /**
      * Callbacks or Observers
      */
-    protected $before_create = ['generate_date_created_status'];
+    // protected $before_create = ['generate_date_created_status'];
     protected $after_create  = ['write_audit_trail'];
     protected $after_update  = ['write_audit_trail'];
     protected $after_get 	 = array('set_default_data');
@@ -62,7 +62,8 @@ class Daily_time_record_model extends MY_Model {
 			employee.last_name,
             companies.name as comany_name,
             attendance_shift_schedules.code as shift_code,
-
+            attendance_shift_schedules.time_start as time_start,
+            attendance_shift_schedules.time_end as time_end
     	')
     	->join('employees as employee', 'attendance_daily_time_records.employee_id = employee.id', 'left')
     	->join('attendance_shift_schedules', 'attendance_daily_time_records.shift_schedule_id = attendance_shift_schedules.id', 'left')

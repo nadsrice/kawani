@@ -1,6 +1,5 @@
 <?php 
 
-<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -15,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Daily_time_log_model extends MY_Model {
 
-    protected $_table 	   = 'attendance_daily_time_logs';
+    protected $_table 	   = 'attendance_time_logs';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
@@ -30,9 +29,9 @@ class Daily_time_log_model extends MY_Model {
     protected function generate_date_created_status($daily_time_log)
     {
     	$user_id                     		= $this->ion_auth->user()->row(); //user id
-        $daily_time_log['created']       = date('Y-m-d H:i:s');
-        $daily_time_log['active_status'] = 1;
-        $daily_time_log['created_by']    = $user_id;
+        // $daily_time_log['created']       = date('Y-m-d H:i:s');
+        // $daily_time_log['active_status'] = 1;
+        // $daily_time_log['created_by']    = $user_id;
         return $daily_time_log;
     }
 
@@ -61,10 +60,10 @@ class Daily_time_log_model extends MY_Model {
 			employee.first_name,
 			employee.middle_name,
 			employee.last_name,
-    	');
-    	->join('employees as employee', 'attendance_daily_time_logs.employee_id = employee.id', 'left')
-    	->join('employees as employee', 'attendance_daily_time_logs.employee_id = employee.id', 'left')
-    	->join('employees as employee', 'attendance_daily_time_logs.employee_id = employee.id', 'left')
+    	')
+        ->join('employees as employee', 'attendance_daily_time_logs.employee_id = employee.id', 'left')
+        ->join('companies', 'attendance_daily_time_logs.company_id = companies.id', 'left');
+
     	return $this->{$method}($where);
     }
 }
