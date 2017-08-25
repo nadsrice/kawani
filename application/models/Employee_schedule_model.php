@@ -26,26 +26,27 @@ class Employee_schedule_model extends MY_Model {
 
     protected function generate_date_created_status($employee_schedule)
     {
-        $employee_schedule['created']       = date('Y-m-d H:i:s');
-        $employee_schedule['status'] = 1;
-        $employee_schedule['created_by']    = 0;
+        $employee_schedule['created']    = date('Y-m-d H:i:s');
+        $employee_schedule['status']     = 1;
+        $employee_schedule['created_by'] = 0;
         return $employee_schedule;
     }
 
     protected function set_default_data($employee_schedule)
     {
+
+        if ( ! isset($employee_schedule['id'])) return FALSE;
+        
         $employee_schedule['active_status'] = ($employee_schedule['status'] == 1) ? 'Active' : 'Inactive';
         $employee_schedule['status_label']  = ($employee_schedule['status'] == 'Active') ? 'De-activate' : 'Activate';
 
-        if ( ! isset($employee_schedule['id'])) return FALSE;
+        // $fullname = array(
+        //     $employee_schedule['last_name'].',',
+        //     $employee_schedule['first_name'],
+        //     $employee_schedule['middle_name']
+        // );
 
-        $fullname = array(
-            $employee_schedule['last_name'].',',
-            $employee_schedule['first_name'],
-            $employee_schedule['middle_name']
-        );
-
-        $employee_schedule['fullname'] = strtoupper(implode(' ', $fullname));
+        // $employee_schedule['fullname'] = strtoupper(implode(' ', $fullname));
 
         return $employee_schedule;
     }
@@ -98,7 +99,6 @@ class Employee_schedule_model extends MY_Model {
         $this->db->select('
             attendance_employee_daily_schedules.*,
             attendance_employee_daily_schedules.id as attendance_id,
-            employees.*,
             employees.id as employee_id,
             employees.employee_code as employee_code,
             CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name,

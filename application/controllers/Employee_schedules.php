@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      function __construct()
      {
         parent::__construct();
-        $this->load->library('audit_trail');
+        $this->load->library('audit_trail');    
         $this->load->model([
             'employee_schedule_model',
             'shift_schedule_model',
@@ -111,16 +111,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          $employee_details = $this->employee_model->get_employee_by([
             'employees.id' => $employee_id]);
 
-         dump($employee_schedules);
-         dump('ADHGAGASDASDGASDGFASD');
-         dump($employee_details);exit;
-
 
          $this->data = array(
              'page_header'        => 'Employee Schedule Details',
              'employee_schedules' => $employee_schedules,
              'employee_details'   => $employee_details,
              'active_menu'        => $this->active_menu,
+             'employee_id' => $employee_id
          );
          $this->load_view('pages/employee_schedule-details');
      }
@@ -170,8 +167,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      public function edit_confirmation($id)
      {
         $edit_employee_schedule         = $this->employee_schedule_model->get_by(['id' => $id]);
-        $data['edit_employee_schedule'] = $edit_employee_schedule;\
-        dump($data);
+        $data['edit_employee_schedule'] = $edit_employee_schedule;
+        // dump($data);
         $this->load->view('modals/modal-update-employee_schedule', $data);
      }
 
@@ -214,4 +211,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
              $this->load->view('modals/modal-update-employee_schedule-status', $data);
          }
      }
- }
+
+
+
+    public function add_schedule()
+    {
+        $post = $this->input->post();
+
+        $this->employee_schedule_model->insert($post);
+
+        $this->session->set_flashdata('success', 'Schedule successfully saved!');
+        redirect('employee_schedules/details/'.$post['employee_id']);
+    }
+
+
+    // ajax call
+    public function events() 
+    {
+        $employee_id = $this->uri->segment(3);
+        $data['schedules'] = array();
+
+        $employee_schedules = $this->employee_schedule_model->get_many_by(['employee_id' => $employee_id]);
+        dump($employee_schedules);exit;
+
+        foreach ($employee_schedules as $key => $schedule) {
+            $data['schedules'][] = array(
+                'title' => 'EmployeeID['.$schedule['time_start'].']',
+                'start' => $schedule['date'],
+                'end'   => $schedule['date']
+            );
+        }
+
+        echo json_encode($data);
+    }
+}

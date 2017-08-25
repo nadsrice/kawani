@@ -45,14 +45,13 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane fade in" id="tab1">
+                        <div class="tab-pane active fade in" id="tab1">
                             <div class="row">
-                                
+                                <div class="col-lg-12">
+                                    <div id="employeeScheduleCalendar"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="tab-content">
                         <div class="tab-pane fade in" id="tab2">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -79,7 +78,6 @@
                                     <tbody>
                                     <?php if ( ! empty($employee_schedules)): ?>
                                         <?php foreach ($employee_schedules as $employee_schedule): ?>
-                                            <?php dump($employee_schedule); ?>
                                         <tr>
                                             <td>
                                                 <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('employee_schedules/edit_confirmation/' . $employee_schedule['id']); ?>" data-toggle="modal" data-target="#update-employee_schedule-<?php echo md5($employee_schedule['id']); ?>">
@@ -117,3 +115,68 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalAddSchedule">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal" action="<?php echo site_url('employee_schedules/add_schedule'); ?>" method="post">
+                <div class="modal-header">New Schedule</div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">Selected Date</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="date" id="clickedDate" class="form-control" readonly="readonly"> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">Shift Code</label>
+                        <div class="col-sm-8">
+                            <select name="shift_id" class="form-control" required="true">
+                                <option value="">-- SELECT SHIFT CODE --</option>
+                                <option value="1">-- AM --</option>
+                                <option value="2">-- PM --</option>
+                                <option value="3">-- GY --</option>
+                                <option value="4">-- FT --</option>
+                                <option value="5">-- BS --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="employee_id" value="<?php echo $employee_id; ?>">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>         
+            </form>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+
+		var dateLastClicked = null;
+
+		$('#employeeScheduleCalendar').fullCalendar({
+			eventSources: [
+				{
+                    color: '#83C379',
+                    textColor: '#000000',
+                    events: function(start, end, timezone, callback) {
+                        $.ajax({
+                            url: '<?php echo base_url('employee_schedules/events/'.$employee_id) ?>',
+                            dataType: 'json',
+                            success: function(response) {
+                                var schedules = response.schedules;
+                                console.log(schedules);
+                                callback(schedules);
+                            }
+                        });
+                    }
+                }
+			],
+            dayClick: function(date, jsEvent, view) {
+                $('#modalAddSchedule').modal();
+                $('#clickedDate').val(date.format())
+            }
+		});
+	});
+</script>
