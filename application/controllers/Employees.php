@@ -94,7 +94,18 @@ class Employees extends MY_Controller {
 		$this->data['employment_information'] = $this->employee_employment_information_model->get_details('get_many_by', ['employee_information.employee_id' => $employee_id]);
 		$this->data['civil_status']           = $this->civil_status_model->get_many_by(['active_status' => 1]);
 		$this->data['relationships']          = $this->relationship_model->get_all();
-		$this->data['show_edit_modal']        = FALSE;
+		$this->data['positions'] 	 		  = $this->position_model->get_many_by(['active_status' => 1]);
+
+		$this->data['current_position']	 = $this->employee_positions_model->get_details('get_by', [
+			'employee_positions.employee_id'   => $employee_id,
+			'employee_positions.active_status' => 1
+		]);
+		$this->data['employee_information'] = $this->employee_information_model->get_by([
+			'employee_id'   => $employee_id,
+			'active_status' => 1
+		]);
+
+		$this->data['show_edit_modal'] = FALSE;
 
 		$civil_status_id = $this->data['personal_information']['civil_status_id'];
 
@@ -109,14 +120,47 @@ class Employees extends MY_Controller {
 			$explode = explode('-', $post['information_type']);
 			$modal_title = $post['mode'].' '.implode(' ', $explode);
 
-			$this->data['show_edit_modal'] = TRUE;
-			$this->data['modal_content'] = ($post['mode'] == 'edit') ? $form['edit'] : $form['add'];
-			$this->data['modal_title'] = ucwords($modal_title);
+			$this->data['show_edit_modal']  = TRUE;
+			$this->data['modal_content'] 	= $form[$post['mode']];
+			$this->data['modal_title'] 		= ucwords($modal_title);
 			
+		}
+
+		if (isset($post['test_mode']) && $post['test_mode'] == 'test')
+		{
+			$this->data['show_edit_modal'] 	= TRUE;
+			$this->data['modal_content'] 	= 'modals/employee/forms/modal-change-designation';
+			$this->data['modal_title']		= ucwords($post['modal_title']);
 		}
 
 		$this->load_view('pages/employee-informations');
     }
+
+	public function test_confirm()
+	{
+		$redirect	 = $this->uri->segment(3);
+		$employee_id = $this->uri->segment(4);
+
+		$employee = $this->employee_model->get_by('id', $employee_id);
+		$exploded = explode('_', $redirect);
+		$action   = implode(' ', $exploded);
+		$confirm_message = sprintf(lang('confirmation_message'), $action, ucwords(strtolower($employee['full_name'])));
+
+		$data = array(
+			'modal_title' 	=> ucwords($action),
+			'modal_message' => $confirm_message,
+			'test_mode'		=> 'test',
+			'url'		 	=> 'employees/informations/' . $employee_id
+		);
+
+		$this->load->view('modals/modal-confirmation', $data);
+	}
+
+	public function add_salary()
+	{
+		$employee_id = $this->uri->segment(3);
+		$this->load->view('modals/modal-confirmation', $data);
+	}
 
     public function confirmation()
     {
@@ -263,17 +307,14 @@ class Employees extends MY_Controller {
 	public function change_designation()
 	{
 		$employee_id = $this->uri->segment(3);
-		$data['employee_id'] = $employee_id;
-		$data['modal_title'] = 'Change Designation';
-		$data['positions'] 	 = $this->position_model->get_many_by(['active_status' => 1]);
 
-		$data['current_position'] = $this->employee_positions_model->get_details('get_by', [
-			'employee_positions.employee_id' => $employee_id,
+		$current_postion = $this->employee_positions_model->get_details('get_by', [
+			'employee_positions.employee_id'   => $employee_id,
 			'employee_positions.active_status' => 1
 		]);
-		
+
 		$employee_information = $this->employee_information_model->get_by([
-			'employee_id' => $employee_id,
+			'employee_id'   => $employee_id,
 			'active_status' => 1
 		]);
 
@@ -281,49 +322,74 @@ class Employees extends MY_Controller {
 
 		$message = array();
 
-		if (isset($post['mode']) && $post['mode'] === 'post') {
+		dump($employee_information, 'employee_information ===> ');
 
-			$insert_data = array(
-				'employee_id' 	 => $employee_id,
-				'company_id' 	 => $employee_information['company_id'],
-				'branch_id' 	 => $employee_information['branch_id'],
-				'department_id'  => $employee_information['department_id'],
-				'team_id' 		 => $employee_information['team_id'],
-				'cost_center_id' => $employee_information['cost_center_id'],
-				'site_id' 		 => $employee_information['site_id'],
-				'position_id' 	 => $post['position_id'],
-				'date_started'	 => $post['date_started'],
-				'remarks'		 => $post['remarks'],
-				'created'		 => date('Y-m-d H:i:s'),
-				'created_by'	 => $this->ion_auth->user()->row()->id,
-				'active_status'	 => 1
-			);
-
-			$last_id = $this->employee_positions_model->insert($insert_data);
-			if ($last_id) {
-				$message[] = 'successfully insert new employee position.';
-				$current_position_id = $data['current_position']['employee_positions_id'];
-
-				$update = $this->employee_positions_model->update($current_position_id, [
-					'active_status' => 0,
-					'date_ended'	=> date('Y-m-d H:i:s')
-				]);
-
-				if ($update) {
-					$message[] = 'successfully updated previous employee position.';
-				} else {
-					$message[] = 'unable to update previous employee position.';
-				}
-
-			} else {
-				$message[] = 'unable to insert new employee position.';
-			}
-			
-			$this->session->set_flashdata('message', implode(' ', $message));
+		if ($employee_information == NULL) {
+			$message[] = 'Employee Informtation is NULL. Please try again.';
+			$this->session->set_flashdata('failed', implode(' ', $message));
 			redirect('employees/informations/' . $employee_id);
 		}
 
-		$this->load->view('modals/modal-change-designation', $data);
+		$check_list = array(
+			'company_id',
+			'branch_id',
+			'cost_center_id',
+			'department_id',
+			'team_id',
+			'site_id'
+		);
+
+		$fields = $this->db->field_data('employee_information');
+
+		foreach ($fields as $field) {
+			dump($field->name);
+		}
+
+		exit;
+
+		$insert_data = array(
+			'employee_id' 	 => $employee_id,
+			'company_id' 	 => $employee_information['company_id'],
+			'branch_id' 	 => $employee_information['branch_id'],
+			'department_id'  => $employee_information['department_id'],
+			'team_id' 		 => $employee_information['team_id'],
+			'cost_center_id' => $employee_information['cost_center_id'],
+			'site_id' 		 => $employee_information['site_id'],
+			'position_id' 	 => $post['position_id'],
+			'date_started'	 => $post['date_started'],
+			'remarks'		 => $post['remarks'],
+			'created'		 => date('Y-m-d H:i:s'),
+			'created_by'	 => $this->ion_auth->user()->row()->id,
+			'active_status'	 => 1
+		);
+
+		dump($insert_data, 'insert_data ===> ');
+
+		$last_id = $this->employee_positions_model->insert($insert_data);
+
+		if ( ! $last_id) {
+			$message[] = 'Unable to change employee position.';
+		}
+
+		$message[] = 'Successfully change employee position.';
+		$current_position_id = $current_postion['employee_positions_id'];
+
+		$update = $this->employee_positions_model->update($current_position_id, [
+			'active_status' => 0,
+			'date_ended'	=> date('Y-m-d H:i:s')
+		]);
+
+		if ( ! $updated) {
+			$message[] = 'Unable to deactivate previous employee position.';
+		}
+
+		$message[] = 'Successfully deactivated previous employee position.';
+
+		dump($message, 'message ===> ');
+		exit;
+		
+		$this->session->set_flashdata('message', implode(' ', $message));
+		redirect('employees/informations/' . $employee_id);
 	}
 
 	// AJAX calls

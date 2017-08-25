@@ -1,4 +1,4 @@
-<form action="<?php echo site_url('employees/change_designation/'.$employee_id); ?>" method="post" class="form-horizontal">
+<form action="<?php echo site_url('employees/change_designation/' . $employee_id); ?>" method="post" class="form-horizontal">
 	<div class="modal-header">
 		<h4 class="modal-title"><?php echo $modal_title; ?></h4>
 	</div>
@@ -9,11 +9,14 @@
 				<?php $key = array_search($current_position['position_id'], array_column($positions, 'id')); ?>
 				<?php unset($positions[$key]); ?>
 				<select name="position_id" id="position_id" class="form-control" required="true">
+					<?php if ($current_position['position_id']): ?>
 					<option value="<?php echo $current_position['position_id']; ?>"><?php echo $current_position['position']; ?></option>
-					<option value="">--</option>
+					<?php else: ?>
+					<option value="">-- SELECT POSITION --</option>
 					<?php foreach ($positions as $index => $position): ?>
 					<option value="<?php echo $position['id']; ?>"><?php echo $position['name']; ?></option>
 					<?php endforeach ?>
+					<?php endif ?>
 				</select>
 			</div>
 		</div>
