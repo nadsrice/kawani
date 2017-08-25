@@ -31,12 +31,14 @@ class Employees extends MY_Controller {
 			'employee_positions_model',
 			'employee_salaries_model',
 			'employee_benefits_model',
+			'employee_information_model',
 			'employee_emergency_contact_model',
 			'employee_employment_information_model',
 			'civil_status_model',
 			'relationship_model',
 			'location_model',
-			'country_model'
+			'country_model',
+			'position_model'
 		]);
 	}
 
@@ -92,7 +94,18 @@ class Employees extends MY_Controller {
 		$this->data['employment_information'] = $this->employee_employment_information_model->get_details('get_many_by', ['employee_information.employee_id' => $employee_id]);
 		$this->data['civil_status']           = $this->civil_status_model->get_many_by(['active_status' => 1]);
 		$this->data['relationships']          = $this->relationship_model->get_all();
-		$this->data['show_edit_modal']        = FALSE;
+		$this->data['positions'] 	 		  = $this->position_model->get_many_by(['active_status' => 1]);
+
+		$this->data['current_position']	 = $this->employee_positions_model->get_details('get_by', [
+			'employee_positions.employee_id'   => $employee_id,
+			'employee_positions.active_status' => 1
+		]);
+		$this->data['employee_information'] = $this->employee_information_model->get_by([
+			'employee_id'   => $employee_id,
+			'active_status' => 1
+		]);
+
+		$this->data['show_edit_modal'] = FALSE;
 
 		$civil_status_id = $this->data['personal_information']['civil_status_id'];
 
@@ -107,14 +120,47 @@ class Employees extends MY_Controller {
 			$explode = explode('-', $post['information_type']);
 			$modal_title = $post['mode'].' '.implode(' ', $explode);
 
-			$this->data['show_edit_modal'] = TRUE;
-			$this->data['modal_content'] = ($post['mode'] == 'edit') ? $form['edit'] : $form['add'];
-			$this->data['modal_title'] = ucwords($modal_title);
+			$this->data['show_edit_modal']  = TRUE;
+			$this->data['modal_content'] 	= $form[$post['mode']];
+			$this->data['modal_title'] 		= ucwords($modal_title);
 			
+		}
+
+		if (isset($post['test_mode']) && $post['test_mode'] == 'test')
+		{
+			$this->data['show_edit_modal'] 	= TRUE;
+			$this->data['modal_content'] 	= 'modals/employee/forms/modal-change-designation';
+			$this->data['modal_title']		= ucwords($post['modal_title']);
 		}
 
 		$this->load_view('pages/employee-informations');
     }
+
+	public function test_confirm()
+	{
+		$redirect	 = $this->uri->segment(3);
+		$employee_id = $this->uri->segment(4);
+
+		$employee = $this->employee_model->get_by('id', $employee_id);
+		$exploded = explode('_', $redirect);
+		$action   = implode(' ', $exploded);
+		$confirm_message = sprintf(lang('confirmation_message'), $action, ucwords(strtolower($employee['full_name'])));
+
+		$data = array(
+			'modal_title' 	=> ucwords($action),
+			'modal_message' => $confirm_message,
+			'test_mode'		=> 'test',
+			'url'		 	=> 'employees/informations/' . $employee_id
+		);
+
+		$this->load->view('modals/modal-confirmation', $data);
+	}
+
+	public function add_salary()
+	{
+		$employee_id = $this->uri->segment(3);
+		$this->load->view('modals/modal-confirmation', $data);
+	}
 
     public function confirmation()
     {
@@ -170,7 +216,10 @@ class Employees extends MY_Controller {
 		$employee_id = $this->uri->segment(3);
 		$spouse_id = $this->uri->segment(4);
 
-		$this->data['spouse_information'] = $this->employee_spouse_information_model->get_by(['employee_id' => $employee_id, 'id' => $spouse_id]);
+		$this->data['spouse_information'] = $this->employee_spouse_information_model->get_by([
+			'employee_id' => $employee_id,
+			'id' => $spouse_id
+		]);
 
 		if (isset($post['mode']) && $post['mode'] == 'edit')
 		{
@@ -191,7 +240,9 @@ class Employees extends MY_Controller {
 
 	public function view_employment_information($employee_information_id)
 	{
-		$data['employment_information'] = $this->employee_employment_information_model->get_details('get_by', ['employee_information.id' => $employee_information_id]);
+		$data['employment_information'] = $this->employee_employment_information_model->get_details('get_by', [
+			'employee_information.id' => $employee_information_id
+		]);
 		
 		$this->load->view('modals/employee/details/employment-information', $data);
 	}
@@ -199,51 +250,146 @@ class Employees extends MY_Controller {
 
 	public function view_dependent_information($employee_dependent_id)
 	{
-		$data['employee_dependent'] = $this->employee_dependent_model->get_details('get_by', ['employee_dependents.id' => $employee_dependent_id]);
-		
+		$data['employee_dependent'] = $this->employee_dependent_model->get_details('get_by', [
+			'employee_dependents.id' => $employee_dependent_id
+		]);
 		$this->load->view('modals/employee/details/employee-dependent', $data);
 	}
 
 	public function view_position_information($employee_positions_id)
 	{
-		$data['employee_position'] = $this->employee_positions_model->get_details('get_by', ['employee_positions.id' => $employee_positions_id]);
-		
+		$data['employee_position'] = $this->employee_positions_model->get_details('get_by', [
+			'employee_positions.id' => $employee_positions_id
+		]);
 		$this->load->view('modals/employee/details/employee-positions', $data);
 	}
 
 	public function view_benefit_information($employee_benefits_id)
 	{
-		$data['employee_benefit'] = $this->employee_benefits_model->get_details('get_by', ['employee_benefits.id' => $employee_benefits_id]);
-		
+		$data['employee_benefit'] = $this->employee_benefits_model->get_details('get_by', [
+			'employee_benefits.id' => $employee_benefits_id
+		]);
 		$this->load->view('modals/employee/details/employee-benefits', $data);
 	}
 
 	public function view_salary_information($employee_salaries_id)
 	{
-		$$data['employee_salary'] = $this->employee_salaries_model->get_details('get_by', ['employee_salaries.id' => $employee_salaries_id]);
-		
+		$$data['employee_salary'] = $this->employee_salaries_model->get_details('get_by', [
+			'employee_salaries.id' => $employee_salaries_id
+		]);
 		$this->load->view('modals/employee/details/employee-salaries', $data);
 	}
 
 	public function view_address_information($employee_address_id)
 	{
-		$data['employee_address'] = $this->employee_address_model->get_details('get_by', ['employee_addresses.id' => $employee_address_id]);
-		
+		$data['employee_address'] = $this->employee_address_model->get_details('get_by', [
+			'employee_addresses.id' => $employee_address_id
+		]);
 		$this->load->view('modals/employee/details/employee-address', $data);
 	}
 
 	public function view_contact_information($employee_contact_id)
 	{
-		$data['employee_contact'] = $this->employee_contact_model->get_details('get_by', ['employee_contacts.id' => $employee_contact_id]);
-		
+		$data['employee_contact'] = $this->employee_contact_model->get_details('get_by', [
+			'employee_contacts.id' => $employee_contact_id
+		]);
 		$this->load->view('modals/employee/details/employee-contact', $data);
 	}
 
 	public function view_emergency_contact($emergency_contact_id)
 	{
-		$data['emergency_contact'] = $this->employee_emergency_contact_model->get_details('get_by', ['employee_emergency_contacts.id' => $emergency_contact_id]);
-		
+		$data['emergency_contact'] = $this->employee_emergency_contact_model->get_details('get_by', [
+			'employee_emergency_contacts.id' => $emergency_contact_id
+		]);
 		$this->load->view('modals/employee/details/emergency-contact', $data);
+	}
+
+	public function change_designation()
+	{
+		$employee_id = $this->uri->segment(3);
+
+		$current_postion = $this->employee_positions_model->get_details('get_by', [
+			'employee_positions.employee_id'   => $employee_id,
+			'employee_positions.active_status' => 1
+		]);
+
+		$employee_information = $this->employee_information_model->get_by([
+			'employee_id'   => $employee_id,
+			'active_status' => 1
+		]);
+
+		$post = $this->input->post();
+
+		$message = array();
+
+		dump($employee_information, 'employee_information ===> ');
+
+		if ($employee_information == NULL) {
+			$message[] = 'Employee Informtation is NULL. Please try again.';
+			$this->session->set_flashdata('failed', implode(' ', $message));
+			redirect('employees/informations/' . $employee_id);
+		}
+
+		$check_list = array(
+			'company_id',
+			'branch_id',
+			'cost_center_id',
+			'department_id',
+			'team_id',
+			'site_id'
+		);
+
+		$fields = $this->db->field_data('employee_information');
+
+		foreach ($fields as $field) {
+			dump($field->name);
+		}
+
+		exit;
+
+		$insert_data = array(
+			'employee_id' 	 => $employee_id,
+			'company_id' 	 => $employee_information['company_id'],
+			'branch_id' 	 => $employee_information['branch_id'],
+			'department_id'  => $employee_information['department_id'],
+			'team_id' 		 => $employee_information['team_id'],
+			'cost_center_id' => $employee_information['cost_center_id'],
+			'site_id' 		 => $employee_information['site_id'],
+			'position_id' 	 => $post['position_id'],
+			'date_started'	 => $post['date_started'],
+			'remarks'		 => $post['remarks'],
+			'created'		 => date('Y-m-d H:i:s'),
+			'created_by'	 => $this->ion_auth->user()->row()->id,
+			'active_status'	 => 1
+		);
+
+		dump($insert_data, 'insert_data ===> ');
+
+		$last_id = $this->employee_positions_model->insert($insert_data);
+
+		if ( ! $last_id) {
+			$message[] = 'Unable to change employee position.';
+		}
+
+		$message[] = 'Successfully change employee position.';
+		$current_position_id = $current_postion['employee_positions_id'];
+
+		$update = $this->employee_positions_model->update($current_position_id, [
+			'active_status' => 0,
+			'date_ended'	=> date('Y-m-d H:i:s')
+		]);
+
+		if ( ! $updated) {
+			$message[] = 'Unable to deactivate previous employee position.';
+		}
+
+		$message[] = 'Successfully deactivated previous employee position.';
+
+		dump($message, 'message ===> ');
+		exit;
+		
+		$this->session->set_flashdata('message', implode(' ', $message));
+		redirect('employees/informations/' . $employee_id);
 	}
 
 	// AJAX calls

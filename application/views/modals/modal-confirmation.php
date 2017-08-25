@@ -11,7 +11,15 @@
 		<?php if (isset($information_type)): ?>
 		<input type="hidden" name="information_type" value="<?php echo $information_type; ?>">
 		<?php endif; ?>
+		<?php if (isset($mode)): ?>
 		<input type="hidden" name="mode" value="<?php echo $mode; ?>">
+		<?php endif; ?>
+		<?php if (isset($test_mode)): ?>
+		<input type="hidden" name="test_mode" value="<?php echo $test_mode; ?>">
+		<?php endif; ?>
+		<?php if (isset($modal_title)): ?>
+		<input type="hidden" name="modal_title" value="<?php echo $modal_title; ?>">
+		<?php endif; ?>
 		<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 		<button type="submit" class="btn btn-success">Yes</button>
 	</div>

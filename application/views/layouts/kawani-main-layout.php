@@ -29,6 +29,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/AdminLTE.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/css/skins/_all-skins.min.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/fullcalendar/dist/fullcalendar.min.css'); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/libs/jasny-bootstrap/dist/css/jasny-bootstrap.min.css'); ?>">
 
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/kawani-styles.css'); ?>">
 		<link rel="stylesheet" type="text/css" href="<?php echo site_url('assets/css/app-custom.css'); ?>">
@@ -87,7 +88,8 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-steps/1.1.0/jquery.steps.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/dropzone/dropzone.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/parsleyjs/dist/parsleyjs.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/parsleyjs/dist/parsley.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'); ?>"></script>
 
 		<!-- Custom Javascript -->
 		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>
@@ -95,29 +97,21 @@
 
 		<script type="text/javascript">
 			$(document).ready(function () {
-
 				$('.datepicker').datepicker({
 					format:'yyyy-mm-dd'
 				});
 				$('.birthdate').datepicker({
 					format:'yyyy-mm-dd'
 				});
-
 				$('.select2').select2();
 				$('.reservation').daterangepicker({
 					format: 'YYYY-MM-DD h:mm:ss A',
 					timePicker: true,
 					timePickerIncrement: 1,
 				});
-
 				$(".timepicker").timepicker({
 					showInputs: false
 				});
-
-				$('.datepicker').datepicker({
-					format: "yyyy-mm-dd"
-				});
-
 				$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
 					checkboxClass: 'icheckbox_flat-green',
 					radioClass: 'iradio_flat-green'
