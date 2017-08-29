@@ -450,7 +450,6 @@ $config = array(
 		array('field' => 'location_id', 'label' => 'Location', 'rules' => 'trim'),
 		array('field' => 'country_id', 'label' => 'Country', 'rules' => 'trim')
 	),
-
 	'device_add' => array(
 		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
 		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
@@ -458,7 +457,6 @@ $config = array(
 		array('field' => 'company_id',  'label' => 'Company', 	  'rules' => 'trim'),
 		array('field' => 'site_id',     'label' => 'Site', 		  'rules' => 'trim')
 	),
-
 	'device_edit' => array(
 		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
 		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
@@ -466,15 +464,26 @@ $config = array(
 		array('field' => 'company_id',  'label' => 'Company', 	  'rules' => 'trim'),
 		array('field' => 'site_id',     'label' => 'Site', 		  'rules' => 'trim')
 	),
-
 	'attachment_type_add' => array(
 		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
 		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
 	),
-
 	'attachment_type_edit' => array(
 		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
 		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
+  ),
+	'edit_employee_salary' => array(
+		array('field' => 'company_id', 'label' => '', 'rules' => ''),
+		array('field' => 'employee_id', 'label' => '', 'rules' => ''),
+		array('field' => 'position_id', 'label' => '', 'rules' => ''),
+		array('field' => 'salaray_matrix_Is', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => '')
+	),
+	'set_employee_salary' => array(
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => '')
 	)
-
 );

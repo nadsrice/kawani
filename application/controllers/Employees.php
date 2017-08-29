@@ -38,7 +38,8 @@ class Employees extends MY_Controller {
 			'relationship_model',
 			'location_model',
 			'country_model',
-			'position_model'
+			'position_model',
+			'compensation_package_model'
 		]);
 	}
 
@@ -68,20 +69,25 @@ class Employees extends MY_Controller {
     public function informations($employee_id)
     {
 		// TODO: check permission key = 'employee_information';
+    	$this->data['page_header'] = 'Employee Informations';
 
 		$post = $this->input->post();
 		$spouse_id = $this->session->flashdata('spouse_id');
 		$this->data['spouse_id'] = $spouse_id;
 
-		if ( ! isset($spouse_id)) {
-			$spouse_information = $this->employee_spouse_information_model->get_many_by(['employee_id' => $employee_id]);
-		} else {
-			$spouse_information = $this->employee_spouse_information_model->get_by(['employee_id' => $employee_id, 'id' => $spouse_id]);
-		}
 
-		$this->data['page_header']            = 'Employee Informations';
+		// if ( ! isset($spouse_id)) {
+		// 	$spouse_record = $this->employee_spouse_information_model->get_many_by(['employee_id' => $employee_id]);
+		// } else {
+		// 	$spouse_record = $this->employee_spouse_information_model->get_by(['employee_id' => $employee_id, 'id' => $spouse_id]);
+		// }
+
+		$spouse_record_many = $this->employee_spouse_information_model->get_many_by(['employee_id' => $employee_id]);
+		$spouse_record_specific = $this->employee_spouse_information_model->get_by(['employee_id' => $employee_id, 'id' => $spouse_id]);
+		$spouse_record = ( ! isset($spouse_id)) ? $spouse_record_many : $spouse_record_specific;
+		
 		$this->data['employee_id']            = $employee_id;
-		$this->data['spouse_information']     = $spouse_information;
+		$this->data['spouse_information']     = $spouse_record;
 		$this->data['personal_information']   = $this->employee_model->get_by(['id' => $employee_id]);
 		$this->data['parents_information']    = $this->employee_parent_information_model->get_many_by(['employee_id' => $employee_id, 'relationship_id' => [2,3]]);
 		$this->data['employee_dependents']    = $this->employee_dependent_model->get_details('get_many_by', ['employee_dependents.employee_id' => $employee_id]);
@@ -93,23 +99,40 @@ class Employees extends MY_Controller {
 		$this->data['emergency_contacts']	  = $this->employee_emergency_contact_model->get_details('get_many_by', ['employee_emergency_contacts.employee_id' => $employee_id]);
 		$this->data['employment_information'] = $this->employee_employment_information_model->get_details('get_many_by', ['employee_information.employee_id' => $employee_id]);
 		$this->data['civil_status']           = $this->civil_status_model->get_many_by(['active_status' => 1]);
+		$this->data['positions']			  = $this->position_model->get_many_by(['active_status' => 1]);
 		$this->data['relationships']          = $this->relationship_model->get_all();
-		$this->data['positions'] 	 		  = $this->position_model->get_many_by(['active_status' => 1]);
 
-		$this->data['current_position']	 = $this->employee_positions_model->get_details('get_by', [
-			'employee_positions.employee_id'   => $employee_id,
-			'employee_positions.active_status' => 1
-		]);
 		$this->data['employee_information'] = $this->employee_information_model->get_by([
 			'employee_id'   => $employee_id,
 			'active_status' => 1
 		]);
 
+		$this->data['current_position']	 = $this->employee_positions_model->get_details('get_by', [
+			'employee_positions.employee_id'   => $employee_id,
+			'employee_positions.active_status' => 1
+		]);
+
+		// employee's current ids per records
+		$current_position_id = $this->data['current_position']['position_id'];
+		$civil_status_id 	 = $this->data['personal_information']['civil_status_id'];
+
+		$current_civil_status = $this->civil_status_model->get_by(['id' => $civil_status_id]);
+		$compensation_package = $this->compensation_package_model->get_details('get_by', [
+			'compensation_packages.position_id'   => $current_position_id,
+			'compensation_packages.active_status' => 1
+		]);
+
+		// get employee's active salary
+		$current_salary = $this->employee_salaries_model->get_details('get_by', [
+			'employee_salaries.employee_id'   => $employee_id,
+			'employee_salaries.position_id'	  => $current_position_id,
+			'employee_salaries.active_status' => 1
+		]);
+
+		$this->data['current_civil_status'] = $current_civil_status;
+		$this->data['compensation_package'] = $compensation_package;
+		$this->data['current_salary']  = $current_salary;
 		$this->data['show_edit_modal'] = FALSE;
-
-		$civil_status_id = $this->data['personal_information']['civil_status_id'];
-
-		$this->data['current_civil_status'] = $this->civil_status_model->get_by(['id' => $civil_status_id]);
 
 		if (isset($post['mode']))
 		{
@@ -128,9 +151,13 @@ class Employees extends MY_Controller {
 
 		if (isset($post['test_mode']) && $post['test_mode'] == 'test')
 		{
+			// file path of the modal will called
+			$modal_file_path = 'modals/employee/forms/' . $post['modal_file'];
+
+			$this->data['message'] = 'The quick brown fox jumps over the lazy dog.';
 			$this->data['show_edit_modal'] 	= TRUE;
-			$this->data['modal_content'] 	= 'modals/employee/forms/modal-change-designation';
-			$this->data['modal_title']		= ucwords($post['modal_title']);
+			$this->data['modal_content'] = $modal_file_path;
+			$this->data['modal_title']	 = ucwords($post['modal_title']);
 		}
 
 		$this->load_view('pages/employee-informations');
@@ -149,6 +176,7 @@ class Employees extends MY_Controller {
 		$data = array(
 			'modal_title' 	=> ucwords($action),
 			'modal_message' => $confirm_message,
+			'modal_file'	=> 'modal-' . implode('-', $exploded),
 			'test_mode'		=> 'test',
 			'url'		 	=> 'employees/informations/' . $employee_id
 		);
@@ -322,30 +350,11 @@ class Employees extends MY_Controller {
 
 		$message = array();
 
-		dump($employee_information, 'employee_information ===> ');
-
 		if ($employee_information == NULL) {
 			$message[] = 'Employee Informtation is NULL. Please try again.';
 			$this->session->set_flashdata('failed', implode(' ', $message));
 			redirect('employees/informations/' . $employee_id);
 		}
-
-		$check_list = array(
-			'company_id',
-			'branch_id',
-			'cost_center_id',
-			'department_id',
-			'team_id',
-			'site_id'
-		);
-
-		$fields = $this->db->field_data('employee_information');
-
-		foreach ($fields as $field) {
-			dump($field->name);
-		}
-
-		exit;
 
 		$insert_data = array(
 			'employee_id' 	 => $employee_id,
@@ -363,8 +372,6 @@ class Employees extends MY_Controller {
 			'active_status'	 => 1
 		);
 
-		dump($insert_data, 'insert_data ===> ');
-
 		$last_id = $this->employee_positions_model->insert($insert_data);
 
 		if ( ! $last_id) {
@@ -379,17 +386,43 @@ class Employees extends MY_Controller {
 			'date_ended'	=> date('Y-m-d H:i:s')
 		]);
 
-		if ( ! $updated) {
+		if ( ! $update) {
 			$message[] = 'Unable to deactivate previous employee position.';
+		} else {
+			$message[] = 'Successfully deactivated previous employee position.';
 		}
-
-		$message[] = 'Successfully deactivated previous employee position.';
-
-		dump($message, 'message ===> ');
-		exit;
 		
 		$this->session->set_flashdata('message', implode(' ', $message));
 		redirect('employees/informations/' . $employee_id);
+	}
+
+	public function save_salary_changes()
+	{
+		$post = $this->input->post();
+		$mode = $post['mode'];
+
+		// TODO: remove the unknown fields from the posted data
+		// TODO: check if there is a active salary then deactivate it
+
+		$result = $this->employee_salaries_model->{$mode}($post);
+		
+		dump($this->db->last_query());
+		dump($post['employee_salary_id'], 'employee_salary_id');
+		dump($mode);
+		dump($post);
+		dump($result);
+		exit;
+		
+		$message = array();
+
+		if ( ! $result) {
+			$message[] = '<span class="text-red">Unable to add new employee salary.</span>';
+		} else {
+			$message[] = 'Successfully added new employee salary.';
+		}
+
+		$this->session->set_flashdata('success', implode(' ', $message));
+		redirect('employees/informations/' . $post['employee_id']);
 	}
 
 	// AJAX calls

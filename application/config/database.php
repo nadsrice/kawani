@@ -96,12 +96,12 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
-$db['josh'] = array(
+$db['production'] = array(
 	'dsn'	=> '',
 	'hostname' => '192.168.1.120',
 	'username' => 'lohica',
 	'password' => 'Syn+@x1$+',
-	'database' => 'kawani_dev_kevin',
+	'database' => 'kawani',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

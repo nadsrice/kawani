@@ -12,8 +12,19 @@ class Employee_salaries_model extends MY_Model
 	protected $return_type = 'array';
 
 	// Callbacks or Observers
+	protected $before_create = array('set_data');
 	protected $after_get = array('prep_details');
 	
+
+	protected function set_data($employee_salary)
+	{
+		$employee_salary['created'] 	  = date('Y-m-d H:i:s');
+		$employee_salary['created_by'] 	  = $this->ion_auth->user()->row()->id;
+		$employee_salary['active_status'] = 1;
+		
+		return $employee_salary;
+	}
+
 	protected function prep_details($employee_salary)
 	{
 		if ( ! isset($employee_salary)) return FALSE;
@@ -59,6 +70,23 @@ class Employee_salaries_model extends MY_Model
 
         return $this->{$method}($where);
     }
+
+	// public function deactivate_previous_salary($current_salary_id)
+	// {
+	// 	return $this->update($current_salary_id, ['active_status' => 0]);
+	// }
+
+	public function edit($post_data)
+	{
+		$data = remove_unknown_field($post_data, $this->form_validation->get_field_names('edit_employee_salary'));
+		return $this->update($post_data['employee_salary_id'], $post_data['monthly_salary']);
+	}
+
+	public function set($post_data)
+	{
+		$data = remove_unknown_field($post_data, $this->form_validation->get_field_names('set_employee_salary'));
+		return $this->insert($post_data);
+	}
 }
 
 // End of file Employee_salaries_model.php

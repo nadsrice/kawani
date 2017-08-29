@@ -109,8 +109,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             'attendance_employee_daily_schedules.employee_id' => $employee_id]);
 
          $employee_details = $this->employee_model->get_employee_by([
-            'employees.id' => $employee_id]);
-
+            'employees.id' => $employee_id
+        ]);
 
          $this->data = array(
              'page_header'        => 'Employee Schedule Details',
