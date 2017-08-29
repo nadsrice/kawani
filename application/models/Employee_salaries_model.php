@@ -12,8 +12,19 @@ class Employee_salaries_model extends MY_Model
 	protected $return_type = 'array';
 
 	// Callbacks or Observers
+	protected $before_create = array('set_data');
 	protected $after_get = array('prep_details');
 	
+
+	protected function set_data($employee_salary)
+	{
+		$employee_salary['created'] 	  = date('Y-m-d H:i:s');
+		$employee_salary['created_by'] 	  = $this->ion_auth->user()->row()->id;
+		$employee_salary['active_status'] = 1;
+		
+		return $employee_salary;
+	}
+
 	protected function prep_details($employee_salary)
 	{
 		if ( ! isset($employee_salary)) return FALSE;

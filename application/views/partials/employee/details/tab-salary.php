@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="pull-right">
-				<a class="btn btn-primary" data-toggle="modal" data-target="#confirmation-add-benefit" href="<?php echo site_url('employees/test_confirm/add_salary/'.$employee_id); ?>"><i class="fa fa-plus"></i> Add Benefit</a>
+				<a class="btn btn-primary" data-toggle="modal" data-target="#confirmation-add-benefit" href="<?php echo site_url('employees/test_confirm/add_salary/'.$employee_id); ?>"><i class="fa fa-plus"></i> Add Salary</a>
 				<div class="modal fade" id="confirmation-add-benefit">
 					<div class="modal-dialog">
 						<div class="modal-content"></div>
