@@ -124,18 +124,21 @@ class Daily_time_records extends MY_Controller {
         $data_dtr     = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('daily_time_record_add'));
 
         $data_timelog['log_type']    = 1;
-        $data_timelog['employee_id'] = $employee_id;
         $data_timelog['date_time']   = date('Y-m-d H:i:s');
+        $data_timelog['employee_id'] = $employee_id;
 
         $time_login = date('h:i A', strtotime($data_timelog['date_time']));
 
         $data_dtr['employee_id']       = $employee_id;
-        $data_dtr['shift_schedule_id'] = $shift_schedule['id'];
         $data_dtr['time_in']           = $data_timelog['date_time'];
+        $data_dtr['shift_schedule_id'] = $shift_schedule['id'];
 
-        // dump($data_dtr['time_in']);
-        // dump($data_dtr['shift_schedule_id']);
-        // dump($data_dtr['employee_id']);exit;
+        //Calculate time of login
+
+        $datetime_start = date('Y-m-d H:i:s', strtotime($time_start));
+        $tardiness      = timediff_minutes($datetime_start, $data_timelog['date_time']);
+
+        
 
         $this->form_validation->set_data($data_dtr);
         $this->form_validation->set_data($data_timelog);
@@ -345,4 +348,10 @@ class Daily_time_records extends MY_Controller {
             $this->load->view('modals/modal-update-daily_time_record-status', $data);
         }
     }
+
+    // public function test()
+    // {
+    //     $test = timediff_minutes("2017-08-29 10:00");
+    //     dump($test);
+    // }
 }
