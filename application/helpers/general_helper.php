@@ -143,3 +143,35 @@ if ( ! function_exists('number_of_hours')) {
         return (float)$total_hours;
     }
 }
+
+if ( ! function_exists('minutes_tardy')) {
+
+    function minutes_tardy($time_start, $time_end)
+    {
+        $new_time_start = $time_start;
+        $new_time_end   = $time_end;
+        $total_minutes  = strtotime($new_time_start) - strtotime($new_time_end);
+        return (float)$total_minutes;
+    }
+}
+
+if ( ! function_exists('minutes_undertime')) {
+
+    function minutes_undertime($time_start, $time_end)
+    {
+        $new_time_start  = $time_start;
+        $new_time_end    = $time_end;
+        $total_undertime = strtotime($new_time_start) - strtotime($new_time_end);
+        return (float)$total_undertime;
+    }
+}
+
+if (!function_exists('datetime_diff')) {
+    function datetime_diff($interval, $datetime, $method = 'add', $format = 'Y-m-d H:i:s')
+    {
+        $datetime = new DateTime($datetime);
+        $datetime->$method(new DateInterval($interval));
+
+        return $datetime->format($format);
+    }
+}

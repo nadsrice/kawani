@@ -381,6 +381,63 @@ $config = array(
 		array('field' => 'company_id', 'label' => 'company_id', 'rules' => 'trim'),
 	),
 
+
+    'employee_spouse_information' => array(
+        array('field' => 'first_name', 'label' => 'first_name', 'rules' => 'trim|required'),
+        array('field' => 'middle_name', 'label' => 'middle_name', 'rules' => 'trim'),
+        array('field' => 'last_name', 'label' => 'last_name', 'rules' => 'trim|required'),
+        array('field' => 'birthdate', 'label' => 'birthdate', 'rules' => 'trim'),
+        array('field' => 'block_number', 'label' => 'block_number', 'rules' => 'trim'),
+        array('field' => 'lot_number', 'label' => 'lot_number', 'rules' => 'trim'),
+        array('field' => 'floor_number', 'label' => 'floor_number', 'rules' => 'trim'),
+        array('field' => 'building_number', 'label' => 'building_number', 'rules' => 'trim'),
+        array('field' => 'building_name', 'label' => 'building_name', 'rules' => 'trim'),
+        array('field' => 'street', 'label' => 'street', 'rules' => 'trim'),
+        array('field' => 'barangay', 'label' => 'barangay', 'rules' => 'trim')
+    ),
+
+    'daily_time_record_add' => array(
+        array('field' => 'employee_id',       'label' => 'Employee',         'rules' => 'trim|required'),
+        array('field' => 'shift_schedule_id', 'label' => 'Shift Schedule',   'rules' => 'trim|required'),
+        array('field' => 'time_in',           'label' => 'Time In',          'rules' => 'trim|required'),
+        array('field' => 'time_out',          'label' => 'Time Out',         'rules' => 'trim|required'),
+        array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
+        array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
+        array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
+    ),
+
+    'daily_time_record_edit' => array(
+        array('field' => 'employee_id',       'label' => 'Employee',         'rules' => 'trim|required'),
+        array('field' => 'shift_schedule_id', 'label' => 'Shift Schedule',   'rules' => 'trim|required'),
+        array('field' => 'time_in',           'label' => 'Time In',          'rules' => 'trim|required'),
+        array('field' => 'time_out',          'label' => 'Time Out',         'rules' => 'trim|required'),
+        array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
+        array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
+        array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
+    ),
+
+    'daily_time_log_add' => array(
+        array('field' => 'employee_id', 'label' => 'Employee',    'rules' => 'trim|required'),
+        array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim|required'),
+        array('field' => 'log_type',    'label' => 'Log Type',    'rules' => 'trim'),
+        array('field' => 'device_id',   'label' => 'Device',      'rules' => 'trim'),
+        array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim'),
+        array('field' => 'latitude',    'label' => 'Latitude',    'rules' => 'trim'),
+        array('field' => 'longitude',   'label' => 'Longitude',   'rules' => 'trim')
+    ),
+
+    'daily_time_log_edit' => array(
+        array('field' => 'employee_id', 'label' => 'Employee',    'rules' => 'trim|required'),
+        array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim|required'),
+        array('field' => 'log_type',    'label' => 'Log Type',    'rules' => 'trim|required'),
+        array('field' => 'device_id',   'label' => 'Device',      'rules' => 'trim|required'),
+        array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim'),
+        array('field' => 'latitude',    'label' => 'Latitude',    'rules' => 'trim'),
+        array('field' => 'longitude',   'label' => 'Longitude',   'rules' => 'trim')
+    ),
+
 	'add_employee_address' => array(
 		array('field' => 'employee_id', 'label' => 'Employee', 'rules' => 'trim|required'),
 		array('field' => 'type', 'label' => 'Type', 'rules' => 'trim|required'),
@@ -393,4 +450,5 @@ $config = array(
 		array('field' => 'location_id', 'label' => 'Location', 'rules' => 'trim'),
 		array('field' => 'country_id', 'label' => 'Country', 'rules' => 'trim')
 	),
+
 );
