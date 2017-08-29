@@ -451,4 +451,30 @@ $config = array(
 		array('field' => 'country_id', 'label' => 'Country', 'rules' => 'trim')
 	),
 
+	'device_add' => array(
+		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
+		array('field' => 'ip_address',  'label' => 'IP Address',  'rules' => 'trim'),
+		array('field' => 'company_id',  'label' => 'Company', 	  'rules' => 'trim'),
+		array('field' => 'site_id',     'label' => 'Site', 		  'rules' => 'trim')
+	),
+
+	'device_edit' => array(
+		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
+		array('field' => 'ip_address',  'label' => 'IP Address',  'rules' => 'trim'),
+		array('field' => 'company_id',  'label' => 'Company', 	  'rules' => 'trim'),
+		array('field' => 'site_id',     'label' => 'Site', 		  'rules' => 'trim')
+	),
+
+	'attachment_type_add' => array(
+		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
+	),
+
+	'attachment_type_edit' => array(
+		array('field' => 'name', 		'label' => 'Name', 		  'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
+	)
+
 );

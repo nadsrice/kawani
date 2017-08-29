@@ -175,3 +175,17 @@ if (!function_exists('datetime_diff')) {
         return $datetime->format($format);
     }
 }
+
+if (!function_exists('timediff_minutes')) {
+    function timediff_minutes($datetime_start, $datetime_end = '')
+    {
+        $datetime_end = ($datetime_end == '') ? date('Y-m-d H:i:s') : $datetime_end;
+
+        $datetime1 = strtotime($datetime_start);
+        $datetime2 = strtotime($datetime_end);
+        $interval  = abs($datetime2 - $datetime1);
+        $minutes   = round($interval / 60);
+
+        return $minutes; 
+    }
+}
