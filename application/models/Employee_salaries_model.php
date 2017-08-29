@@ -70,6 +70,23 @@ class Employee_salaries_model extends MY_Model
 
         return $this->{$method}($where);
     }
+
+	// public function deactivate_previous_salary($current_salary_id)
+	// {
+	// 	return $this->update($current_salary_id, ['active_status' => 0]);
+	// }
+
+	public function edit($post_data)
+	{
+		return $this->update($post_data['employee_salary_id'], $post_data['monthly_salary']);
+	}
+
+	// public function set($post_data)
+	// {
+	// 	$data = array();
+
+	// 	return $this->insert($data);
+	// }
 }
 
 // End of file Employee_salaries_model.php

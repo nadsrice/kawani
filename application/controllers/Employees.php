@@ -399,14 +399,20 @@ class Employees extends MY_Controller {
 	public function save_salary_changes()
 	{
 		$post = $this->input->post();
-		$last_id = $this->employee_salaries_model->insert($post);
+		$mode = $post['mode'];
 
-		// check if there is a active salary then deactivate it
+		// TODO: remove the unknown fields from the posted data
+		// TODO: check if there is a active salary then deactivate it
 
-
+		dump($mode);
+		dump($post);
+		dump($post['employee_salary_id'], 'employee_salary_id');
+		$result = $this->employee_salaries_model->{$mode}($post);
+		exit;
+		
 		$message = array();
 
-		if (!$last_id) {
+		if ( ! $result) {
 			$message[] = '<span class="text-red">Unable to add new employee salary.</span>';
 		} else {
 			$message[] = 'Successfully added new employee salary.';
