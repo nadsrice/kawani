@@ -20,6 +20,9 @@
 		<?php if (isset($modal_title)): ?>
 		<input type="hidden" name="modal_title" value="<?php echo $modal_title; ?>">
 		<?php endif; ?>
+		<?php if (isset($modal_file)): ?>
+		<input type="hidden" name="modal_file" value="<?php echo $modal_file; ?>">
+		<?php endif; ?>
 		<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 		<button type="submit" class="btn btn-success">Yes</button>
 	</div>

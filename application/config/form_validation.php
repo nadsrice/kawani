@@ -451,4 +451,19 @@ $config = array(
 		array('field' => 'country_id', 'label' => 'Country', 'rules' => 'trim')
 	),
 
+	'edit_employee_salary' => array(
+		array('field' => 'company_id', 'label' => '', 'rules' => ''),
+		array('field' => 'employee_id', 'label' => '', 'rules' => ''),
+		array('field' => 'position_id', 'label' => '', 'rules' => ''),
+		array('field' => 'salaray_matrix_Is', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => '')
+	),
+	'set_employee_salary' => array(
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => ''),
+		array('field' => '', 'label' => '', 'rules' => '')
+	)
+
 );

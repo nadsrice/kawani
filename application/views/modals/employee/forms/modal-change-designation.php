@@ -11,12 +11,13 @@
 				<select name="position_id" id="position_id" class="form-control" required="true">
 					<?php if ($current_position['position_id']): ?>
 					<option value="<?php echo $current_position['position_id']; ?>"><?php echo $current_position['position']; ?></option>
+					<option value="">----</option>
 					<?php else: ?>
 					<option value="">-- SELECT POSITION --</option>
+					<?php endif ?>
 					<?php foreach ($positions as $index => $position): ?>
 					<option value="<?php echo $position['id']; ?>"><?php echo $position['name']; ?></option>
 					<?php endforeach ?>
-					<?php endif ?>
 				</select>
 			</div>
 		</div>
