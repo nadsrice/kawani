@@ -78,15 +78,15 @@ class Employee_salaries_model extends MY_Model
 
 	public function edit($post_data)
 	{
+		$data = remove_unknown_field($post_data, $this->form_validation->get_field_names('edit_employee_salary'));
 		return $this->update($post_data['employee_salary_id'], $post_data['monthly_salary']);
 	}
 
-	// public function set($post_data)
-	// {
-	// 	$data = array();
-
-	// 	return $this->insert($data);
-	// }
+	public function set($post_data)
+	{
+		$data = remove_unknown_field($post_data, $this->form_validation->get_field_names('set_employee_salary'));
+		return $this->insert($post_data);
+	}
 }
 
 // End of file Employee_salaries_model.php

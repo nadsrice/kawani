@@ -408,6 +408,8 @@ class Employees extends MY_Controller {
 		dump($post);
 		dump($post['employee_salary_id'], 'employee_salary_id');
 		$result = $this->employee_salaries_model->{$mode}($post);
+		dump($this->db->last_query());
+		dump($result);
 		exit;
 		
 		$message = array();

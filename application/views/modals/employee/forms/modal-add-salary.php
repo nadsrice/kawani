@@ -2,8 +2,8 @@
 	<div class="modal-header"><h3 class="modal-title"><?php echo $modal_title; ?></h3></div>
 	<div class="modal-body">
 		<div class="form-group">
-			<?php dump($current_salary); ?>
 			<?php if ( ! $current_salary): ?>
+			<?php dump($compensation_package); ?>
 			<label for="" class="col-lg-3 control-label">Monthly Salary</label>
 			<div class="col-lg-8">
 				<div class="input-group">
@@ -14,6 +14,7 @@
 				</div>
 			</div>
 			<?php else: ?>
+			<?php dump('here here'); ?>
 			<label for="" class="col-lg-3 control-label">Monthly Salary</label>
 			<div class="col-lg-8">
 				<div class="input-group">
