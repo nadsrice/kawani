@@ -404,11 +404,12 @@ class Employees extends MY_Controller {
 		// TODO: remove the unknown fields from the posted data
 		// TODO: check if there is a active salary then deactivate it
 
+		$result = $this->employee_salaries_model->{$mode}($post);
+		
+		dump($this->db->last_query());
+		dump($post['employee_salary_id'], 'employee_salary_id');
 		dump($mode);
 		dump($post);
-		dump($post['employee_salary_id'], 'employee_salary_id');
-		$result = $this->employee_salaries_model->{$mode}($post);
-		dump($this->db->last_query());
 		dump($result);
 		exit;
 		
