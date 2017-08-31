@@ -18,7 +18,7 @@ class Audit_trails extends MY_Controller
         //     $this->session->set_flashdata('failed', 'Sorry you have no permission to access this page.');
         //     redirect('/', 'refresh');
         // }
-
+        // dump(date('Y-m-d H:i:s'));exit;
         $audit_trails = $this->system_audit_trail_model->get_all();
 
         $this->data['page_header']  = 'Audit Trails';

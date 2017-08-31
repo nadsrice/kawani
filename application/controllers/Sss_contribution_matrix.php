@@ -25,18 +25,31 @@ class Sss_contribution_matrix extends MY_Controller
 	public function index()
 	{
 		$sss_matrices = $this->sss_contribution_matrix_model->get_all();
-		
+
 		$this->data['show_modal'] = FALSE;
 		$this->data['page_header'] = 'SSS Contribution Matrix Management';
 		$this->data['sss_matrices'] = $sss_matrices;
 
-		$post = $this->input->post();
-		
-		if (isset($post['mode'])) {
-			$this->data['show_modal'] = TRUE;
-		}
-
 		$this->load_view('pages/sss-contribution-matrix-list');
+	}
+
+	public function confirmation()
+	{
+		$mode = $this->uri->segment(3);
+		$sss_contribution_matrix_id = $this->uri->segment(4);
+		
+		$sss_contribution_matrix = $this->sss_contribution_matrix_model->get_by(['id' => $sss_contribution_matrix_id]);
+
+		$modal_message = "You're about to <strong>" . $mode . "</strong> SSS Contribution Matrix with ID: " . $sss_contribution_matrix_id; 
+
+		$data = array(
+			'url' 			=> 'sss_contribution_matrix/' . $mode . '/' . $sss_contribution_matrix_id,
+			'modal_title' 	=> ucfirst($mode),
+			'modal_message' => $modal_message,
+			'mode'			=> $mode
+		);
+
+		$this->load->view('modals/modal-confirmation', $data);
 	}
 
 	public function details()
@@ -60,6 +73,14 @@ class Sss_contribution_matrix extends MY_Controller
 	public function activate()
 	{
 		$sss_contribution_matrix_id = $this->uri->segment(3);
+
+		$this->session->set_flashdata('log_parameters', [
+			'perm_key'	  => 'activate_sss_matrix',
+			'action_mode' => 1,
+			'old_data'	  => ['id' => $sss_contribution_matrix_id, 'active_status' => 0],
+			'new_data'	  => ['active_status' => 1]
+		]);
+
 		$update = $this->sss_contribution_matrix_model->update($sss_contribution_matrix_id, ['active_status' => 1]);
 		if ($update) {
 			$this->session->set_flashdata('success', 'Successfully Activated SSS Contribution Matrix with ID: ' . $sss_contribution_matrix_id);
@@ -73,6 +94,14 @@ class Sss_contribution_matrix extends MY_Controller
 	public function deactivate()
 	{
 		$sss_contribution_matrix_id = $this->uri->segment(3);
+
+		$this->session->set_flashdata('log_parameters', [
+			'perm_key'	  => 'deactivate_sss_matrix',
+			'action_mode' => 1,
+			'old_data'	  => ['id' => $sss_contribution_matrix_id, 'active_status' => 1],
+			'new_data'	  => ['active_status' => 0]
+		]);
+
 		$update = $this->sss_contribution_matrix_model->update($sss_contribution_matrix_id, ['active_status' => 0]);
 		if ($update) {
 			$this->session->set_flashdata('success', 'Successfully Deactivated SSS Contribution Matrix with ID: ' . $sss_contribution_matrix_id);
@@ -81,23 +110,6 @@ class Sss_contribution_matrix extends MY_Controller
 			$this->session->set_flashdata('failed', 'Unable to Deactivate SSS Contribution Matrix with ID: ' . $sss_contribution_matrix_id);
 			redirect('sss_contribution_matrix');
 		}
-	}
-
-	public function confirmation()
-	{
-		$mode = $this->uri->segment(3);
-		$sss_contribution_matrix_id = $this->uri->segment(4);
-		
-		$sss_contribution_matrix = $this->sss_contribution_matrix_model->get_by(['id' => $sss_contribution_matrix_id]);
-
-		$modal_message = "You're about to <strong>" . $mode . "</strong> SSS Contribution Matrix with ID: " . $sss_contribution_matrix_id; 
-
-		$data = array(
-			'url' 			=> 'sss_contribution_matrix/' . $mode . '/' . $sss_contribution_matrix_id,
-			'modal_title' 	=> ucfirst($mode),
-			'modal_message' => $modal_message
-		);
-		$this->load->view('modals/modal-confirmation', $data);
 	}
 
 	public function load_form()
@@ -112,12 +124,12 @@ class Sss_contribution_matrix extends MY_Controller
 	public function add()
 	{
 		$post = $this->input->post();
-		
+
 		$data = $post; // <<< TODO: this should be check if data is valid
 
 		$this->session->set_flashdata('log_parameters', [
+			'perm_key'	  => 'add_sss_matrix',
 			'action_mode' => 0,
-			'perm_key'	  => 'add_sss_contribution_matrix',
 			'old_data'	  => NULL,
 			'new_data'	  => $data
 		]);
@@ -135,17 +147,39 @@ class Sss_contribution_matrix extends MY_Controller
 
 	public function edit()
 	{
-		$sss_contribution_matrix_id = $this->uri->segment(3);
+		$sss_matrix_id = $this->uri->segment(3);
+		
+		$sss_matrices = $this->sss_contribution_matrix_model->get_all();
+		$this->data['page_header'] = 'SSS Contribution Matrix Management';
+		$this->data['sss_matrices'] = $sss_matrices;
+
+		// show modal
+		$this->data['sss_matrix'] = $this->sss_contribution_matrix_model->get_by(['id' => $sss_matrix_id]);
+		$this->data['show_modal'] = TRUE;
+		$this->data['modal_title'] = 'Edit SSS Matrix';
+		$this->data['modal_file_path'] = 'modals/modal-edit-sss-contribution-matrix';
+		$this->data['years'] = incremental_year(10);
+
+
 		$post = $this->input->post();
-		$data = $post;
-		$update = $this->sss_contribution_matrix_model->update($sss_contribution_matrix_id, $data);
-		if ($update) {
-			$this->session->set_flashdata('success', 'Successfully updated SSS Contribution Matrix with ID: ' . $sss_contribution_matrix_id);
-			redirect('sss_contribution_matrix');
-		} else {
-			$this->session->set_flashdata('failed', 'Unable to update SSS Contribution Matrix with ID: ' . $sss_contribution_matrix_id);
-			redirect('sss_contribution_matrix');
-		}
+
+
+		// $data = $post;
+		// $update = $this->sss_contribution_matrix_model->update($sss_matrix_id, $data);
+		// if ($update) {
+		// 	$this->session->set_flashdata('success', 'Successfully updated SSS Contribution Matrix with ID: ' . $sss_matrix_id);
+		// 	redirect('sss_contribution_matrix');
+		// } else {
+		// 	$this->session->set_flashdata('failed', 'Unable to update SSS Contribution Matrix with ID: ' . $sss_matrix_id);
+		// 	redirect('sss_contribution_matrix');
+		// }
+
+		$this->load_view('pages/sss-contribution-matrix-list');
+	}
+
+	public function cancel()
+	{
+		redirect('sss_contribution_matrix');
 	}
 }
 

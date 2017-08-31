@@ -26,7 +26,7 @@
 									<a href="<?php echo site_url('sss_contribution_matrix/details/' . $sss_matrix['id']); ?>" class="btn btn-link">
 										<i class="fa fa-eye"></i> View
 									</a>
-									<a href="<?php echo site_url('sss_contribution_matrix/confirmation/edit/' . $sss_matrix['id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('sss_contribution_matrix/confirmation/edit/' . $sss_matrix['id']); ?>" class="btn btn-link" data-toggle="modal" data-target="#modal-confirmation-<?php echo $index; ?>">
 										<i class="fa fa-edit"></i> Edit
 									</a>
 									<a href="<?php echo site_url('sss_contribution_matrix/confirmation/' . $sss_matrix['status_url'] . '/' . $sss_matrix['id']); ?>" class="btn btn-link" data-toggle="modal" data-target="#modal-confirmation-<?php echo $index; ?>">
@@ -56,6 +56,25 @@
 					<div class="modal-content"></div>
 				</div>
 			</div>
+			
+			<?php if ($show_modal): ?>
+				<div class="modal fade" id="modal-edit-sss-matrix">
+					<div class="modal-dialog">
+						<div class="modal-content"><?php $this->load->view($modal_file_path); ?></div>
+					</div>
+				</div>
+				<script type="text/javascript">
+					$(function() {
+						$('#modal-edit-sss-matrix').modal({
+							backdrop: false,
+							keyboard: false
+						});
+					});
+				</script>
+			<?php endif ?>
+			
 		</div>
 	</div>
 </div>
+
+
