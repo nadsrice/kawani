@@ -17,4 +17,6 @@ $(function() {
 	$("#datatables-employee-salaries").DataTable();
 	$("#datatables-tax-matrix").DataTable();
 	$("#datatables-tax-rates").DataTable();
+	$("#datatables-sss-matrix").DataTable();
+	$("#datatables-sss-rates").DataTable();
 });

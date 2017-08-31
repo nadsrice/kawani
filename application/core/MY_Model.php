@@ -956,14 +956,15 @@ class MY_Model extends CI_Model
         $additional_fields['table_name'] = $this->_table;
         $additional_fields['record_id'] = isset($old_data['id']) ? $old_data['id'] : $return_data;
 
-        foreach ($new_data as $key => $data)
-        {
-            $additional_fields['field_name'] = $key;
-            $additional_fields['old_value']  = (isset($old_data[$key])) ? $old_data[$key] : '';
-            $additional_fields['new_value']  = $data;
+		if (is_array($new_data)) {
+			foreach ($new_data as $key => $data)
+			{
+				$additional_fields['field_name'] = $key;
+				$additional_fields['old_value']  = (isset($old_data[$key])) ? $old_data[$key] : '';
+				$additional_fields['new_value']  = $data;
 
-            $this->audit_trail->write_log($action_mode, $perm_key, $additional_fields);
-        }
-
+				$this->audit_trail->write_log($action_mode, $perm_key, $additional_fields);
+			}
+		}
     }
 }
