@@ -9,7 +9,7 @@
 			</div>
 			<div class="box-body">
 				<div class="table-responsive">
-					<table class="table table-bordered" id="datatables-tax-matrix">
+					<table class="table table-bordered" id="datatables-sss-matrix">
 						<thead>
 							<tr>
 								<th>Action</th>

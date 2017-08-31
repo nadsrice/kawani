@@ -34,11 +34,12 @@
 						<thead>
 							<tr>
 								<th>Action</th>
-								<th>sss Excemption Status</th>
-								<th>Base sss</th>
-								<th>Percentage Over</th>
-								<th>Minimum Monthly Salary</th>
-								<th>Maximum Monthly Salary</th>
+								<th>Minimum Range</th>
+								<th>Maximum Range</th>
+								<th>Monthly Salary Base</th>
+								<th>Employer Share</th>
+								<th>Employee Share</th>
+								<th>Total</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -46,21 +47,22 @@
 							<?php foreach ($sss_rates as $index => $sss_rate): ?>
 							<tr>
 								<td>
-									<a href="<?php echo site_url('sss_rate/details/' . $sss_rate['sss_table_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('sss_rate/details/' . $sss_rate['sss_rate_id']); ?>" class="btn btn-link">
 										<i class="fa fa-eye"></i> View
 									</a>
-									<a href="<?php echo site_url('sss_rate/details/' . $sss_rate['sss_table_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('sss_rate/details/' . $sss_rate['sss_rate_id']); ?>" class="btn btn-link">
 										<i class="fa fa-edit"></i> Edit
 									</a>
-									<a href="<?php echo site_url('sss_rate/' . $sss_rate['sr_status_url'] . '/' . $sss_rate['sss_table_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('sss_rate/' . $sss_rate['sr_status_url'] . '/' . $sss_rate['sss_rate_id']); ?>" class="btn btn-link">
 										<i class="fa <?php echo $sss_rate['sr_status_icon']; ?>"></i> <?php echo $sss_rate['sr_status_action']; ?>
 									</a>
 								</td>
 								<td><?php echo $sss_rate['sr_minimum_range']; ?></td>
 								<td><?php echo $sss_rate['sr_maximum_range']; ?></td>
-								<td><?php echo $sss_rate['sr_percentage_over']; ?></td>
-								<td><?php echo $sss_rate['sr_minimum_monthly_salary']; ?></td>
-								<td><?php echo $sss_rate['sr_maximum_monthly_salary']; ?></td>
+								<td><?php echo $sss_rate['sr_monthly_salary_base']; ?></td>
+								<td><?php echo $sss_rate['sr_employer_share']; ?></td>
+								<td><?php echo $sss_rate['sr_employee_share']; ?></td>
+								<td><?php echo $sss_rate['sr_total']; ?></td>
 							</tr>
 							<?php endforeach ?>
 							<?php endif ?>

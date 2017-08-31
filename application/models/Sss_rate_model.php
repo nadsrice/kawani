@@ -33,13 +33,13 @@ class Sss_rate_model extends MY_Model
 	{
 		$this->db->select('
 					sss_rates.id as sss_rate_id,
-					sss_rates.sss_matrix_id as sr_sss_matrix_id
-					sss_rates.minimum_range as sr_minimum_range
-					sss_rates.maximum_range as sr_maximum_range
-					sss_rates.monthly_salary_base as sr_monthly_salary_base
-					sss_rates.employer_share as sr_employer_share
-					sss_rates.employee_share as sr_employee_share
-					sss_rates.total as sr_total
+					sss_rates.sss_matrix_id as sr_sss_matrix_id,
+					sss_rates.minimum_range as sr_minimum_range,
+					sss_rates.maximum_range as sr_maximum_range,
+					sss_rates.monthly_salary_base as sr_monthly_salary_base,
+					sss_rates.employer_share as sr_employer_share,
+					sss_rates.employee_share as sr_employee_share,
+					sss_rates.total as sr_total,
 					sss_rates.active_status as sr_active_status
 				')
 				->join('sss_matrix', 'sss_rates.sss_matrix_id = sss_matrix.id', 'left');

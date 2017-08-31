@@ -43,11 +43,15 @@ class Sss_contribution_matrix extends MY_Controller
 	{
 		$sss_contribution_matrix_id = $this->uri->segment(3);
 		
-		$sss_contribution_matrix = $this->sss_contribution_matrix_model->get_by(['id' => $sss_contribution_matrix_id]);
-		$sss_rates = $this->sss_rate_model->get_details('get_many_by', ['sss_rates.sss_matrix_id' => $sss_contribution_matrix_id]);
+		$sss_contribution_matrix = $this->sss_contribution_matrix_model->get_by([
+			'id' => $sss_contribution_matrix_id
+		]);
+		$sss_rates = $this->sss_rate_model->get_details('get_many_by', [
+			'sss_rates.sss_matrix_id' => $sss_contribution_matrix_id
+		]);
 
 		$this->data['page_header'] = 'SSS Contribution Matrix Management';
-		$this->data['sss_contribution_matrix']  = $sss_contribution_matrix;
+		$this->data['sss_matrix']  = $sss_contribution_matrix;
 		$this->data['sss_rates'] = $sss_rates;
 
 		$this->load_view('pages/sss-contribution-matrix-details');
