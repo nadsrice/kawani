@@ -59,9 +59,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         // get specific employee_schedule based on the id
         // $employee  = $this->employee_model
-        $shift_schedules  = $this->shift_schedule_model->get_shift_schedule_all();
-        $companies        = $this->company_model->get_many_by($where);
-        $employee_details = $this->employee_model->get_employee_by([
+        $shift_schedules   = $this->shift_schedule_model->get_shift_schedule_all();
+        $companies         = $this->company_model->get_many_by($where);
+        $employee_details  = $this->employee_model->get_employee_by([
             'employees.id' => $employee_id]);
 
 
