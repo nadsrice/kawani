@@ -190,7 +190,6 @@ class Daily_time_records extends MY_Controller {
                 redirect('daily_time_records');
             }
         }
-        
         redirect('daily_time_records');
     }
 
@@ -212,30 +211,31 @@ class Daily_time_records extends MY_Controller {
         $data_dtr     = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('daily_time_record_add'));
 
         $data_timelog['log_type']    = 0;
-        $data_timelog['employee_id'] = 2;
+        $data_timelog['employee_id'] = $employee_id;
         $data_timelog['date_time']   = date('Y-m-d H:i:s');
 
-        // dump($data_timelog['date_time']);
-        // dump($data_timelog['log_type']);
-        // dump($data_timelog);exit;
+        $time_logout = date('h:i A', strtotime($data_timelog['date_time']));
 
-        //$this->form_validation->set_data($data_dtr);
+        //Calculate time of login
+        $datetime_end = date('Y-m-d H:i:s', strtotime($time_end));
 
+        $official_business = $this->official_business_model->get_by([
+                'employee_id'     => $employee_id, 
+                'status'          => 1,
+                'approval_status' => 1
+            ]);
+        
+        $date_log             = date('Y-m-d', strtotime($data_timelog['date_time']));
+        $data_dtr['time_out'] = $data_timelog['date_time'];
 
         $this->form_validation->set_data($data_timelog);
+        $this->form_validation->set_data($data_dtr);
 
         //DAILY TIME LOGS
         if ($this->form_validation->run('daily_time_log_add') == TRUE) {
 
             $daily_time_record_id = $this->daily_time_log_model->insert($data_timelog);
 
-            if ( ! $daily_time_record_id) {
-                $this->session->set_flashdata('failed', 'Failed to Time Out');
-                redirect('daily_time_records');
-            } else {
-                $this->session->set_flashdata('success', 'Successfully Timed Out');
-                redirect('daily_time_records');
-            }
         }
 
         // //DAILY TIME RECORDS

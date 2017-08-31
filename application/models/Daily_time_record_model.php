@@ -26,14 +26,12 @@ class Daily_time_record_model extends MY_Model {
     protected $after_update  = ['write_audit_trail'];
     protected $after_get 	 = array('set_default_data');
 
-    protected function generate_date_created_status($daily_time_record)
-    {
-    	$user_id                     		= $this->ion_auth->user()->row(); //user id
-        $daily_time_record['created']       = date('Y-m-d H:i:s');
-        $daily_time_record['active_status'] = 1;
-        $daily_time_record['created_by']    = $user_id;
-        return $daily_time_record;
-    }
+    // protected function generate_date_created_status($daily_time_record)
+    // {
+    //     $daily_time_record['status']          = 1; //filed
+    //     $daily_time_record['approval_status'] = 0; //subject for approval
+    //     return $daily_time_record;
+    // }
 
     protected function set_default_data($daily_time_record)
     {
