@@ -95,14 +95,14 @@ class Daily_time_records extends MY_Controller {
         $daily_schedule    = $this->employee_schedule_model->get_by(['employee_id' => $employee_id, 'status' => 1]);
         $employee_shift_id = $daily_schedule['shift_id'];
 
-        $official_business = $this->attendance_official_business_model->get_by([
+        $official_business = $this->official_business_model->get_by([
                 'employee_id'     => $employee_id, 
                 'status'          => 1,
                 'date'            => $daily_schedule['date'],
                 'approval_status' => 1
             ]);
 
-        $leave            = $this->attendance_leave_model->get_by([
+        $leave            = $this->leave_model->get_by([
                 'employee_id'     => $employee_id, 
                 'status'          => 1,
                 'date_start'      => $daily_schedule['date'],
@@ -129,14 +129,30 @@ class Daily_time_records extends MY_Controller {
 
         $time_login = date('h:i A', strtotime($data_timelog['date_time']));
 
-        $data_dtr['time_in']           = $data_timelog['date_time'];
-        $data_dtr['employee_id']       = $employee_id;
-        $data_dtr['shift_schedule_id'] = $shift_schedule['id'];
 
         //Calculate time of login
 
         $datetime_start = date('Y-m-d H:i:s', strtotime($time_start));
         $tardiness      = timediff_minutes($datetime_start, $data_timelog['date_time']);
+
+        $data_dtr['time_in']           = $data_timelog['date_time'];
+        $data_dtr['employee_id']       = $employee_id;
+        $data_dtr['shift_schedule_id'] = $shift_schedule['id'];
+        $data_dtr['minutes_tardy']     = $tardiness;
+
+        dump($time_start);
+        dump($time_in);
+        exit;
+
+        if ( ! $time_start == $time_in) {
+            
+            if ($tardiness > 15) {
+                $data_dtr['remarks'] = 'Late';
+            }
+        }
+
+        // dump($data_dtr);
+        // exit;
 
         $this->form_validation->set_data($data_dtr);
         $this->form_validation->set_data($data_timelog);

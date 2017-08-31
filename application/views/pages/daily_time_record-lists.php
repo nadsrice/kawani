@@ -22,10 +22,10 @@
                 <i class="fa fa-list"></i> <h3 class="box-title">Daily Time Records</h3>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-striped table-hover" id="datatables-daily_time_records">
+                <table class="table table-bordered table-striped table-hover" id="datatables-daily-time-records">
                     <thead>
                         <tr>
-                            <th style="width: 250px;">&nbsp;</th>
+                            <th style="width: 150px;">&nbsp;</th>
                             <th class="text-left">Shift Code</th>
                             <th class="text-left">Date</th>
                             <th class="text-left">Time In</th>
@@ -50,7 +50,7 @@
                                             <i class="fa fa-cog"></i> <?php echo $daily_time_record['status_label']; ?>
                                         </a> -->
                                     </td>
-                                    <td class="text-left"><?php echo $daily_time_record['shift_code']; ?></td>
+                                    <td class="text-left"><?php echo $daily_time_record['shift']; ?></td>
                                     <td class="text-right"><?php echo date('Y M d', strtotime($daily_time_record['time_in'])); ?></td>
                                     <td class="text-right"><?php echo date('h:i A', strtotime($daily_time_record['time_in'])); ?></td>
                                     <td class="text-right"><?php echo date('h:i A', strtotime($daily_time_record['time_out'])); ?></td>

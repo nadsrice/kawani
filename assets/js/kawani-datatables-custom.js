@@ -15,4 +15,6 @@ $(function() {
 	$("#datatables-employee_schedules").DataTable();
 	$("#datatables-employee-positions").DataTable();
 	$("#datatables-employee-salaries").DataTable();
+	$("#datatables-daily-time-records").DataTable();
+
 });
