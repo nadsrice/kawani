@@ -109,6 +109,8 @@ class Leave_model extends MY_Model {
             ]
         ];
 
+        if ( ! isset($leave)) return FALSE;
+
         return $leave;
     }
 

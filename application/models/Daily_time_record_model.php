@@ -54,8 +54,8 @@ class Daily_time_record_model extends MY_Model {
 
 		$daily_time_record['full_name'] = strtoupper(implode('', $full_name));
         $daily_time_record['shift']     = implode('', $shift);
-        // $daily_time_record['active_status'] = ($daily_time_record['active_status'] == 1) ? 'Active' : 'Inactive';
-        // $daily_time_record['status_label']  = ($daily_time_record['active_status'] == 'Active') ? 'De-activate' : 'Activate';
+        $daily_time_record['timein']    = ($daily_time_record['time_in'] == '0000-00-00 00:00:00') ? '-' : date('h:i A', strtotime($daily_time_record['time_in']));
+        $daily_time_record['timeout']   = ($daily_time_record['time_out'] == '0000-00-00 00:00:00') ? '-' : date('h:i A', strtotime($daily_time_record['time_out']));
         return $daily_time_record;
     }
 

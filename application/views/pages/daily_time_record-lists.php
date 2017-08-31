@@ -52,11 +52,11 @@
                                     </td>
                                     <td class="text-left"><?php echo $daily_time_record['shift']; ?></td>
                                     <td class="text-right"><?php echo date('Y M d', strtotime($daily_time_record['time_in'])); ?></td>
-                                    <td class="text-right"><?php echo date('h:i A', strtotime($daily_time_record['time_in'])); ?></td>
-                                    <td class="text-right"><?php echo date('h:i A', strtotime($daily_time_record['time_out'])); ?></td>
+                                    <td class="text-right"><?php echo $daily_time_record['timein']; ?></td>
+                                    <td class="text-right"><?php echo $daily_time_record['timeout']; ?></td>
                                     <td class="text-right"><?php echo $daily_time_record['number_of_hours']; ?></td>
                                     <td class="text-right"><?php echo $daily_time_record['minutes_tardy']; ?></td>
-                                    <td class="text-right"><?php echo $daily_time_record['remarks']; ?></td>
+                                    <td class="text-left"><?php echo $daily_time_record['remarks']; ?></td>
 
                                 </tr>
                                 <div class="modal fade" id="update-daily_time_record-status-<?php echo md5($daily_time_record['id']); ?>" role="dialog">
