@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Contact_person_model extends MY_Model {
 
-    protected $_table = 'contact_persons';
+    protected $_table = 'account_contact_persons';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
@@ -24,9 +24,10 @@ class Contact_person_model extends MY_Model {
 
     protected function generate_date_created_status($contact_person)
     {
-        $contact_person['created'] = date('Y-m-d H:i:s');
+        $user                            = $this->ion_auth->user()->row();;
+        $contact_person['created']       = date('Y-m-d H:i:s');
+        $contact_person['created_by']    = $user->employee_id;
         $contact_person['active_status'] = 1;
-        $contact_person['created_by'] = '0';
         return $contact_person;
     }
 

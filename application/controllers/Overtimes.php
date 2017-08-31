@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author      joseph.gono@systemantech.com
  * @link        http://systemantech.com
  */
-class Attendance_overtimes extends MY_Controller {
+class Overtimes extends MY_Controller {
 
     private $active_menu = 'Administration';
 
@@ -26,23 +26,39 @@ class Attendance_overtimes extends MY_Controller {
     {
         parent::__construct();
         $this->load->library('audit_trail');
-        $this->load->model(['attendance_overtime_model']);
+        $this->load->model(['overtime_model']);
     }
 
     function index()
     {
-        $user               = $this->ion_auth->user()->row();
-        $my_overtimes       = $this->attendance_overtime_model->get_overtimes([
+        $status = $this->uri->segment(3);
+        $user   = $this->ion_auth->user()->row();
+
+        if ( ! isset($status)) {
+            $selected = '';
+            $status = '';
+        }
+
+        $total_rejected  = $this->official_business_model->count_by(['approval_status' => 0, 'employee_id' => $user->employee_id]); 
+        $total_approved  = $this->official_business_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]); 
+        $total_pending   = $this->official_business_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]); 
+        $total_cancelled = $this->official_business_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]);
+
+        $my_overtimes       = $this->overtime_model->get_overtimes([
             'attendance_overtimes.employee_id' => $user->employee_id]);
 
-        $approval_overtimes = $this->attendance_overtime_model->get_overtimes([
+        $approval_overtimes = $this->overtime_model->get_overtimes([
             'attendance_overtimes.approver_id' => $user->employee_id]);
 
         $this->data = array(
-            'page_header'         => 'Overtime Management',
-            'my_overtimes'        => $my_overtimes,
-            'approval_overtimes'  => $approval_overtimes,
-            'active_menu'         => $this->active_menu,
+            'page_header'        => 'Overtime Management',
+            'my_overtimes'       => $my_overtimes,
+            'approval_overtimes' => $approval_overtimes,
+            'total_rejected'     => $total_rejected,
+            'total_approved'     => $total_approved,
+            'total_pending'      => $total_pending,
+            'total_cancelled'    => $total_cancelled,
+            'active_menu'        => $this->active_menu,
         );
         $this->load_view('pages/attendance_overtime-lists');
     }
@@ -72,7 +88,7 @@ class Attendance_overtimes extends MY_Controller {
                 'old_data'    => NULL,
                 'new_data'    => $data
             ]);
-            $overtime_id = $this->attendance_overtime_model->insert($data);
+            $overtime_id = $this->overtime_model->insert($data);
 
             if ( ! $overtime_id) {
                 $this->session->set_flashdata('failed', 'Failed to add new overtime.');
@@ -82,7 +98,7 @@ class Attendance_overtimes extends MY_Controller {
 
                 $this->load->library('email');
 
-                $ot_data = $this->attendance_overtime_model->get_by(['id' => $overtime_id]);
+                $ot_data = $this->overtime_model->get_by(['id' => $overtime_id]);
                 $ot_id = $overtime_id;
 
                 $user_id = $this->ion_auth->user()->row()->id;
@@ -119,18 +135,18 @@ class Attendance_overtimes extends MY_Controller {
     function edit($id)
     {
         // get specific overtime based on the id
-        $overtime = $this->attendance_overtime_model->get_overtime_by(['attendance_overtimes.id' => $id]);
+        $overtime = $this->overtime_model->get_overtime_by(['attendance_overtimes.id' => $id]);
         // dump($overtime);exit;
         // get all company records where status is equal to active
         //$companies = $this->company_model->get_many_by(['active_status' => 1]);
         // dump($this->db->last_query());exit;
         $this->data = array(
             'page_header' => 'Overtime Management',
-            'overtime'      => $overtime,
+            'overtime'    => $overtime,
             'active_menu' => $this->active_menu,
         );
 
-        // $overtimes = $this->attendance_overtime_model->get_overtime_all();
+        // $overtimes = $this->overtime_model->get_overtime_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('overtime_add'));
 
         $this->form_validation->set_data($data);
@@ -138,7 +154,7 @@ class Attendance_overtimes extends MY_Controller {
 
         if ($this->form_validation->run('overtime_add') == TRUE)
         {
-            $overtime_id = $this->attendance_overtime_model->update($id, $data);
+            $overtime_id = $this->overtime_model->update($id, $data);
 
             if ( ! $overtime_id) {
                 $this->session->set_flashdata('failed', 'Failed to update overtime.');
@@ -153,28 +169,28 @@ class Attendance_overtimes extends MY_Controller {
 
     function details($id)
     {
-        $overtime = $this->attendance_overtime_model->get_overtime_by(['attendance_overtimes.id' => $id]);
+        $overtime = $this->overtime_model->get_overtime_by(['attendance_overtimes.id' => $id]);
         $employee_infos = $this->employee_info_model->get_employee_info_data(['attendance_overtimes.id' => $id]);
 
         $this->data = array(
-            'page_header' => 'Overtime Details',
-            'overtime'      => $overtime,
+            'page_header'    => 'Overtime Details',
+            'overtime'       => $overtime,
             'employee_infos' => $employee_infos,
-            'active_menu' => $this->active_menu,
+            'active_menu'    => $this->active_menu,
         );
         $this->load_view('pages/attendance_overtime-details');
     }
 
     public function edit_confirmation($id)
     {
-        $edit_overtime = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $edit_overtime = $this->overtime_model->get_by(['id' => $id]);
         $data['edit_overtime'] = $edit_overtime;
         $this->load->view('modals/modal-update-overtime', $data);
     }
 
     public function update_status($id)
     {
-        $overtime_data = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $overtime_data = $this->overtime_model->get_by(['id' => $id]);
         $data['overtime_data'] = $overtime_data;
 
         $post = $this->input->post();
@@ -186,13 +202,13 @@ class Attendance_overtimes extends MY_Controller {
             if ($post['mode'] == 'De-activate')
             {
                 dump('De-activating...');
-                $result = $this->attendance_overtime_model->update($id, ['active_status' => 0]);
+                $result = $this->overtime_model->update($id, ['active_status' => 0]);
                 dump($this->db->last_query());
             }
             if ($post['mode'] == 'Activate')
             {
                 dump('Activating...');
-                $result = $this->attendance_overtime_model->update($id, ['active_status' => 1]);
+                $result = $this->overtime_model->update($id, ['active_status' => 1]);
                 dump($this->db->last_query());
             }
 
@@ -216,8 +232,8 @@ class Attendance_overtimes extends MY_Controller {
 
     public function approve($ot_id)
     {
-        $this->load->model('attendance_overtime_model');
-        $update = $this->attendance_overtime_model->update($ot_id, ['approval_status' => 1]);
+        $this->load->model('overtime_model');
+        $update = $this->overtime_model->update($ot_id, ['approval_status' => 1]);
 
         if ($update) {
 
@@ -251,8 +267,8 @@ class Attendance_overtimes extends MY_Controller {
 
     public function reject($ot_id)
     {
-        $this->load->model('attendance_overtime_model');
-        $update = $this->attendance_overtime_model->update($ot_id, ['approval_status' => 0]);
+        $this->load->model('overtime_model');
+        $update = $this->overtime_model->update($ot_id, ['approval_status' => 0]);
 
         if ($update) {
 
@@ -287,8 +303,8 @@ class Attendance_overtimes extends MY_Controller {
 
     public function cancel($ot_id)
     {
-        $this->load->model('attendance_overtime_model');
-        $update = $this->attendance_overtime_model->update($ot_id, ['status' => 0]);
+        $this->load->model('overtime_model');
+        $update = $this->overtime_model->update($ot_id, ['status' => 0]);
 
         if ($update) {
 
@@ -328,13 +344,13 @@ class Attendance_overtimes extends MY_Controller {
 
     public function approve_overtime($id)
     {
-        $overtime_data         = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $overtime_data         = $this->overtime_model->get_by(['id' => $id]);
         $data['overtime_data'] = $overtime_data;
 
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'approve') {
-            $result = $this->attendance_overtime_model->update($id, ['approval_status' => 1]);
+            $result = $this->overtime_model->update($id, ['approval_status' => 1]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Undertime successfully approved');
@@ -374,7 +390,7 @@ class Attendance_overtimes extends MY_Controller {
 
     public function reject_overtime($id)
     {
-        $overtime_data         = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $overtime_data         = $this->overtime_model->get_by(['id' => $id]);
         $data['overtime_data'] = $overtime_data;
 
         // TODO: make variable that will pass on the view
@@ -386,7 +402,7 @@ class Attendance_overtimes extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'reject') {
-            $result = $this->attendance_overtime_model->update($id, ['approval_status' => 0]);
+            $result = $this->overtime_model->update($id, ['approval_status' => 0]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Undertime successfully rejected');
@@ -427,13 +443,13 @@ class Attendance_overtimes extends MY_Controller {
 
     public function cancel_overtime($id)
     {
-        $overtime_data         = $this->attendance_overtime_model->get_by(['id' => $id]);
+        $overtime_data         = $this->overtime_model->get_by(['id' => $id]);
         $data['overtime_data'] = $overtime_data;
 
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'cancel') {
-            $result = $this->attendance_overtime_model->update($id, ['status' => 0]);
+            $result = $this->overtime_model->update($id, ['status' => 0]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Undertime successfully cancelled');
@@ -482,19 +498,19 @@ class Attendance_overtimes extends MY_Controller {
          $my_employee_id           = $this->ion_auth->user()->row()->employee_id;
 
         $data['summary'] = [
-            'total_denied' => $this->attendance_overtime_model->count_by([
+            'total_denied' => $this->overtime_model->count_by([
                 'approval_status' => 0,
                 'employee_id' => $my_employee_id
             ]),
-            'total_approved' => $this->attendance_overtime_model->count_by([
+            'total_approved' => $this->overtime_model->count_by([
                 'approval_status' => 1,
                 'employee_id' => $my_employee_id
             ]),
-            'total_pending' => $this->attendance_overtime_model->count_by([
+            'total_pending' => $this->overtime_model->count_by([
                 'approval_status' => 2,
                 'employee_id' => $my_employee_id
             ]),
-            'total_cancelled' => $this->attendance_overtime_model->count_by([
+            'total_cancelled' => $this->overtime_model->count_by([
                 'status' => 0,
                 'employee_id' => $my_employee_id
             ]),
@@ -508,10 +524,10 @@ class Attendance_overtimes extends MY_Controller {
         $data = ['status' => 'success', 'message' => 'test message ajax_approval!'];
 
         $data['summary'] = [
-            'total_denied'    => $this->attendance_overtime_model->count_by(['approval_status' => 0]),
-            'total_approved'  => $this->attendance_overtime_model->count_by(['approval_status' => 1]),
-            'total_pending'   => $this->attendance_overtime_model->count_by(['approval_status' => 2]),
-            'total_cancelled' => $this->attendance_overtime_model->count_by(['status' => 0]),
+            'total_denied'    => $this->overtime_model->count_by(['approval_status' => 0]),
+            'total_approved'  => $this->overtime_model->count_by(['approval_status' => 1]),
+            'total_pending'   => $this->overtime_model->count_by(['approval_status' => 2]),
+            'total_cancelled' => $this->overtime_model->count_by(['status' => 0]),
         ];
 
         echo json_encode($data);

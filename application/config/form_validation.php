@@ -404,7 +404,8 @@ $config = array(
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
         array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
-        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim'),
+        array('field' => 'remarks',           'label' => 'Remarks',          'rules' => 'trim')
     ),
 
     'daily_time_record_edit' => array(
@@ -415,7 +416,8 @@ $config = array(
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
         array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
-        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim'),
+        array('field' => 'remarks',           'label' => 'Remarks',          'rules' => 'trim')
     ),
 
     'daily_time_log_add' => array(

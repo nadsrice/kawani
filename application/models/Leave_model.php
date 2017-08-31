@@ -11,9 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link        http://systemantech.com
  */
 
-class Attendance_leave_model extends MY_Model {
+class Leave_model extends MY_Model {
 
-    protected $_table = 'attendance_leaves';
+    protected $_table      = 'attendance_leaves';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
@@ -27,8 +27,9 @@ class Attendance_leave_model extends MY_Model {
 
     protected function generate_date_created_status($leave)
     {
+        $user                     = $this->ion_auth->user()->row();
         $leave['created']         = date('Y-m-d H:i:s');
-        $leave['created_by']      = 0;
+        $leave['created_by']      = $user->employee_id;
         $leave['status']          = 1;
         $leave['approval_status'] = 2;
         return $leave;
@@ -38,9 +39,6 @@ class Attendance_leave_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('attendance_leaves.*');
-        //$query->order_by('name', 'asc');
-        //$query->join('companies', 'attendance_leaves.company_id = companies.id', 'left');
-
         return $this->get_by($param);
     }
 
@@ -48,8 +46,6 @@ class Attendance_leave_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('attendance_leaves.*');
-        //$query->order_by('name', 'asc');
-
         return $this->get_many_by($param);
     }
 
@@ -57,8 +53,6 @@ class Attendance_leave_model extends MY_Model {
     {
         $query = $this->db;
         $query->select('*');
-        //$query->order_by('name', 'asc');
-
         return $this->get_all();
     }
 
@@ -75,47 +69,47 @@ class Attendance_leave_model extends MY_Model {
         return $this->get_many_by($where);
     }
 
-    protected function set_default_menus($attendance_leave)
+    protected function set_default_menus($leave)
     {
         $btn_settings = $this->config->item('btn_settings');
 
-        if ( ! isset($attendance_leave)) {
+        if ( ! isset($leave)) {
             return FALSE;
         }
 
-        $hashed_id = generateRandomString().'-'.md5($attendance_leave['id']);
+        $hashed_id = generateRandomString().'-'.md5($leave['id']);
 
-        $attendance_leave['action_menus'] = [
+        $leave['action_menus'] = [
             'approve' => [
-                'url'               => site_url('attendance_leaves/approve_leave/'.$attendance_leave['id']),
+                'url'               => site_url('leaves/approve_leave/'.$leave['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Approve',
                 'modal_status'      => TRUE,
-                'modal_attributes'  => 'data-toggle="modal" data-target="#status-action-approve-'.md5($attendance_leave['id']).'"',
-                'modal_id'          => 'status-action-approve-'.md5($attendance_leave['id']),
+                'modal_attributes'  => 'data-toggle="modal" data-target="#status-action-approve-'.md5($leave['id']).'"',
+                'modal_id'          => 'status-action-approve-'.md5($leave['id']),
                 'button_style'      => $btn_settings['btn_update']
             ],
             'reject' => [
-                'url'               => site_url('attendance_leaves/reject_leave/'.$attendance_leave['id']),
+                'url'               => site_url('leaves/reject_leave/'.$leave['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Reject',
                 'modal_status'      => TRUE,
-                'modal_attributes'  => 'data-toggle="modal" data-target="#status-action-reject-'.md5($attendance_leave['id']).'"',
-                'modal_id'          => 'status-action-reject-'.md5($attendance_leave['id']),
+                'modal_attributes'  => 'data-toggle="modal" data-target="#status-action-reject-'.md5($leave['id']).'"',
+                'modal_id'          => 'status-action-reject-'.md5($leave['id']),
                 'button_style'      => $btn_settings['btn_update']
             ],
             'cancel' => [
-                'url'               => site_url('attendance_leaves/cancel_leave/'.$attendance_leave['id']),
+                'url'               => site_url('leaves/cancel_leave/'.$leave['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Cancel',
                 'modal_status'      => TRUE,
-                'modal_attributes'  => 'data-toggle="modal" data-target="#status-action-cancel-'.md5($attendance_leave['id']).'"',
-                'modal_id'          => 'status-action-cancel-'.md5($attendance_leave['id']),
+                'modal_attributes'  => 'data-toggle="modal" data-target="#status-action-cancel-'.md5($leave['id']).'"',
+                'modal_id'          => 'status-action-cancel-'.md5($leave['id']),
                 'button_style'      => $btn_settings['btn_update']
             ]
         ];
 
-        return $attendance_leave;
+        return $leave;
     }
 
     public function get_employee_attendance_leave($where = '')

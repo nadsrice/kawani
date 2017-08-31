@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author      joseph.gono@systemantech.com
  * @link        http://systemantech.com
  */
-class Attendance_official_businesses extends MY_Controller {
+class Official_businesses extends MY_Controller {
 
     private $active_menu = 'Administration';
 
@@ -27,7 +27,7 @@ class Attendance_official_businesses extends MY_Controller {
         parent::__construct();
         $this->load->library('audit_trail');
         $this->load->model([
-            'attendance_official_business_model',
+            'official_business_model',
             'account_model',
             'contact_person_model',
             'user_model',
@@ -46,26 +46,24 @@ class Attendance_official_businesses extends MY_Controller {
             // todo: load official_business model
             // todo: load view & past the retrieved data from model
         $status = $this->uri->segment(3);
+        $user   = $this->ion_auth->user()->row();
 
         if ( ! isset($status)) {
             $selected = '';
             $status = '';
         }
 
-        $total_rejected     = $this->attendance_official_business_model->count_by(['approval_status' => 0]); //0 = denied
-        $total_approved     = $this->attendance_official_business_model->count_by(['approval_status' => 1]); //1 = approved
-        $total_pending      = $this->attendance_official_business_model->count_by(['approval_status' => 2]); //2 = pending
-        $total_cancelled    = $this->attendance_official_business_model->count_by(['status' => 0]);         //0 = cancelled
+        $total_rejected     = $this->official_business_model->count_by(['approval_status' => 0, 'employee_id' => $user->employee_id]); 
+        $total_approved     = $this->official_business_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]); 
+        $total_pending      = $this->official_business_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]); 
+        $total_cancelled    = $this->official_business_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]); 
 
-        $user                       = $this->ion_auth->user()->row();
-        // $user_data                  = $this->user_model->get_by(['id' => $user_id]);
+        $official_businesses        = $this->official_business_model->get_ob_all();
 
-        $official_businesses        = $this->attendance_official_business_model->get_ob_all();
-
-        $my_official_business       = $this->attendance_official_business_model->get_ob_requests_by([
+        $my_official_business       = $this->official_business_model->get_ob_requests_by([
             'attendance_official_businesses.employee_id' => $user->employee_id]);
 
-        $approval_official_business = $this->attendance_official_business_model->get_ob_requests_by([
+        $approval_official_business = $this->official_business_model->get_ob_requests_by([
             'attendance_official_businesses.approver_id' => $user->employee_id]);
 
         $this->data = array(
@@ -129,7 +127,7 @@ class Attendance_official_businesses extends MY_Controller {
                 'new_data'    => $data
             ]);
 
-            $official_business_id = $this->attendance_official_business_model->insert($data);
+            $official_business_id = $this->official_business_model->insert($data);
 
             if ( ! $official_business_id) {
                 $this->session->set_flashdata('failed', 'Failed to add new official business.');
@@ -140,7 +138,7 @@ class Attendance_official_businesses extends MY_Controller {
 
                 $this->load->library('email');
 
-                // $ob_data = $this->attendance_official_business_model->get_by(['id' => $official_business_id]);
+                // $ob_data = $this->official_business_model->get_by(['id' => $official_business_id]);
                 // $ob_id = $official_business_id;
 
                 $user_id = $this->ion_auth->user()->row()->id;
@@ -159,7 +157,7 @@ class Attendance_official_businesses extends MY_Controller {
                  *
                  */
 
-                $ob_data = $this->attendance_official_business_model->get_ob_requests_by([
+                $ob_data = $this->official_business_model->get_ob_requests_by([
                     'attendance_official_businesses.id' => $official_business_id
                 ]);
 
@@ -217,8 +215,8 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function approve($ob_id)
     {
-        $this->load->model('attendance_official_business_model');
-        $update = $this->attendance_official_business_model->update($ob_id, ['approval_status' => 1]);
+        $this->load->model('official_business_model');
+        $update = $this->official_business_model->update($ob_id, ['approval_status' => 1]);
 
         if ($update) {
 
@@ -251,8 +249,8 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function disapprove($ob_id)
     {
-        $this->load->model('attendance_official_business_model');
-        $update = $this->attendance_official_business_model->update($ob_id, ['approval_status' => 0]);
+        $this->load->model('official_business_model');
+        $update = $this->official_business_model->update($ob_id, ['approval_status' => 0]);
 
         if ($update) {
 
@@ -286,8 +284,8 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function cancel($ob_id)
     {
-        $this->load->model('attendance_official_business_model');
-        $update = $this->attendance_official_business_model->update($ob_id, ['status' => 0]);
+        $this->load->model('official_business_model');
+        $update = $this->official_business_model->update($ob_id, ['status' => 0]);
 
         if ($update) {
 
@@ -322,7 +320,7 @@ class Attendance_official_businesses extends MY_Controller {
     public function edit($id)
     {
         // get specific official_business based on the id
-        $official_business = $this->attendance_official_business_model->get_ob_by(['attendance_official_businesses.id' => $id]);
+        $official_business = $this->official_business_model->get_ob_by(['attendance_official_businesses.id' => $id]);
         $account           = $this->account_model->get_account_by(['attendance_official_businesses.id' => $id]);
         $contact_person    = $this->contact_person_model->get_contact_person_by(['attendance_official_businesses.id' => $id]);
 
@@ -334,7 +332,7 @@ class Attendance_official_businesses extends MY_Controller {
             'active_menu'       => $this->active_menu,
         );
 
-        // $official_businesses = $this->attendance_official_business_model->get_ob_all();
+        // $official_businesses = $this->official_business_model->get_ob_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('ob_add'));
 
         $this->form_validation->set_data($data);
@@ -342,7 +340,7 @@ class Attendance_official_businesses extends MY_Controller {
 
         if ($this->form_validation->run('ob_add') == TRUE)
         {
-            $official_business_id = $this->attendance_official_business_model->update($id, $data);
+            $official_business_id = $this->official_business_model->update($id, $data);
 
             if ( ! $official_business_id) {
                 $this->session->set_flashdata('failed', 'Failed to update official business.');
@@ -357,7 +355,7 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function details($id)
     {
-        $official_business = $this->attendance_official_business_model->get_ob_by(['attendance_official_businesses.id' => $id]);
+        $official_business = $this->official_business_model->get_ob_by(['attendance_official_businesses.id' => $id]);
 
         $this->data = array(
             'page_header'       => 'Official Business Details',
@@ -370,7 +368,7 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function view_ob($id)
     {
-        $view_ob        = $this->attendance_official_business_model->get_by(['id' => $id]);
+        $view_ob        = $this->official_business_model->get_by(['id' => $id]);
         $account_name   = $this->account_model->get_by(['id' => $view_ob['account_id']]);
         $contact_person = $this->contact_person_model->get_by(['id' => $view_ob['contact_person_id']]);
 
@@ -386,7 +384,7 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function approve_official_business($id)
     {
-        $official_business_data         = $this->attendance_official_business_model->get_by(['id' => $id]);
+        $official_business_data         = $this->official_business_model->get_by(['id' => $id]);
         $data['official_business_data'] = $official_business_data;
 
         $employee_id = $official_business_data['employee_id'];
@@ -418,7 +416,7 @@ class Attendance_official_businesses extends MY_Controller {
                 'new_data'    => ['approval_status' => 1],
             ]);
 
-            $result = $this->attendance_official_business_model->update($id, ['approval_status' => 1]);
+            $result = $this->official_business_model->update($id, ['approval_status' => 1]);
 
             if ($result){
 
@@ -437,7 +435,7 @@ class Attendance_official_businesses extends MY_Controller {
                 // ];
 
                 //$message = $this->load->view('templates/email/ob.tpl.php', $data, true);
-                $ob_data = $this->attendance_official_business_model->get_ob_requests_by([
+                $ob_data = $this->official_business_model->get_ob_requests_by([
                     'attendance_official_businesses.id' => $id
                 ]);
 
@@ -493,7 +491,7 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function reject_official_business($id)
     {
-        $official_business_data         = $this->attendance_official_business_model->get_by(['id' => $id]);
+        $official_business_data         = $this->official_business_model->get_by(['id' => $id]);
         $data['official_business_data'] = $official_business_data;
 
         $employee_id = $official_business_data['employee_id'];
@@ -525,7 +523,7 @@ class Attendance_official_businesses extends MY_Controller {
                 'new_data'    => ['approval_status' => 0],
             ]);
 
-            $result = $this->attendance_official_business_model->update($id, ['approval_status' => 0]);
+            $result = $this->official_business_model->update($id, ['approval_status' => 0]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Official Business successfully rejected');
@@ -566,7 +564,7 @@ class Attendance_official_businesses extends MY_Controller {
 
     public function cancel_official_business($id)
     {
-        $official_business_data         = $this->attendance_official_business_model->get_by(['id' => $id]);
+        $official_business_data         = $this->official_business_model->get_by(['id' => $id]);
         $data['official_business_data'] = $official_business_data;
 
         $employee_id = $official_business_data['employee_id'];
@@ -599,7 +597,7 @@ class Attendance_official_businesses extends MY_Controller {
                 'new_data'    => ['status' => 0],
             ]);
 
-            $result = $this->attendance_official_business_model->update($id, ['status' => 0]);
+            $result = $this->official_business_model->update($id, ['status' => 0]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Official Business was cancelled');

@@ -32,7 +32,7 @@
                             <th class="text-left">Time Out</th>
                             <th class="text-left">Hours Rendered</th>
                             <th class="text-left">Tardiness</th>
-                            <!-- <th class="text-left">Remarks</th> -->
+                            <th class="text-left">Remarks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,7 +41,7 @@
                                 <tr>
                                     <td>
                                         <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('daily_time_records/details/' . $daily_time_record['id']); ?>">
-                                            <i class="fa fa-search"></i> View
+                                            <i class="fa fa-eye"></i> View
                                         </a><!-- 
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('daily_time_records/edit_confirmation/' . $daily_time_record['id']); ?>" data-toggle="modal" data-target="#update-daily_time_record-<?php echo md5($daily_time_record['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
@@ -56,6 +56,8 @@
                                     <td class="text-right"><?php echo date('h:i A', strtotime($daily_time_record['time_out'])); ?></td>
                                     <td class="text-right"><?php echo $daily_time_record['number_of_hours']; ?></td>
                                     <td class="text-right"><?php echo $daily_time_record['minutes_tardy']; ?></td>
+                                    <td class="text-right"><?php echo $daily_time_record['remarks']; ?></td>
+
                                 </tr>
                                 <div class="modal fade" id="update-daily_time_record-status-<?php echo md5($daily_time_record['id']); ?>" role="dialog">
                                     <div class="modal-dialog">

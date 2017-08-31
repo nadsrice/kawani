@@ -31,10 +31,10 @@ class Daily_time_records extends MY_Controller {
             'employee_schedule_model',
             'shift_schedule_model',
             'employee_model',
-            'attendance_official_business_model',
-            'attendance_overtime_model',
-            'attendance_undertime_model',
-            'attendance_leave_model'
+            'official_business_model',
+            'overtime_model',
+            'undertime_model',
+            'leave_model'
         ]);
     }
 
@@ -129,16 +129,14 @@ class Daily_time_records extends MY_Controller {
 
         $time_login = date('h:i A', strtotime($data_timelog['date_time']));
 
-        $data_dtr['employee_id']       = $employee_id;
         $data_dtr['time_in']           = $data_timelog['date_time'];
+        $data_dtr['employee_id']       = $employee_id;
         $data_dtr['shift_schedule_id'] = $shift_schedule['id'];
 
         //Calculate time of login
 
         $datetime_start = date('Y-m-d H:i:s', strtotime($time_start));
         $tardiness      = timediff_minutes($datetime_start, $data_timelog['date_time']);
-
-        
 
         $this->form_validation->set_data($data_dtr);
         $this->form_validation->set_data($data_timelog);
@@ -159,24 +157,26 @@ class Daily_time_records extends MY_Controller {
         }
 
         //DAILY TIME RECORDS
-        if ($this->form_validation->run('daily_time_record_add') == TRUE)
-        {
-            // $this->session->set_flashdata('log_parameters', [
-            //     'action_mode' => 0,
-            //     'perm_key'    => 'add_daily_time_record',
-            //     'old_data'    => NULL,
-            //     'new_data'    => $data
-            // ]);
+        if (tar) {
+            // if ($this->form_validation->run('daily_time_record_add') == TRUE)
+            // {
+            //     // $this->session->set_flashdata('log_parameters', [
+            //     //     'action_mode' => 0,
+            //     //     'perm_key'    => 'add_daily_time_record',
+            //     //     'old_data'    => NULL,
+            //     //     'new_data'    => $data
+            //     // ]);
 
-            $daily_time_record_id = $this->daily_time_record_model->insert($data_dtr);
+            //     $daily_time_record_id = $this->daily_time_record_model->insert($data_dtr);
 
-            if ( ! $daily_time_record_id) {
-                $this->session->set_flashdata('failed', 'Failed to Time In');
-                redirect('daily_time_records');
-            } else {
-                $this->session->set_flashdata('success', 'Successfully Timed In at '.$data_dtr['time_in']);
-                redirect('daily_time_records');
-            }
+            //     if ( ! $daily_time_record_id) {
+            //         $this->session->set_flashdata('failed', 'Failed to Time In');
+            //         redirect('daily_time_records');
+            //     } else {
+            //         $this->session->set_flashdata('success', 'Successfully Timed In at '.$data_dtr['time_in']);
+            //         redirect('daily_time_records');
+            //     }
+            // }
         }
         redirect('daily_time_records');
     }

@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author      joseph.gono@systemantech.com
  * @link        http://systemantech.com
  */
-class Attendance_leaves extends MY_Controller {
+class Leaves extends MY_Controller {
 
     private $active_menu = 'Administration';
     /**
@@ -25,7 +25,7 @@ class Attendance_leaves extends MY_Controller {
         parent::__construct();
         $this->load->library('audit_trail');
         $this->load->model([
-            'attendance_leave_model',
+            'leave_model',
             'leave_type_model',
             'user_model'
         ]);
@@ -37,13 +37,24 @@ class Attendance_leaves extends MY_Controller {
             // todo: load leave model
             // todo: load view & past the retrieved data from model
 
-        $user           = $this->ion_auth->user()->row();
-        $leaves         = $this->attendance_leave_model->get_leave_all();
-        $leave_requests = $this->attendance_leave_model->get_leave_requests(['attendance_leaves.approver_id' => $user->employee_id]);
-        $my_leaves      = $this->attendance_leave_model->get_leave_requests(['attendance_leaves.employee_id' => $user->employee_id]);
-        $leave_balances = $this->employee_leave_credit_model->get_leave_credits_by(['
+        $status = $this->uri->segment(3);
+        $user            = $this->ion_auth->user()->row();
+
+        if ( ! isset($status)) {
+            $selected = '';
+            $status = '';
+        }
+
+        $total_rejected  = $this->leave_model->count_by(['approval_status' => 0, 'employee_id' => $user->employee_id]); 
+        $total_approved  = $this->leave_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]]); 
+        $total_pending   = $this->leave_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]]); 
+        $total_cancelled = $this->leave_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]]);          
+
+        $leaves          = $this->leave_model->get_leave_all();
+        $leave_requests  = $this->leave_model->get_leave_requests(['attendance_leaves.approver_id' => $user->employee_id]);
+        $my_leaves       = $this->leave_model->get_leave_requests(['attendance_leaves.employee_id' => $user->employee_id]);
+        $leave_balances  = $this->employee_leave_credit_model->get_leave_credits_by(['
             employee_leave_credits.employee_id' => $user->employee_id]);
-        $total_pending  = $this->attendance_leave_model->count_by(['approval_status' => 2]); //2
 
         // dump($this->db->last_query());
         // dump($leave_balances);exit;
@@ -51,12 +62,15 @@ class Attendance_leaves extends MY_Controller {
         //$employee_info = $this->employee_model->get_employee_data('employee_contacts', ['employee_id' => 3]);
 
         $this->data = array(
-            'page_header'    => 'Leave Management',
-            'leave_requests' => $leave_requests,
-            'my_leaves'      => $my_leaves,
-            'leave_balances' => $leave_balances,
-            'total_pending'  => $total_pending,
-            'active_menu'    => $this->active_menu,
+            'page_header'     => 'Leave Management',
+            'leave_requests'  => $leave_requests,
+            'my_leaves'       => $my_leaves,
+            'leave_balances'  => $leave_balances,
+            'total_rejected'  => $total_rejected,
+            'total_approved'  => $total_approved,
+            'total_pending'   => $total_pending,
+            'total_cancelled' => $total_cancelled,
+            'active_menu'     => $this->active_menu,
         );
 
         $this->load_view('pages/attendance_leave-lists');
@@ -118,7 +132,7 @@ class Attendance_leaves extends MY_Controller {
                 'new_data'    => $data
             ]);
 
-            $leave_id = $this->attendance_leave_model->insert($data);
+            $leave_id = $this->leave_model->insert($data);
 
             if ( ! $leave_id)
             {
@@ -128,7 +142,7 @@ class Attendance_leaves extends MY_Controller {
             else
             {
                 $leave_days_request = daterange($data['date_start'], $data['date_end']);
-                $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
+                $leave_data = $this->leave_model->get_employee_attendance_leave([
                     'attendance_leaves.id' => $leave_id
                 ]);
 
@@ -171,7 +185,7 @@ class Attendance_leaves extends MY_Controller {
 
     public function approve($attendance_leave_id)
     {
-        $attendance_leave = $this->attendance_leave_model->get_by(['id' => $attendance_leave_id]);
+        $attendance_leave = $this->leave_model->get_by(['id' => $attendance_leave_id]);
         $withpay          = $attendance_leave['payment_status'];
 
         $leave_types = $this->employee_model->get_employee_leave_credit([
@@ -195,9 +209,9 @@ class Attendance_leaves extends MY_Controller {
             $this->session->set_flashdata('old_data', $attendance_leave);
 
             $update_leave_credit    = $this->employee_leave_credit_model->update($employee_leave_credits_id, ['balance' => $updated_balance]);
-            $update_approval_status = $this->attendance_leave_model->update($attendance_leave_id, ['approval_status' => 1]);
+            $update_approval_status = $this->leave_model->update($attendance_leave_id, ['approval_status' => 1]);
 
-            $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
+            $leave_data = $this->leave_model->get_employee_attendance_leave([
                 'attendance_leaves.id' => $attendance_leave_id
             ]);
 
@@ -236,11 +250,11 @@ class Attendance_leaves extends MY_Controller {
 
         } else {
 
-            $update_approval_status = $this->attendance_leave_model->update($attendance_leave_id, ['payment_status' => 0]);
+            $update_approval_status = $this->leave_model->update($attendance_leave_id, ['payment_status' => 0]);
 
             if ($update_approval_status) {
 
-                $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
+                $leave_data = $this->leave_model->get_employee_attendance_leave([
                     'attendance_leaves.id' => $attendance_leave_id
                 ]);
 
@@ -302,8 +316,8 @@ class Attendance_leaves extends MY_Controller {
     public function disapprove($leave_id)
     {
          dump($leave_id);
-        // $this->load->model('attendance_leave_model');
-        // $update = $this->attendance_leave_model->update($leave_id, ['approval_status' => 0]);
+        // $this->load->model('leave_model');
+        // $update = $this->leave_model->update($leave_id, ['approval_status' => 0]);
 
         // if ($update) {
 
@@ -338,7 +352,7 @@ class Attendance_leaves extends MY_Controller {
     public function edit($id)
     {
         // get specific leave based on the id
-        $leave = $this->attendance_leave_model->get_leave_by(['attendance_leaves.id' => $id]);
+        $leave = $this->leave_model->get_leave_by(['attendance_leaves.id' => $id]);
 
         $this->data = array(
             'page_header'       => 'Leave Management',
@@ -346,7 +360,7 @@ class Attendance_leaves extends MY_Controller {
             'active_menu'       => $this->active_menu,
         );
 
-        // $leaves = $this->attendance_leave_model->get_leave_all();
+        // $leaves = $this->leave_model->get_leave_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('leave_add'));
 
         $this->form_validation->set_data($data);
@@ -354,7 +368,7 @@ class Attendance_leaves extends MY_Controller {
 
         if ($this->form_validation->run('leave_add') == TRUE)
         {
-            $leave_id = $this->attendance_leave_model->update($id, $data);
+            $leave_id = $this->leave_model->update($id, $data);
 
             if ( ! $leave_id) {
                 $this->session->set_flashdata('failed', 'Failed to update leave.');
@@ -369,7 +383,7 @@ class Attendance_leaves extends MY_Controller {
 
     public function details($id)
     {
-        $leave = $this->attendance_leave_model->get_leave_by(['attendance_leaves.id' => $id]);
+        $leave = $this->leave_model->get_leave_by(['attendance_leaves.id' => $id]);
 
         $this->data = array(
             'page_header' => 'Leave Details',
@@ -382,7 +396,7 @@ class Attendance_leaves extends MY_Controller {
 
     public function approve_leave($id)
     {
-        $attendance_leave = $this->attendance_leave_model->get_by(['id' => $id]);
+        $attendance_leave = $this->leave_model->get_by(['id' => $id]);
 
         $withpay          = $attendance_leave['payment_status'];
 
@@ -413,9 +427,9 @@ class Attendance_leaves extends MY_Controller {
                 $employee_leave_credits_id = $leave_types[0]['elc_id'];
 
                 $update_leave_credit    = $this->employee_leave_credit_model->update($employee_leave_credits_id, ['balance' => $updated_balance]);
-                $update_approval_status = $this->attendance_leave_model->update($id, ['approval_status' => 1]);
+                $update_approval_status = $this->leave_model->update($id, ['approval_status' => 1]);
 
-                $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
+                $leave_data = $this->leave_model->get_employee_attendance_leave([
                     'attendance_leaves.id' => $id
                 ]);
 
@@ -455,14 +469,14 @@ class Attendance_leaves extends MY_Controller {
                 redirect('attendance_leaves');
             } else {
 
-                $update_payment_status  = $this->attendance_leave_model->update($id, ['payment_status' => 0]);
-                $update_approval_status = $this->attendance_leave_model->update($id, ['approval_status' => 1]);
+                $update_payment_status  = $this->leave_model->update($id, ['payment_status' => 0]);
+                $update_approval_status = $this->leave_model->update($id, ['approval_status' => 1]);
 
                 if ($update_approval_status) {
 
                     $this->load->library('email');
 
-                    $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
+                    $leave_data = $this->leave_model->get_employee_attendance_leave([
                         'attendance_leaves.id' => $id
                     ]);
 
@@ -507,7 +521,7 @@ class Attendance_leaves extends MY_Controller {
 
     public function cancel_leave($id)
     {
-        $attendance_leave = $this->attendance_leave_model->get_by(['id' => $id]);
+        $attendance_leave = $this->leave_model->get_by(['id' => $id]);
         $withpay          = $attendance_leave['payment_status'];
 
         $leave_types = $this->employee_model->get_employee_leave_credit([
@@ -539,9 +553,9 @@ class Attendance_leaves extends MY_Controller {
                 $employee_leave_credits_id = $leave_types[0]['elc_id'];
 
                 $update_leave_credit    = $this->employee_leave_credit_model->update($employee_leave_credits_id, ['balance' => $updated_balance]);
-                $update_approval_status = $this->attendance_leave_model->update($id, ['status' => 0]);
+                $update_approval_status = $this->leave_model->update($id, ['status' => 0]);
 
-                $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
+                $leave_data = $this->leave_model->get_employee_attendance_leave([
                     'attendance_leaves.id' => $id
                 ]);
 
@@ -580,12 +594,12 @@ class Attendance_leaves extends MY_Controller {
 
             } else {
 
-                $update_payment_status  = $this->attendance_leave_model->update($id, ['payment_status' => 0]);
-                $update_approval_status = $this->attendance_leave_model->update($id, ['status' => 0]);
+                $update_payment_status  = $this->leave_model->update($id, ['payment_status' => 0]);
+                $update_approval_status = $this->leave_model->update($id, ['status' => 0]);
 
                 if ($update_approval_status) {
 
-                    $leave_data = $this->attendance_leave_model->get_employee_attendance_leave([
+                    $leave_data = $this->leave_model->get_employee_attendance_leave([
                         'attendance_leaves.id' => $id
                     ]);
 
