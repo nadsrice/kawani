@@ -160,19 +160,21 @@ class Sss_contribution_matrix extends MY_Controller
 		$this->data['modal_file_path'] = 'modals/modal-edit-sss-contribution-matrix';
 		$this->data['years'] = incremental_year(10);
 
-
 		$post = $this->input->post();
 
+		$data = $post;
 
-		// $data = $post;
-		// $update = $this->sss_contribution_matrix_model->update($sss_matrix_id, $data);
-		// if ($update) {
-		// 	$this->session->set_flashdata('success', 'Successfully updated SSS Contribution Matrix with ID: ' . $sss_matrix_id);
-		// 	redirect('sss_contribution_matrix');
-		// } else {
-		// 	$this->session->set_flashdata('failed', 'Unable to update SSS Contribution Matrix with ID: ' . $sss_matrix_id);
-		// 	redirect('sss_contribution_matrix');
-		// }
+		if (isset($post['save'])) {
+			$update = $this->sss_contribution_matrix_model->update($sss_matrix_id, $data);
+
+			if ($update) {
+				$this->session->set_flashdata('success', 'Successfully updated SSS Contribution Matrix with ID: ' . $sss_matrix_id);
+				redirect('sss_contribution_matrix');
+			} else {
+				$this->session->set_flashdata('failed', 'Unable to update SSS Contribution Matrix with ID: ' . $sss_matrix_id);
+				redirect('sss_contribution_matrix');
+			}
+		}
 
 		$this->load_view('pages/sss-contribution-matrix-list');
 	}
