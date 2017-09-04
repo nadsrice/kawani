@@ -46,9 +46,9 @@ class Leaves extends MY_Controller {
         }
 
         $total_rejected  = $this->leave_model->count_by(['approval_status' => 0, 'employee_id' => $user->employee_id]); 
-        $total_approved  = $this->leave_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]]); 
-        $total_pending   = $this->leave_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]]); 
-        $total_cancelled = $this->leave_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]]);          
+        $total_approved  = $this->leave_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]); 
+        $total_pending   = $this->leave_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]); 
+        $total_cancelled = $this->leave_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]);          
 
         $leaves          = $this->leave_model->get_leave_all();
         $leave_requests  = $this->leave_model->get_leave_requests(['attendance_leaves.approver_id' => $user->employee_id]);
@@ -137,7 +137,7 @@ class Leaves extends MY_Controller {
             if ( ! $leave_id)
             {
                 $this->session->set_flashdata('failed', 'Failed to add new leave.');
-                redirect('attendance_leaves');
+                redirect('leaves');
             }
             else
             {
@@ -176,7 +176,7 @@ class Leaves extends MY_Controller {
 
                 $this->session->set_flashdata('success', 'Successfully added new leave.');
 
-                redirect('attendance_leaves');
+                redirect('leaves');
             }
         }
 
@@ -246,7 +246,7 @@ class Leaves extends MY_Controller {
             $this->load->library('email');
 
             $this->session->set_flashdata('success', 'You have successfully approved the filed leave.');
-            redirect('attendance_leaves');
+            redirect('leaves');
 
         } else {
 
@@ -372,10 +372,10 @@ class Leaves extends MY_Controller {
 
             if ( ! $leave_id) {
                 $this->session->set_flashdata('failed', 'Failed to update leave.');
-                redirect('attendance_leaves');
+                redirect('leaves');
             } else {
                 $this->session->set_flashdata('success', 'Leave successfully updated!');
-                redirect('attendance_leaves');
+                redirect('leaves');
             }
         }
         $this->load_view('forms/attendance_leave-edit');
@@ -466,7 +466,7 @@ class Leaves extends MY_Controller {
                 $this->load->library('email');
 
                 $this->session->set_flashdata('success', 'You have successfully approved the filed leave.');
-                redirect('attendance_leaves');
+                redirect('leaves');
             } else {
 
                 $update_payment_status  = $this->leave_model->update($id, ['payment_status' => 0]);
@@ -590,7 +590,7 @@ class Leaves extends MY_Controller {
                 $this->load->library('email');
 
                 $this->session->set_flashdata('success', 'You have been cancelled the filed leave.');
-                redirect('attendance_leaves');
+                redirect('leaves');
 
             } else {
 

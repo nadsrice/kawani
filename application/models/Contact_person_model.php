@@ -43,9 +43,9 @@ class Contact_person_model extends MY_Model {
     public function get_contact_person_by($param)
     {
         $query = $this->db;
-        $query->select('contact_persons.*');
+        $query->select('account_contact_persons.*');
         $query->join('attendance_official_businesses', 'attendance_official_businesses.contact_person_id = contact_persons.id', 'left');
-        //$query->join('companies', 'contact_persons.company_id = companies.id', 'left');
+        //$query->join('companies', 'account_contact_persons.company_id = companies.id', 'left');
 
         return $this->get_by($param);
     }
@@ -53,7 +53,7 @@ class Contact_person_model extends MY_Model {
     public function get_many_contact_person_by($param)
     {
         $query = $this->db;
-        $query->select('contact_persons.*');
+        $query->select('account_contact_persons.*');
         $query->join('attendance_official_businesses', 'attendance_official_businesses.contact_person_id = contact_persons.id', 'left');
         // $query->order_by('name', 'asc');
         // $query->order_by('companies.id', 'asc');
@@ -64,7 +64,7 @@ class Contact_person_model extends MY_Model {
     public function get_contact_person_all()
     {
         $query = $this->db;
-        $query->select('contact_persons.*');
+        $query->select('account_contact_persons.*');
         $query->order_by('last_name', 'asc');
 
         return $this->get_all();

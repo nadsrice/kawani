@@ -62,7 +62,7 @@ class Undertimes extends MY_Controller {
             'page_header'       => 'Undertime Management',
             'undertimes'        => $undertimes,
             'my_undertimes'     => $my_undertimes,
-            'total_denied'      => $total_denied,
+            'total_rejected'      => $total_rejected,
             'total_approved'    => $total_approved,
             'total_pending'     => $total_pending,
             'total_cancelled'   => $total_cancelled,

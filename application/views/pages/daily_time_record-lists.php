@@ -2,12 +2,12 @@
     <div class="col-md-6">&nbsp;</div>
     <div class="col-md-6">
         <div class="pull-right">
-            <a href="<?php echo site_url('daily_time_records/time_in/'.$employee_id); ?>" class="btn btn-primary">
+            <a href="<?php echo site_url('daily_time_records/time_in'); ?>" class="btn btn-primary">
                 <i class="fa fa-clock-o"></i>
                 <span>Time In</span>
             </a>
 
-            <a href="<?php echo site_url('daily_time_records/time_out/'.$employee_id); ?>" class="btn btn-primary">
+            <a href="<?php echo site_url('daily_time_records/time_out'); ?>" class="btn btn-primary">
                 <i class="fa fa-clock-o"></i>
                 <span>Time Out</span>
             </a>

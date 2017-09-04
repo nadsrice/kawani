@@ -20,7 +20,7 @@ class Employee_model extends MY_Model {
      * Callbacks or Observers
      */
     protected $before_create = ['generate_date_created_status'];
-    protected $after_get = ['set_default_data'];
+    protected $after_get     = ['set_default_data'];
 
     protected function generate_date_created_status($employee)
     {

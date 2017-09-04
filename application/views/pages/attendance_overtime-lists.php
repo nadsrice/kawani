@@ -2,7 +2,7 @@
     <div class="col-md-6">&nbsp;</div>
     <div class="col-md-6">
         <div class="pull-right">
-            <a href="<?php echo site_url('attendance_overtimes/add'); ?>" class="btn btn-primary">
+            <a href="<?php echo site_url('overtimes/add'); ?>" class="btn btn-primary">
                 <i class="fa fa-plus"></i>
                 <span>File Overtime<span>
             </a>
@@ -71,7 +71,7 @@
 
                                 <tr>
                                     <td>
-                                        <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attendance_overtimes/view_ob/' . $my_overtime['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($my_overtime['id']); ?>">
+                                        <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('overtimes/view_ob/' . $my_overtime['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($my_overtime['id']); ?>">
                                         <i class="fa fa-search"></i> View
                                         </a>
 
@@ -111,7 +111,7 @@
 
                                 <tr>
                                     <td>
-                                        <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attendance_overtimes/view_ob/' . $approval_overtime['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($approval_overtime['id']); ?>">
+                                        <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('overtimes/view_ot/' . $approval_overtime['id']); ?>" data-toggle="modal" data-target="#view-ob-<?php echo md5($approval_overtime['id']); ?>">
                                         <i class="fa fa-search"></i> View
                                         </a>
 

@@ -5,7 +5,7 @@
                 <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">File Overtime</h3>
             </div>
             <div class="box-body">
-                <form class="form-horizontal" action="<?php echo site_url('attendance_overtimes/add'); ?>" method="post">
+                <form class="form-horizontal" action="<?php echo site_url('overtimes/add'); ?>" method="post">
                     <div class="form-group">
                         <label class="control-label col-md-3">Overtime Date</label>
                         <div class="col-md-6">

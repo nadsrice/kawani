@@ -39,10 +39,10 @@ class Overtimes extends MY_Controller {
             $status = '';
         }
 
-        $total_rejected  = $this->official_business_model->count_by(['approval_status' => 0, 'employee_id' => $user->employee_id]); 
-        $total_approved  = $this->official_business_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]); 
-        $total_pending   = $this->official_business_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]); 
-        $total_cancelled = $this->official_business_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]);
+        $total_rejected  = $this->overtime_model->count_by(['approval_status' => 0, 'employee_id' => $user->employee_id]); 
+        $total_approved  = $this->overtime_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]); 
+        $total_pending   = $this->overtime_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]); 
+        $total_cancelled = $this->overtime_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]);
 
         $my_overtimes       = $this->overtime_model->get_overtimes([
             'attendance_overtimes.employee_id' => $user->employee_id]);

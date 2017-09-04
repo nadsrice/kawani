@@ -2,7 +2,7 @@
     <div class="col-md-6">&nbsp;</div>
     <div class="col-md-6">
         <div class="pull-right">
-            <a href="<?php echo site_url('attendance_undertimes/add'); ?>" class="btn btn-primary">
+            <a href="<?php echo site_url('undertimes/add'); ?>" class="btn btn-primary">
                 <i class="fa fa-plus"></i>
                 <span>File Udertime<span>
             </a>
@@ -25,10 +25,10 @@
             </div>
             <div class="box-body no-padding">
               <ul class="nav nav-pills nav-stacked">
-                <li class="<?php echo ($selected == 'pending') ? 'active':''; ?>"><a href="<?php echo site_url('attendance_undertimes/index/pending'); ?>"><i class="fa fa-clock-o"></i> Pending <span class="label pull-right pending_color" id="totalPending"><?php echo number_format($total_pending); ?></span></a></li>
-                <li class="<?php echo ($selected == 'approved') ? 'active':''; ?>"><a href="<?php echo site_url('attendance_undertimes/index/approved'); ?>"><i class="fa fa-thumbs-up"></i> Approved <span class="label pull-right approved_color" id="totalApproved"><?php echo number_format($total_approved); ?></a></li>
-                <li class="<?php echo ($selected == 'denied') ? 'active':''; ?>"><a href="<?php echo site_url('attendance_undertimes/index/denied'); ?>"><i class="fa fa-thumbs-down" ></i> Denied <span class="label pull-right rejected_color" id="totalDenied"><?php echo number_format($total_denied); ?></span></a></li>
-                <li class="<?php echo ($selected == 'cancelled') ? 'active':''; ?>"><a href="<?php echo site_url('attendance_undertimes/index/cancelled'); ?>"><i class="fa fa-times-circle"></i> Cancelled <span class="label pull-right cancelled_color" id="totalCancelled"><?php echo number_format($total_cancelled); ?></span></a>
+                <li class="<?php echo ($selected == 'pending') ? 'active':''; ?>"><a href="<?php echo site_url('undertimes/index/pending'); ?>"><i class="fa fa-clock-o"></i> Pending <span class="label pull-right pending_color" id="totalPending"><?php echo number_format($total_pending); ?></span></a></li>
+                <li class="<?php echo ($selected == 'approved') ? 'active':''; ?>"><a href="<?php echo site_url('undertimes/index/approved'); ?>"><i class="fa fa-thumbs-up"></i> Approved <span class="label pull-right approved_color" id="totalApproved"><?php echo number_format($total_approved); ?></a></li>
+                <li class="<?php echo ($selected == 'denied') ? 'active':''; ?>"><a href="<?php echo site_url('undertimes/index/denied'); ?>"><i class="fa fa-thumbs-down" ></i> Denied <span class="label pull-right rejected_color" id="totalDenied"><?php echo number_format($total_rejected); ?></span></a></li>
+                <li class="<?php echo ($selected == 'cancelled') ? 'active':''; ?>"><a href="<?php echo site_url('undertimes/index/cancelled'); ?>"><i class="fa fa-times-circle"></i> Cancelled <span class="label pull-right cancelled_color" id="totalCancelled"><?php echo number_format($total_cancelled); ?></span></a>
                 </li>
               </ul>
             </div>
@@ -70,7 +70,7 @@
                                 <?php foreach ($my_undertimes as $my_undertime): ?>
                                     <tr>
                                         <td>
-                                            <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attendance_undertimes/view_undertime/' . $my_undertime['id']); ?>" data-toggle="modal" data-target="#view-undertime-<?php echo md5($my_undertime['id']); ?>">
+                                            <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('undertimes/view_undertime/' . $my_undertime['id']); ?>" data-toggle="modal" data-target="#view-undertime-<?php echo md5($my_undertime['id']); ?>">
                                                 <i class="fa fa-search"></i> View
                                             </a>
                                         </td>
@@ -112,7 +112,7 @@
                                     <?php foreach ($undertimes as $undertime): ?>
                                         <tr>
                                             <td>
-                                                <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attendance_undertimes/view_undertime/' . $undertime['id']); ?>" data-toggle="modal" data-target="#view-undertime-<?php echo md5($undertime['id']); ?>">
+                                                <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('undertimes/view_undertime/' . $undertime['id']); ?>" data-toggle="modal" data-target="#view-undertime-<?php echo md5($undertime['id']); ?>">
                                                     <i class="fa fa-search"></i> View
                                                 </a>
                                                 <?php foreach ($undertime['action_menus'] as $action_menu): ?>
@@ -175,7 +175,7 @@
 
     function testFN(val) {
         $.ajax({
-            url: 'http://localhost/kawani_ci/attendance_undertimes/' + 'ajax_' + val,
+            url: 'http://localhost/kawani_ci/undertimes/' + 'ajax_' + val,
             dataType: 'json',
             success: function (result) {
                 console.log(result.summary);

@@ -2,7 +2,7 @@
     <div class="col-md-6">&nbsp;</div>
     <div class="col-md-6">
         <div class="pull-right">
-            <a href="<?php echo site_url('attendance_leaves/add'); ?>" class="btn btn-primary">
+            <a href="<?php echo site_url('leaves/add'); ?>" class="btn btn-primary">
                 <i class="fa fa-plus"></i>
                 <span>File Leave<span>
             </a>
@@ -25,10 +25,10 @@
             </div>
             <div class="box-body no-padding">
               <ul class="nav nav-pills nav-stacked">
-                <li class=""><a href="<?php echo site_url('attendance_leaves/index/pending'); ?>"><i class="fa fa-clock-o"></i> Pending <span class="label pull-right pending_color" id="totalPending">1</span></a></li>
-                <li class=""><a href="<?php echo site_url('attendance_leaves/index/approved'); ?>"><i class="fa fa-thumbs-up"></i> Approved <span class="label pull-right approved_color" id="totalApproved">2</a></li>
-                <li class=""><a href="<?php echo site_url('attendance_leaves/index/denied'); ?>"><i class="fa fa-thumbs-down" ></i> Denied <span class="label pull-right rejected_color" id="totalDenied">3</span></a></li>
-                <li class=""><a href="<?php echo site_url('attendance_leaves/index/cancelled'); ?>"><i class="fa fa-times-circle"></i> Cancelled <span class="label pull-right cancelled_color" id="totalCancelled">4</span></a>
+                <li class=""><a href="<?php echo site_url('leaves/index/pending'); ?>"><i class="fa fa-clock-o"></i> Pending <span class="label pull-right pending_color" id="totalPending">1</span></a></li>
+                <li class=""><a href="<?php echo site_url('leaves/index/approved'); ?>"><i class="fa fa-thumbs-up"></i> Approved <span class="label pull-right approved_color" id="totalApproved">2</a></li>
+                <li class=""><a href="<?php echo site_url('leaves/index/denied'); ?>"><i class="fa fa-thumbs-down" ></i> Denied <span class="label pull-right rejected_color" id="totalDenied">3</span></a></li>
+                <li class=""><a href="<?php echo site_url('leaves/index/cancelled'); ?>"><i class="fa fa-times-circle"></i> Cancelled <span class="label pull-right cancelled_color" id="totalCancelled">4</span></a>
                 </li>
               </ul>
             </div>
@@ -188,7 +188,7 @@
 
     function testFN(val) {
         $.ajax({
-            url: 'http://localhost/kawani_ci/attendance_leaves/' + 'ajax_' + val,
+            url: 'http://localhost/kawani_ci/leaves/' + 'ajax_' + val,
             dataType: 'json',
             success: function (result) {
                 console.log(result.summary);

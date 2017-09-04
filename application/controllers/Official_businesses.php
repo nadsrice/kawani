@@ -35,6 +35,7 @@ class Official_businesses extends MY_Controller {
             'employee_info_model'
         ]);
     }
+    
     public function view_official_business()
     {
         $this->ion_auth_acl->has_permission('my_official_business');
@@ -131,7 +132,7 @@ class Official_businesses extends MY_Controller {
 
             if ( ! $official_business_id) {
                 $this->session->set_flashdata('failed', 'Failed to add new official business.');
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             } else {
 
                 //KAWANI will automatically send an email to approver for verification
@@ -206,7 +207,7 @@ class Official_businesses extends MY_Controller {
                 $this->email->send();
 
                 $this->session->set_flashdata('success', 'Successfully added new official business.');
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
 
             }
         }
@@ -344,10 +345,10 @@ class Official_businesses extends MY_Controller {
 
             if ( ! $official_business_id) {
                 $this->session->set_flashdata('failed', 'Failed to update official business.');
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             } else {
                 $this->session->set_flashdata('success', 'Official Business successfully updated!');
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             }
         }
         $this->load_view('forms/attendance_official_business-edit');
@@ -392,7 +393,7 @@ class Official_businesses extends MY_Controller {
         if ( ! isset($employee_id) ) {
 
             $this->session->set_flashdata('failed', '');
-            redirect('attendance_official_businesses');
+            redirect('official_businesses');
 
         }
 
@@ -477,13 +478,13 @@ class Official_businesses extends MY_Controller {
                 $this->email->message("You've successfully approved the official business request - ".$id." of ".$requester_data['full_name']);
 
                 $this->email->send();
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
 
                 $this->session->set_flashdata('message', 'Official Business successfully approved');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to approve official business');
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             }
         }
         $this->load->view('modals/modal-undertime-confirmation', $data);
@@ -499,7 +500,7 @@ class Official_businesses extends MY_Controller {
         if ( ! isset($employee_id) ) {
 
             $this->session->set_flashdata('failed', '');
-            redirect('attendance_official_businesses');
+            redirect('official_businesses');
 
         }
 
@@ -551,11 +552,11 @@ class Official_businesses extends MY_Controller {
                 $this->email->message('Your official business request was rejected');
 
                 $this->email->send();
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to reject official business');
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             }
         }
         $this->load->view('modals/modal-confirmation', $data);
@@ -571,7 +572,7 @@ class Official_businesses extends MY_Controller {
 
         if ( ! isset($employee_id) ) {
             $this->session->set_flashdata('failed', '');
-            redirect('attendance_official_businesses');
+            redirect('official_businesses');
         }
 
         $requester = $this->employee_model->get_by(['id' => $employee_id]);
@@ -625,11 +626,11 @@ class Official_businesses extends MY_Controller {
                 $this->email->message('Your official business request was cancelled');
 
                 $this->email->send();
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             }
             else{
                 $this->session->set_flashdata('failed', 'Unable to cancel official business');
-                redirect('attendance_official_businesses');
+                redirect('official_businesses');
             }
         }
         $this->load->view('modals/modal-confirmation', $data);

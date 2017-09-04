@@ -212,8 +212,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          }
      }
 
-
-
     public function add_schedule()
     {
         $post = $this->input->post();
@@ -223,7 +221,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $this->session->set_flashdata('success', 'Schedule successfully saved!');
         redirect('employee_schedules/details/'.$post['employee_id']);
     }
-
 
     // ajax call
     public function events() 

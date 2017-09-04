@@ -21,17 +21,17 @@ class Daily_time_record_model extends MY_Model {
     /**
      * Callbacks or Observers
      */
-    // protected $before_create = ['generate_date_created_status'];
+    protected $before_create = ['generate_date_created_status'];
     protected $after_create  = ['write_audit_trail'];
     protected $after_update  = ['write_audit_trail'];
     protected $after_get 	 = array('set_default_data');
 
-    // protected function generate_date_created_status($daily_time_record)
-    // {
-    //     $daily_time_record['status']          = 1; //filed
-    //     $daily_time_record['approval_status'] = 0; //subject for approval
-    //     return $daily_time_record;
-    // }
+    protected function generate_date_created_status($daily_time_record)
+    {
+        $daily_time_record['status']          = 1; //filed
+        $daily_time_record['approval_status'] = 0; //subject for approval
+        return $daily_time_record;
+    }
 
     protected function set_default_data($daily_time_record)
     {
@@ -71,7 +71,8 @@ class Daily_time_record_model extends MY_Model {
     	')
     	->join('employees as employee', 'attendance_daily_time_records.employee_id = employee.id', 'left')
     	->join('attendance_shift_schedules', 'attendance_daily_time_records.shift_schedule_id = attendance_shift_schedules.id', 'left')
-    	->join('companies', 'attendance_daily_time_records.company_id = companies.id', 'left');
+    	->join('companies', 'attendance_daily_time_records.company_id = companies.id', 'left')
+        ->join('employee_information', 'employee.id = employee_information.reports_to', 'left');
         
     	return $this->{$method}($where);
     }
