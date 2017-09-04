@@ -51,7 +51,7 @@
 			</div>
 			
 			<!-- MODALS -->
-			<div class="modal fade" id="md-add-new-sss-matrix">
+			<div class="modal fade" id="md-add-new-phic-matrix">
 				<div class="modal-dialog">
 					<div class="modal-content"></div>
 				</div>
