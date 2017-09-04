@@ -45,13 +45,13 @@
 							<?php foreach ($phic_rates as $index => $phic_rate): ?>
 							<tr>
 								<td>
-									<a href="<?php echo site_url('tax_rate/details/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('phic_rate/details/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
 										<i class="fa fa-eye"></i> View
 									</a>
-									<a href="<?php echo site_url('tax_rate/details/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('phic_rate/details/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
 										<i class="fa fa-edit"></i> Edit
 									</a>
-									<a href="<?php echo site_url('tax_rate/' . $phic_rate['pr_status_url'] . '/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('phic_rate/' . $phic_rate['pr_status_url'] . '/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
 										<i class="fa <?php echo $phic_rate['pr_status_icon']; ?>"></i> <?php echo $phic_rate['pr_status_action']; ?>
 									</a>
 								</td>

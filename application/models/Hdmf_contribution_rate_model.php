@@ -21,10 +21,10 @@ class Hdmf_contribution_rate_model extends MY_Model
 	{
 		if ( ! isset($hdmf_rate)) return FALSE;
 		
-		$hdmf_rate['pr_status_label']  = ($hdmf_rate['pr_active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
-		$hdmf_rate['pr_status_action'] = ($hdmf_rate['pr_active_status'] == 1) ? 'Deactivate' : 'Activate';
-		$hdmf_rate['pr_status_icon']   = ($hdmf_rate['pr_active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
-		$hdmf_rate['pr_status_url']    = ($hdmf_rate['pr_active_status'] == 1) ? 'deactivate' : 'activate';
+		$hdmf_rate['hr_status_label']  = ($hdmf_rate['hr_active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
+		$hdmf_rate['hr_status_action'] = ($hdmf_rate['hr_active_status'] == 1) ? 'Deactivate' : 'Activate';
+		$hdmf_rate['hr_status_icon']   = ($hdmf_rate['hr_active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
+		$hdmf_rate['hr_status_url']    = ($hdmf_rate['hr_active_status'] == 1) ? 'deactivate' : 'activate';
 
 		return $hdmf_rate;
 	}
