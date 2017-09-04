@@ -2,13 +2,13 @@
 
 class Employee_information_model extends MY_Model
 {
-	protected $_table = 'employee_information';
+	protected $_table 	   = 'employee_information';
 	protected $primary_key = 'id';
 	protected $return_type = 'array';
 
 	public function get_details($method, $where)
 	{
-		$foo = $this->db->select('
+		$this->db->select('
 					employee_information.id as employee_information_id,
 					employee_information.employee_id,
 					employee_information.date_hired,
@@ -35,7 +35,7 @@ class Employee_information_model extends MY_Model
 				->join('teams as team', 'employee_information.team_id = team.id', 'left')
 				->join('sites as site', 'employee_information.site_id = site.id', 'left');
 
-		dump($foo);exit;
+		// dump($foo);exit;
 		return $this->{$method}($where);
 	}
 }

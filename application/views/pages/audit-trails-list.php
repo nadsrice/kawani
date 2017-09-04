@@ -12,7 +12,6 @@
                             <th class="text-center">Action Mode</th>
                             <th class="text-center">Timestamp</th>
                             <th class="text-center">IP Address</th>
-                            <th class="text-center">Table Name</th>
                             <th class="text-center">Record ID</th>
                             <th class="text-center">Field Name</th>
                             <th class="text-center">Old Value</th>
@@ -27,7 +26,6 @@
                             <td class="text-left"><?php echo $audit_trail['mode_label']; ?></td>
                             <td class="text-right"><?php echo $audit_trail['timestamp']; ?></td>
                             <td class="text-right"><?php echo $audit_trail['ip_address']; ?></td>
-                            <td class="text-left"><?php echo $audit_trail['table_name']; ?></td>
                             <td class="text-right"><?php echo $audit_trail['record_id']; ?></td>
                             <td class="text-left"><?php echo $audit_trail['field_name']; ?></td>
                             <td class="text-left"><?php echo $audit_trail['old_value']; ?></td>

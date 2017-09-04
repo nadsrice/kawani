@@ -45,6 +45,7 @@ class Daily_time_records extends MY_Controller {
         // todo: get all companies records from database order by name ascending
             // todo: load daily_time_record model
             // todo: load view & past the retrieved data from model
+
         $user               = $this->ion_auth->user()->row();
         $daily_time_records = $this->daily_time_record_model->get_details('get_many_by', ['attendance_daily_time_records.employee_id' => $user->employee_id]);
 
@@ -96,7 +97,7 @@ class Daily_time_records extends MY_Controller {
         $user        = $this->ion_auth->user()->row();
         $employee_id = $user->employee_id;
         $company_id  = $user->company_id;
-        $log_type = 1; //time in
+        $log_type    = 1; //time in
 
         $reports_to = $this->employee_information_model->get_details('get_by', ['employee_information.employee_id' => $employee_id]);
 
@@ -151,7 +152,7 @@ class Daily_time_records extends MY_Controller {
                     'leave_days_request' => $leave_days_request
                 ];
 
-                $subject        = 'Leave Request'; // TODO: let's make this dynamic
+                $subject        = 'Leave Request';                 // TODO: let's make this dynamic
                 $email_template = 'templates/email/leave.tpl.php'; // TODO: let's make this dynamic also
                 $name           = $subject.' - '.$requester_data['full_name'];
 

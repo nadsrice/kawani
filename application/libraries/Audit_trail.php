@@ -33,7 +33,7 @@ class Audit_trail
 		];
 
 		$new_data = array_merge(filter_data($this->_table, $additional_fields), $data);
-		
 		$this->_ci->system_audit_trail_model->insert($new_data);
+		dump($this->_ci->db->last_query());
 	}
 }

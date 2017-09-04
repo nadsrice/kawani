@@ -189,3 +189,17 @@ if (!function_exists('timediff_minutes')) {
         return $minutes; 
     }
 }
+
+if (!function_exists('incremental_year'))
+{
+	function incremental_year($range = 11, $year_start = '')
+	{
+		$year_start = ($year_start == '') ? date('Y') : $year_start;
+		$year_end	= $year_start + $range;
+		$years 		= range($year_start, $year_end);
+
+		return $years;
+	}
+}
+
+

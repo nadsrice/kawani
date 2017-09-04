@@ -15,6 +15,13 @@ $(function() {
 	$("#datatables-employee_schedules").DataTable();
 	$("#datatables-employee-positions").DataTable();
 	$("#datatables-employee-salaries").DataTable();
+<<<<<<< HEAD
 	$("#datatables-daily-time-records").DataTable();
 
+=======
+	$("#datatables-tax-matrix").DataTable();
+	$("#datatables-tax-rates").DataTable();
+	$("#datatables-sss-matrix").DataTable();
+	$("#datatables-sss-rates").DataTable();
+>>>>>>> fcb95a9a7e21bb65695c14880a572a29ac495346
 });
