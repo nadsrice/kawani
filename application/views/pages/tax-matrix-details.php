@@ -26,43 +26,48 @@
 		<div class="box box-primary">
 			<div class="box-header">
 				<h3 class="box-title">Tax Rates</h3>
+				<div class="box-tools">
+					<a href="<?php echo site_url('tax_rates/load_form/' . $tax_matrix['id']); ?>" class="btn btn-box-tool" data-toggle="modal" data-target="#modal-add-tax-rate">
+						<i class="fa fa-plus"></i> <span class="text-blue">Add New Tax Rate</span>
+					</a>
+				</div>
 			</div>
 			<div class="box-body">
 				<div class="table-responsive">
 					<table class="table table-bordered" id="datatables-tax-rates">
 						<thead>
 							<tr>
-								<th>Action</th>
-								<th>Tax Excemption Status</th>
-								<th>Base Tax</th>
-								<th>Percentage Over</th>
-								<th>Minimum Monthly Salary</th>
-								<th>Maximum Monthly Salary</th>
+								<th class="text-center">Action</th>
+								<th class="text-center">Tax Excemption Status</th>
+								<th class="text-center">Base Tax</th>
+								<th class="text-center">Percentage Over</th>
+								<th class="text-center">Minimum Monthly Salary</th>
+								<th class="text-center">Maximum Monthly Salary</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php if ( ! empty($tax_rates)): ?>
 							<?php foreach ($tax_rates as $index => $tax_rate): ?>
-							<?php //dump($tax_rate); ?>
 							<tr>
-								<td>
-									<a href="<?php echo site_url('tax_rates/details/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link" data-toggle="modal" data-target="#modal-tax-rate-detail-<?php echo $index; ?>">
+								<td class="text-center">
+									<a href="<?php echo site_url('tax_rates/details/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-tax-rate-detail-<?php echo $index; ?>">
 										<i class="fa fa-eye"></i> View
 									</a>
-									<a href="javascript:alert(1);" class="btn btn-link">
+									<a href="<?php echo site_url('tax_rates/confirmation/edit/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-confirmation-<?php echo $index; ?>">
 										<i class="fa fa-edit"></i> Edit
 									</a>
-									<a href="<?php echo site_url('tax_rates/' . $tax_rate['tr_status_url'] . '/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('tax_rates/confirmation/' . $tax_rate['tr_status_url'] . '/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link btn-sm">
 										<i class="fa <?php echo $tax_rate['tr_status_icon']; ?>"></i> <?php echo $tax_rate['tr_status_action']; ?>
 									</a>
 								</td>
-								<td><?php echo $tax_rate['te_tax_status']; ?></td>
-								<td><?php echo $tax_rate['tr_base_tax']; ?></td>
-								<td><?php echo $tax_rate['tr_percentage_over']; ?></td>
-								<td><?php echo $tax_rate['tr_minimum_monthly_salary']; ?></td>
-								<td><?php echo $tax_rate['tr_maximum_monthly_salary']; ?></td>
+								<td class="text-center"><?php echo $tax_rate['te_tax_code']; ?></td>
+								<td class="text-center"><?php echo $tax_rate['tr_base_tax']; ?></td>
+								<td class="text-center"><?php echo $tax_rate['tr_percentage_over']; ?></td>
+								<td class="text-center"><?php echo $tax_rate['tr_minimum_monthly_salary']; ?></td>
+								<td class="text-center"><?php echo $tax_rate['tr_maximum_monthly_salary']; ?></td>
 							</tr>
 
+							<!-- MODAL FORM DETAILS TAX RATE -->
 							<div class="modal fade" id="modal-tax-rate-detail-<?php echo $index; ?>">
 								<div class="modal-dialog">
 									<div class="modal-content"></div>
@@ -75,6 +80,21 @@
 					</table>
 				</div>
 			</div>
+			
+			<!-- MODAL FORM ADD TAX RATE -->
+			<div class="modal fade" id="modal-add-tax-rate">
+				<div class="modal-dialog">
+					<div class="modal-content"></div>
+				</div>
+			</div>
+
+			<!-- MODAL FORM CONFIRMATION -->
+			<div class="modal fade" id="modal-confirmation-<?php echo $index; ?>">
+				<div class="modal-dialog">
+					<div class="modal-content"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="<?php echo site_url('assets/js/form_validations/tax-rates.js'); ?>"></script>

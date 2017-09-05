@@ -11,7 +11,6 @@
  */
 class Tax_rates extends MY_Controller
 {
-
 	function __construct()
 	{
 		parent::__construct();
@@ -91,39 +90,49 @@ class Tax_rates extends MY_Controller
 			'modal_title' 	=> ucfirst($mode),
 			'modal_message' => $modal_message
 		);
+
+		dump($data);exit;
 		$this->load->view('modals/modal-confirmation', $data);
 	}
 
 	public function load_form()
 	{
-		$data = array(
-			'modal_title' => 'Add Tax Matrix',
-			'years'		  => incremental_year(10)
-		);
-		$this->load->view('modals/modal-add-tax-matrix', $data);
+		$data['modal_title'] = 'Add Tax Rate';
+		$data['tax_matrix_id'] = $this->uri->segment(3);
+
+		// Get the list of tax excemption status
+		// first instantiate the model
+		$this->load->model('tax_exemption_status_model');
+
+		// then call the method handling the query to get the list and pass it to variable binder
+		$data['tax_exemption_status'] = $this->tax_exemption_status_model->get_all();
+
+		$this->load->view('modals/modal-add-tax-rate', $data);
 	}
 
 	public function add()
 	{
 		$post = $this->input->post();
+
+		$tax_matrix_id = $post['tax_matrix_id'];
 		
 		$data = $post; // <<< TODO: this should be check if data is valid
 
-		$this->session->set_flashdata('log_parameters', [
-			'action_mode' => 0,
-			'perm_key'	  => 'add_tax_matrix',
-			'old_data'	  => NULL,
-			'new_data'	  => $data
-		]);
+		// $this->session->set_flashdata('log_parameters', [
+		// 	'action_mode' => 0,
+		// 	'perm_key'	  => 'add_tax_matrix',
+		// 	'old_data'	  => NULL,
+		// 	'new_data'	  => $data
+		// ]);
 
-		$last_id = $this->tax_matrix_model->insert($post);
+		$last_id = $this->tax_rate_model->insert($post);
 		
 		if ($last_id) {
-			$this->session->set_flashdata('success', 'Successfully added new tax matrix.');
-			redirect('tax_matrix');
+			$this->session->set_flashdata('success', 'Successfully added new tax rate.');
+			redirect('tax_matrix/details/' . $tax_matrix_id);
 		} else {
-			$this->session->set_flashdata('failed', 'Unable to add tax matrix.');
-			redirect('tax_matrix');
+			$this->session->set_flashdata('failed', 'Unable to add tax rate.');
+			redirect('tax_matrix/details/' . $tax_matrix_id);
 		}
 	}
 

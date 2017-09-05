@@ -1,10 +1,12 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="box box-primary">
-			<div class="box-header with-border">
+			<div class="box-header">
 				<h3 class="box-title">Tax Matrices</h3>
-				<div class="box-tools pull-right">
-					<a href="<?php echo site_url('tax_matrix/load_form'); ?>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#md-add-matrix"><i class="fa fa-plus"></i> Add Matrix</a>
+				<div class="box-tools">
+					<a href="<?php echo site_url('tax_matrix/load_form'); ?>" class="btn btn-box-tool" data-toggle="modal" data-target="#md-add-matrix">
+						<i class="fa fa-plus"></i> <span class="text-blue">Add New Tax Matrix</span>
+					</a>
 				</div>
 			</div>
 			<div class="box-body">

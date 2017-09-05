@@ -15,7 +15,28 @@ class Tax_rate_model extends MY_Model
 	protected $primary_key = 'id';
 	protected $return_type = 'array';
 
-	protected $after_get = array('prepare_data');
+	protected $before_create = array('set_data_before_create');
+	protected $before_update = array('set_data_before_update');
+    protected $after_create  = array('write_audit_trail');
+    protected $after_update  = array('write_audit_trail');
+	protected $after_get 	 = array('prepare_data');
+
+	protected function set_data_before_create($tax_rate)
+	{
+		$tax_rate['created'] = date('Y-m-d H:i:s');
+		$tax_rate['created_by'] = $this->ion_auth->user()->row()->id;
+		$tax_rate['active_status'] = 1;
+
+		return $tax_rate;
+	}
+
+	protected function set_data_before_update($tax_rate)
+	{
+		$tax_rate['modified'] = date('Y-m-d H:i:s');
+		$tax_rate['modified_by'] = $this->ion_auth->user()->row()->id;
+
+		return $tax_rate;
+	}
 
 	protected function prepare_data($tax_rate)
 	{
@@ -28,7 +49,6 @@ class Tax_rate_model extends MY_Model
 
 		return $tax_rate;
 	}
-
 
 	public function get_details($method, $where)
 	{
@@ -53,7 +73,8 @@ class Tax_rate_model extends MY_Model
 					tax_exemption_status.default_status as te_default_status
 				')
 				->join('tax_matrices as tax_matrix', 'tax_tables.tax_matrix_id = tax_matrix.id', 'left')
-				->join('tax_exemption_status', 'tax_tables.tax_exemption_status_id = tax_exemption_status.id', 'left');
+				->join('tax_exemption_status', 'tax_tables.tax_exemption_status_id = tax_exemption_status.id', 'left')
+				->order_by('tax_exemption_status.id', 'asc');
 
 		return $this->{$method}($where);
 	}
