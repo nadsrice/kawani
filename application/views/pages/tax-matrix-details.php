@@ -22,7 +22,6 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="col-md-9">
 		<div class="box box-primary">
 			<div class="box-header">
@@ -44,15 +43,16 @@
 						<tbody>
 							<?php if ( ! empty($tax_rates)): ?>
 							<?php foreach ($tax_rates as $index => $tax_rate): ?>
+							<?php //dump($tax_rate); ?>
 							<tr>
 								<td>
-									<a href="<?php echo site_url('tax_rate/details/' . $tax_rate['tax_table_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('tax_rates/details/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link" data-toggle="modal" data-target="#modal-tax-rate-detail-<?php echo $index; ?>">
 										<i class="fa fa-eye"></i> View
 									</a>
-									<a href="<?php echo site_url('tax_rate/details/' . $tax_rate['tax_table_id']); ?>" class="btn btn-link">
+									<a href="javascript:alert(1);" class="btn btn-link">
 										<i class="fa fa-edit"></i> Edit
 									</a>
-									<a href="<?php echo site_url('tax_rate/' . $tax_rate['tr_status_url'] . '/' . $tax_rate['tax_table_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('tax_rates/' . $tax_rate['tr_status_url'] . '/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link">
 										<i class="fa <?php echo $tax_rate['tr_status_icon']; ?>"></i> <?php echo $tax_rate['tr_status_action']; ?>
 									</a>
 								</td>
@@ -62,6 +62,13 @@
 								<td><?php echo $tax_rate['tr_minimum_monthly_salary']; ?></td>
 								<td><?php echo $tax_rate['tr_maximum_monthly_salary']; ?></td>
 							</tr>
+
+							<div class="modal fade" id="modal-tax-rate-detail-<?php echo $index; ?>">
+								<div class="modal-dialog">
+									<div class="modal-content"></div>
+								</div>
+							</div>
+
 							<?php endforeach ?>
 							<?php endif ?>
 						</tbody>
@@ -70,6 +77,4 @@
 			</div>
 		</div>
 	</div>
-
-
 </div>

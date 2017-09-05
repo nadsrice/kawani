@@ -33,7 +33,7 @@ class Tax_rate_model extends MY_Model
 	public function get_details($method, $where)
 	{
 		$this->db->select('
-					tax_tables.id as tax_table_id,
+					tax_tables.id as tax_rate_id,
 					tax_tables.tax_matrix_id as tr_tax_matrix_id,
 					tax_tables.tax_exemption_status_id as tr_tax_exemption_status_id,
 					tax_tables.base_tax as tr_base_tax,
