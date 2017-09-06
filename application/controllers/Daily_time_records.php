@@ -111,6 +111,18 @@ class Daily_time_records extends MY_Controller {
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('daily_time_log_add'));
+        
+
+        // $timein = date('H:i', strtotime($this->input->post('date_time')));
+        // dump($timein);exit;
+        //$timein = $this->input->post('date'). ' ' . );
+
+//        $data['date_time']   = $timein;
+        $data['log_type']    = $log_type;
+        $data['employee_id'] = $employee_id;
+        $data['company_id']  = $company_id;
+        $data['approver_id'] = $reports_to['reports_to'];
+
 
         $this->form_validation->set_data($data);
 
@@ -122,8 +134,8 @@ class Daily_time_records extends MY_Controller {
             //     'old_data'    => NULL,
             //     'new_data'    => $data
             // ]);
+            $daily_time_record_id = $this->daily_time_log_model->insert($data);
 
-            $daily_time_record_id = $this->daily_time_record_model->insert($data);
 
             if ( ! $daily_time_record_id)
             {
@@ -132,40 +144,39 @@ class Daily_time_records extends MY_Controller {
             }
             else
             {
-                $leave_days_request = daterange($data['date_start'], $data['date_end']);
-                $leave_data = $this->leave_model->get_employee_attendance_leave([
-                    'attendance_leaves.id' => $leave_id
-                ]);
+                // $leave_days_request = daterange($data['date_start'], $data['date_end']);
+                // $leave_data = $this->leave_model->get_employee_attendance_leave([
+                //     'attendance_leaves.id' => $leave_id]);
 
-                $requester_data  = $this->employee_model->get_by(['id' => $leave_data['employee_id']]);
-                $requester_email = $this->ion_auth->user($requester_data['system_user_id'])->row()->email;
+                // $requester_data  = $this->employee_model->get_by(['id' => $leave_data['employee_id']]);
+                // $requester_email = $this->ion_auth->user($requester_data['system_user_id'])->row()->email;
 
-                $approver_data   = $this->employee_model->get_by(['id' => $leave_data['approver_id']]);
-                $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
+                // $approver_data   = $this->employee_model->get_by(['id' => $leave_data['approver_id']]);
+                // $approver_email  = $this->ion_auth->user($approver_data['system_user_id'])->row()->email;
 
-                $data = [
-                    'requester_data'     => $requester_data,
-                    'requester_email'    => $requester_email,
-                    'approver_data'      => $approver_data,
-                    'approver_email'     => $approver_email,
-                    'leave_data'         => $leave_data,
-                    'leave_days_request' => $leave_days_request
-                ];
+                // $data = [
+                //     'requester_data'     => $requester_data,
+                //     'requester_email'    => $requester_email,
+                //     'approver_data'      => $approver_data,
+                //     'approver_email'     => $approver_email,
+                //     'leave_data'         => $leave_data,
+                //     'leave_days_request' => $leave_days_request
+                // ];
 
-                $subject        = 'Leave Request';                 // TODO: let's make this dynamic
-                $email_template = 'templates/email/leave.tpl.php'; // TODO: let's make this dynamic also
-                $name           = $subject.' - '.$requester_data['full_name'];
+                // $subject        = 'Leave Request';                 // TODO: let's make this dynamic
+                // $email_template = 'templates/email/leave.tpl.php'; // TODO: let's make this dynamic also
+                // $name           = $subject.' - '.$requester_data['full_name'];
 
-                $message = $this->load->view($email_template, $data, TRUE);
+                // $message = $this->load->view($email_template, $data, TRUE);
 
-                $this->email->from($requester_email, $name);
-                $this->email->to($approver_email);
-                // $this->email->to('cristhiansagun@gmail.com');
-                $this->email->subject($subject);
-                $this->email->message($message);
-                $this->email->send();
+                // $this->email->from($requester_email, $name);
+                // $this->email->to($approver_email);
+                // // $this->email->to('cristhiansagun@gmail.com');
+                // $this->email->subject($subject);
+                // $this->email->message($message);
+                // $this->email->send();
 
-                $this->session->set_flashdata('success', 'Successfully added new leave.');
+                // $this->session->set_flashdata('success', 'Successfully Timed In.');
 
                 redirect('daily_time_records');
             }

@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">File Overtime</h3>
+                <i class="fa fa-pencil-square-o"></i> <h3 class="box-title">File Time In</h3>
             </div>
             <div class="box-body">
                 <form class="form-horizontal" action="<?php echo site_url('daily_time_records/time_in'); ?>" method="post">
@@ -31,6 +31,11 @@
                     <div>
                         <div>
                             <input type="hidden" name="log_type" value="<?php echo $log_type; ?>">
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <input type="hidden" name="log_type" value=".">
                         </div>
                     </div>
                     <div class="form-group">

@@ -28,7 +28,7 @@ class Attachment_types extends MY_Controller {
 
 		$this->data = array(
 			'page_header' => 'Attachment Types Management',
-			'attachment_types'     => $attachment_types,
+			'attachment_types' => $attachment_types,
 			'active_menu' => $this->active_menu,
 		);
 		$this->load_view('pages/attachment_type-lists');
@@ -71,14 +71,14 @@ class Attachment_types extends MY_Controller {
 
 	function details($id)
 	{
-		$attachment_type 		= $this->attachment_type_model->get_attachment_type_by(['attachment_types.id' => $id]);
-		$site 			= $this->site_model->get_many_site_by(['sites.attachment_type_id' => $id]);
-		$sites 			= $this->site_model->get_many_site_by(['sites.attachment_type_id' => $id]);
-		$employee_infos = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
+		$attachment_type = $this->attachment_type_model->get_attachment_type_by(['attachment_types.id' => $id]);
+		$site 			 = $this->site_model->get_many_site_by(['sites.attachment_type_id' => $id]);
+		$sites 			 = $this->site_model->get_many_site_by(['sites.attachment_type_id' => $id]);
+		$employee_infos  = $this->employee_info_model->get_employee_info_data(['departments.id' => $id]);
 
 		$this->data = array(
 			'page_header'    => 'Attachment Types Details',
-			'attachment_type'         => $attachment_type,
+			'attachment_type'=> $attachment_type,
 			'sites' 		 => $site,
 			'sites' 		 => $sites,
 			'employee_infos' => $employee_infos,

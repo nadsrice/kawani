@@ -885,9 +885,9 @@
     defaultTime: 'current',
     disableFocus: false,
     isOpen: false,
-    minuteStep: 15,
+    minuteStep: 1, //modified; 20170905
     modalBackdrop: false,
-    secondStep: 15,
+    secondStep: 1, //modified; 20170905
     showSeconds: false,
     showInputs: true,
     showMeridian: true,
