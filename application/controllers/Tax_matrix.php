@@ -134,16 +134,43 @@ class Tax_matrix extends MY_Controller
 	public function edit()
 	{
 		$tax_matrix_id = $this->uri->segment(3);
+		$tax_matrix    = $this->tax_matrix_model->get_by(['id' => $tax_matrix_id]);
+		$tax_matrices  = $this->tax_matrix_model->get_all();
+
+		$this->data['page_header']  = 'Tax Matrix Management';
+		$this->data['tax_matrices'] = $tax_matrices;
+
+		// show modal 
+		$this->data['show_modal'] 		= TRUE;
+		$this->data['modal_title'] 		= 'Edit Tax Rate';
+		$this->data['modal_file_path']  = 'modals/modal-edit-tax-matrix';
+		$this->data['tax_matrix']  		= $tax_matrix;
+		$this->data['years'] 			= incremental_year(10);
+
 		$post = $this->input->post();
 		$data = $post;
-		$update = $this->tax_matrix_model->update($tax_matrix_id, $data);
-		if ($update) {
-			$this->session->set_flashdata('success', 'Successfully updated tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
-		} else {
-			$this->session->set_flashdata('failed', 'Unable to update tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
+
+		if (isset($post['save'])) {
+
+			unset($data['save']);
+
+			$update = $this->tax_matrix_model->update($tax_matrix_id, $data);
+
+			if ($update) {
+				$this->session->set_flashdata('success', 'Successfully updated tax matrix with ID: ' . $tax_matrix_id);
+				redirect('tax_matrix');
+			} else {
+				$this->session->set_flashdata('failed', 'Unable to update tax matrix with ID: ' . $tax_matrix_id);
+				redirect('tax_matrix');
+			}
 		}
+
+		$this->load_view('pages/tax-matrix-list');
+	}
+
+	public function cancel()
+	{
+		redirect('tax_matrix');
 	}
 }
 
