@@ -21,10 +21,10 @@ class Sss_rate_model extends MY_Model
 	{
 		if ( ! isset($tax_rate)) return FALSE;
 		
-		$tax_rate['sr_status_label']  = ($tax_rate['sr_active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
-		$tax_rate['sr_status_action'] = ($tax_rate['sr_active_status'] == 1) ? 'Deactivate' : 'Activate';
-		$tax_rate['sr_status_icon']   = ($tax_rate['sr_active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
-		$tax_rate['sr_status_url']    = ($tax_rate['sr_active_status'] == 1) ? 'deactivate' : 'activate';
+		$tax_rate['sr_status_label']  = ($tax_rate['active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
+		$tax_rate['sr_status_action'] = ($tax_rate['active_status'] == 1) ? 'Deactivate' : 'Activate';
+		$tax_rate['sr_status_icon']   = ($tax_rate['active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
+		$tax_rate['sr_status_url']    = ($tax_rate['active_status'] == 1) ? 'deactivate' : 'activate';
 
 		return $tax_rate;
 	}
@@ -40,7 +40,7 @@ class Sss_rate_model extends MY_Model
 					sss_rates.employer_share as sr_employer_share,
 					sss_rates.employee_share as sr_employee_share,
 					sss_rates.total as sr_total,
-					sss_rates.active_status as sr_active_status
+					sss_rates.active_status
 				')
 				->join('sss_matrix', 'sss_rates.sss_matrix_id = sss_matrix.id', 'left');
 

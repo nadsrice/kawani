@@ -36,7 +36,7 @@
 
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-ui/1.12.1/jquery-ui.min.js'); ?>"></script>
-		<script>
+		<script type="text/javascript">
 			var BASE_URL = '<?php echo base_url(); ?>';
 		</script>
 
@@ -89,7 +89,7 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/dropzone/dropzone.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/parsleyjs/dist/parsley.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'); ?>"></script>
-
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-validation/1.16.0/dist/jquery.validate.min.js'); ?>"></script>
 		<!-- Custom Javascript -->
 		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/js/icheck-custom.js'); ?>"></script>
