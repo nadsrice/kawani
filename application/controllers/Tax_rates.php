@@ -52,27 +52,35 @@ class Tax_rates extends MY_Controller
 
 	public function activate()
 	{
-		$tax_matrix_id = $this->uri->segment(3);
-		$update = $this->tax_matrix_model->update($tax_matrix_id, ['active_status' => 1]);
+		$tax_rate_id = $this->uri->segment(3);
+		$tax_rate 	 = $this->tax_rate_model->get($tax_rate_id);
+		$update 	 = $this->tax_rate_model->update($tax_rate_id, ['active_status' => 1]);
+
+		$tax_matrix_id = $tax_rate['tax_matrix_id'];
+
 		if ($update) {
-			$this->session->set_flashdata('success', 'Successfully Activated tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
+			$this->session->set_flashdata('success', 'Successfully Activated tax rate with ID: ' . $tax_rate_id);
+			redirect('tax_matrix/details/' . $tax_matrix_id);
 		} else {
-			$this->session->set_flashdata('failed', 'Unable to Activate tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
+			$this->session->set_flashdata('failed', 'Unable to Activate tax rate with ID: ' . $tax_rate_id);
+			redirect('tax_matrix/details/' . $tax_matrix_id);
 		}
 	}
 
 	public function deactivate()
 	{
-		$tax_matrix_id = $this->uri->segment(3);
-		$update = $this->tax_matrix_model->update($tax_matrix_id, ['active_status' => 0]);
+		$tax_rate_id = $this->uri->segment(3);
+		$tax_rate    = $this->tax_rate_model->get($tax_rate_id);
+		$update      = $this->tax_rate_model->update($tax_rate_id, ['active_status' => 0]);
+
+		$tax_matrix_id = $tax_rate['tax_matrix_id'];
+
 		if ($update) {
-			$this->session->set_flashdata('success', 'Successfully Deactivated tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
+			$this->session->set_flashdata('success', 'Successfully Deactivated tax rate with ID: ' . $tax_rate_id);
+			redirect('tax_matrix/details/' . $tax_matrix_id);
 		} else {
-			$this->session->set_flashdata('failed', 'Unable to Deactivate tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
+			$this->session->set_flashdata('failed', 'Unable to Deactivate tax rate with ID: ' . $tax_rate_id);
+			redirect('tax_matrix/details/' . $tax_matrix_id);
 		}
 	}
 
@@ -83,15 +91,14 @@ class Tax_rates extends MY_Controller
 		
 		$tax_matrix = $this->tax_matrix_model->get_by(['id' => $tax_matrix_id]);
 
-		$modal_message = "You're about to <strong>" . $mode . "</strong> tax matrix with ID: " . $tax_matrix_id; 
+		$modal_message = "You're about to <strong>" . $mode . "</strong> tax rate with ID: " . $tax_matrix_id; 
 
 		$data = array(
-			'url' 			=> 'tax_matrix/' . $mode . '/' . $tax_matrix_id,
+			'url' 			=> 'tax_rates/' . $mode . '/' . $tax_matrix_id,
 			'modal_title' 	=> ucfirst($mode),
 			'modal_message' => $modal_message
 		);
 
-		dump($data);exit;
 		$this->load->view('modals/modal-confirmation', $data);
 	}
 
@@ -138,17 +145,51 @@ class Tax_rates extends MY_Controller
 
 	public function edit()
 	{
-		$tax_matrix_id = $this->uri->segment(3);
+		$tax_rate_id = $this->uri->segment(3);
+
+		$tax_rate   = $this->tax_rate_model->get_details('get_by', ['tax_tables.id' => $tax_rate_id]);
+		$tax_rates  = $this->tax_rate_model->get_details('get_many_by', ['tax_tables.tax_matrix_id' => $tax_rate['tax_matrix_id']]);
+		$tax_matrix = $this->tax_matrix_model->get_by(['id' => $tax_rate['tax_matrix_id']]);
+
+		$this->load->model('tax_exemption_status_model');
+
+		$this->data['page_header'] = 'Tax Matrix Management';
+		$this->data['tax_matrix']  = $tax_matrix;
+		$this->data['tax_rates']   = $tax_rates;
+
+		// show modal 
+		$this->data['show_modal'] 		= TRUE;
+		$this->data['modal_title'] 		= 'Edit Tax Rate';
+		$this->data['modal_file_path']  = 'modals/modal-edit-tax-rate';
+		$this->data['tax_rate'] 		= $tax_rate;
+		$this->data['tax_rate_id'] 		= $tax_rate_id;
+		$this->data['years'] 			= incremental_year(10);
+		$this->data['tax_exemption_status'] = $this->tax_exemption_status_model->get_all();
+
 		$post = $this->input->post();
 		$data = $post;
-		$update = $this->tax_matrix_model->update($tax_matrix_id, $data);
-		if ($update) {
-			$this->session->set_flashdata('success', 'Successfully updated tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
-		} else {
-			$this->session->set_flashdata('failed', 'Unable to update tax matrix with ID: ' . $tax_matrix_id);
-			redirect('tax_matrix');
+
+		if (isset($post['save'])) {
+
+			unset($data['save']);
+
+			$update = $this->tax_rate_model->update($tax_rate_id, $data);
+
+			if ($update) {
+				$this->session->set_flashdata('success', 'Successfully updated tax rate with ID: ' . $tax_rate['tax_matrix_id']);
+				redirect('tax_matrix/details/' . $tax_rate['tax_matrix_id']);
+			} else {
+				$this->session->set_flashdata('failed', 'Unable to update tax rate with ID: ' . $tax_rate['tax_matrix_id']);
+				redirect('tax_matrix/details/' . $tax_rate['tax_matrix_id']);
+			}
 		}
+
+		$this->load_view('pages/tax-matrix-details');
+	}
+
+	public function cancel()
+	{
+		redirect('sss_contribution_matrix');
 	}
 }
 

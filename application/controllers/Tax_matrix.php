@@ -50,6 +50,7 @@ class Tax_matrix extends MY_Controller
 		$this->data['page_header'] = 'Tax Matrix Management';
 		$this->data['tax_matrix']  = $tax_matrix;
 		$this->data['tax_rates']   = $tax_rates;
+		$this->data['show_modal']  = FALSE;
 
 		$this->load_view('pages/tax-matrix-details');
 	}

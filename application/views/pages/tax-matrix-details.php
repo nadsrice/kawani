@@ -56,7 +56,7 @@
 									<a href="<?php echo site_url('tax_rates/confirmation/edit/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-confirmation-<?php echo $index; ?>">
 										<i class="fa fa-edit"></i> Edit
 									</a>
-									<a href="<?php echo site_url('tax_rates/confirmation/' . $tax_rate['tr_status_url'] . '/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link btn-sm">
+									<a href="<?php echo site_url('tax_rates/confirmation/' . $tax_rate['tr_status_url'] . '/' . $tax_rate['tax_rate_id']); ?>" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-confirmation-<?php echo $index; ?>">
 										<i class="fa <?php echo $tax_rate['tr_status_icon']; ?>"></i> <?php echo $tax_rate['tr_status_action']; ?>
 									</a>
 								</td>
@@ -69,6 +69,13 @@
 
 							<!-- MODAL FORM DETAILS TAX RATE -->
 							<div class="modal fade" id="modal-tax-rate-detail-<?php echo $index; ?>">
+								<div class="modal-dialog">
+									<div class="modal-content"></div>
+								</div>
+							</div>
+
+							<!-- MODAL FORM EDIT TAX RATE -->
+							<div class="modal fade" id="modal-confirmation-<?php echo $index; ?>">
 								<div class="modal-dialog">
 									<div class="modal-content"></div>
 								</div>
@@ -88,12 +95,21 @@
 				</div>
 			</div>
 
-			<!-- MODAL FORM CONFIRMATION -->
-			<div class="modal fade" id="modal-confirmation-<?php echo $index; ?>">
-				<div class="modal-dialog">
-					<div class="modal-content"></div>
+			<?php if ($show_modal): ?>
+				<div class="modal fade" id="modal-edit-tax-rate">
+					<div class="modal-dialog">
+						<div class="modal-content"><?php $this->load->view($modal_file_path); ?></div>
+					</div>
 				</div>
-			</div>
+				<script type="text/javascript">
+					$(function() {
+						$('#modal-edit-tax-rate').modal({
+							backdrop: false,
+							keyboard: false
+						});
+					});
+				</script>
+			<?php endif ?>
 		</div>
 	</div>
 </div>
