@@ -23,9 +23,15 @@ class Educational_attainment_model extends MY_Model {
 
     protected function generate_date_created_status($educational_attainment)
     {
-        $educational_attainment['created'] = date('Y-m-d H:i:s');
+        $educational_attainment['created']       = date('Y-m-d H:i:s');
+        $educational_attainment['created_by']    = $this->ion_auth->user()->row()->id;
         $educational_attainment['active_status'] = 1;
-        $educational_attainment['created_by'] = '0';
         return $educational_attainment;
+    }
+
+    public function get_details($method, $where)
+    {
+        $this->db->select('*');
+        return $this->{$method}($where);
     }
 }

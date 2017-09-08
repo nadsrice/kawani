@@ -19,18 +19,23 @@ class Courses extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->library('audit_trail');
-		$this->load->model(['course_model']);
+		$this->load->model([
+			'course_model',
+			'educational_attainment_model'
+		]);
 	}
 
 	function index()
 	{
-		$courses = $this->course_model->get_details('get_many_by', ['courses.active_status' => 1]);
+		$courses = $this->course_model->get_details('get_many_by', ['education_courses.active_status' => 1]);
+		$educational_attainments = $this->educational_attainment_model->get_details('get_many_by', ['active_status' => 1]);
 
 		$this->data = array(
-			'page_header' => 'Courses Management',
-			'courses'     => $courses,
-			'show_modal'  => FALSE,
-			'active_menu' => $this->active_menu
+			'page_header'             => 'Courses Management',
+			'courses'                 => $courses,
+			'educational_attainments' => $educational_attainments,
+			'show_modal'              => FALSE,
+			'active_menu'             => $this->active_menu
 		);
 
 		$this->load_view('pages/course-lists');
@@ -38,14 +43,15 @@ class Courses extends MY_Controller {
 
 	function add()
 	{
-		// get all company records where status is equal to active
+		$courses = $this->course_model->get_details('get_all', ['active_status' => 1]);
+		$educational_attainments = $this->educational_attainment_model->get_details('get_many_by', ['active_status' => 1]);
 
 		$this->data = array(
 			'page_header' => 'Courses Management',
+			'educational_attainments' => $educational_attainments,
 			'active_menu' => $this->active_menu,
 		);
 
-		$courses = $this->course_model->get_details('get_all', ['courses.active_status' => 1]);
 		$data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('course_add'));
 
 		$this->form_validation->set_data($data);
@@ -65,7 +71,7 @@ class Courses extends MY_Controller {
 				$this->session->set_flashdata('failed', 'Failed to add new course.');
 				redirect('courses');
 			} else {
-				$this->session->set_flashdata('success', 'Successfully added new course.');
+				$this->session->set_flashdata('success', 'Successfully added ' . $data['course']);
 				redirect('courses');
 			}
 		}
@@ -88,34 +94,32 @@ class Courses extends MY_Controller {
 	{
 		$course_id = $this->uri->segment(3);
 		
-		$courses = $this->course_model->get_all();
-		$this->data['page_header'] = 'Courses Management';
-		$this->data['courses'] = $courses;
+		$course = $this->course_model->get_by(['id' => $course_id]);
+		$courses = $this->course_model->get_details('get_all', ['education_courses.active_status' => 1]);
+		$educational_attainments = $this->educational_attainment_model->get_details('get_many_by', ['active_status' => 1]);
 
-		// show modal
-		$this->data['course'] = $this->course_model->get_by(['id' => $course_id]);
-		$this->data['show_modal'] = TRUE;
-		$this->data['modal_title'] = 'Update Skill';
-		$this->data['modal_file_path'] = 'modals/modal-edit-course';
-		$this->data['course_id'] = $course_id;
+		$this->data = array(
+			'page_header'             => 'Courses Management',
+			'educational_attainments' => $educational_attainments,
+			'course'                  => $course,
+			'courses'                 => $courses,
+			'course_id'               => $course_id,
+			'show_modal'              => TRUE,
+			'modal_title'             => 'Update Course',
+			'modal_file_path'         => 'modals/modal-edit-courses',
+		);
 
 		$post = $this->input->post();
-
-		dump($this->data['course']);
-		dump($post);
-
-		$data = $post;
-
-		dump($data);exit;
+		$data = remove_unknown_field($post, $this->form_validation->get_field_names('course_edit'));
 
 		if (isset($post['save'])) {
 			$update = $this->course_model->update($course_id, $data);
 
 			if ($update) {
-				$this->session->set_flashdata('success', 'Successfully updated ' . $course_id);
+				$this->session->set_flashdata('success', 'Successfully updated ' . $course['course']);
 				redirect('courses');
 			} else {
-				$this->session->set_flashdata('failed', 'Unable to update ' . $course_id);
+				$this->session->set_flashdata('failed', 'Unable to update ' . $course['course']);
 				redirect('courses');
 			}
 		}
@@ -140,7 +144,7 @@ class Courses extends MY_Controller {
 		
 		$course = $this->course_model->get_by(['id' => $course_id]);
 
-		$modal_message = "You're about to " . $mode . "<strong> " . $edit_course['name'] . "</strong>"; 
+		$modal_message = "You're about to " . $mode . "<strong> " . $edit_course['course'] . "</strong>"; 
 
 		$data = array(
 			'url' 			=> 'courses/' . $mode . '/' . $course_id,

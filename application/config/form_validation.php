@@ -495,5 +495,15 @@ $config = array(
 	'skill_edit' => array(
 		array('field' => 'name', 'label' => 'Name', 'rules' => 'trim|required'),
 		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
-	)
+	),
+	'course_add' => array(
+		array('field' => 'course', 'label' => 'Course', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
+		array('field' => 'educational_attainment_id', 'label' => 'Educational Attainment', 'rules' => 'trim|required')
+	),
+	'course_edit' => array(
+		array('field' => 'course', 'label' => 'Course', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
+		array('field' => 'educational_attainment_id', 'label' => 'Educational Attainment', 'rules' => 'trim|required')
+	),
 );

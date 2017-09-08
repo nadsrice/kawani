@@ -81,41 +81,36 @@ class Skills extends MY_Controller {
 			'skill'       => $skill,
 			'active_menu' => $this->active_menu,
 		);
-		$this->load_view('pages/skill-detail');
+		$this->load_view('pages/skill-details');
 	}
 
 	function edit($id)
 	{
 		$skill_id = $this->uri->segment(3);
-		
 		$skills = $this->skill_model->get_all();
-		$this->data['page_header'] = 'Skills Management';
-		$this->data['skills'] = $skills;
+		$skill = $this->skill_model->get_by(['id' => $skill_id]);
 
-		// show modal
-		$this->data['skill'] = $this->skill_model->get_by(['id' => $skill_id]);
-		$this->data['show_modal'] = TRUE;
-		$this->data['modal_title'] = 'Update Skill';
-		$this->data['modal_file_path'] = 'modals/modal-edit-skill';
-		$this->data['skill_id'] = $skill_id;
+		$this->data = array(
+			'page_header'     => 'Skills Management',
+			'skill'           => $skill,
+			'skills'          => $skills,
+			'skill_id'        => $skill_id,
+			'show_modal'      => TRUE,
+			'modal_title'     => 'Update Skill',
+			'modal_file_path' => 'modals/modal-edit-skill',
+		);
 
 		$post = $this->input->post();
-
-		dump($this->data['skill']);
-		dump($post);
-
-		$data = $post;
-
-		dump($data);exit;
+		$data = remove_unknown_field($post, $this->form_validation->get_field_names('skill_edit'));
 
 		if (isset($post['save'])) {
 			$update = $this->skill_model->update($skill_id, $data);
 
 			if ($update) {
-				$this->session->set_flashdata('success', 'Successfully updated ' . $skill_id);
+				$this->session->set_flashdata('success', 'Successfully updated ' . $skill['name']);
 				redirect('skills');
 			} else {
-				$this->session->set_flashdata('failed', 'Unable to update ' . $skill_id);
+				$this->session->set_flashdata('failed', 'Unable to update ' . $skill['name']);
 				redirect('skills');
 			}
 		}
