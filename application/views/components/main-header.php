@@ -13,6 +13,11 @@
         </a>
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <li class="user user-menu">
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="hidden-xs">GIT BRANCH: <?php echo current_git_branch(); ?></span>
+                    </a>
+                </li>
                 <li class="dropdown user user-menu">
                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?php echo site_url('assets/img/app/avatar.png'); ?>" class="user-image" alt="User Image">
