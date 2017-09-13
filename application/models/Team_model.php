@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Team_model extends MY_Model {
 
-    protected $_table = 'teams';
+    protected $_table      = 'teams';
     protected $primary_key = 'id';
     protected $return_type = 'array';
 
@@ -24,9 +24,10 @@ class Team_model extends MY_Model {
 
     protected function generate_date_created_status($team)
     {
-        $team['created'] = date('Y-m-d H:i:s');
+        $user                  = $this->ion_auth->user()->row();
+        $team['created']       = date('Y-m-d H:i:s');
+        $team['created_by']    = $user->employee_id;
         $team['active_status'] = 1;
-        $team['created_by'] = '0';
         return $team;
     }
 

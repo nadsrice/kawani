@@ -15,8 +15,17 @@ $(function() {
 	$("#datatables-employee_schedules").DataTable();
 	$("#datatables-employee-positions").DataTable();
 	$("#datatables-employee-salaries").DataTable();
+
+	$("#datatables-daily-time-records").DataTable();
+
 	$("#datatables-tax-matrix").DataTable();
 	$("#datatables-tax-rates").DataTable();
 	$("#datatables-sss-matrix").DataTable();
 	$("#datatables-sss-rates").DataTable();
+
+	$("#datatables-skills").DataTable();
+	$("#datatables-courses").DataTable();
+	$("#datatables-educational-attainments").DataTable();
+	$("#datatables-training-plans").DataTable();
+
 });

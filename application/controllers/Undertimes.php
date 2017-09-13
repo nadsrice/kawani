@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author      joseph.gono@systemantech.com
  * @link        http://systemantech.com
  */
-class Attendance_undertimes extends MY_Controller {
+class Undertimes extends MY_Controller {
 
     private $active_menu = 'Administration';
 
@@ -26,32 +26,33 @@ class Attendance_undertimes extends MY_Controller {
     {
         parent::__construct();
         $this->load->library('audit_trail');
-        $this->load->model(['attendance_undertime_model', 'user_model', 'employee_model']);
+        $this->load->model(['undertime_model', 'user_model', 'employee_model']);
     }
 
     function index()
     {
 
         $status = $this->uri->segment(3);
-
+        $user   = $this->ion_auth->user()->row();
+        
         if ( ! isset($status)) {
             $selected = '';
             $status = '';
         }
 
-        $total_denied       = $this->attendance_undertime_model->count_by(['approval_status' => 0]); //0 = denied
-        $total_approved     = $this->attendance_undertime_model->count_by(['approval_status' => 1]); //1 = approved
-        $total_pending      = $this->attendance_undertime_model->count_by(['approval_status' => 2]); //2 = pending
-        $total_cancelled    = $this->attendance_undertime_model->count_by(['status' => 0]);         //0 = cancelled
+        $total_rejected  = $this->undertime_model->count_by(['approval_status' => 0, 'employee_id' => $user->employee_id]); 
+        $total_approved  = $this->undertime_model->count_by(['approval_status' => 1, 'employee_id' => $user->employee_id]); 
+        $total_pending   = $this->undertime_model->count_by(['approval_status' => 2, 'employee_id' => $user->employee_id]); 
+        $total_cancelled = $this->undertime_model->count_by(['status' => 0, 'employee_id' => $user->employee_id]);         
 
-        $user_id            = $this->ion_auth->user()->row()->id;
-        $user_data          = $this->user_model->get_by(['id' => $user_id]);
+        $user_id         = $this->ion_auth->user()->row()->id;
+        $user_data       = $this->user_model->get_by(['id' => $user_id]);
 
-        $undertimes = $this->attendance_undertime_model->get_undertimes([
+        $undertimes = $this->undertime_model->get_undertimes([
             'attendance_undertimes.approver_id' => $user_data['employee_id']
         ]);
 
-        $my_undertimes = $this->attendance_undertime_model->get_undertimes([
+        $my_undertimes = $this->undertime_model->get_undertimes([
             'employee_id' => $user_data['employee_id']
         ]);
 
@@ -61,7 +62,7 @@ class Attendance_undertimes extends MY_Controller {
             'page_header'       => 'Undertime Management',
             'undertimes'        => $undertimes,
             'my_undertimes'     => $my_undertimes,
-            'total_denied'      => $total_denied,
+            'total_rejected'      => $total_rejected,
             'total_approved'    => $total_approved,
             'total_pending'     => $total_pending,
             'total_cancelled'   => $total_cancelled,
@@ -100,7 +101,7 @@ class Attendance_undertimes extends MY_Controller {
                 'new_data'    => $data
             ]);
 
-            $undertime_id = $this->attendance_undertime_model->insert($data);
+            $undertime_id = $this->undertime_model->insert($data);
 
             if ( ! $undertime_id) {
                 $this->session->set_flashdata('failed', 'Failed to add new undertime.');
@@ -111,7 +112,7 @@ class Attendance_undertimes extends MY_Controller {
 
                 $this->load->library('email');
 
-                $ut_data = $this->attendance_undertime_model->get_by(['id' => $undertime_id]);
+                $ut_data = $this->undertime_model->get_by(['id' => $undertime_id]);
                 $ut_id = $undertime_id;
 
                 $user_id = $this->ion_auth->user()->row()->id;
@@ -144,7 +145,7 @@ class Attendance_undertimes extends MY_Controller {
     function edit($id)
     {
         // get specific undertime based on the id
-        $undertime = $this->attendance_undertime_model->get_undertime_by(['attendance_undertimes.id' => $id]);
+        $undertime = $this->undertime_model->get_undertime_by(['attendance_undertimes.id' => $id]);
         // dump($undertime);exit;
         // get all company records where status is equal to active
         //$companies = $this->company_model->get_many_by(['active_status' => 1]);
@@ -155,7 +156,7 @@ class Attendance_undertimes extends MY_Controller {
             'active_menu' => $this->active_menu,
         );
 
-        // $undertimes = $this->attendance_undertime_model->get_undertime_all();
+        // $undertimes = $this->undertime_model->get_undertime_all();
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('undertime_add'));
 
         $this->form_validation->set_data($data);
@@ -163,7 +164,7 @@ class Attendance_undertimes extends MY_Controller {
 
         if ($this->form_validation->run('undertime_add') == TRUE)
         {
-            $undertime_id = $this->attendance_undertime_model->update($id, $data);
+            $undertime_id = $this->undertime_model->update($id, $data);
 
             if ( ! $undertime_id) {
                 $this->session->set_flashdata('failed', 'Failed to update undertime.');
@@ -178,7 +179,7 @@ class Attendance_undertimes extends MY_Controller {
 
     function details($id)
     {
-        $undertime = $this->attendance_undertime_model->get_undertime_by(['attendance_undertimes.id' => $id]);
+        $undertime = $this->undertime_model->get_undertime_by(['attendance_undertimes.id' => $id]);
         $employee_infos = $this->employee_info_model->get_employee_info_data(['attendance_undertimes.id' => $id]);
 
         $this->data = array(
@@ -192,7 +193,7 @@ class Attendance_undertimes extends MY_Controller {
 
     public function edit_confirmation($id)
     {
-        $edit_undertime = $this->attendance_undertime_model->get_by(['id' => $id]);
+        $edit_undertime = $this->undertime_model->get_by(['id' => $id]);
         $data['edit_undertime'] = $edit_undertime;
         $this->load->view('modals/modal-update-undertime', $data);
     }
@@ -200,7 +201,7 @@ class Attendance_undertimes extends MY_Controller {
 
    public function approve($ut_id)
     {
-        $this->load->model('attendance_undertime_model');
+        $this->load->model('undertime_model');
 
         // $this->session->set_flashdata('log_parameters', [
         //     'action_mode' => 0,
@@ -209,7 +210,7 @@ class Attendance_undertimes extends MY_Controller {
         //     'new_data'    => $data
         // ]);
 
-        $update = $this->attendance_undertime_model->update($ut_id, ['approval_status' => 1]);
+        $update = $this->undertime_model->update($ut_id, ['approval_status' => 1]);
 
         if ($update) {
 
@@ -243,8 +244,8 @@ class Attendance_undertimes extends MY_Controller {
 
     public function reject($ut_id)
     {
-        $this->load->model('attendance_undertime_model');
-        $update = $this->attendance_undertime_model->update($ut_id, ['approval_status' => 0]);
+        $this->load->model('undertime_model');
+        $update = $this->undertime_model->update($ut_id, ['approval_status' => 0]);
 
         if ($update) {
 
@@ -279,8 +280,8 @@ class Attendance_undertimes extends MY_Controller {
 
     public function cancel($ut_id)
     {
-        $this->load->model('attendance_undertime_model');
-        $update = $this->attendance_undertime_model->update($ut_id, ['status' => 0]);
+        $this->load->model('undertime_model');
+        $update = $this->undertime_model->update($ut_id, ['status' => 0]);
 
         if ($update) {
 
@@ -315,7 +316,7 @@ class Attendance_undertimes extends MY_Controller {
 
     public function approve_undertime($id)
     {
-        $undertime_data         = $this->attendance_undertime_model->get_by(['id' => $id]);
+        $undertime_data         = $this->undertime_model->get_by(['id' => $id]);
         $data['undertime_data'] = $undertime_data;
 
         $employee_id = $undertime_data['employee_id'];
@@ -329,7 +330,7 @@ class Attendance_undertimes extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'approve') {
-            $result = $this->attendance_undertime_model->update($id, ['approval_status' => 1]);
+            $result = $this->undertime_model->update($id, ['approval_status' => 1]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Undertime successfully approved');
@@ -371,7 +372,7 @@ class Attendance_undertimes extends MY_Controller {
 
     public function reject_undertime($id)
     {
-        $undertime_data         = $this->attendance_undertime_model->get_by(['id' => $id]);
+        $undertime_data         = $this->undertime_model->get_by(['id' => $id]);
         $data['undertime_data'] = $undertime_data;
 
         $employee_id = $undertime_data['employee_id'];
@@ -391,7 +392,7 @@ class Attendance_undertimes extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'reject') {
-            $result = $this->attendance_undertime_model->update($id, ['approval_status' => 0]);
+            $result = $this->undertime_model->update($id, ['approval_status' => 0]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Undertime successfully rejected');
@@ -432,7 +433,7 @@ class Attendance_undertimes extends MY_Controller {
 
     public function cancel_undertime($id)
     {
-        $undertime_data         = $this->attendance_undertime_model->get_by(['id' => $id]);
+        $undertime_data         = $this->undertime_model->get_by(['id' => $id]);
         $data['undertime_data'] = $undertime_data;
 
         $employee_id = $undertime_data['employee_id'];
@@ -446,7 +447,7 @@ class Attendance_undertimes extends MY_Controller {
         $post = $this->input->post();
 
         if (isset($post['mode']) && $post['mode'] == 'cancel') {
-            $result = $this->attendance_undertime_model->update($id, ['status' => 0]);
+            $result = $this->undertime_model->update($id, ['status' => 0]);
 
             if ($result){
                 $this->session->set_flashdata('message', 'Undertime successfully cancelled');
@@ -486,7 +487,7 @@ class Attendance_undertimes extends MY_Controller {
 
     public function view_undertime($id)
     {
-        $view_ut        = $this->attendance_undertime_model->get_by(['id' => $id]);
+        $view_ut        = $this->undertime_model->get_by(['id' => $id]);
         $employee_data  = $this->employee_model->get_by(['id' => $id]);
 
 
@@ -513,19 +514,19 @@ class Attendance_undertimes extends MY_Controller {
          $my_employee_id           = $this->ion_auth->user()->row()->employee_id;
 
         $data['summary'] = [
-            'total_denied' => $this->attendance_undertime_model->count_by([
+            'total_denied' => $this->undertime_model->count_by([
                 'approval_status' => 0,
                 'employee_id' => $my_employee_id
             ]),
-            'total_approved' => $this->attendance_undertime_model->count_by([
+            'total_approved' => $this->undertime_model->count_by([
                 'approval_status' => 1,
                 'employee_id' => $my_employee_id
             ]),
-            'total_pending' => $this->attendance_undertime_model->count_by([
+            'total_pending' => $this->undertime_model->count_by([
                 'approval_status' => 2,
                 'employee_id' => $my_employee_id
             ]),
-            'total_cancelled' => $this->attendance_undertime_model->count_by([
+            'total_cancelled' => $this->undertime_model->count_by([
                 'status' => 0,
                 'employee_id' => $my_employee_id
             ]),
@@ -539,10 +540,10 @@ class Attendance_undertimes extends MY_Controller {
         $data = ['status' => 'success', 'message' => 'test message ajax_approval!'];
 
         $data['summary'] = [
-            'total_denied'    => $this->attendance_undertime_model->count_by(['approval_status' => 0]),
-            'total_approved'  => $this->attendance_undertime_model->count_by(['approval_status' => 1]),
-            'total_pending'   => $this->attendance_undertime_model->count_by(['approval_status' => 2]),
-            'total_cancelled' => $this->attendance_undertime_model->count_by(['status' => 0]),
+            'total_denied'    => $this->undertime_model->count_by(['approval_status' => 0]),
+            'total_approved'  => $this->undertime_model->count_by(['approval_status' => 1]),
+            'total_pending'   => $this->undertime_model->count_by(['approval_status' => 2]),
+            'total_cancelled' => $this->undertime_model->count_by(['status' => 0]),
         ];
 
         echo json_encode($data);

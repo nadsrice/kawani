@@ -109,7 +109,8 @@
 					timePickerIncrement: 1,
 				});
 				$(".timepicker").timepicker({
-					showInputs: false
+					showInputs: false,
+					minuteStep: 1
 				});
 				$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
 					checkboxClass: 'icheckbox_flat-green',

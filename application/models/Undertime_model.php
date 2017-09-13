@@ -9,9 +9,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author      cristhian.kevin@systemantech.com
  * @link        http://systemantech.com
  */
-class Attendance_undertime_model extends MY_Model {
+class Undertime_model extends MY_Model {
 
-    protected $_table = 'attendance_undertimes';
+    protected $_table      = 'attendance_undertimes';
     protected $primary_key = 'id';
     protected $return_type = 'array';
     /**
@@ -24,10 +24,11 @@ class Attendance_undertime_model extends MY_Model {
 
     protected function generate_date_created_status($undertime)
     {
-        $undertime['created']            = date('Y-m-d H:i:s');
-        $undertime['created_by']         = 0;
-        $undertime['status']             = 1;
-        $undertime['approval_status']    = 2;
+        $user                         = $this->ion_auth->user()->row();
+        $undertime['created']         = date('Y-m-d H:i:s');
+        $undertime['created_by']      = $user->employee_id;
+        $undertime['status']          = 1;
+        $undertime['approval_status'] = 2;
         return $undertime;
     }
 
@@ -43,7 +44,7 @@ class Attendance_undertime_model extends MY_Model {
 
         $undertime['action_menus'] = [
             'approve' => [
-                'url'               => site_url('attendance_undertimes/approve_undertime/'.$undertime['id']),
+                'url'               => site_url('undertimes/approve_undertime/'.$undertime['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Approve',
                 'modal_status'      => TRUE,
@@ -52,7 +53,7 @@ class Attendance_undertime_model extends MY_Model {
                 'button_style'      => $btn_settings['btn_update']
             ],
             'reject' => [
-                'url'               => site_url('attendance_undertimes/reject_undertime/'.$undertime['id']),
+                'url'               => site_url('undertimes/reject_undertime/'.$undertime['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Reject',
                 'modal_status'      => TRUE,
@@ -61,7 +62,7 @@ class Attendance_undertime_model extends MY_Model {
                 'button_style'      => $btn_settings['btn_update']
             ],
             'cancel' => [
-                'url'               => site_url('attendance_undertimes/cancel_undertime/'.$undertime['id']),
+                'url'               => site_url('undertimes/cancel_undertime/'.$undertime['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Cancel',
                 'modal_status'      => TRUE,
@@ -95,27 +96,6 @@ class Attendance_undertime_model extends MY_Model {
 
     public function get_undertimes($where = '')
     {
-        // if ( ! empty($where)) {
-        //     $this->db->where($where);
-        // }
-
-        // $query = $this->db->select('
-        //             attendance_undertimes.*,
-        //             teams.name as team,
-        //             departments.name as department,
-        //             employees.employee_code as employee_code,
-        //             CONCAT_WS(' . '" "' . ', employees.last_name,", " ,employees.first_name) as full_name,
-        //             ')
-        //         ->from($this->_table)
-        //         ->join('employees', 'employees.id = attendance_undertimes.employee_id', 'left')
-        //         ->join('teams', 'teams.id = attendance_undertimes.team_id', 'left')
-        //         ->join('departments', 'departments.id = attendance_undertimes.department_id', 'left')
-        //         ->order_by('employees.last_name', 'asc')
-        //         ->order_by('attendance_undertimes.date', 'desc')
-        //         ->get();
-
-        // return $query->result_array();
-
         $query = $this->db;
         $query->select('
                     attendance_undertimes.*,
@@ -129,8 +109,7 @@ class Attendance_undertime_model extends MY_Model {
               ->join('departments', 'departments.id = attendance_undertimes.department_id', 'left')
               ->order_by('employees.last_name', 'asc')
               ->order_by('attendance_undertimes.date', 'desc');
-
-
+                                                             
         return $this->get_many_by($where);
 
     }

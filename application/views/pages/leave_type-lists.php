@@ -21,7 +21,6 @@
                     <thead>
                         <tr>
                             <th style="width: 250px;">&nbsp;</th>
-                            <th class="text-left">No.</th>
                             <th class="text-left">Name</th>
                             <th class="text-left">Description</th>
                             <th class="text-left">Status</th>
@@ -33,13 +32,15 @@
                                 <tr>
                                     <td>
                                         <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('leave_types/details/' . $leave_type['id']); ?>">
-                                            <i class="fa fa-search"></i> View
+                                            <i class="fa fa-eye"></i> View
                                         </a>
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('leave_types/edit_confirmation/' . $leave_type['id']); ?>" data-toggle="modal" data-target="#update-leave_type-<?php echo md5($leave_type['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit
                                         </a>
+                                        <a class="<?php echo $btn_; ?>" href="<?php echo site_url('leave_types/details/' . $leave_type['id']); ?>">
+                                            <i class="fa fa-eye"></i> View
+                                        </a>
                                     </td>
-                                    <td class="text-right"><?php echo $leave_type['id']; ?></td>
                                     <td class="text-left"><?php echo $leave_type['name']; ?></td>
                                     <td class="text-left"><?php echo $leave_type['description']; ?></td>
                                     <td class="text-center"><?php echo $leave_type['active_status']; ?></td>

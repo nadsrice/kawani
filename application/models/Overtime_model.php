@@ -9,9 +9,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author      cristhian.kevin@systemantech.com
  * @link        http://systemantech.com
  */
-class Attendance_overtime_model extends MY_Model {
+class Overtime_model extends MY_Model {
 
-    protected $_table = 'attendance_overtimes';
+    protected $_table      = 'attendance_overtimes';
     protected $primary_key = 'id';
     protected $return_type = 'array';
     /**
@@ -24,10 +24,11 @@ class Attendance_overtime_model extends MY_Model {
 
     protected function generate_date_created_status($overtime)
     {
-        $overtime['created']            = date('Y-m-d H:i:s');
-        $overtime['created_by']         = 0;
-        $overtime['status']             = 1;
-        $overtime['approval_status']    = 2;
+        $user                        = $this->ion_auth-user()-row();
+        $overtime['created']         = date('Y-m-d H:i:s');
+        $overtime['created_by']      = $user->employee_id;
+        $overtime['status']          = 1;
+        $overtime['approval_status'] = 2;
         return $overtime;
     }
 
@@ -69,7 +70,7 @@ class Attendance_overtime_model extends MY_Model {
 
         $overtime['action_menus'] = [
             'approve' => [
-                'url'               => site_url('attendance_overtimes/approve_overtime/'.$overtime['id']),
+                'url'               => site_url('overtimes/approve_overtime/'.$overtime['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Approve',
                 'modal_status'      => TRUE,
@@ -78,7 +79,7 @@ class Attendance_overtime_model extends MY_Model {
                 'button_style'      => $btn_settings['btn_update']
             ],
             'reject' => [
-                'url'               => site_url('attendance_overtimes/reject_overtime/'.$overtime['id']),
+                'url'               => site_url('overtimes/reject_overtime/'.$overtime['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Reject',
                 'modal_status'      => TRUE,
@@ -87,7 +88,7 @@ class Attendance_overtime_model extends MY_Model {
                 'button_style'      => $btn_settings['btn_update']
             ],
             'cancel' => [
-                'url'               => site_url('attendance_overtimes/cancel_overtime/'.$overtime['id']),
+                'url'               => site_url('overtimes/cancel_overtime/'.$overtime['id']),
                 'icon'              => 'fa fa-pencil-square-o',
                 'label'             => 'Cancel',
                 'modal_status'      => TRUE,

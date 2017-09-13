@@ -2,7 +2,7 @@
     <div class="col-md-6">&nbsp;</div>
     <div class="col-md-6">
         <div class="pull-right">
-            <a href="<?php echo site_url('attendance_official_businesses/add'); ?>" class="btn btn-primary">
+            <a href="<?php echo site_url('official_businesses/add'); ?>" class="btn btn-primary">
                 <i class="fa fa-plus"></i>
                 <span>File Official Business</span>
             </a>

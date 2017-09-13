@@ -25,7 +25,7 @@ class Teams extends MY_Controller {
 	function index()
 	{
 		$teams       = $this->team_model->get_team_all();
-		$companies 	 = $this->comapny_model->get_company_all();
+		$companies 	 = $this->company_model->get_company_all();
 		$branches 	 = $this->branch_model->get_branch_all();
 		$departments = $this->department_model->get_department_all();
 		// $teams 				= $this->team_model->get_team_all();
@@ -38,7 +38,7 @@ class Teams extends MY_Controller {
 			'departments'  => $departments,
 			'active_menu'  => $this->active_menu,
 		);
-		$this->load_view('pages/team-list');
+		$this->load_view('pages/team-lists');
 	}
 
 	function add()

@@ -404,7 +404,8 @@ $config = array(
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
         array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
-        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim'),
+        array('field' => 'remarks',           'label' => 'Remarks',          'rules' => 'trim')
     ),
 
     'daily_time_record_edit' => array(
@@ -415,12 +416,13 @@ $config = array(
         array('field' => 'number_of_hours',   'label' => 'Number of Hours',  'rules' => 'trim'),
         array('field' => 'minutes_tardy',     'label' => 'Minutes of Tardy', 'rules' => 'trim'),
         array('field' => 'minutes_undertime', 'label' => 'Minutes Undertime','rules' => 'trim'),
-        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim')
+        array('field' => 'company_id',        'label' => 'Company',          'rules' => 'trim'),
+        array('field' => 'remarks',           'label' => 'Remarks',          'rules' => 'trim')
     ),
 
     'daily_time_log_add' => array(
         array('field' => 'employee_id', 'label' => 'Employee',    'rules' => 'trim|required'),
-        array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim|required'),
+        array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim'),
         array('field' => 'log_type',    'label' => 'Log Type',    'rules' => 'trim'),
         array('field' => 'device_id',   'label' => 'Device',      'rules' => 'trim'),
         array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim'),
@@ -430,7 +432,7 @@ $config = array(
 
     'daily_time_log_edit' => array(
         array('field' => 'employee_id', 'label' => 'Employee',    'rules' => 'trim|required'),
-        array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim|required'),
+        array('field' => 'date_time',   'label' => 'Date & Time', 'rules' => 'trim'),
         array('field' => 'log_type',    'label' => 'Log Type',    'rules' => 'trim|required'),
         array('field' => 'device_id',   'label' => 'Device',      'rules' => 'trim|required'),
         array('field' => 'company_id',  'label' => 'Company',     'rules' => 'trim'),
@@ -485,5 +487,23 @@ $config = array(
 		array('field' => '', 'label' => '', 'rules' => ''),
 		array('field' => '', 'label' => '', 'rules' => ''),
 		array('field' => '', 'label' => '', 'rules' => '')
-	)
+	),
+	'skill_add' => array(
+		array('field' => 'name', 'label' => 'Name', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
+	),
+	'skill_edit' => array(
+		array('field' => 'name', 'label' => 'Name', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
+	),
+	'course_add' => array(
+		array('field' => 'course', 'label' => 'Course', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
+		array('field' => 'educational_attainment_id', 'label' => 'Educational Attainment', 'rules' => 'trim|required')
+	),
+	'course_edit' => array(
+		array('field' => 'course', 'label' => 'Course', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
+		array('field' => 'educational_attainment_id', 'label' => 'Educational Attainment', 'rules' => 'trim|required')
+	),
 );

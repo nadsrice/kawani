@@ -1133,12 +1133,12 @@
   $.fn.timepicker.defaults = {
     defaultTime: 'current',
     disableFocus: false,
-    disableMousewheel: false,
+    disableMousewheel: true,
     isOpen: false,
-    minuteStep: 15,
+    minuteStep: 1, //modified; 20170905
     modalBackdrop: false,
     orientation: { x: 'auto', y: 'auto'},
-    secondStep: 15,
+    secondStep: 1, //modified; 20170905
     snapToStep: false,
     showSeconds: false,
     showInputs: true,

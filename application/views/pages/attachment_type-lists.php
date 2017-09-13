@@ -20,7 +20,7 @@
                 <table class="table table-bordered table-striped table-hover" id="datatables-attachment_types">
                     <thead>
                         <tr>
-                            <th style="width: 250px;">&nbsp;</th>
+                            <th style="width: 350px;">&nbsp;</th>
                             <th class="text-left">Name</th>
                             <th class="text-left">Description</th>
                         </tr>
@@ -31,7 +31,7 @@
                                 <tr>
                                     <td>
                                         <a class="<?php echo $btn_view; ?>" href="<?php echo site_url('attachment_types/details/' . $attachment_type['id']); ?>">
-                                            <i class="fa fa-search"></i> View
+                                            <i class="fa fa-eye"></i> View
                                         </a>
                                         <a class="<?php echo $btn_update; ?>" href="<?php echo site_url('attachment_types/edit_confirmation/' . $attachment_type['id']); ?>" data-toggle="modal" data-target="#update-attachment_type-<?php echo md5($attachment_type['id']); ?>">
                                             <i class="fa fa-pencil-square-o"></i> Edit

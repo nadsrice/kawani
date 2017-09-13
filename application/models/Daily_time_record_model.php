@@ -21,17 +21,15 @@ class Daily_time_record_model extends MY_Model {
     /**
      * Callbacks or Observers
      */
-    // protected $before_create = ['generate_date_created_status'];
+    protected $before_create = ['generate_date_created_status'];
     protected $after_create  = ['write_audit_trail'];
     protected $after_update  = ['write_audit_trail'];
     protected $after_get 	 = array('set_default_data');
 
     protected function generate_date_created_status($daily_time_record)
     {
-    	$user_id                     		= $this->ion_auth->user()->row(); //user id
-        $daily_time_record['created']       = date('Y-m-d H:i:s');
-        $daily_time_record['active_status'] = 1;
-        $daily_time_record['created_by']    = $user_id;
+        $daily_time_record['status']          = 1; //filed
+        $daily_time_record['approval_status'] = 0; //subject for approval
         return $daily_time_record;
     }
 
@@ -47,9 +45,15 @@ class Daily_time_record_model extends MY_Model {
 			$middle_initial
 		);
 
-		$daily_time_record['full_name']     = strtoupper(implode('', $full_name));
-        // $daily_time_record['active_status'] = ($daily_time_record['active_status'] == 1) ? 'Active' : 'Inactive';
-        // $daily_time_record['status_label']  = ($daily_time_record['active_status'] == 'Active') ? 'De-activate' : 'Activate';
+        $shift = array(
+            date('h:i A', strtotime($daily_time_record['time_start'])).' - ',
+            date('h:i A', strtotime($daily_time_record['time_end']))
+        );
+
+		$daily_time_record['full_name'] = strtoupper(implode('', $full_name));
+        $daily_time_record['shift']     = implode('', $shift);
+        $daily_time_record['timein']    = ($daily_time_record['time_in'] == '0000-00-00 00:00:00') ? '-' : date('h:i A', strtotime($daily_time_record['time_in']));
+        $daily_time_record['timeout']   = ($daily_time_record['time_out'] == '0000-00-00 00:00:00') ? '-' : date('h:i A', strtotime($daily_time_record['time_out']));
         return $daily_time_record;
     }
 
@@ -67,7 +71,8 @@ class Daily_time_record_model extends MY_Model {
     	')
     	->join('employees as employee', 'attendance_daily_time_records.employee_id = employee.id', 'left')
     	->join('attendance_shift_schedules', 'attendance_daily_time_records.shift_schedule_id = attendance_shift_schedules.id', 'left')
-    	->join('companies', 'attendance_daily_time_records.company_id = companies.id', 'left');
+    	->join('companies', 'attendance_daily_time_records.company_id = companies.id', 'left')
+        ->join('employee_information', 'employee.id = employee_information.reports_to', 'left');
         
     	return $this->{$method}($where);
     }

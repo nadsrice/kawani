@@ -2,7 +2,7 @@
 
 class Employee_information_model extends MY_Model
 {
-	protected $_table = 'employee_information';
+	protected $_table 	   = 'employee_information';
 	protected $primary_key = 'id';
 	protected $return_type = 'array';
 
@@ -11,9 +11,9 @@ class Employee_information_model extends MY_Model
 		$this->db->select('
 					employee_information.id as employee_information_id,
 					employee_information.employee_id,
-					employee_information.date_started,
-					employee_information.date_ended,
+					employee_information.date_hired,
 					employee_information.active_status,
+					employee_information.reports_to,
 					employee.first_name,
 					employee.middle_name,
 					employee.last_name,
@@ -29,11 +29,13 @@ class Employee_information_model extends MY_Model
 				->join('employees as employee', 'employee_information.employee_id = employee.id', 'left')
 				->join('companies as company', 'employee_information.company_id = company.id', 'left')
 				->join('branches as branch', 'employee_information.branch_id = branch.id', 'left')
+				->join('positions as position', 'employee_information.position_id = position.id', 'left')
 				->join('cost_centers as cost_center', 'employee_information.cost_center_id = cost_center.id', 'left')
 				->join('departments as department', 'employee_information.department_id = department.id', 'left')
 				->join('teams as team', 'employee_information.team_id = team.id', 'left')
 				->join('sites as site', 'employee_information.site_id = site.id', 'left');
 
+		// dump($foo);exit;
 		return $this->{$method}($where);
 	}
 
