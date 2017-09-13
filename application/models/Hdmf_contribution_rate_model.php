@@ -21,10 +21,10 @@ class Hdmf_contribution_rate_model extends MY_Model
 	{
 		if ( ! isset($hdmf_rate)) return FALSE;
 		
-		$hdmf_rate['hr_status_label']  = ($hdmf_rate['hr_active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
-		$hdmf_rate['hr_status_action'] = ($hdmf_rate['hr_active_status'] == 1) ? 'Deactivate' : 'Activate';
-		$hdmf_rate['hr_status_icon']   = ($hdmf_rate['hr_active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
-		$hdmf_rate['hr_status_url']    = ($hdmf_rate['hr_active_status'] == 1) ? 'deactivate' : 'activate';
+		$hdmf_rate['hr_status_label']  = ($hdmf_rate['active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
+		$hdmf_rate['hr_status_action'] = ($hdmf_rate['active_status'] == 1) ? 'Deactivate' : 'Activate';
+		$hdmf_rate['hr_status_icon']   = ($hdmf_rate['active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
+		$hdmf_rate['hr_status_url']    = ($hdmf_rate['active_status'] == 1) ? 'deactivate' : 'activate';
 
 		return $hdmf_rate;
 	}
@@ -38,7 +38,7 @@ class Hdmf_contribution_rate_model extends MY_Model
 					hdmf_rates.maximum_range as hr_maximum_range,
 					hdmf_rates.employee_share as hr_employee_share,
 					hdmf_rates.employer_share as hr_employer_share,
-					hdmf_rates.active_status as hr_active_status
+					hdmf_rates.active_status
 				')
 				->join('hdmf_matrices', 'hdmf_rates.hdmf_matrix_id = hdmf_matrices.id', 'left');
 

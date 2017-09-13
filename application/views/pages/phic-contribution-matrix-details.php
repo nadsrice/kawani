@@ -96,7 +96,6 @@
 					<div class="modal-content"></div>
 				</div>
 			</div>
-			<?php dump($phic_rate); ?>
 			<?php if ($show_modal): ?>
 				<div class="modal fade" id="modal-edit-tax-rate">
 					<div class="modal-dialog">

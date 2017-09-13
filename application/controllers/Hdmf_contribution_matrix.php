@@ -66,6 +66,7 @@ class Hdmf_contribution_matrix extends MY_Controller
 		$this->data['page_header'] = 'HDMF Contribution Matrix Management';
 		$this->data['hdmf_matrix'] = $hdmf_contribution_matrix;
 		$this->data['hdmf_rates']  = $hdmf_rates;
+		$this->data['show_modal'] = FALSE;
 
 		$this->load_view('pages/hdmf-contribution-matrix-details');
 	}
