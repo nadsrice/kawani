@@ -15,16 +15,33 @@ class Phic_contribution_rate_model extends MY_Model
 	protected $primary_key = 'id';
 	protected $return_type = 'array';
 
+	protected $before_create = array('set_date_before_create');
+	protected $before_update = array('set_date_before_update');
 	protected $after_get = array('prepare_data');
+
+	protected function set_date_before_create($phic_rate)
+	{
+		$phic_rate['active_status'] = 1;
+		$phic_rate['created'] = date('Y-m-d H:i:s');
+		$phic_rate['created_by'] = $this->ion_auth->user()->row()->id;
+		return $phic_rate;
+	}
+
+	protected function set_date_before_update($phic_rate)
+	{
+		$phic_rate['modified'] 	  = date('Y-m-d H:i:s');
+		$phic_rate['modified_by'] = $this->ion_auth->user()->row()->id;
+		return $phic_rate;
+	}
 
 	protected function prepare_data($phic_rate)
 	{
 		if ( ! isset($phic_rate)) return FALSE;
 		
-		$phic_rate['pr_status_label']  = ($phic_rate['pr_active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
-		$phic_rate['pr_status_action'] = ($phic_rate['pr_active_status'] == 1) ? 'Deactivate' : 'Activate';
-		$phic_rate['pr_status_icon']   = ($phic_rate['pr_active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
-		$phic_rate['pr_status_url']    = ($phic_rate['pr_active_status'] == 1) ? 'deactivate' : 'activate';
+		$phic_rate['pr_status_label']  = ($phic_rate['active_status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
+		$phic_rate['pr_status_action'] = ($phic_rate['active_status'] == 1) ? 'Deactivate' : 'Activate';
+		$phic_rate['pr_status_icon']   = ($phic_rate['active_status'] == 1) ? 'fa-times text-red' : 'fa-check text-green';
+		$phic_rate['pr_status_url']    = ($phic_rate['active_status'] == 1) ? 'deactivate' : 'activate';
 
 		return $phic_rate;
 	}
@@ -40,7 +57,7 @@ class Phic_contribution_rate_model extends MY_Model
 					phic_rates.employee_share as pr_employee_share,
 					phic_rates.employer_share as pr_employer_share,
 					phic_rates.total_monthly_premium as pr_total_monthly_premium,
-					phic_rates.active_status as pr_active_status
+					phic_rates.active_status
 				')
 				->join('phic_matrices', 'phic_rates.phic_matrix_id = phic_matrices.id', 'left');
 

@@ -36,6 +36,82 @@ class Employee_information_model extends MY_Model
 
 		return $this->{$method}($where);
 	}
+
+	public function set_employee_hierarchy_data($where = '')
+	{
+		$this->db->select('
+					employee_information.*,
+					employee.first_name,
+					employee.middle_name,
+					employee.last_name,
+					superior.first_name as superior_first_name,
+					superior.middle_name as superior_middle_name,
+					superior.last_name as superior_last_name,
+				')
+				->join('employees as employee', 'employee_information.employee_id = employee.id', 'left')
+				->join('employees as superior', 'employee_information.reports_to = superior.id', 'left');
+
+
+		if ($where && isset($where))
+		{
+			return $this->get_many_by($where);
+		}
+		
+		return $this->get_all();
+	}
+
+	public function get_employee_hierarchy_data()
+	{
+		$post = $this->input->post();
+		$where = '';
+
+		// if (isset($post['department_id']) || $post['department_id'] == '')
+		// {
+		// 	$where = array('employee_information.department_id' => $post['department_id']);
+		// }
+
+		$employees = $this->set_employee_hierarchy_data($where);
+
+		$data = array();
+
+		foreach ($employees as $index => $employee)
+		{
+			$employee_fullname = array(
+				$employee['last_name'].', ',
+				$employee['first_name'].' ',
+				$employee['middle_name']
+			);
+
+			$sub_data['id'] = $employee['employee_id'];
+			$sub_data['name'] = strtoupper(implode('', $employee_fullname));
+			$sub_data['text'] = strtoupper(implode('', $employee_fullname));
+			$sub_data['parent_id'] = $employee['reports_to'];
+
+			$data[] = $sub_data;
+		}
+
+		foreach ($data as $key => &$value)
+		{
+			$output[$value['id']] = &$value;
+		}
+
+		foreach ($data as $key => &$value)
+		{
+			if ($value['parent_id'] && isset($output[$value['parent_id']]))
+			{
+				$output[$value['parent_id']]['nodes'][] = &$value;
+			}
+		}
+
+		foreach ($data as $key => &$value)
+		{
+			if ($value['parent_id'] && isset($output[$value['parent_id']])){
+				unset($data[$key]);
+			}
+		}
+
+		return $data;
+	}
 }
 
 // End of file Employee_information_model.php
