@@ -39,7 +39,7 @@ class Employee_information_model extends MY_Model
 		return $this->{$method}($where);
 	}
 
-	public function set_employee_hierarchy_data($where = '')
+	protected function set_employee_hierarchy_data($where = '')
 	{
 		$this->db->select('
 					employee_information.*,
@@ -78,15 +78,17 @@ class Employee_information_model extends MY_Model
 
 		foreach ($employees as $index => $employee)
 		{
-			$employee_fullname = array(
-				$employee['last_name'].', ',
-				$employee['first_name'].' ',
-				$employee['middle_name']
-			);
+			$employee_fullname = ucwords(strtolower(
+				implode('', array(
+					$employee['last_name'].', ',
+					$employee['first_name'].' ',
+					$employee['middle_name']
+				))
+			));
 
 			$sub_data['id'] = $employee['employee_id'];
-			$sub_data['name'] = strtoupper(implode('', $employee_fullname));
-			$sub_data['text'] = strtoupper(implode('', $employee_fullname));
+			$sub_data['name'] = $employee_fullname;
+			$sub_data['text'] = $employee_fullname;
 			$sub_data['parent_id'] = $employee['reports_to'];
 
 			$data[] = $sub_data;
