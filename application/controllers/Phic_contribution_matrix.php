@@ -66,6 +66,7 @@ class Phic_contribution_matrix extends MY_Controller
 		$this->data['page_header'] = 'PHIC Contribution Matrix Management';
 		$this->data['phic_matrix'] = $phic_contribution_matrix;
 		$this->data['phic_rates']  = $phic_rates;
+		$this->data['show_modal']  = FALSE;
 
 		$this->load_view('pages/phic-contribution-matrix-details');
 	}

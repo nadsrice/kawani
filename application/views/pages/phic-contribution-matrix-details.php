@@ -26,6 +26,11 @@
 		<div class="box box-primary">
 			<div class="box-header">
 				<h3 class="box-title">PHIC Rates</h3>
+				<div class="box-tools">
+					<a href="<?php echo site_url('phic_contribution_rates/load_form/' . $phic_matrix['id']); ?>" class="btn btn-box-tool" data-toggle="modal" data-target="#modal-add-phic">
+						<i class="fa fa-plus"></i> <span class="text-blue">Add New PHIC Rate</span>
+					</a>
+				</div>
 			</div>
 			<div class="box-body">
 				<div class="table-responsive">
@@ -45,13 +50,13 @@
 							<?php foreach ($phic_rates as $index => $phic_rate): ?>
 							<tr>
 								<td>
-									<a href="<?php echo site_url('phic_rate/details/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('phic_contribution_rates/details/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-details-<?php echo $index; ?>">
 										<i class="fa fa-eye"></i> View
 									</a>
-									<a href="<?php echo site_url('phic_rate/details/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('phic_contribution_rates/confirmation/edit/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-confirmation-<?php echo $index; ?>">
 										<i class="fa fa-edit"></i> Edit
 									</a>
-									<a href="<?php echo site_url('phic_rate/' . $phic_rate['pr_status_url'] . '/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link">
+									<a href="<?php echo site_url('phic_contribution_rates/confirmation/' . $phic_rate['pr_status_url'] . '/' . $phic_rate['phic_rate_id']); ?>" class="btn btn-link btn-sm" data-toggle="modal" data-target="#modal-update-status-<?php echo $index; ?>">
 										<i class="fa <?php echo $phic_rate['pr_status_icon']; ?>"></i> <?php echo $phic_rate['pr_status_action']; ?>
 									</a>
 								</td>
@@ -61,12 +66,52 @@
 								<td><?php echo $phic_rate['pr_employer_share']; ?></td>
 								<td><?php echo $phic_rate['pr_total_monthly_premium']; ?></td>
 							</tr>
+							
+							<div class="modal fade" id="modal-details-<?php echo $index; ?>">
+								<div class="modal-dialog">
+									<div class="modal-content"></div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="modal-confirmation-<?php echo $index; ?>">
+								<div class="modal-dialog">
+									<div class="modal-content"></div>
+								</div>
+							</div>
+
+							<div class="modal fade" id="modal-update-status-<?php echo $index; ?>">
+								<div class="modal-dialog">
+									<div class="modal-content"></div>
+								</div>
+							</div>
+
 							<?php endforeach ?>
 							<?php endif ?>
 						</tbody>
 					</table>
 				</div>
 			</div>
+			<div class="modal fade" id="modal-add-phic">
+				<div class="modal-dialog">
+					<div class="modal-content"></div>
+				</div>
+			</div>
+			<?php dump($phic_rate); ?>
+			<?php if ($show_modal): ?>
+				<div class="modal fade" id="modal-edit-tax-rate">
+					<div class="modal-dialog">
+						<div class="modal-content"><?php $this->load->view($modal_file_path); ?></div>
+					</div>
+				</div>
+				<script type="text/javascript">
+					$(function() {
+						$('#modal-edit-tax-rate').modal({
+							backdrop: false,
+							keyboard: false
+						});
+					});
+				</script>
+			<?php endif ?>
 		</div>
 	</div>
 
