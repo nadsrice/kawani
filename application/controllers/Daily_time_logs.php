@@ -39,13 +39,11 @@ class Daily_time_logs extends MY_Controller {
             // todo: load daily_time_logs model
             // todo: load view & past the retrieved data from model
         $daily_time_logs = $this->daily_time_logs_model->get_daily_time_logs_all();
-
         $this->data = array(
             'page_header'     => 'Daily Time Logs Management',
             'daily_time_logs' => $daily_time_logs,
             'active_menu'     => $this->active_menu,
         );
-
         $this->load_view('pages/daily_time_log-lists');
     }
 
@@ -55,7 +53,6 @@ class Daily_time_logs extends MY_Controller {
             'page_header' => 'Daily Time Log Management',
             'active_menu' => $this->active_menu,
         );
-
         $log_type = 'I';
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('daily_time_logs_add'));
         $data['log_type'] = $log_type;
@@ -81,7 +78,7 @@ class Daily_time_logs extends MY_Controller {
                 redirect('daily_time_logs');
             }
         }
-        $this->load_view('forms/daily_time_logs-page');
+        $this->load_view('forms/daily_time_log-page');
     }
 
     public function time_out()
@@ -176,7 +173,7 @@ class Daily_time_logs extends MY_Controller {
             'active_menu'       => $this->active_menu,
         );
         $this->load_view('pages/daily_time_logs-details');
-    }gm 
+    }
 
     public function edit_confirmation($id)
     {

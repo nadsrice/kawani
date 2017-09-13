@@ -35,7 +35,7 @@ class Departments extends MY_Controller {
 
         $this->data = array(
             'page_header' => 'Department Management',
-            'departments'    => $departments,
+            'departments' => $departments,
             'active_menu' => $this->active_menu,
         );
         $this->load_view('pages/department-lists');
@@ -43,7 +43,6 @@ class Departments extends MY_Controller {
 
     function add()
     {
-
         $this->data = array(
             'page_header' => 'Departments Management',
             'active_menu' => $this->active_menu,

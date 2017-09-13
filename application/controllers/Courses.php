@@ -97,13 +97,13 @@ class Courses extends MY_Controller {
 		$course = $this->course_model->get_by(['id' => $course_id]);
 		$courses = $this->course_model->get_details('get_all', ['education_courses.active_status' => 1]);
 		$educational_attainments = $this->educational_attainment_model->get_details('get_many_by', ['active_status' => 1]);
-
+		
 		$this->data = array(
 			'page_header'             => 'Courses Management',
-			'educational_attainments' => $educational_attainments,
 			'course'                  => $course,
 			'courses'                 => $courses,
 			'course_id'               => $course_id,
+			'educational_attainments' => $educational_attainments,
 			'show_modal'              => TRUE,
 			'modal_title'             => 'Update Course',
 			'modal_file_path'         => 'modals/modal-edit-courses',
