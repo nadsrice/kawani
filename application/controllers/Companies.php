@@ -124,7 +124,6 @@ class Companies extends MY_Controller {
         $branches  = $this->branch_model->get_many_branch_by(['companies.id' => $id]);
         $employees = $this->employee_model->get_many_employee_by(['company_id' => $id]);
 
-
         $this->data = array(
             'page_header' => 'Company Details',
             'company'     => $company,

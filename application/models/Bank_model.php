@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @package     KAWANI
  * @subpackage  subpackage
  * @category    category
- * @author      cristhian.kevin@systemantech.com
+ * @author      joseph.gono@systemantech.com
  * @link        http://systemantech.com
  */
 class Bank_model extends MY_Model {
@@ -26,9 +26,9 @@ class Bank_model extends MY_Model {
 
     protected function generate_date_created_status($bank)
     {
-        $bank['created']       = date('Y-m-d H:i:s');
         $bank['active_status'] = 1;
         $bank['created_by']    = 0;
+        $bank['created']       = date('Y-m-d H:i:s');
         return $bank;
     }
 

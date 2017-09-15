@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @package     KAWANI
  * @subpackage  subpackage
  * @category    category
- * @author      cristhian.kevin@systemantech.com
+ * @author      joseph.gono@systemantech.com
  * @link        http://systemantech.com
  */
 class Branch_model extends MY_Model {

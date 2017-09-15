@@ -506,4 +506,24 @@ $config = array(
 		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required'),
 		array('field' => 'educational_attainment_id', 'label' => 'Educational Attainment', 'rules' => 'trim|required')
 	),
+	'training_add' => array(
+		array('field' => 'title', 'label' => 'Title', 'rules' => 'trim|required'),
+		array('field' => 'facilitator', 'label' => 'Facilitator', 'rules' => 'trim|required'),
+		array('field' => 'institution', 'label' => 'Institution', 'rules' => 'trim|required'),
+		array('field' => 'location', 'label' => 'Location', 'rules' => 'trim|required'),
+		array('field' => 'date_started', 'label' => 'Date Started', 'rules' => 'trim|required'),
+		array('field' => 'date_ended', 'label' => 'Date Ended', 'rules' => 'trim|required'),
+		array('field' => 'hours', 'label' => 'Hours', 'rules' => 'trim|required'),
+		array('field' => 'company_id', 'label' => 'Company', 'rules' => 'trim|required')
+	),
+	'training_edit' => array(
+		array('field' => 'title', 'label' => 'Title', 'rules' => 'trim|required'),
+		array('field' => 'facilitator', 'label' => 'Facilitator', 'rules' => 'trim|required'),
+		array('field' => 'institution', 'label' => 'Institution', 'rules' => 'trim|required'),
+		array('field' => 'location', 'label' => 'Location', 'rules' => 'trim|required'),
+		array('field' => 'date_started', 'label' => 'Date Started', 'rules' => 'trim|required'),
+		array('field' => 'date_ended', 'label' => 'Date Ended', 'rules' => 'trim|required'),
+		array('field' => 'hours', 'label' => 'Hours', 'rules' => 'trim|required'),
+		array('field' => 'company_id', 'label' => 'Company', 'rules' => 'trim|required')
+	)
 );
