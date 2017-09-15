@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo site_url('sss_contribution_matrix/add'); ?>" method="post">
+<form class="form-horizontal" action="<?php echo site_url('sss_contribution_matrix/edit/'.$sss_matrix['id']); ?>" method="post">
 	<div class="modal-header">
 		<h4 class="modal-title"><?php echo $modal_title; ?></h4>
 	</div>

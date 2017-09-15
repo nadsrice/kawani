@@ -24,7 +24,7 @@
         var selectedDepartment = $('#selected-department');
 
         $.ajax({
-            url: BASE_URL + 'employee_hierarchy/ajax_employee_hierarchy',
+            url: BASE_URL + 'employee_hierarchy/ajax_system_menu',
             method: 'POST',
             dataType: 'json',
             success: successCallback,
@@ -33,6 +33,8 @@
         function successCallback(response) {
             treeviewObj.treeview({
                 data: response.data
+            }).then(function(response) {
+                console.log(response);
             });
         }
     });

@@ -30,7 +30,15 @@ class Employee_hierarchy extends MY_Controller
         $new_data = $this->employee_information_model->get_employee_hierarchy_data();
 
         echo json_encode(array('data' => $new_data, 'message' => 'The quick brown fox jumps over the lazy dog.'));
-    }
+	}
+	
+	public function ajax_system_menu()
+	{
+		$this->load->model('employee_information_model');
+        
+		$new_data = $this->employee_information_model->get_system_menu_hierarchy_data();
+        echo json_encode(array('data' => $new_data, 'message' => 'The quick brown fox jumps over the lazy dog.'));
+	}
 }
 
 // End of file Employee_hierarchy.php

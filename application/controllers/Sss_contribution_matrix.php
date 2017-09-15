@@ -166,7 +166,10 @@ class Sss_contribution_matrix extends MY_Controller
 
 		$data = $post;
 
-		if (isset($post['save'])) {
+		if (isset($data['save'])) {
+
+			unset($data['save']);
+
 			$update = $this->sss_contribution_matrix_model->update($sss_matrix_id, $data);
 
 			if ($update) {

@@ -36,6 +36,8 @@
 
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery/3.2.1/jquery.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-ui/1.12.1/jquery-ui.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap/3.3.7/js/bootstrap.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/toastr/toastr.js'); ?>"></script>
 		<script type="text/javascript">
 			var BASE_URL = '<?php echo base_url(); ?>';
 		</script>
@@ -57,7 +59,7 @@
 					<h1><?php echo $page_header; ?></h1><hr>
 				</section>
 				<section class="content">
-					<?php $this->load->view('pages/view-alerts'); ?>
+					<?php $this->load->view('widgets/alert-messages'); ?>
 					<?php (isset($sub_view)) ? $this->load->view($sub_view) : ''; ?>
 				</section>
 			</div>
@@ -65,11 +67,9 @@
 			<?php (isset($main_control_sidebar)) ? $this->load->view($main_control_sidebar) : ''; ?>
 		</div>
 
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap/3.3.7/js/bootstrap.min.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/js/app.min.js'); ?>"></script>
+		
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.3.0.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js'); ?>"></script>
-		<script type="text/javascript" src="<?php echo site_url('assets/libs/toastr/toastr.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/moment/moment.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/daterangepicker/daterangepicker.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/timepicker/bootstrap-timepicker.min.js'); ?>"></script>
@@ -90,6 +90,7 @@
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/parsleyjs/dist/parsley.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jasny-bootstrap/dist/js/jasny-bootstrap.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/libs/jquery-validation/1.16.0/dist/jquery.validate.min.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo site_url('assets/libs/adminLTE/2.3.11/dist/js/app.min.js'); ?>"></script>
 		<!-- Custom Javascript -->
 		<script type="text/javascript" src="<?php echo site_url('assets/js/kawani-datatables-custom.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('assets/js/icheck-custom.js'); ?>"></script>

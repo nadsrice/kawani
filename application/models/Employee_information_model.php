@@ -116,6 +116,58 @@ class Employee_information_model extends MY_Model
 
 		return $data;
 	}
+
+	public function set_system_menu_hierarchy_data()
+	{
+		$query = $this->db->select('f.*, s.name as module_name, p.name as function_name')
+				 ->from('system_functions as f')
+				 ->join('system_modules as s', 'f.system_module_id = s.id', 'left')
+				 ->join('system_functions as p', 'f.parent_function_id = p.id', 'left')
+				 ->get();
+
+		return $query->result_array();
+	}
+
+	public function get_system_menu_hierarchy_data()
+	{
+		$system_functions = $this->set_system_menu_hierarchy_data();
+
+		$data = array();
+
+		foreach ($system_functions as $index => $system_function)
+		{
+			$sub_data['id'] = $system_function['id'];
+			$sub_data['name'] = $system_function['name'];
+			$sub_data['text'] = $system_function['name'];
+			$sub_data['parent_id'] = $system_function['parent_function_id'];
+			$sub_data['system_module_id'] = $system_function['system_module_id'];
+
+			$data[] = $sub_data;
+		}
+
+		foreach ($data as $key => &$value)
+		{
+			$output[$value['id']] = &$value;
+		}
+
+		foreach ($data as $key => &$value)
+		{
+			if ($value['parent_id'] && isset($output[$value['parent_id']]))
+			{
+				$output[$value['parent_id']]['nodes'][] = &$value;
+			}
+		}
+
+		foreach ($data as $key => &$value)
+		{
+			if ($value['parent_id'] && isset($output[$value['parent_id']])){
+				unset($data[$key]);
+			}
+		}
+
+		return $data;
+	}
+
 }
 
 // End of file Employee_information_model.php
