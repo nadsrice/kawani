@@ -9,7 +9,7 @@
                     <div class="form-group">
                     <label class="col-md-3 text-left">Company</label>
                         <div class="col-md-6">
-                            <select class="form-control select2" name="contact_person_id" id="client">
+                            <select class="form-control select2" name="company_id" id="company">
                                 <option value="">-- SELECT COMPANY --</option>
                                 <?php foreach ($companies as $company): ?>
                                     <option value="<?php echo $company['id']; ?>"><?php echo $company['name']; ?></option>
@@ -51,9 +51,9 @@
                         <div class="col-md-6">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                <input type="text" name="date_start" class="form-control pull-right datepicker" value="<?php echo date('Y-m-d'); ?>">
+                                <input type="text" name="date_started" class="form-control pull-right datepicker" value="<?php echo date('Y-m-d'); ?>">
                             </div>
-                            <div class="validation_error"><?php echo form_error('date_start'); ?></div>
+                            <div class="validation_error"><?php echo form_error('date_started'); ?></div>
                         </div>
                     </div>
                     <div class="form-group">

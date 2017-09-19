@@ -66,16 +66,16 @@
                 <i class="fa fa-list"></i> <h3 class="box-title">List of Filed Leaves</h3>
             </div>
             <div class="nav-tabs-custom">
-            <div></div>
-            <div><br></div>
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#myLeaves" data-toggle="tab">My Leaves</a>
-                </li>
-                <li class="">
-                    <a href="#approvals" data-toggle="tab">Approvals</a>
-                </li>
-            </ul>
+                <div></div>
+                <div><br></div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#myLeaves" data-toggle="tab">My Leaves</a>
+                    </li>
+                    <li class="">
+                        <a href="#approvals" data-toggle="tab">Approvals</a>
+                    </li>
+                </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="myLeaves">
                     <table class="table table-bordered table-striped table-hover" id="datatables-my_leaves">

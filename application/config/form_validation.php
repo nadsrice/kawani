@@ -525,5 +525,31 @@ $config = array(
 		array('field' => 'date_ended', 'label' => 'Date Ended', 'rules' => 'trim|required'),
 		array('field' => 'hours', 'label' => 'Hours', 'rules' => 'trim|required'),
 		array('field' => 'company_id', 'label' => 'Company', 'rules' => 'trim|required')
-	)
+	),
+	'salary_matrix_add' => array(
+		array('field' => 'company_id', 'label' => 'Company', 'rules' => 'trim|required'),
+		array('field' => 'effectivity_date', 'label' => 'Effectivity Date', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
+	),
+	'salary_matrix_edit' => array(
+		array('field' => 'company_id', 'label' => 'Company', 'rules' => 'trim|required'),
+		array('field' => 'effectivity_date', 'label' => 'Effectivity Date', 'rules' => 'trim|required'),
+		array('field' => 'description', 'label' => 'Description', 'rules' => 'trim|required')
+	),
+	'salary_add' => array(
+		array('field' => 'salary_matrix_id', 'label' => 'Salary Matrix', 'rules' => 'trim|required'),
+		array('field' => 'monthly_salary', 'label' => 'Effectivity Date', 'rules' => 'trim|required')
+	),
+	'salary_edit' => array(
+		array('field' => 'salary_matrix_id', 'label' => 'Salary Matrix', 'rules' => 'trim|required'),
+		array('field' => 'monthly_salary', 'label' => 'Effectivity Date', 'rules' => 'trim|required')
+	),
+	'salary_grade_add' => array(
+		array('field' => 'company_id', 'label' => 'Company', 'rules' => 'trim|required'),
+		array('field' => 'grade_code', 'label' => 'Grade Code', 'rules' => 'trim|required')
+	),
+	'salary_grade_edit' => array(
+		array('field' => 'company_id', 'label' => 'Company', 'rules' => 'trim|required'),
+		array('field' => 'grade_code', 'label' => 'Grade Code', 'rules' => 'trim|required')
+	),
 );

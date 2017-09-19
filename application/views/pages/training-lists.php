@@ -8,6 +8,7 @@
                         <i class="fa fa-plus"></i>
                         <span>Add Training</span>
                     </a>
+                    <!-- <a href="<?php echo site_url('trainings/load_form'); ?>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#md-add-new-training"><i class="fa fa-plus"></i> Add Training</a> -->
                 </div>                
             </div>
             <div class="box-body">
@@ -22,7 +23,7 @@
                             <th class="text-left">Location</th>
                             <th class="text-left">Date Started</th>
                             <th class="text-left">Date Ended</th>
-                            <th class="text-left">Hourse</th>
+                            <th class="text-left">Hours</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,7 +82,13 @@
             </div>
         </div>
 
-
+			<!-- MODALS -->
+			<div class="modal fade" id="md-add-new-training">
+				<div class="modal-dialog">
+					<div class="modal-content"></div>
+				</div>
+			</div>
+			
             <?php if ($show_modal): ?>
                 <div class="modal fade" id="modal-edit-training">
                     <div class="modal-dialog">

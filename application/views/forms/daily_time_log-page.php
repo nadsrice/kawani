@@ -34,9 +34,6 @@
                         </div>
                     </div>
                     <div>
-                        <div>
-                            <input type="hidden" name="log_type" value=".">
-                        </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-6">

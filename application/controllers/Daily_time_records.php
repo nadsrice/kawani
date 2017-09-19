@@ -111,7 +111,6 @@ class Daily_time_records extends MY_Controller {
         );
 
         $data = remove_unknown_field($this->input->post(), $this->form_validation->get_field_names('daily_time_log_add'));
-        
 
         // $timein = date('H:i', strtotime($this->input->post('date_time')));
         // dump($timein);exit;
@@ -135,7 +134,6 @@ class Daily_time_records extends MY_Controller {
             //     'new_data'    => $data
             // ]);
             $daily_time_record_id = $this->daily_time_log_model->insert($data);
-
 
             if ( ! $daily_time_record_id)
             {

@@ -50,27 +50,6 @@ class Skill_model extends MY_Model {
     public function get_details($method, $where)
     {
         $this->db->select('*');
-         return $this->{$method}($where);
+        return $this->{$method}($where);
     }
-
-    // public function get_skill_by($param)
-    // {
-    //     $query = $this->db;
-    //     $query->select('*');
-    //     return $this->get_by($param);
-    // }
-
-    // public function get_many_skill_by($param)
-    // {
-    //     $query = $this->db;
-    //     $query->select('*');
-    //     return $this->get_many_by($param);
-    // }
-
-    // public function get_skill_all()
-    // {
-    //     $query = $this->db;
-    //     $query->select('*');
-    //     return $this->get_all();
-    // }
 }

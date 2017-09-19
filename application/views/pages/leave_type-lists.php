@@ -20,7 +20,7 @@
                 <table class="table table-bordered table-striped table-hover" id="datatables-leave_types">
                     <thead>
                         <tr>
-                            <th style="width: 250px;">&nbsp;</th>
+                            <th style="width: 250px;">Action</th>
                             <th class="text-left">Name</th>
                             <th class="text-left">Description</th>
                             <th class="text-left">Status</th>

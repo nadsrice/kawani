@@ -27,7 +27,7 @@ class Trainings extends MY_Controller {
 
 	function index()
 	{
-		$trainings = $this->training_model->get_all();
+		$trainings = $this->training_model->get_details('get_all', ['active_status' => 1]);
 
 		$this->data = array(
 			'page_header' => 'Trainings Management',
@@ -36,6 +36,16 @@ class Trainings extends MY_Controller {
 			'active_menu' => $this->active_menu
 		);
 		$this->load_view('pages/training-lists');
+	}
+
+	public function load_form()
+	{
+		$companies = $this->company_model->get_all(['active_status' => 1]);
+		$data = array(
+			'modal_title' => 'Add Training',
+			'companies'   => $companies
+		);
+		$this->load->view('modals/modal-add-training', $data);
 	}
 
 	function add()
@@ -100,7 +110,7 @@ class Trainings extends MY_Controller {
 			'trainings'       => $trainings,
 			'training_id'     => $training_id,
 			'show_modal'      => TRUE,
-			'modal_title'     => 'Update training',
+			'modal_title'     => 'Update Training',
 			'modal_file_path' => 'modals/modal-edit-training',
 		);
 
@@ -133,13 +143,11 @@ class Trainings extends MY_Controller {
 	{
 		$mode = $this->uri->segment(3);
 		$training_id = $this->uri->segment(4);
-
-        $training = $this->training_model->get_by(['id' => $training_id]);
-        $data['training'] = $training;
-		
 		$training = $this->training_model->get_by(['id' => $training_id]);
+		
+        $data['training'] = $training;
 
-		$modal_message = "You're about to " . $mode . "<strong> " . $training['name'] . "</strong>"; 
+		$modal_message = "You're about to " . $mode . "<strong> " . $training['title'] . "</strong>"; 
 
 		$data = array(
 			'url' 			=> 'trainings/' . $mode . '/' . $training_id,

@@ -32,7 +32,6 @@ class Skills extends MY_Controller {
 			'show_modal'  => FALSE,
 			'active_menu' => $this->active_menu
 		);
-
 		$this->load_view('pages/skill-lists');
 	}
 
