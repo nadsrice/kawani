@@ -15,14 +15,15 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="" class="col-lg-3 control-label">Monthly Salary</label>
+			<label for="" class="col-lg-3 control-label">Description</label>
 			<div class="col-lg-8">
-				<input type="text" class="form-control" name="monthly_salary" id="monthly_salary">
+				<input type="text" class="form-control" name="description" id="description">
 			</div>
-		</div>
+		</div>	
 	</div>
 	<div class="modal-footer">
 		<button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
 		<button class="btn btn-primary" type="submit">Submit</button>
 	</div>
 </form>
+n

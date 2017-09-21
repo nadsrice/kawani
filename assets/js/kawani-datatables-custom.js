@@ -27,5 +27,7 @@ $(function() {
 	$("#datatables-courses").DataTable();
 	$("#datatables-educational-attainments").DataTable();
 	$("#datatables-training-plans").DataTable();
+	$("#datatables-salaries").DataTable();
+	
 
 });

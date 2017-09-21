@@ -98,11 +98,13 @@ class Salary_matrices extends MY_Controller
 
 	public function load_form()
 	{
+		$companies = $this->company_model->get_all();
+
 		$data = array(
 			'modal_title' => 'Add Salary Matrix',
-			'years'		  => incremental_year(10)
+			'companies'   => $companies
 		);
-		$this->load->view('modals/modal-add-salary', $data);
+		$this->load->view('modals/modal-add-salary-matrix', $data);
 	}
 
 	public function add()
@@ -172,5 +174,5 @@ class Salary_matrices extends MY_Controller
 	}
 }
 
-// End of file salary.php
-// Location: ./application/controllers/salary.php
+// End of file Salary_matrices.php
+// Location: ./application/controllers/Salary_matrices.php

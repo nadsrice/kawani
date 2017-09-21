@@ -23,7 +23,7 @@
                         <?php if ( ! empty($salary_matrices)): ?>
                         <?php foreach ($salary_matrices as $index => $salary_matrix): ?>
                         <tr>
-                            <td>
+                            <td class="text-center">
                                 <a href="<?php echo site_url('salary_matrices/details/' . $salary_matrix['id']); ?>" class="btn btn-link">
                                     <i class="fa fa-eye"></i> View
                                 </a>
@@ -34,10 +34,10 @@
                                     <i class="fa <?php echo $salary_matrix['status_icon']; ?>"></i> <?php echo $salary_matrix['status_action']; ?>
                                 </a>
                             </td>
-                            <td><?php echo $salary_matrix['company_name']; ?></td>
-                            <td><?php echo $salary_matrix['effectivity_date']; ?></td>
-                            <td><?php echo $salary_matrix['description']; ?></td>
-                            <td><?php echo $salary_matrix['status_label']; ?></td>
+                            <td class="text-left"><?php echo $salary_matrix['company_name']; ?></td>
+                            <td class="text-right"><?php echo $salary_matrix['effectivity_date']; ?></td>
+                            <td class="text-left"><?php echo $salary_matrix['description']; ?></td>
+                            <td class="text-center"><?php echo $salary_matrix['status_label']; ?></td>
                         </tr>
 
                         <div class="modal fade" id="modal-confirmation-<?php echo $index; ?>">

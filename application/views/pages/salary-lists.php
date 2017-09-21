@@ -9,12 +9,13 @@
         </div>
         <div class="box-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="datatables-salary-matrix">
+                <table class="table table-bordered" id="datatables-salaries">
                     <thead>
                         <tr>
                             <th style="width: 300px;">Action</th>
                             <th>Salary Matrix</th>
                             <th>Monthly Salary</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,6 +35,7 @@
                             </td>
                             <td class="text-left"><?php echo $salary['salary_matrix_desc']; ?></td>
                             <td class="text-right"><?php echo $salary['monthly_salary']; ?></td>
+							<td class="text-center"><?php echo $salary['status_label']; ?></td>
                         </tr>
 
                         <div class="modal fade" id="modal-confirmation-<?php echo $index; ?>">
@@ -49,6 +51,7 @@
         </div>
         
         <!-- MODALS -->
+
         <div class="modal fade" id="md-add-salary">
             <div class="modal-dialog">
                 <div class="modal-content"></div>
